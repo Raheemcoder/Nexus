@@ -1,0 +1,271 @@
+﻿@model Ideation.Models.MyMilestone
+@{
+    ViewData["Title"] = "My Milestone";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+}
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+
+<style>
+    .display-extended-date, .DisplayCompletedDate {
+        display: flex;
+    }
+</style>
+
+<section>
+    <div>
+
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span><span>Milestone/ </span>  My Milestone</h4>
+        </div>
+
+        <div class="right_top mt-0">
+            <ul>
+                <li><a href="@Url.Content("~/ProjectTracker/MilestoneList")"><i class="fas fa-arrow-left"></i> Back</a></li>
+            </ul>
+        </div>
+
+        @Html.HiddenFor(m => m.ProjectHeaders)
+        @Html.HiddenFor(m => m.ProjectMyMilestoneDetails)
+
+        @if (TempData["Message"] != null)
+        {
+            <div id="message" class="alert @TempData["MessageClass"].ToString() alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                @TempData["Message"].ToString()
+            </div>
+        }
+
+    </div>
+</section>
+
+<section class="width_100 ">
+
+    <div class="filter_status prototype_filter  d-flex justify-content-between mb-3">
+        <div>
+            <div class="global-search">
+                <input type="text" id="global-search" class="global-search search_filter form_search mt-0" placeholder="Search...">
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="d-flex excel_expand align-items-center">
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="FullScreen"></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section>
+    <div class="card-box">
+        <div class="kanban_board">
+
+            <div class="first_open board_list">
+                <h4>Open <span class="count_num count_open"></span></h4>
+                <div class="height_scroll open_list_progress">
+                </div>
+            </div>
+
+            <div class="second_open board_list">
+                <h4>In Progress <span class="count_num count_inprogress"></span></h4>
+                <div class="height_scroll list_inProgress">
+                </div>
+            </div>
+
+            <div class="third_open board_list">
+                <h4>Overdue <span class="count_num count_overdue"></span></h4>
+                <div class="height_scroll overdue_list">
+                </div>
+            </div>
+
+            <div class="fourth_open board_list">
+                <h4>Completed <span class="count_num count_completed"></span></h4>
+                <div class="height_scroll Completed">
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div id="Complete_DateExtension_ModalPopup" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="">
+                    <h6 class="modal-title">Project Details List</h6>
+                </div>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <form class="m-form__form">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+
+                                        <div class="row">
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Task</label>
+                                                    <div class="">
+                                                        @Html.TextBoxFor(model => model.MilestoneName, "-- select --", new { @id = "milestone", @class = "form-control input-disabled", @readonly = "readonly" })
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Start Date</label>
+                                                    @Html.TextBoxFor(m => m.StartDate, new { @id = "StartDate", @class = "form-control  input-disabled", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">End Date</label>
+                                                    @Html.TextBoxFor(m => m.EndDate, new { @id = "EndDate", @class = "form-control input-disabled", @readonly = "readonly" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-4">
+                                                <div class="form-group ">
+                                                    <label class="control-label">Status</label>
+                                                    <div class="">
+                                                        <div class="form-control__inline -buttons">
+                                                            <button type="button" value="DateExtension" id="date-ext" class="btn btn-xs c-btn -outline-success status btn btn-outline-success completed_status">Date Extension</button>
+                                                            <button type="button" value="Completed" id="completed" class="btn btn-xs c-btn -outline-success status btn btn-outline-success completed_status ml-2">Completed</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @*on click of complete*@
+                                            <div class="DisplayCompletedDate col-md-8 p-0">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Actual Completion Date <span class="text-danger">*</span></label>
+                                                        <i class="fas fa-calendar-alt calendar-icon"></i>
+                                                        <div class="">
+                                                            <div class="">
+                                                                <div class="">
+                                                                    @Html.TextBoxFor(m => m.ActualCompletedDate, new { @id = "ActualCompletedDate", @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                                                                    <span class="need-completed-date text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Completed Remarks <span class="text-danger">*</span></label>
+                                                        <div class="">
+                                                            <textarea rows="3" id="comp-remarks" class="form-control -auto"></textarea>
+                                                            <span class="need-completed-remarks text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            @*on click of date extend*@
+                                            <div class="display-extended-date col-md-8 p-0">
+                                                <div class="col-md-6">
+                                                    <div class="form-group  ">
+                                                        <label class="control-label">Extension Date <span class="text-danger">*</span></label>
+                                                        <i class="fas fa-calendar-alt calendar-icon"></i>
+                                                        <div class="">
+                                                            <div class="">
+                                                                <div class="">
+                                                                    @Html.TextBoxFor(m => m.ExtendedDate, new { @id = "ExtendedDate", @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                                                                    <span class="need-extended-date text-danger"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Date Extension Remarks <span class="text-danger">*</span></label>
+                                                        <div class="">
+                                                            <textarea rows="3" id="extended-remarks" class="form-control -auto"></textarea>
+                                                            <span class="need-extended-remarks text-danger"></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                        </div>
+
+                                        <div class="col-md-12 m-form__page--buttons">
+                                            <div class="save_buttons mr-2 text-right">
+                                                <button type="button" class="btn btn-draft" id="btnSubmit"> Save</button>
+                                                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" > Cancel</button>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dependentMilestones" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <div class="">
+                    <h6 class="modal-title">Dependent Task(s) Details</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+            </div>
+
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <span id="displaySpanmsg"></span>
+                            <div class="row">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-2">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="jqgrid" class="table table-bordered"></table>
+                                            <div id="pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="save_buttons float-right text-right">
+                                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="btndepent" hidden>Ok</button>
+                                        <button type="button" class="btn btn-draft" id="btnok">Yes</button>
+                                        <button type="button" id="BtnCanceldependent" class="btn btn-cancel" data-bs-dismiss="modal" > No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/ProjectTracker/MilestoneBoard.js"></script>

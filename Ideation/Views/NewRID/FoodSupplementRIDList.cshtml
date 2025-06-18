@@ -1,0 +1,475 @@
+﻿@model Ideation.Models.RID
+@{
+    ViewData["Title"] = "RID";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var division = @Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.DivisionName;
+    var count = 0;
+    var firstIngredientType = Model.IngredientTypeList.FirstOrDefault();
+    var selectedingredientTypeId = firstIngredientType?.IngredientTypeId;
+
+    var ingtypelist = Model.IngredientTypeList;
+    var firsingredientId = ingtypelist.FirstOrDefault().IngredientTypeId;
+    var firstingredientTypeName = ingtypelist.FirstOrDefault().IngredientTypeName;
+}
+
+<style>
+    .preview_popup th {
+        background: #ffe0ca !important;
+        border: 1px solid #000;
+        width: 130px;
+    }
+
+    .preview_popup td {
+        border: 1px solid #000;
+    }
+
+    .preview_popup .richediter img {
+        height: 160px;
+        margin-bottom: 0px
+    }
+
+    .preview_popup .richediter b {
+        margin-top: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    div.preview_popup {
+        background: #05050585;
+    }
+
+    /*  .preview_popup .table-responsive {
+        max-height: 76vh;
+        overflow: auto;
+    }
+
+    .preview_popup .modal-body {
+        height: 85vh;
+        overflow: auto;
+    }*/
+
+    .recomandation_title {
+        border-bottom: 0px solid #9d9d9d;
+        font-size: 14px;
+        font-weight: normal;
+        margin-bottom: 10px;
+        background: #fccaa2;
+        color: #000;
+        padding: 5px 10px;
+        line-height: 1;
+    }
+
+    .cremarks_icon {
+        justify-content: center !important;
+        align-items: center;
+    }
+
+    .modal-title .text-right b {
+        color: #f86e00;
+    }
+
+    .grid-scroll {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden !important;
+    }
+</style>
+
+<input type="hidden" value="@selectedingredientTypeId" id="selectedingredienttypeid" />
+
+@*header link*@
+<section>
+    <div class="">
+        <div class="-m_title_">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home/ </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division/ </a>
+                </span>
+                RID
+            </h4>
+        </div>
+    </div>
+</section>
+
+@*hidden fields*@
+<section>
+    @Html.HiddenFor(m => m.DivisionId)
+    @Html.HiddenFor(m => m.DivisionBasedIngredientListJson)
+    @Html.HiddenFor(m => m.ComplianceRequestListJson)
+    @Html.HiddenFor(m => m.IngredientNameList)
+    @Html.HiddenFor(m => m.CASNumberList)
+</section>
+
+@*Page tab and grid*@
+<section>
+
+    <div class="project_modules">
+        <input type="text" id="firstingredient" hidden value="@firsingredientId" />
+        <input type="hidden" id="firstingredienttypename" value="@firstingredientTypeName" />
+        <ul class="nav nav-tabs ingredienttype_content">
+            @foreach (var type in Model.IngredientTypeList)
+            {
+                count++;
+                <li>
+                    @if (count > 0 && count == 1)
+                    {
+                        <a href="javascript:void(0)" class="active all_content"
+                           onclick="GetIngredientTypesGridData(this)"
+                           IngredientTypeId="@type.IngredientTypeId" IngredientTypeName="@type.IngredientTypeName" id="selectedingredient_@type.IngredientTypeId">@type.IngredientTypeName</a>
+                    }
+                    else if (count >= 2)
+                    {
+                        <a href="javascript:void(0)" class=""
+                           onclick="GetIngredientTypesGridData(this)"
+                           IngredientTypeId="@type.IngredientTypeId" IngredientTypeName="@type.IngredientTypeName" id="selectedingredient_@type.IngredientTypeId">@type.IngredientTypeName</a>
+                    }
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        <div class="tab-pane fade in active">
+
+            <section class="page-header-search-action d-flex align-items-center justify-content-between">
+                <div class="filter_status prototype_filter">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex">
+
+                            <div class="col-width1 ">
+                                <div class="form-group rid_calendericon">
+                                    <label class="control-label">Start Date</label>
+                                    <input type="text" class="form-control ImpactDates_text_freezed" id="Search_Start_Date" autocomplete="off"
+                                           data-datepicker-startdate readonly>
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-width1 ">
+                                <div class="form-group rid_calendericon">
+                                    <label class="control-label">End Date</label>
+                                    <input type="text" class="form-control ImpactDates_text_freezed" id="Search_End_Date" autocomplete="off"
+                                           data-datepicker-enddate readonly>
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-width2">
+                                <div class="form-group">
+                                    <label class="control-label">Search</label>
+                                    <input type="text" class="form-control" id="global_search" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-width1 mt-3 pt-1">
+                                <button class="btn btn-search" title="Search" type="button" id="search_ingredient">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button class="btn btn-refresh" title="Refresh" type="button" id="refresh_date">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="add_button">
+                    <button type="button" class="btn btn-draft" title="Compliance Request For New Ingredient" onclick="clearRequestDataPopup()">
+                        Compliance Request For New Ingredient
+                    </button>
+                </div>
+
+            </section>
+
+            <section class="page-lengend">
+                <div class="d-flex align-items-center justify-content-between">
+
+                    <div>
+                        <span class="ing_edit"></span> Ingredients Edited
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="legends_list circle_list ">
+                                    <ul class="d-flex ">
+                                        <li><span class="purple_circle"></span> Higher Management/HUB Decision Required</li>
+                                        <li><span class="green_circle"></span> Allowed</li>
+                                        <li><span class="yellow_circle"></span> Allowed With Restrictions</li>
+                                        <li><span class="red_circle"></span> Prohibited</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="images_excel">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand">
+                                <div>
+                                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="page-grid">
+                <div class="animate__animated2 slideInUp mt-3">
+                    <div class="">
+                        <div class="">
+                            <div class="row">
+                                <div class="m-table__main grid_height rid_heigt">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="IngredientListGrid" class="table table-bordered"></table>
+                                        <div id="IngredientListGrid_Pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</section>
+
+@*Page modals*@
+<section>
+
+    <div id="ParticularIngredientModal" class="modal fade modal-header-align" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog tfo_app aa ingredients_add modal-xl update_form edit_form">
+            <div class="modal-content appt">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        View Ingredients Remarks
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="IngredientIdForCompliance" />
+                    <div class="filter_forms">
+                        <div class="row">
+                            <div class="col-md-3 mb-4 hidebotanicalname">
+                                <span> Botanical Name : <b class="control-label ing-bot-name"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hideingnamesforinactives">
+                                <span> Ingredient Name: <b class="control-label ing-name"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hideingnamesforactives">
+                                <span> Ingredient Name (Sanskrit/English): <b class="control-label ing-name"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <span> Synonyms : <b class="control-label ing-sys"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hidecas">
+                                <span> CAS Number : <b class="control-label ing-cas-no"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hideenumber">
+                                <span> E Number : <b class="control-label ing-e-no"></b></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row add_ingradient">
+                        <div class="m-table__main mt-2">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="particular-ingredient-details" class="table table-bordered"></table>
+                                <div id="particular-ingredient-details-pager"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="pull-right mt-2">
+                            <div class="pull-right">
+                                <button type="button" class="btn  btn-cancel" data-bs-dismiss="modal" id="Approve_cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="NewIngredient_Request" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Compliance Request for New Ingredient
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="alert alert-dismissable" id="ComplianceRequestResultAlert" style="display:none;">
+                    <div class="d-flex justify-content-between">
+                        <bold id="ComplianceRequestResultMessage"></bold>
+                        <button type="button" class="btn-close status-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                </div>
+                <div class="modal-body">
+                    <div class="view_project">
+                        <div class="row">
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Ingredient Type <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(m => m.IngredientTypeList, new SelectList(Model.IngredientTypeList, "IngredientTypeId", "IngredientTypeName"), new { @class = "form-control data-singleselect", @id = "Request_IngredientType" })
+                                    @*<span class="text-danger req-error" id="Err_Request_IngredientType">Please select Ingredient Type</span>*@
+                                </div>
+                            </div>
+                            <div class="col-md-3 botanicaldiv">
+                                <div class="form-group">
+                                    <label class="control-label">Botanical Name <span class="text-danger">*</span></label>
+                                    @Html.TextBoxFor(m => m.BotanicalName, new { @class = "form-control", @id = "Request_BotanicalName", @autocomplete = "off" })
+                                    <span class="text-danger req-error" id="Err_Request_BotanicalName">Please enter Botanical Name</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 p-0">
+                                <div class="form-group">
+                                    <label class="control-label ingredientnamebasedontype">Ingredient Name <span class="text-danger">*</span></label>
+                                    @Html.TextBoxFor(m => m.IngredientName, new { @class = "form-control", @id = "Request_IngridentName", @autocomplete = "off" })
+                                    <span class="text-danger req-error" id="Err_Request_IngridentName">Please enter Ingredient Name</span>
+                                    <span class="text-danger ingredient-exists">Ingredient name already exists</span>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 casdiv">
+                                <div class="form-group">
+                                    <label class="control-label">CAS number</label>
+                                    @Html.TextBoxFor(m => m.CASNumber, new { @class = "form-control", @id = "Request_CASNumber", @autocomplete = "off" })
+                                    <span class="text-danger req-error" id="Err_Request_CASNumber">Please enter CAS Number</span>
+                                    <span class="text-danger casnumber-exists">CAS number already exists</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Region <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(m => m.SelectedRegion, new SelectList(Model.RegionList, "Value", "Text", ""), new { @class = "form-control", @data_multiselect = "", @id = "Request_Region", @multiple = "multiple" })
+                                    <span class="text-danger req-error" id="Err_Request_Region">Please select Region</span>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="float-left mt-3">
+                                    <div class="text-left">
+                                        <button type="button" class="btn btn-success mr-1" id="ComplianceRequest_save">Submit</button>
+                                        <button type="button" class="btn btn-cancel mr-1" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">Status</label>
+                                    @Html.DropDownListFor(model => model.SelectedIRAStatus, new SelectList(Model.IRAStatusList, "Value", "Text", ""), new { @id = "Request_Status", @class = "form-control data-singleselect" })
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="filter_status prototype_filter mt-2 pt-1">
+                                    <div class="col-width1">
+                                        <button class="btn btn-search" title="search" type="button" id="search_ComplianceRequestList">
+                                            <i class="fas fa-search"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="animate__animated2 slideInUp mt-1">
+                            <div class="">
+                                <div class="">
+                                    <div class="row">
+                                        <div class="m-table__main grid_height">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="ComplianceRequestGrid" class="table table-bordered"></table>
+                                                <div id="ComplianceRequestGrid_Pager"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="complianceremarkspopup" class="modal fade preview_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Compliance Remarks
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name :</b> <span id="Compliance_Ingredient"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Region:</b> <span id="Compliance_Region"></span>
+                        </span>
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body grid-scroll" style="max-height:460px !important;">
+                    <div class="table-responsive">
+                        <input type="hidden" id="IngredientTypeId" />
+                        <table class="table table-boardered">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 p-0">
+                            <div class="recomandation_title">Additional Information</div>
+                            <div id="richeditordata" class="table richediter p-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 p-0">
+                            <div class="recomandation_title" id="recommendationforregion"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">In Medicine</label>
+                                <textarea class="form-control" rows="3" id="InMedicineForClaims" disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">In Food Supplement</label>
+                                <textarea class="form-control" rows="3" id="InfoodSupplementsForClaims" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="float-right">
+                                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script>
+    console.log('ok');
+</script>
+
+<script src="@Url.Content("~/js/NewRID/FoodSupplementRIDList.js")"></script>

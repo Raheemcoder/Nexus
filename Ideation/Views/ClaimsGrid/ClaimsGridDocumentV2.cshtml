@@ -1,0 +1,1031 @@
+﻿@model Ideation.Models.ClaimsGridDocument
+
+@{
+    ViewBag.Title = "ClaimsGridDocument";
+    Layout = "~/Views/Shared/CG_Layout.cshtml";
+}
+<style>
+    div#pagination-demo1 ul > li:first-child {
+        width: 40%;
+        overflow: hidden;
+    }
+
+    .justify-statt_imp {
+        justify-content: start !important;
+    }
+</style>
+@if (TempData["Message"] != null)
+{
+    <div class="alert @TempData["Messageclass"].ToString() alert-dismissable">
+        <button type="button" class="btn-close status-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["Message"].ToString()
+    </div>
+}
+<section class="animate__animated1 slideInUp">
+    <div class="-m_pagetitle ">
+        <div class="-m_title ">
+            <h4><span>Master/</span> Claims Grid</h4>
+        </div>
+        <div class="-m_title_buttons">
+            @if (Model.UserRole == "DSG Initiator" || Model.UserRole == "DSG Manager" || Model.UserRole == "ADMIN" || Model.UserRole == "DSG Initiator and CFT")
+            {
+                @* <a href="@Url.Content("~/ClaimsGrid/AddGridDocument")">
+            <div class="button button-add ">
+            <i class="flaticon-plus color-white"></i>
+            <span class="color-white">Add Claim Grid</span>
+            </div>
+            </a>*@
+                <div class="button button-add ">
+                    <a href="@Url.Content("~/ClaimsGrid/AddGridDocument")">
+                        <i class="flaticon-plus color-white"></i>
+                        <span class="color-white">Add Claim Grid</span>
+                    </a>
+                </div>
+            }
+
+        </div>
+    </div>
+</section>
+<div id="" class="">
+    <section class="animate__animated1 slideInUp ">
+        <div class="filter_forms">
+            <div class="d-flex align-items-center justify-statt_imp">
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">Project No </label>
+                        <select class="form-control" data-singleselect id="projectDropdown">
+                            <option>All</option>
+                        </select>
+                    </div>
+                </div>
+                @Html.HiddenFor(m=>m.JSONClaimsGridData,new{@id="JSONClaimsGridData"})
+                @Html.HiddenFor(m=>m.Statuses,new{@id="Statuses"})
+                @Html.HiddenFor(model => model.Role)
+                @Html.HiddenFor(model => model.LoginId)
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">Status </label>
+                        <select class="form-control" data-singleselect id="statusDrpDown">
+                            <option>All</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">Division </label>
+                           @Html.DropDownListFor(m=>m.Division,Model.DivisionList,"All",new{@class="form-control",@id="ClaimsDivision"})
+                    </div>
+                </div>
+                <div class="col-width1 mt-2 pt-1">
+                    <button type="button" class="btn btn-search" title="Search" id="SearchPrototypeData"><i class="fas fa-search"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+
+
+
+    <section>
+
+        <div class="grid_view listgrid_table" id="grid">
+            <div class="">
+                <div class="list_search">
+                    <ul class="list_grid">
+                        <li>
+                            @* <button class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                            <i class="flaticon-fullscreen fullscreen_expand fullscreen-btn" onclick="var el = document.getElementById('fullscreen'); el.webkitRequestFullscreen();"></i>
+                            <i class="flaticon-close-1 fullscreen_minimize exitscreen-btn" onclick="closeFullscreen()"></i>
+                            </button>*@
+                            <button onclick="$(document).toggleFullScreen() " class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                <i class="flaticon-fullscreen fullscreen_expand fullscreen-btn " data-toggle="tooltip" data-placement="bottom" title="Full Screen Mode"></i>
+                                <i class="flaticon-close-1 fullscreen_minimize exitscreen-btn" data-toggle="tooltip" data-placement="bottom" title="Exit Full Screen Mode"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" id="ExcelDownload" class="btn-excel mr-1 ml-1 mt-0" title="Excel Download">
+                                <img src="~/NewAssets/assets/images/excel.png" />
+                            </button>
+                        </li>
+                        <li class="table_view" title="Grid View"><i class="flaticon-table-grid"></i></li>
+                        <li class="list" title="List View"><i class="flaticon-list"></i></li>
+                        @*<li class="grid"><i class="fas fa-box"></i></li>*@
+                        @*<li class="board"><i class="fas fa-th"></i></li>*@
+                        <li>
+                            <input type="text" id="global-search" class="global-search search_filter" placeholder="Search...">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                <div class="">
+
+                    <div class="col-md-12 pl-0">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    @*<table id="claims_grid" class="table table-bordered"></table>
+                                    <div id="claims_pager"></div>*@
+                                    <table id="claims_documeent" class="table table-bordered"></table>
+                                    <div id="pager_claims_documeent"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="list_gridview body_expand">
+                <div id="pagination-demo1">
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</div>
+
+@*CFT Status popup starts*@
+<div id="productModal" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">CFT Status</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bd1">
+                                            <th scope="col">Department Name</th>
+                                            <th scope="col">Users</th>
+                                            <th scope="col">Status</th>
+                                            <th scope="col">CFT remarks</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="tb" id="cftApprovalTable">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*CFT remarks popup starts*@
+<div id="CFTRModal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">CFT Remarks</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bd1" id="CFTRHeader">
+
+                                            <th scope="col" class="col-width3">Claims</th>
+                                            <th scope="col">IRA Remarks</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody class="tb" id="CFTRBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*File View Modal*@
+<div class="modal fade hd" id="SupportingDoc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Documents</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @*     <div class="modal-body">
+            <div class="row">
+            <div class="panel panel-primary filterable mdp">
+            <div class="id_tbl">
+            <table class="table table-bordered">
+            <thead>
+            <tr class="bd1">
+            <th scope="col">Document Name</th>
+            <th scope="col">Uploaded By</th>
+            <th scope="col">Uploaded On</th>
+            <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody class="tb" id="UploadedDocs_List">
+            </tbody>
+            </table>
+            </div>
+            </div>
+            </div>
+            </div>
+            *@
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Supporting_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Approval History popup starts*@
+<div id="HistoryModal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Approval History</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="approve_reject mb-2 approve_reject_claims">
+                    <div class="list_status">
+                        @*<ul>
+                        <li class="bg_marketing completed">Draft</li>
+                        <li class="fas fa-arrow-right text-success"></li>
+                        <li class="">CFT Review</li>
+                        <li class="fas fa-arrow-right"></li>
+                        <li class="bg_pmd">DSG Review</li>
+                        <li class="fas fa-arrow-right"></li>
+                        <li class="bg_fine">Manager Approval</li>
+                        <li class="fas fa-arrow-right"></li>
+                        <li class="bg_fine">DSG Signoff</li>
+                        <li class="fas fa-arrow-right"></li>
+                        <li class="bg_fine">Addendum</li>
+                        </ul>*@
+                        <ul>
+                            <li class="bg_marketing completed 1">Draft</li>
+                            <li class="fas fa-arrow-right text-success 1"></li>
+                            <li class="2">CFT Review</li>
+                            <li class="fas fa-arrow-right 2"></li>
+                            <li class="bg_pmd 3">DSG Review</li>
+                            <li class="fas fa-arrow-right 3"></li>
+                            <li class="bg_fine 4">Manager Approval</li>
+                            <li class="fas fa-arrow-right 4"></li>
+                            <li class="bg_fine 5">DSG Signoff</li>
+                            <li class="fas fa-arrow-right 5"></li>
+                            <li class="bg_fine 5">Signed off</li>
+                            <li class="fas fa-arrow-right 6"></li>
+                            <li class="bg_fine 6">Addendum</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        @*<div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                        <table id="approval_grid" class="table table-bordered"></table>
+                        <div id="approval_pager"></div>
+                        </div>
+                        </div>*@
+                        @*<div class="table-responsive">
+                        <table class="table table-boardered">
+                        <thead>
+                        <tr>
+                        <th>From Stage</th>
+                        <th>To Stage</th>
+                        <th>Initiated By</th>
+                        <th>Initiated On</th>
+                        <th>Approved By</th>
+                        <th>Remarks</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                        <td>Draft</td>
+                        <td>CFT Review</td>
+                        <td>Shankar</td>
+                        <td>12/04/2022</td>
+                        <td>14/04/2022</td>
+                        <td>Updated</td>
+                        </tr>
+                        <tr>
+                        <td>CFT Review</td>
+                        <td>DSG Review</td>
+                        <td>Shankar</td>
+                        <td>12/04/2022</td>
+                        <td>14/04/2022</td>
+                        <td>Updated</td>
+                        </tr>
+                        <tr>
+                        <td>DSG Review</td>
+                        <td>Manager Approval</td>
+                        <td>Shankar</td>
+                        <td>12/04/2022</td>
+                        <td>14/04/2022</td>
+                        <td>Updated</td>
+                        </tr>
+                        <tr>
+                        <td>Manager Approval</td>
+                        <td>DSG Signoff</td>
+                        <td>Shankar</td>
+                        <td>12/04/2022</td>
+                        <td>14/04/2022</td>
+                        <td>Updated</td>
+                        </tr>
+                        <tr>
+                        <td>DSG Signoff	</td>
+                        <td>Addendum</td>
+                        <td>Shankar</td>
+                        <td>12/04/2022</td>
+                        <td>14/04/2022</td>
+                        <td>Updated</td>
+                        </tr>
+                        </tbody>
+                        </table>
+                        </div>*@
+                        <div class="row mb-2">
+                            <div class="text-right save_buttons float-right text-right edit-buttons">
+                                @*<button type="button" class="btn btn-excel btn-add" id="HistoryExcel" title="Excel Download">
+                                <i class='fas fa-file-excel'></i> Export
+                                </button>*@
+                                <button type="button" class="btn-excel popup_excel mr-1 ml-1 mt-0" id="HistoryExcel" title="Excel Download">
+                                    <img src="~/NewAssets/assets/images/excel.png" />
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="panel panel-primary filterable mdp">
+                                <div class="table-responsive approval_history_table">
+                                    <table class="table table-boardered" id="Claims_Remarks">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:10px;">From Stage</th>
+                                                <th style="width:10px;">To Stage</th>
+                                                <th style="width:120px;">Assigned To</th>
+                                                <th style="width:10px;">Received On</th>
+                                                <th style="width:10px;">Submitted On</th>
+                                                <th style="width:110px;">Submitted By</th>
+                                                <th style="width:10px;">No Of Days Taken</th>
+                                                <th style="width:160px;">Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <div id="Claims_Remarks_Pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*View Documents popup starts*@
+<div id="ViewDoc" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Documents</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>Document Name</th>
+                                        <th>Version Name</th>
+                                        <th>Signoff By</th>
+                                        <th>Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>CG230005_Himalaya Dark Spot Clearing Turmeric Face Cream	</td>
+                                        <td>0</td>
+                                        <td>Shankar</td>
+                                        <td>12/04/2022</td>
+                                        <td><i class="flaticon-view mr-2"></i><i class="flaticon-download"></i></td>
+                                    </tr>
+                                    <tr>
+                                        <td>CG230005_01_Himalaya Dark Spot Clearing Turmeric Face Cream	</td>
+                                        <td>1</td>
+                                        <td>Shankar</td>
+                                        <td>12/04/2022</td>
+                                        <td>
+                                            <i class="flaticon-view mr-2"></i>
+                                            <a href="@Url.Content("~/ClaimsGridDocument.pdf")" download="ClaimsGridDocument">
+                                                <i class="flaticon-download"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*user modal popup*@
+<div id="Preview" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+
+        <!-- Modal content-->
+        <div id="resultDiv"></div>
+    </div>
+</div>
+
+
+
+@*Delete button in jq grid*@
+<div class="modal fade sv hd" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="DeleteRecord" class="btn btn-danger mt-4 pt-2" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-add" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="GenerateClaimsPdf" hidden></div>
+<div class="Header" hidden></div>
+
+@*user grid table *@
+<script>
+
+    //colmodels = [
+
+    //    {
+    //        name: 'Action',
+    //        label: 'Action',
+    //        width: 65,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //        sortable: false,
+    //        formatter: function (cellvalue, options, rowobject) {
+    //            if (rowobject.Action == "") {
+    //                return '<div class="text-center action_icons" title="">' +
+    //                    '<label class="mb-0">...</label>' +
+    //                    '<ul class="hover_icons">' +
+    //                    '<li><a  data-toggle="modal" data-target="#Preview"><i class="flaticon-view color-blue"></i> View </a></li>' +
+    //                    '<li><a href="@Url.Content("~/Master/EditClaimsGrid2")"><i class="flaticon-pen color-info"></i> Edit </a> </li>' +
+    //                    '<li><a data-toggle="modal" data-target="#approvalHistory"><i class="flaticon-history-2 color-warning"></i> History </a></li>' +
+    //                    '<li><a data-toggle="modal" data-target="#ViewDoc"><i class="fas fa-file-alt color-info"></i> Documents</a> </li>' +
+    //                    '<li><i class="flaticon-download color-green"></i> Download</li>' +
+    //                    '</ul>' +
+    //                    '</div>';
+    //            }
+    //            else if (rowobject.Action == "1") {
+    //                return '<div class="text-center action_icons" title="">' +
+    //                    '<label class="mb-0">...</label>' +
+    //                    '<ul class="hover_icons">' +
+    //                    '<li><a data-toggle="modal" data-target="#Preview"><i class="flaticon-view color-blue"></i> View </a></li>' +
+    //                    '<li><a href="@Url.Content("~/Master/EditClaimsGrid2")"><i class="flaticon-pen color-info"></i> Edit </a> </li>' +
+    //                    '<li><a data-toggle="modal" data-target="#approvalHistory"><i class="flaticon-history-2 color-warning"></i> History </a></li>' +
+    //                    '<li><a data-toggle="modal" data-target="#ViewDoc"><i class="fas fa-file-alt color-info"></i> Documents</a> </li>' +
+    //                    '<li><i class="flaticon-download color-green"></i> Download</li>' +
+    //                    '<li><a data-toggle="modal" data-target="#cft_status"><i class="flaticon-info color-primary"></i> CFT Status</a></li>' +
+    //                    '</ul>' +
+    //                    '</div>';
+    //            }
+    //        }
+    //    },
+    //    {
+    //        name: 'GridID',
+    //        label: 'Grid ID',
+    //        width: 90,
+    //        resizable: true,
+    //        ignoreCase: true
+    //    },
+    //    {
+    //        name: 'ProjectNo',
+    //        label: 'Project No',
+    //        resizable: true,
+    //        width: 110,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'ProjectDescription',
+    //        label: 'Project Description',
+    //        width: 200,
+    //        resizable: true,
+    //        ignoreCase: true
+    //    },
+    //    {
+    //        name: 'HGLCode',
+    //        label: 'HGL Code',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'ProductName',
+    //        label: 'Product Name',
+    //        resizable: true,
+    //        width: 110,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'LicenseCategory',
+    //        label: 'License Category',
+    //        resizable: true,
+    //        width: 120,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'DosageForm',
+    //        label: 'Dosage Form',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true
+    //    },
+    //    {
+    //        name: 'AnchorHUB',
+    //        label: 'Anchor HUB',
+    //        width: 90,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //    },
+    //    //{
+    //    //    name: 'CFTStatus',
+    //    //    label: 'CFT Status',
+    //    //    resizable: true,
+    //    //    width: 100,
+    //    //    ignoreCase: true,
+    //    //    formatter: function (cellvalue, options, rowobject) {
+    //    //        return '<div class="text-center action_icons">' +
+    //    //            '<span><i class="fas fa-info"></i></span></span>' +
+    //    //            '</div>';
+    //    //    }
+    //    //},
+    //    {
+    //        name: 'Status',
+    //        label: 'Status',
+    //        width: 150,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //        formatter: function (cellvalue, options, rowobject) {
+    //            if (rowobject.Status == "Draft") {
+    //                return '<a href="@Url.Content("~/Master/EditClaimsGrid2")"><button class="btn btn-label btn-green">Draft</button></a>';
+    //            }
+    //            else if (rowobject.Status == "CFT Review") {
+    //                return '<a href="@Url.Content("~/Master/CFTReview")"><button class="btn btn-label btn-green btn_cft">CFT Review</button></a>';
+    //            }
+    //            else if (rowobject.Status == "DSG Review") {
+    //                return '<a href="@Url.Content("~/Master/DSGReview")"><button class="btn btn-label btn-green  btn-review">DSG Review</button></a>';
+    //            }
+    //            else if (rowobject.Status == "Manager Approval") {
+    //                return '<a href="@Url.Content("~/Master/ManagerApproval")"><button class="btn btn-label btn-green btn-approval">Manager Approval</button></a>';
+    //            }
+    //            else if (rowobject.Status == "DSG Signoff") {
+    //                return '<a href="@Url.Content("~/Master/DSGSignoff")"><button class="btn btn-label btn-green btn_signoff">DSG Signoff</button></a>';
+    //            }
+    //            else if (rowobject.Status == "Addendum") {
+    //                return '<a href="@Url.Content("~/Master/Addendum")"><button class="btn btn-label btn-green btn-addendum">Addendum</button></a>';
+    //            }
+    //        }
+    //    },
+    //    {
+    //        name: 'InitiatedBy',
+    //        label: 'Initiated By',
+    //        width: 120,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'InitiatedOn',
+    //        label: 'Initiated On',
+    //        resizable: true,
+    //        width: 120,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'ApprovedBy',
+    //        label: 'Approved By',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'Remarks',
+    //        label: 'Remarks',
+    //        resizable: true,
+    //        width: 100,
+    //        ignoreCase: true,
+    //    },
+
+    //],
+
+    //    $("#claims_grid").jqGrid({
+    //        url: '',
+    //        datatype: 'local',
+    //        data: [],
+    //        mtype: 'GET',
+    //        colModel: colmodels,
+    //        loadonce: true,
+    //        viewrecords: true,
+    //        pager: '#claims_pager',
+    //        rowNum: 30,
+    //        scroll: 1,
+
+    //        gridComplete: function () {
+    //            var objRows = $("#claims_grid tbody tr");
+    //            var objHeader = $("#claims_grid tbody tr td");
+
+    //            if (objRows.length > 1) {
+    //                var objFirstRowColumns = $(objRows[1]).children("td");
+    //                for (i = 0; i < objFirstRowColumns.length; i++) {
+    //                    $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+    //                }
+    //            }
+
+    //        }
+    //    });
+    //$("#claims_grid").jqGrid('filterToolbar', {
+    //    autosearch: true,
+    //    stringResult: false,
+    //    searchOnEnter: false,
+    //    defaultSearch: "cn"
+    //});
+
+
+    //Cft status grid script
+
+    //colmodels = [
+
+    //    //{
+    //    //    name: 'Action',
+    //    //    label: 'Action',
+    //    //    width: 65,
+    //    //    resizable: true,
+    //    //    ignoreCase: true,
+    //    //    sortable: false,
+    //    //    formatter: function (cellvalue, options, rowobject) {
+    //    //        return '<div class="text-center action_icons" title="">' +
+    //    //            '<label class="mb-0">...</label>' +
+    //    //            '<ul class="hover_icons">'+
+    //    //            '<li><a href="@Url.Content("~/Master/EditClaimsGrid2")"><i class="flaticon-view color-blue"></i> View </a></li>' +
+    //    //            '<li><a href="@Url.Content("~/Master/EditClaimsGrid2")"><i class="flaticon-pen color-info"></i> Edit </a> </li>' +
+    //    //            '<li><i class="flaticon-history-2 color-warning"></i> History </li>' +
+    //    //            '<li><i class="flaticon-download color-green"></i> Download</li>' +
+    //    //            '<li><i class="flaticon-info color-primary"></i> CFT Status</li>' +
+    //    //            '</ul>' +
+    //    //            '</div>';
+    //    //    }
+    //    //},
+
+    //    {
+    //        name: 'DepartmentName',
+    //        label: 'Department Name',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true
+    //    },
+    //    {
+    //        name: 'Users',
+    //        label: 'Users',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //    },
+    //    {
+    //        name: 'Status',
+    //        label: 'Status',
+    //        resizable: true,
+    //        width: 100,
+    //        ignoreCase: true,
+    //        formatter: function (cellvalue, options, rowobject) {
+    //            if (rowobject.Status == "Confirmed") {
+    //                return '<button class="btn btn-label btn-green">Confirmed</button>';
+    //            }
+    //            else if (rowobject.Status == "Yet To Confirm") {
+    //                return '<button class="btn btn-label btn-green btn_cft">Yet To Confirm</button>';
+    //            }
+    //        }
+    //    },
+    //    {
+    //        name: 'CFTRemarks',
+    //        label: 'CFT Remarks',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //        formatter: function (cellvalue, options, rowobject) {
+    //            if (rowobject.CFTRemarks == "1") {
+    //                return '<div class="text-center action_icons" title="">' +
+    //                    '<span data-toggle="modal" data-target="#cftremarks"><i class="flaticon-info color-primary"></i></span>' +
+    //                    '</div>';
+    //            }
+    //            else if (rowobject.CFTRemarks == "0") {
+    //                return '';
+    //            }
+    //        }
+    //    },
+
+
+    //],
+
+    //    $("#cft_grid").jqGrid({
+    //        url: '',
+    //        datatype: 'local',
+    //        data: [],
+    //        mtype: 'GET',
+    //        colModel: colmodels,
+    //        loadonce: true,
+    //        viewrecords: true,
+    //        pager: '#cft_pager',
+    //        rowNum: 30,
+    //        scroll: 1,
+
+    //        gridComplete: function () {
+    //            var objRows = $("#cft_grid tbody tr");
+    //            var objHeader = $("#cft_grid tbody tr td");
+
+    //            if (objRows.length > 1) {
+    //                var objFirstRowColumns = $(objRows[1]).children("td");
+    //                for (i = 0; i < objFirstRowColumns.length; i++) {
+    //                    $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+    //                }
+    //            }
+
+    //        }
+    //    });
+    //$("#cft_grid").jqGrid('filterToolbar', {
+    //    autosearch: true,
+    //    stringResult: false,
+    //    searchOnEnter: false,
+    //    defaultSearch: "cn"
+    //});
+
+
+    //Cft status remarks grid script
+
+    //colmodels = [
+
+    //    //{
+    //    //    name: 'Action',
+    //    //    label: 'Action',
+    //    //    width: 65,
+    //    //    resizable: true,
+    //    //    ignoreCase: true,
+    //    //    sortable: false,
+    //    //    formatter: function (cellvalue, options, rowobject) {
+    //    //        return '<div class="text-center action_icons" title="">' +
+    //    //            '<label class="mb-0">...</label>' +
+    //    //            '<ul class="hover_icons">'+
+    //    //            '<li><a href="@Url.Content("~/Master/EditClaimsGrid2")"><i class="flaticon-view color-blue"></i> View </a></li>' +
+    //    //            '<li><a href="@Url.Content("~/Master/EditClaimsGrid2")"><i class="flaticon-pen color-info"></i> Edit </a> </li>' +
+    //    //            '<li><i class="flaticon-history-2 color-warning"></i> History </li>' +
+    //    //            '<li><i class="flaticon-download color-green"></i> Download</li>' +
+    //    //            '<li><i class="flaticon-info color-primary"></i> CFT Status</li>' +
+    //    //            '</ul>' +
+    //    //            '</div>';
+    //    //    }
+    //    //},
+
+    //    {
+    //        name: 'Claims',
+    //        label: 'Claims',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true
+    //    },
+    //    {
+    //        name: 'IRARemarks',
+    //        label: 'IRA Remarks',
+    //        width: 100,
+    //        resizable: true,
+    //        ignoreCase: true,
+    //    },
+    //    //{
+    //    //    name: 'Status',
+    //    //    label: 'Status',
+    //    //    resizable: true,
+    //    //    width: 100,
+    //    //    ignoreCase: true,
+    //    //    formatter: function (cellvalue, options, rowobject) {
+    //    //        if (rowobject.Status == "Confirmed") {
+    //    //            return '<span class="text-success">' + rowobject.Status + '</span>';
+    //    //        }
+    //    //        else if (rowobject.Status == "Yet To Confirm") {
+    //    //            return '<span class="text-warning">' + rowobject.Status + '</span>';
+    //    //        }
+    //    //    }
+    //    //},
+    //    //{
+    //    //    name: 'CFTRemarks',
+    //    //    label: 'CFT Remarks',
+    //    //    width: 100,
+    //    //    resizable: true,
+    //    //    ignoreCase: true,
+    //    //    formatter: function (cellvalue, options, rowobject) {
+    //    //        if (rowobject.CFTRemarks == "1") {
+    //    //            return '<div class="text-center action_icons" title="">' +
+    //    //                       '<span><i class="flaticon-info color-primary"></i></span>' +
+    //    //                     '</div>';
+    //    //          }
+    //    //        else if (rowobject.CFTRemarks == "0") {
+    //    //            return '';
+    //    //        }
+    //    //    }
+    //    //},
+
+
+    //],
+
+    //    $("#cftremarks_grid").jqGrid({
+    //        url: '',
+    //        datatype: 'local',
+    //        data: [],
+    //        mtype: 'GET',
+    //        colModel: colmodels,
+    //        loadonce: true,
+    //        viewrecords: true,
+    //        pager: '#cftremarks_pager',
+    //        rowNum: 30,
+    //        scroll: 1,
+
+    //        gridComplete: function () {
+    //            var objRows = $("#cftremarks_grid tbody tr");
+    //            var objHeader = $("#cftremarks_grid tbody tr td");
+
+    //            if (objRows.length > 1) {
+    //                var objFirstRowColumns = $(objRows[1]).children("td");
+    //                for (i = 0; i < objFirstRowColumns.length; i++) {
+    //                    $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+    //                }
+    //            }
+
+    //        }
+    //    });
+    //$("#cftremarks_grid").jqGrid('filterToolbar', {
+    //    autosearch: true,
+    //    stringResult: false,
+    //    searchOnEnter: false,
+    //    defaultSearch: "cn"
+    //});
+
+    //$('.ui-jqgrid-bdiv').css({ 'max-height': '59vh' });
+    //$('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+    //var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+    //if ($TableHeight > 130) {
+    //    $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+    //    $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "4px");
+    //}
+    //else {
+    //    $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+    //    $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+    //}
+</script>
+
+<script>
+    $('#global-search').on('input', function () {
+        var searchValue = $(this).val().toLowerCase();
+        var cardSections = $('.card-section');
+        cardSections.each(function () {
+            var cardDetailsSearch = $(this).find('.card_details_search');
+            var cardText = cardDetailsSearch.text().toLowerCase();
+
+            if (cardText.includes(searchValue)) {
+                $(this).css('display', 'block');
+            } else {
+                $(this).css('display', 'none');
+            }
+        });
+    });
+
+    $('#global-search').on('keyup', function () {
+        var value = $(this).val().toLowerCase();
+        $('#claims_documeent tbody tr').filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+    });
+
+
+    $(".board_view").hide();
+    $(".list_gridview").hide();
+
+    $(".list").click(function () {
+        $(".grid_view").addClass("list_view");
+        $(".grid_view").removeClass("listgrid_table");
+        $(".list_gridview").show();
+        $(".grid_table").hide();
+    });
+
+    $(".table_view").click(function () {
+        $(".grid_view").addClass("listgrid_table");
+        $(".grid_view").removeClass("list_view");
+        $(".grid_table").show();
+    });
+
+    $(".collapse_cell").click(function () {
+        $(this).closest("li").addClass("cell_close");
+    });
+    $(".expand_cell").click(function () {
+        $(this).closest("li").removeClass("cell_close");
+    });
+
+</script>
+
+@*<link href="~/assets/css/jquery.paginate.css" rel="stylesheet" />
+<script src="~/assets/js/jquery.paginate.js"></script>*@
+<script>
+    $(document).ready(function () {
+        $('.exitscreen-btn').hide();
+        $('.fullscreen_expand').click(function () {
+            $("#fullscreen").addClass("m-table__full-screen");
+            $('.exitscreen-btn').show();
+            $('.fullscreen-btn').hide();
+        });
+        $('.fullscreen_minimize').click(function () {
+            $("#fullscreen").removeClass("m-table__full-screen");
+            $('.exitscreen-btn').hide();
+            $('.fullscreen-btn').show();
+        });
+    });
+    function openFullscreen() {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
+    }
+
+
+    function closeFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
+        }
+    }
+
+            //$('#pagination-demo1').paginate();
+
+</script>
+
+<script src="~/js/ClaimsGridDocument.js"></script>

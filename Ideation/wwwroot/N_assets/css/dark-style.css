@@ -1,0 +1,280 @@
+﻿
+
+
+/*Dark theme css starts*/
+.dark_logo, .dark .light_logo {
+    display: none
+}
+
+.dark header {
+    background: #292e32 !important;
+}
+
+.dark .dark_logo {
+    display: block;
+    height: 35px;
+}
+
+.dark .has-submenu i.fa {
+    color: #878a99;
+}
+
+.dark #topnav .navigation-menu > li > a {
+    color: #878a99 !important
+}
+
+.dark li.has-submenu.last-elements.active {
+    background: #ffffff;
+}
+
+/*.dark #topnav .has-submenu.active a, .dark li.has-submenu.active a i.fa {
+    color: #fff !important;
+}*/
+
+.dark .container-fluid.body-content {
+    background: #1a1d21 !important
+}
+
+.dark:root {
+    background: #1a1d21 !important
+}
+
+.dark .m-title h4 {
+    color: #fff;
+}
+
+.dark label, .dark span, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark p, .dark .ispace-logo .Home_tiles i {
+    color: #d6d6d6
+}
+
+
+
+/*dark content css starts*/
+
+.dark .Home_tiles:hover .list_projects, .dark .list_projects:before {
+    background: #191919;
+}
+.dark .Home_tiles:hover .list_projects ul li:hover {
+    background: #212121;
+}
+.dark .Home_tiles:hover .list_projects {
+    box-shadow: 0 0 6px #000000;
+}
+.dark .list_projects ul li p {
+color: #d6d6d6;
+}
+
+
+.dark .m-table__main .ui-state-default, .dark .ui-widget-content .ui-state-default, .dark .ui-widget-header .ui-state-default {
+    color: #ffffff !important;
+}
+
+.dark .ui-jqgrid .ui-jqgrid-pager, .dark .ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels {
+    background: #2c3034 !important;
+}
+
+.dark .ui-jqgrid .ui-jqgrid-htable .ui-search-toolbar th {
+    background: #212529 !important
+}
+
+.dark .m-table__main .table td {
+    background: #212529;
+}
+
+.dark .ui-jqgrid .ui-jqgrid-htable th, .dark .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+    border: 1px solid #32383e !important;
+    color: #ced4da;
+}
+
+.dark .m-table__main .ui-jqgrid tr.ui-search-toolbar td > input {
+    border: 1px solid #32383e !important;
+}
+
+.dark .ui-widget-content, .dark .ui-widget-content a {
+    color: rgb(64,81,137)
+}
+.dark .m-table__main .ui-jqgrid .ui-jqgrid-htable .ui-th-div, .ui-jqgrid .ui-jqgrid-pager .ui-paging-info {
+    color: #878a99 !important;
+}
+.dark .button-add {
+    background: #70797f;
+}
+.dark .select2-container--default .select2-selection--single {
+    background-color: #292e32;
+    border: 1px solid #9a9a9a;
+}
+.dark .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #d8d8d8;
+}
+.dark .menuhamburger .menutext {
+    color: #c4c4c4;
+}
+.dark .select2-dropdown {
+    background-color: #292e32;
+}
+.dark .menutopright .menuhamburger a div.hamburge_lines span {
+    background: #c4c4c4;
+}
+.dark .select2-container--default .select2-search--dropdown .select2-search__field {
+    border: 1px solid #aaa;
+    background: #292e32;
+    color: #c4c4c4;
+    box-shadow: none;
+}
+.dark select2-container--default .select2-results__option[aria-selected=true] {
+    background-color: #ddd;
+    color: #000;
+}
+.dark .card-section {
+    background: #292e32;
+}
+.dark .search_filter {
+    background: #292e32;
+    color: #fff;
+}
+.dark .ui-jqgrid-bdiv::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    display: none;
+}
+
+.dark .ui-jqgrid-bdiv:hover::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+    display: block;
+}
+
+.dark .ui-jqgrid-bdiv:hover::-webkit-scrollbar,
+.dark .ui-jqgrid-bdiv:hover::-webkit-scrollbar-thumb {
+    overflow: visible;
+    border-radius: 4px;
+}
+
+.dark .ui-jqgrid-bdiv:hover::-webkit-scrollbar-thumb {
+    background: rgba(255,255,255,.7);
+}
+.dark .m-table__main .ui-jqgrid tr.ui-search-toolbar td > input {
+    color: #dedede;
+    border: 1px solid #d8d8d8 !important;
+}
+.dark .user_info_latest label {
+    color: #fff;
+}
+.dark .new_layout .slider:before {
+    filter: brightness(1);
+}
+.dark .Home_tiles i{
+    color: #fff;
+}
+.dark .user_info_latest:hover .username {
+    background: #292e32;
+}
+.dark .user_details_list a,
+.dark .user_details_list p, 
+.dark .user_details_list p i {
+    color: #fff !important;
+}
+.dark #topnav .navigation-menu > li > a {
+    color: #dcdcdc !important;
+}
+.dark .new_layout .navigation-menu li.has-submenu:before {
+    background: linear-gradient(to right,#000000 8.2%,#000000 130%);
+}
+.dark .has-submenu:hover .submenu {
+    top: 23px;
+    background: #3d4249;
+}
+.dark .submenu li a {
+    color: #fff !important;
+}
+    .dark .submenu .active a, .dark .submenu li a, .dark .submenu li a:hover {
+        color: #3fe4df !important;
+    }
+.dark .list_grid i {
+    color: #fff;
+}
+.dark .listgrid_table li.table_view i,
+.dark .listgrid_table li.table_view:hover i,
+.dark .list_view li.list i,
+.dark .list_view li.list:hover i{
+    color: #000; 
+}
+.dark .table-project tr td {
+    padding: 3px 10px !important;
+    color: #fff;
+    border: 1px solid #dedede;
+}
+.dark a.form-wizard-link {
+    background: #292e32;
+}
+    .dark a.form-wizard-link.active, .dark a.form-wizard-link:hover {
+        background: #188f8b;
+    }
+.dark .form-wizard-wrapper .form-wizard-content {
+    background-color: #323232;
+}
+.dark .form-control {
+       background: transparent;
+}
+.dark button.multiselect.dropdown-toggle.btn.btn-default {
+    background: transparent;
+}
+.dark .form-control:focus {
+    color: #fff;
+    background-color: transparent;
+}
+.dark .formulation_table table thead th {
+    background: #ceebf7 !important;
+}
+.dark th span {
+    color: #000;
+}
+
+.dark .formulation_table table tbody td {
+    border: 1px solid #cbcbcb !important;
+ }
+.dark .form-control[type=file] {
+    color: #fff;
+}
+.dark .slick-next {
+    filter: invert(1);
+}
+.dark .slick-prev {
+    filter: invert(1);
+}
+.dark .-h_tab_height .form-group i.fas.fa-info {
+    color: #fff;
+}
+.dark footer {
+    background: #292e32;
+    border-top: 0px !important;
+    color: #fff;
+}
+.dark .footer .container {
+    color: #fff;
+}
+.dark .edit_history .tabs_section {
+    border: 1px solid #dedede;
+    padding: 10px;
+    background: #1a1d21;
+    position: relative;
+}
+.dark .nav-tabs {
+    background: #1a1d21 !important;
+}
+.dark .edit_history .nav-tabs .nav-link{
+    color:#d6d6d6 !important;
+}
+.dark .edit_history .history_info span i{
+    color:#000 !important;
+}
+.dark label, .dark span, .dark h1, .dark h2, .dark h3, .dark h4, .dark h5, .dark h6, .dark p, .dark .ispace-logo .Home_tiles i {
+    color: #d6d6d6 !important;
+}
+.dark .risk_register .risk_legend ul li {
+    display: flex;
+    align-items: center;
+    margin-left: 15px;
+    font-size: 11px;
+    color: #fff !important;
+}

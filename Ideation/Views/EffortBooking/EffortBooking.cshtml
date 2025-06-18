@@ -1,0 +1,452 @@
+﻿@model Ideation.Models.EffortTracker
+@{
+    ViewData["Title"] = "Effort Booking";
+    Layout = "~/Views/Shared/EffortBookingLayout.cshtml";
+}
+
+<style>
+    .datepicker .datepicker-days tr:hover td {
+        color: #000;
+        background: #e5e2e3;
+        border-radius: 0;
+    }
+
+    .datepicker .datepicker-days td {
+        border-radius: 0 !important;
+    }
+    .datepicker .datepicker-days tr td.active ~ td {
+        color: #af1623 !important;
+        background: transparent !important;
+    }
+</style>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Effort Booking</h4>
+        </div>
+    </div>
+</section>
+
+@Html.HiddenFor(model => model.Remarks, new { @id = "Remarks" })
+@Html.HiddenFor(model => model.Status, new { @id = "Status" })
+@Html.HiddenFor(model => model.LeavesList, new { @id = "LeavesList" })
+@Html.HiddenFor(model => model.HolidaysList, new { @id = "HolidaysList" })
+@Html.HiddenFor(model => model.UserName, new { @id = "UserName" })
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert_green @TempData["Messageclass"].ToString() alert-dismissable">
+        <button type="button" class="btn-close status-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["Message"].ToString()
+    </div>
+}
+
+<div>
+    <div class="">
+        <div class="project_Master filter_formdata d-flex justify-content-between filter_status" id="Projectheader">
+
+            <div class="d-flex">
+                <div class="col-width2 pl-2">
+                    <div class="form-group">
+                        <label class="control-label"> Date</label>
+                        @Html.HiddenFor(m => m.WeekPickerHidden)
+                        @Html.TextBoxFor(m => m.weekpicker, new { @class = "form-control weekpicker", @onpaste = "return false", @autocomplete = "off",@readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="pr-2 mt-3">
+                    <button class="btn btnsearch" title="search" type="button" id="searchbtn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="Et_tabs project_modules mnth_week_tabs pl-2 mt-3">
+                    <ul class="nav nav-tabs">
+                        <li><a data-toggle="tab" href="#Weekly-EffortBooking" class="active" id="week-view">Week</a></li>
+                        <li><a data-toggle="tab" href="#Monthly-EffortBooking" class="" id="month-view">Month</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-end ">
+                <div class="d-flex excel_expand align-items-center">
+                    <div class="d-flex mr-2 ">
+                        <div class="weekendButton"><button type="button"></button> Weekend</div>
+                        <div class="holidaysButton"><button type="button"></button> Holidays</div>
+                        <div class="leavesButton"><button type="button"></button> Leaves</div>
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand pr-3">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button_top float-right pr-2">
+                        <button type="button" class="btn btn-draft SaveData">Save</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="EffortBooking-content tab-content">
+
+        <div id="Weekly-EffortBooking" class="tab-pane fade in active">
+            <div class="et_tab effort_tracker table-responsive">
+
+                <table class="table table-bordered" id="TEffortTracker">
+
+                    <thead class="thead_bck">
+                        <tr class="week_select">
+
+                            <th class="week_header text-center">
+                                <div class="Eticon_list">
+                                    <button class="plus plus_icon" onclick="create_tr('table_body')" title="Add Record">
+                                        <i class="fas fa-plus" aria-hidden="true"></i>
+                                    </button>
+                                </div>
+                            </th>
+
+                            @{
+                                var WeekDetails = Model.WeeklyEfforts;
+                                var WeekApportionDetails = Model.WeeklyApportionEfforts;
+
+                                var WeekHeadings = ((IDictionary<string, object>)WeekDetails[0]).Keys.ToArray();
+
+                                double[] colTotalsWeakEffort = new double[WeekHeadings.Count() - 2];
+
+                                for (int index = 0; index < WeekHeadings.Count(); index++)
+                                {
+                                    //adding header of days
+                                    if (index > 2)
+                                    {
+                                        <th class='week_header' data-attr="@WeekHeadings[index]" data-col="col_@index">
+                                            @(Convert.ToDateTime(WeekHeadings[index]).ToString("ddd")) <br />
+                                            @(Convert.ToDateTime(WeekHeadings[index]).ToString("dd MMM"))
+                                        </th>
+                                    }
+                                    //adding header of project name
+                                    else
+                                    {
+                                        if (WeekHeadings[index] != "ProjectName" && WeekHeadings[index] != "Status")
+                                        {
+                                            <th class='project_width1 '>  Project Name </th>
+                                        }
+                                    }
+                                }
+                            }
+
+                            <th class="week_header ">Total</th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody class="tr_tbodyPadding tr_padding" id="table_body">
+                        @{
+                            var ProjectDetails = new Object();
+                            var ProjectApportionDetails = new Object();
+                            double rowTotal1 = 0.0;
+                        }
+
+                        @for (int index = 0; index < WeekDetails.Count(); index++)
+                        {
+                            var DayIndex = 1;
+                            rowTotal1 = 0;
+                            ProjectDetails = (((IDictionary<string, object>)WeekDetails[index])[WeekHeadings[0]]);
+
+                            @if (ProjectDetails != "" && ProjectDetails != null)
+                            {
+                                <tr class="valu">
+
+                                    @*action*@
+                                    <td style="text-align:center;" class="first-col" data-attribute="@ProjectDetails">
+
+                                        <div class="justify-content-center action_icons Eticon_list pt-1">
+                                            <button class="p-0 mr-3" onclick="remove_tr(this)" title="Delete" data-attribute="@ProjectDetails">
+                                                <i class="fas fa-trash color-delete"></i>
+                                            </button>
+                                            <button class="p-0" onclick="Efforts_Remarks_Section(this)" title="Remarks" data-attribute="@ProjectDetails">
+                                                <i class="fas fa-info remarks-color" aria-hidden="true"></i>
+                                            </button>
+                                        </div>
+
+                                    </td>
+
+                                    @for (int index1 = 0; index1 < WeekHeadings.Count() - 1; index1++)
+                                    {
+                                        @*Project Id*@
+                                        @if (WeekHeadings[index1] == "ProjectId")
+                                        {
+                                            @if (ProjectDetails != "" && ProjectDetails != null)
+                                            {
+                                                //already added project
+                                                string projectName = Model.ProjectList.SingleOrDefault(p => p.ProjectCode == ProjectDetails.ToString())?.ProjectName;
+                                                <td class="d-flex action_icons align-items-center single-select_dropdown project_drop_border" onchange="toggleInfoIcon(this)">
+                                                    <select class="form-control projectid data-singleselect">
+                                                        <option value="@ProjectDetails" data-attr="@ProjectDetails" selected>@projectName</option>
+                                                    </select>
+                                                    <span class="projectiderrmsg text-danger" style="display:none">Please select Project</span>
+                                                </td>
+                                            }
+                                            else
+                                            {
+                                                <td class="d-flex action_icons align-items-center single-select_dropdown project_drop_border" onchange="toggleInfoIcon(this)">
+                                                    @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.ProjectList, "ProjectCode", "ProjectName"), "Select", new { @class = "form-control projectid data-singleselect" })
+                                                </td>
+                                            }
+                                        }
+                                        @*Week days*@
+                                        else
+                                        {
+
+                                            if (WeekHeadings[index1] != "ProjectName" && ProjectDetails != "" && ProjectDetails != null)
+                                            {
+                                                var Dayid = "day" + DayIndex;
+                                                var ApportionDayid = "dayApportion" + DayIndex;
+
+                                                object manual = null;
+                                                object apportion = null;
+                                                string isApproved = (((IDictionary<string, object>)WeekDetails[index])[WeekHeadings[2]]).ToString();
+                                                try
+                                                {
+                                                    manual = (((IDictionary<string, object>)WeekDetails[index])[WeekHeadings[index1 + 1]]);
+                                                }
+                                                catch (Exception e)
+                                                {
+                                                    manual = "0.00";
+                                                }
+
+                                                var val = Convert.ToString(manual) + '+' + Convert.ToString(apportion);
+                                                <td style="padding:0px;">
+                                                    <div style="display:flex">
+
+                                                        @if (isApproved == "1")
+                                                        {
+                                                            <input type="text" class="form-control EfDay number @Dayid" value="@manual" disabled />
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" class="form-control EfDay number @Dayid" value="@manual" />
+                                                        }
+
+                                                        @for (int i = 0; i < WeekApportionDetails.Count(); i++)
+                                                        {
+                                                            apportion = (((IDictionary<string, object>)WeekApportionDetails[i])[WeekHeadings[index1 + 1]]);
+                                                            var ApportionProjectId = (((IDictionary<string, object>)WeekApportionDetails[i])[WeekHeadings[0]]);
+                                                            string ProjAppId = Convert.ToString(ApportionProjectId);
+                                                            string ProjectDetailsId = Convert.ToString(ProjectDetails);
+                                                            if ((ProjectDetailsId == ProjAppId) && apportion != null && apportion != "")
+                                                            {
+                                                                var st = apportion.ToString();
+
+                                                                if (st != "0.00")
+                                                                {
+                                                                    <input type="text" class="form-control EfDay number @Dayid @ApportionDayid" value="@st" disabled />
+                                                                }
+                                                            }
+                                                        }
+                                                    </div>
+                                                </td>
+
+                                                DayIndex = DayIndex + 1;
+                                                rowTotal1 = rowTotal1 + Convert.ToDouble((((IDictionary
+                                                <string, object>
+                                                )WeekDetails[index])[WeekHeadings[index1]]));
+
+                                                colTotalsWeakEffort[index1 - 2] = colTotalsWeakEffort[index1 - 2] +
+                                                Convert.ToDouble((((IDictionary<string, object>
+                                                )WeekDetails[index])[WeekHeadings[index1]]));
+
+                                            }
+                                            else
+                                            {
+                                                if (WeekHeadings[index1] != "ProjectName")
+                                                {
+                                                    var Dayid = "day" + DayIndex;
+
+                                                    <td style="padding:0px;">
+                                                        <input type="text" class="form-control EfDay number @Dayid" />
+                                                        <span class="@(Dayid+"errormsg") text-danger" style="display:none">Please select Efforts</span>
+                                                    </td>
+                                                    DayIndex = DayIndex + 1;
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    @*Total of grid*@
+                                    <td style="padding: 0;vertical-align: middle;text-align: center;color: blue;background: #e7ecf7;" class="righttotal">@Math.Round(rowTotal1, 2)</td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+
+                    <tfoot class="tf00t_bck">
+                        <tr class="tr_padding value_ value1_">
+                            <td></td>
+                            <td class="total_effort">Total Efforts</td>
+                            @{
+                                double Finaltotal1 = 0.0;
+                                @for (int index2 = 0; index2 < colTotalsWeakEffort.Count() - 1; index2++)
+                                {
+                                    var ColTotalId = "day" + (index2 + 1) + "total";
+
+                                    <td class="tf_td">
+                                        <label id="@ColTotalId">@Math.Round(colTotalsWeakEffort[index2], 2)</label><br>
+                                        <span class="@ColTotalId text-danger font-weight:bold;" style="display:none">Total Efforts in a day cannot be more than 24 Hrs</span>
+                                    </td>
+
+                                    Finaltotal1 = Finaltotal1 + Convert.ToDouble(colTotalsWeakEffort[index2]);
+                                }
+                            }
+                            <td class="tf_td"><label id="FinalTotal">@Math.Round(Finaltotal1, 2)</label></td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+                <div class="button_top float-right pb-2">
+                    <button type="button" class="btn btn-draft SaveData">Save</button>
+                </div>
+
+            </div>
+        </div>
+
+        <div id="Monthly-EffortBooking" class="tab-pane fade">
+            <div class="et_tab effort_tracker table-responsive">
+
+                <table class="table table-bordered">
+
+                    <thead>
+                        <tr class="week_select">
+                            @{
+                                var details = Model.MonthlyEfforts;
+
+                                var Headings = ((IDictionary<string, object>)details[0]).Keys.ToArray();
+
+                                double[] colTotals = new double[Headings.Count() - 2];
+
+                                for (int index = 0; index < Headings.Count(); index++)
+                                {
+                                    if (index > 1)
+                                    {
+                                        <th class='week_header1'>
+                                            @(Convert.ToDateTime(Headings[index]).ToString("ddd")) <br />
+                                            @(Convert.ToDateTime(Headings[index]).ToString("dd MMM"))
+                                        </th>
+                                    }
+                                    else
+                                    {
+                                        <th class='week_header1'>  @(Headings[index]) </th>
+                                    }
+                                }
+                            }
+
+                            <th class="week_header1 fixed_col1" style="background: #d8d8d8 !important;">Total</th>
+                        </tr>
+                    </thead>
+
+                    <tbody class="tr_padding" id="table_body_month">
+                        @{
+                            double rowTotal = 0.0;
+                            @for (int index1 = 0; index1 < details.Count; index1++)
+                            {
+                                rowTotal = 0;
+                                @if (!string.IsNullOrWhiteSpace(Convert.ToString((((IDictionary<string, object>)details[index1])[Headings[0]]))))
+                                {
+                                    <tr class="valu">
+                                        @for (int index = 0; index < Headings.Count(); index++)
+                                        {
+                                            <td class="tf_td">  @(((IDictionary<string, object>)details[index1])[Headings[index]]) </td>
+                                            if (index > 1)
+                                            {
+                                                rowTotal = rowTotal + Convert.ToDouble((((IDictionary<string, object>)details[index1])[Headings[index]]));
+
+                                                colTotals[index - 2] = colTotals[index - 2] +
+                                                Convert.ToDouble((((IDictionary<string, object>)details[index1])[Headings[index]]));
+                                            }
+
+                                        }
+                                        <td class="tf_td fixed_col1"><label>@Math.Round(rowTotal, 2)</label></td>
+                                    </tr>
+                                }
+
+                            }
+                        }
+                    </tbody>
+
+                    <tfoot style="background: #e7ecf7;">
+                        <tr class="tr_padding value_ value1_">
+
+                            <td style="background: #e7ecf7 !important;border-right-color: #d8d8d8 !important;" class="fixed_col first-col"></td>
+                            <td class="total_effort ">Total Efforts</td>
+                            @{
+                                double Finaltotal = 0.0;
+                                @for (int index2 = 0; index2 < colTotals.Count(); index2++)
+                                {
+                                    <td class="tf_td"><label>@Math.Round(colTotals[index2], 2)</label></td>
+
+                                    Finaltotal = Finaltotal + Convert.ToDouble(colTotals[index2]);
+                                }
+                            }
+                            <td class="tf_td fixed_col1"><label>@Math.Round(Finaltotal, 2)</label></td>
+                        </tr>
+                    </tfoot>
+
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade hd" id="remarks-modal-popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="EffortBookingRemarks_productid" hidden></span>
+                <h6 class="modal-title" id="EffortBookingRemarks_ProductName"></h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Date</label>
+                            @Html.TextBoxFor(m => m.weekpicker, new { @class = "form-control form-control-sm weekdatepicker closeModal1", @id = "RemarksDate", @autocomplete = "off", @onpaste = "return false",@readonly = "readonly" })
+                            <span id="Error_weekpicker" class="color-red Error_closeModal" style="display:none"><br />Please select Date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Remarks</label>
+                            @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control form-control-sm closeModal", @id = "ProjectRemarks" })
+                            <span id="Error_Remarks" class="color-red Error_closeModal" style="display:none"><br />Please enter Remarks</span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="save_buttons float-left text-left mt-3 pt-3">
+                            <button type="button" class="btn btn-draft" data-title="Save" id="Save_projectRemarks"> Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="m-table__main mt-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="Remarks-info-grid" class="table table-bordered"></table>
+                            <div id="Remarks-info-grid-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/js/EffortBooking/EffortBooking.js"></script>

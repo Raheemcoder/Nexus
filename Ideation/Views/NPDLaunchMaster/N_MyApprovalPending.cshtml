@@ -1,0 +1,198 @@
+﻿@model Ideation.Models.NPDLaunchMaster
+@{
+    ViewBag.Title = "My Approval Pending";
+    Layout = "~/Views/Shared/N_NPDLMLayout.cshtml";
+    var DivisionList = Model.NpdHGMLDivisionList;
+    var serializedIsNpdList = System.Text.Json.JsonSerializer.Serialize(Model.IsNpdList);
+}
+
+<style>
+    .datepicker .datepicker-days tr:hover td {
+        background: transparent;
+    }
+
+        .datepicker .datepicker-days tr:hover td:hover {
+            background: #e5e2e3;
+        }
+
+    td.disabled.day {
+        background: transparent !important;
+        color: #9c9c9c !important;
+    }
+</style>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span>My Approval Pending</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    @using (Html.BeginForm("SaveMyApprovalPendingData", "NPDLaunchMaster", FormMethod.Post, new { id = "MyApprovalPending_Form_Submit", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.MyApprovalPendingData)
+        @Html.HiddenFor(model => model.CategoryString)
+        @Html.HiddenFor(model => model.ProductString)
+        @Html.HiddenFor(model => model.SubCategoryString)
+
+        @Html.HiddenFor(model => model.SaveMyApprovalData)
+        @Html.HiddenFor(model => model.SingleOrMultiple)
+        @Html.HiddenFor(model => model.RejectRemarks)
+        @Html.HiddenFor(model => model.UserName, new { @id = "UserName" })
+
+        <input type="hidden" id="IsNpdList_Serialized" value="@serializedIsNpdList" />
+
+        <div>
+            <div class="">
+                <div class="project_modules ">
+                    <ul class="nav nav-tabs DivisionDetails">
+                        <li><a data-toggle="tab" onclick="getDivisiondetails(this)" class="active allDivisions">All  <span class="allDivisionTotal division-count"></span></a></li>
+                        @foreach (var item in DivisionList)
+                        {
+                            <li><a data-toggle="tab" onclick="getDivisiondetails(this)">@item.DivisionName <span class="division-count" id="@(item.DivisionName.Replace(" ","").ToLower())"></span></a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="tabs-Data_ d-flex data_climsList">
+                            <div class="filter_status">
+                                <div class="d-flex">
+                                    <div class="col-width2">
+                                        <div class="form-group flaoting_ ">
+                                            @Html.DropDownListFor(model => model.ProductName, Model.HGMLProductGroupList, "All", new { @class = "form-control status_ floating_select data-singleselect", @id = "NpdHgmlProductGroup" })
+                                            <label class="control-label form_lable floating_lable">HGML Product Group</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group flaoting_">
+                                            @Html.DropDownListFor(model => model.CategoryName, Model.HGMLCategoryList, "All", new { @class = "form-control status_ floating_select data-singleselect", @id = "NpdHgmlCategory" })
+                                            <label class="control-label form_lable floating_lable">HGML Category</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group flaoting_">
+                                            @Html.DropDownListFor(model => model.SubCategoryName, Model.HGMLSubCategoryList, "All", new { @class = "form-control  status_ floating_select data-singleselect", @id = "NpdHgmlSubCategory" })
+                                            <label class="control-label form_lable floating_lable">HGML Sub Category </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-width1">
+                                        <button type="button" id="SearchNpdLmData" class="btn btn-search" title="Search" onclick="location.href = '#';"><i class="fas fa-search" aria-hidden="true"></i></button>
+                                        <button class="btn btn-refresh" title="refresh" id="refresh" type="button">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="animate__animated2 slideInUp mt-2">
+                            <div class="d-flex justify-content-end align-items-center">
+
+                                <div class="d-flex excel_expand align-items-center">
+                                    <div class="images_excel">
+                                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="ExcelDownload" title="Excel Download">
+                                    </div>
+                                    <div>
+                                        <div class="expand_initiate table_expand" title="Full Screen">
+                                            <div>
+                                                <div onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="button_top float-right">
+                                    <button type="button" class="btn btn-cancel" onclick="location.href ='@Url.Content("~/NPDLaunchMaster/N_NPDList")';" data-title="Cancel"> Back</button>
+                                    <button type="button" class="btn btn-approval MyApprovalReject" data-title="Reject">Reject</button>
+                                    <button type="button" class="btn btn-draft MyApprovalApprove" data-title="Approve"> Approve</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div id="content1" class="tab-pane fade in active">
+                                <div class="animate__animated2 slideInUp mt-1">
+                                    <div class="">
+                                        <div class="">
+                                            <div class="row">
+                                                <div class="m-table__main grid_height">
+                                                    <div class="m-table__responsive -virtual-scroll -multiselct_grid -scroll-grid">
+                                                        <table id="MyApprovalPending_Grid" class="table table-bordered"></table>
+                                                        <div id="pager_MyApprovalPending_Grid"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button_top float-right pt-2 pb-2">
+            <button type="button" class="btn btn-cancel" onclick="location.href ='@Url.Content("~/NPDLaunchMaster/N_NPDList")';" data-title="Cancel"> Back</button>
+            <button type="button" class="btn btn-approval MyApprovalReject" data-title="Reject">Reject</button>
+            <button type="button" class="btn btn-draft MyApprovalApprove" data-title="Approve"> Approve</button>
+        </div>
+    }
+</section>
+
+<div id="Reject" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md" upload">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Reject Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to reject?</p>
+                <div class="form-group">
+                    <label class="control-label">
+                        Remarks
+                    </label><span class="color-red">*</span>
+                    @Html.TextAreaFor(model => model.RejectRemarks, new { @class = "form-control cancelThisData closeModal", @rows = "2", @spellcheck = "false", id = "RemarksforReject" })
+                    <span id="Error_RejectRemarks" class="color-red Error_closeModal" style="display:none"><br />Please enter the remarks</span>
+
+                </div>
+                <div class="modal-footer p-0">
+                    <div class="text-right mt-2">
+                        <button type="button" class="btn btn-draft" id="RejectClick_OK" data-title="Ok"> Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="Approve" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        @*Modal content*@
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Approve Confirmation</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to approve?</p>
+
+                <div class="modal-footer p-0">
+                    <div class="text-right">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-draft" id="ByClick_OK" data-title="Ok"> Ok</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/npdlaunchmaster/N_myapprovalpending.js")" asp-append-version="true"></script>

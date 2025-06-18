@@ -1,0 +1,189 @@
+﻿@{
+    ViewBag.Title = "Baseline Budget ";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    a.color-blue {
+        color: blue !important;
+    }
+
+        a.color-blue:hover {
+            color: #000 !important;
+        }
+
+    .status_dropdown .select2-container.select2 {
+        width: 170px !important;
+    }
+
+    .status_dropdown .ml-3 {
+        margin-left: 20px;
+    }
+
+    .width_float {
+        float: left;
+        width: 100%;
+    }
+
+    td.text-right {
+        text-align: right !important;
+    }
+
+    .Project_Id_col a, .Project_Id_col {
+        white-space: nowrap !important;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+</style>
+<section>
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+        @*<div class="list_baseline">
+                <ul>
+                    <li>
+                        <b>Department Name:</b> PD CPD
+                    </li>
+                    <li>
+                        <b> Total Baseline Budget (INR):</b> 800000
+                    </li>
+                    <li>
+                        <b> Total Revised Budget(INR):</b> 110000
+                    </li>
+                </ul>
+            </div>*@
+        <!--<div class="row">
+
+        <div class="col-md-2">
+            <div class="form-group mb-0 ">
+                <label class="control-label">Project Id</label>
+                <select class="form-control" data-singleselect>
+                    <option>Select</option>
+                    <option>IN-100001252 Marula Oil Body Lotion 400 ml</option>
+                    <option>IN-100001251 Cocoa Butter Body Lotion 400 ml</option>
+                    <option>IN-100001248 Ayurvedic Butter 7</option>
+                    <option>5 g jar</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group mb-0 ">
+                <label class="control-label">Department </label>
+                <input class="form-control" />
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group mb-0 ">
+                <label class="control-label">Category</label>
+                <select class="form-control" data-singleselect>
+                    <option>Select</option>
+                    <option>Product Development</option>
+                    <option>Travel</option>
+                    <option>RM Procurement</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group mb-0 mt-4">
+                <button type="button" id="SearchPMData" class="btn btn-info c-add-details waves-light waves-effect" title="Search">
+                    Add
+                </button>
+
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="text-right mt-4">-->
+        @*<button type="button" id="SearchPMData" class="btn btn-danger m-0 c-add-details waves-light waves-effect" title="Search">
+                Reject
+            </button>
+            <button type="button" id="SearchPMData" class="btn btn-success m-0 c-add-details waves-light waves-effect" title="Search">
+                Approve
+            </button>
+            <button type="button" id="SearchPMData" class="btn btn-success m-0 c-add-details waves-light waves-effect" title="Search">
+                Save & Confirm
+            </button>*@
+        <!--</div>
+            </div>
+        </div>-->
+        @*<div class="d-flex mt-2 mb-1 justify-content-between align-items-center">
+                <div>
+                    <span style="display:flex;justify-content:center;align-items:center" class="icongap">
+                        <label class="btn-icon -view"><i class="fas fa-plus" aria-hidden="true"></i></label>Request for Additional Budget
+                    </span>
+                </div>
+                <div>
+                    <button type="button" id="SearchPMData" class="btn btn-success m-0 c-add-details waves-light waves-effect" title="Search">
+                        Save & Confirm
+                    </button>
+                </div>
+            </div>*@
+        <div class="width_float">
+            <div class="float-left" style="float: left">
+                <div class="page-title">
+                    <h4>Budget Approval - L2 </h4>
+                </div>
+            </div>
+            <div class="status_dropdown" style="float: right">
+                <div class="d-flex">
+                    <div class="">
+                        <select class="form-control status" data-singleselect>
+                            <option value="1">All</option>
+                            <option selected value="2">Pending For L2 Approval</option>
+                        </select>
+                    </div>
+                    @*<div class="ml-3">
+                        <button type="button" id="SearchData" class="btn btn-info c-add-details waves-light waves-effect SearchData" title="Search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>*@
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2 l2budget_grid">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="L2BudgetGrid" class="table table-bordered"></table>
+                            <div id="pager_L2BudgetGrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade budget_popup" id="approvedInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Baseline Budget Approved Info</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="approved_grid" class="table table-bordered"></table>
+                                        <div id="approved_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script Src="@Url.Content("~/js/projectmaster/BudgetApprovalPhase2.js")" asp-append-version="true"></script>

@@ -1,0 +1,90 @@
+﻿@model Ideation.Models.RID
+@{
+    ViewData["Title"] = "Function Master";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var division = @Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.DivisionName;
+}
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home / </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division / </a>
+                </span> 
+                FM
+            </h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="d-flex align-items-center justify-content-between">
+        <div>
+            <div class="d-flex ">
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Function Name: <span class="color-red">*</span></label>
+                        @Html.HiddenFor(m => m.FunctionId)
+                        @Html.HiddenFor(m => m.Status)
+                        @Html.TextBoxFor(m => m.FunctionName, new { @class = "form-control alphanumeric textvalid  noSpacesField", @autocomplete = "off" })
+                        <span id="FunctionName_valid" class="text-danger _hide">Please enter Function Name</span>
+                        <span class="ml-10 text-danger" id="Function_Err"></span>
+                    </div>
+                </div>
+                <div class="col-width1 ml-3 showStatus">
+                    <label class="control-label pl-0 pr-0">Status:<span class="color-red">*</span></label>
+                    <div class="mt-2">
+                        <input type="radio" class="viewTypegrid" name="StatusType" id="Filter_Active" value="0" checked></input>
+                        <label for="Filter_Active">Active </label>&nbsp; &nbsp;
+                        <input type="radio" class="viewTypegrid" name="StatusType" id="Filter_InActive" value="1"></input>
+                        <label for="Filter_InActive">In Active</label>
+                    </div>
+                </div>
+                <div class="col-width1 mt-4 mb-3">
+                    <button type="button" class="btn btn-success mr-1 mb-3 " id="savebtn">Save</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="d-flex excel_expand align-items-center">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+@Html.HiddenFor(m => m.Division_Id)
+<section>
+
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="function_list" class="table table-bordered"></table>
+                            <div id="pager_expected1_"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*<script src="@Url.Content("~/js/NewRID/FunctionMasterList.js")"></script>*@
+<script src="@Url.Content("~/js/NewRID/FunctionMasterList.min.js")" asp-append-version="true"></script>

@@ -1,0 +1,480 @@
+﻿@model Ideation.Models.Innovation
+@{
+    ViewData["Title"] = "Your Innovation";
+    Layout = "/Views/Shared/Ideation_Layout.cshtml";
+    var userName = @Context.Session.GetString("UserName");
+    var countInnovation = ViewBag.InnovationData.Count;
+    var countInnPending = ViewBag.PendingInnovation.Count;
+}
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span> Your Innovation</h4>
+        </div>
+    </div>
+</section>
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+</section>
+<div class="card-box mb-0">
+    <div class="col-md-12">
+        <div class="row">
+
+            <div class="col-md-3">
+                <div class="sidebar-bg">
+                    <div class="sid ">
+                        <h5 class="card-title wel">Welcome!</h5>
+
+                        <h5 class="card-title nmn">@userName</h5>
+                        <div class="leftside_buttons">
+                            <span class="d-flex cursor" id="submitmodal"><span class="al_num">@countInnovation</span>&nbsp; Innovations Submitted</span>
+                        </div>
+                        <div class="leftside_buttons mt-4">
+                            <span class="d-flex cursor" id="pendingmodal"><span class="al_num">@countInnPending</span>&nbsp; Innovations Pending</span>
+                        </div>
+
+                        @*<button type="button" class="bt_in positionleft_10" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-dismiss="modal" id="innovatData">
+                                <span class="d-flex"><span class="al_num">0</span>&nbsp; Innovations Submitted</span>
+                            </button>*@
+                        @*<br>
+                            <br>
+                            <button type="submit" class="bt_in positionleft_10" data-bs-toggle="modal" data-bs-target="#pendingModal" data-bs-dismiss="modal">
+                                <span class="al_num">0</span>&nbsp; Innovations Pending
+                            </button>*@
+                        <img src="@Url.Content("~/images/c-1.png")" class="rotate igsize" />
+                        <img src="@Url.Content("~/images/c-2.png")" class="rotate1" />
+                        @*<img src="/ispace_uat/images/c-1.png" class="rotate igsize">
+                            <img src="/ispace_uat/images/c-2.png" class="rotate1">*@
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-9">
+                <h4 class="isf">Please Fill Innovation Submission Form</h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="message2">
+                            @if (TempData["Successmessage"] != null)
+                            {
+                                <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible" role="alert">
+                                    <span class="alert-text">@Html.Raw(Convert.ToString(TempData["Successmessage"]))</span>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+                <br>
+                @using (Html.BeginForm("YourInnovation", "NewInnovation", FormMethod.Post, new { enctype = "multipart/form-data",id="mainInnForm" }))
+                {
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="">
+                        <div class="">
+                            <div class="row d-flex align-items-end">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">Innovation Title<span class="color-red">*</span></label>
+                                        @Html.EditorFor(model => model.InnovationTitle, new { htmlAttributes = new { @class = "form-control trim", @title = Model.InnovationTitle } })
+                                        @Html.ValidationMessageFor(model => model.InnovationTitle, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Keywords (min. 1 and max. 3)<span class="color-red">*</span><span class="sku_note">(e.g. Separate keywords using comma and without space)</span>
+                                        </label>
+                                        @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control trim", @title = Model.Keyword } })
+                                        @Html.ValidationMessageFor(model => model.Keyword, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Platform Domain <span class="color-red">*</span></label>
+                                @Html.DropDownListFor(model => model.BusinessDivisionId, Model.BusinessDivisionList, "---Select---", new { @class = "form-select data-singleselect", @title = Model.BusinessDivisionList })
+                                @Html.ValidationMessageFor(model => model.BusinessDivisionId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Geographic Scope <span class="color-red">*</span></label>
+                                @Html.DropDownListFor(model => model.GeographicId, Model.GeographicScopeList, "---Select---", new { @class = "form-select data-singleselect", @id = "geographicregion", @title = Model.GeographicScopeList })
+                                @Html.ValidationMessageFor(model => model.GeographicId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Platform Type <span class="color-red">*</span></label>
+                                @Html.DropDownListFor(model => model.PlatformTypeId, Model.PlatformTypeList, "---Select---", new { @class = "form-select  data-singleselect", @id = "otherplatform", @title = Model.PlatformTypeList })
+                                @Html.ValidationMessageFor(model => model.PlatformTypeId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6 others">
+                            <div class="form-group">
+                                <label class="control-label" id="otherlabel">Other<span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.Other, new { @class = "form-control trim", @id = "other" })
+                                @Html.ValidationMessageFor(model => model.Other, "", new { @class = "text-danger" })
+
+                            </div>
+                        </div>
+                        <div class="col-md-6 in_Stratergic">
+                            <div class="form-group">
+                                <label class="control-label">Strategic Fit <span class="color-red">*</span></label>
+                                @Html.DropDownListFor(model => model.StrategicFitId, Model.StrategicFitList, new { @class = "form-control multi-select multiselectDropdown", @id = "strategicfitid", @multiple = "multiple", @title = Model.StrategicFitId })
+                                @Html.ValidationMessageFor(model => model.StrategicFitId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-2">
+                                <div class="download-text">
+                                    <h4>Download File (Image,PDF, PPT)</h4>
+                                    <p>Download this template, fill it with the required information and upload as .pdf or .pptx (max. 3 MB). Use either the product-related slide or the process simplification slide according to your ideation.</p>
+                                    @*<span class="color-blue"><a href="@Url.Content("~/assets/images/iSpacepitchtemplates.pptx")" target="_blank"><i class="fas fa-download"></i> Download/View File</a></span>*@
+                                    <a class="download-btn download_template" href="#"><i class="fas fa-download" aria-hidden="true"></i> Download/View File</a>
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group mb-2 upload_file">
+                                <label class="control-label">Upload File (Image,PDF, PPT) <span class="color-red">*</span><span class="color-red pl-3 pr-3">(Upto 3MB Only) </span><i class="fas fa-upload"></i></label>
+                                @Html.TextBoxFor(m => m.PostedFile, new { type = "file", accept = "image/png, image/jpeg, application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation", @class = "form-control trim", @id = "fileupload" })
+                                @Html.ValidationMessageFor(model => model.PostedFile, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="button_top float-right mt-2">
+
+                        <button type="submit" class="btn btn-draft" data-bs-dismiss="modal" id="submitdata"> Submit</button>
+                        @*<button type="button" class="btn btn-next">Next</button>*@
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="submissionsmodal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        Modal content
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Status of your Submissions
+
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="submissions_grid" class="table table-bordered"></table>
+                                    <div id="submissions_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="pendingsubmissionsmodal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Status of Your Innovation Sent Back
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="innovation_grid" class="table table-bordered"></table>
+                                    <div id="innovation_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="innDataView" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    <span id="selectedRoomSpan" class="selected-room__title"></span>
+                    Innovation Data
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="download-btn-flex">
+                    <div>
+                        <h4 id="modal_innovationtile"></h4><br />
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group text-right">
+                            <label class="control-label" id="downloadlable">
+                                Download File (Image,PDF, PPT)
+                            </label>
+
+                            <a class="download-btn" href="#" target="_blank" id="innmodel_filedownload"><i class="fas fa-download" aria-hidden="true"></i>Download/View File</a>
+                        </div>
+                    </div>
+                </div>
+
+                <form>
+                    <div class="row fr">
+                        <input type="hidden" id="modal_innovationid" />
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Keywords
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="modal_keywords" title="" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Domain<span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_bd" title="" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Geographic Name<span class="color-red">*</span>
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="modal_gs" title="" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Type<span class="color-red">*</span>
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="modal_pt" title="" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Other
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_other" title="" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Strategic Fit<span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_st" title="" />
+                            </div>
+                        </div>
+
+                        @*<div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Description <span class="color-red">*</span>
+                                    </label>
+                                    <textarea class="form-control" readonly="readonly" id="modal_description"></textarea>
+                                </div>
+                            </div>*@
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="inn_moda">
+    <div class="modal fade test" id="pendDataView" tabindex="-1" aria-labelledby="pendDataView" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header -bg-green">
+
+                    @*<button type="button" class="close" data-bs-toggle="modal" data-bs-target="#pendingModal" data-bs-dismiss="modal">
+                            <span>
+                                <i class="fas fa-times undoicon" aria-hidden="true" data-bs-dismiss="modal" onclick="closeModalPopup()" id="pendingmodalclose"></i>
+
+                            </span>
+                        </button>*@
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+
+                    <h4 class="modal-title"><span id="selectedRoomSpan" class="selected-room__title"></span>Innovation Pending Data</h4>
+                </div>
+                <div class="modal-body mdg">
+
+                    @*@using (Html.BeginForm("UpdateInnovationData", "NewInnovation", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })*@
+
+
+                        <div class="row fr">
+                            @Html.HiddenFor(model => model.InnovationId, new { @id = "pmodal_innovationid" })
+
+                            <div class="download-btn-flex">
+                                <div>
+                                    <h4 class="isf_pending" id="pmodal_innovationtile"></h4><br />
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group text-right">
+                                        <label class="control-label mb-0 " id="pdownloadlable">
+                                            Download File (Image,PDF, PPT)
+                                        </label>
+                                        @*<label class="control-label" id="puploadfile">
+                                                Upload File (JPG,PNG,PDF, PPT)
+                                                <span class="fd_text">(Upto 3MB Only)</span>
+                                            </label>*@
+                                        <a class="download-btn d-flex justify-content-end align-items-center font_14" href="#" target="_blank" id="Pending_filedownload"><i class="fas fa-download" aria-hidden="true"></i> Download/View File</a>
+                                        @Html.HiddenFor(model => model.FileNames, new { @id = "pfilename" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Keywords
+                                    </label>
+                                    @*<input type="text"  class="form-control" id="pmodal_keywords"/>*@
+                                    @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control trim", @id = "pmodal_keywords", @title = "" } })
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Platform Domain<span class="color-red">*</span>
+                                    </label>
+                                    @*<input type="text" class="form-control" id="pmodal_st"/>*@
+                                    @Html.DropDownListFor(model => model.BusinessDivisionId, Model.BusinessDivisionList, "---Select---", new { @class = "form-select data-singleselect", @id = "pmodal_bd", @title = Model.BusinessDivisionName })
+                                    @*@Html.ValidationMessageFor(model => model.BusinessDivisionId, "", new { @class = "text-danger" })*@
+                                    <span class="text-danger" id="pmodal_BusinessDivisionId_valid">Please select Platform Domain</span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Geographic Name<span class="color-red">*</span>
+                                    </label>
+                                    @Html.DropDownListFor(model => model.GeographicId, Model.GeographicScopeList, "---Select---", new { @class = "form-select data-singleselect", @id = "pmodal_gs", @title = Model.GeographicName })
+                                    @*@Html.ValidationMessageFor(model => model.GeographicId, "", new { @class = "text-danger" })*@
+                                    <span class="text-danger" id="pmodal_GeographicId_valid">Please select Geographic Name</span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Platform Type<span class="color-red">*</span>
+                                    </label>
+                                    @*<input type="text"  class="form-control" id="pmodal_pt"/>*@
+                                    @Html.DropDownListFor(model => model.PlatformTypeId, Model.PlatformTypeList, "---Select---", new { @class = "form-select data-singleselect", @id = "pmodal_pt", @value = "", @title = Model.PlatformTypeName })
+                                    @*@Html.ValidationMessageFor(model => model.PlatformTypeId, "", new { @class = "text-danger" })*@
+                                    <span class="text-danger" id="pmodal_PlatformTypeId_valid" >Please select Platform Type</span>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Other
+                                    </label>
+                                    @*<input type="text" class="form-control" id="pmodal_other"/>*@
+                                    @Html.TextBoxFor(model => model.Other, new { @class = "form-control trim", @id = "pmodal_other", @title = Model.Other })
+                                    <span class="text-danger" id="pmodal_Other_valid" >Please enter Other</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 in_Stratergic">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Strategic Fit<span class="color-red">*</span>
+                                    </label>
+                                    @*<input type="text" class="form-control" id="pmodal_st"/>*@
+                                    @Html.DropDownListFor(model => model.StrategicFitId, Model.StrategicFitList, new { @class = "form-control multi-select multiselectDropdown", @id = "pmodal_st", @multiple = "multiple", @title = Model.StrategicFitName })
+                                    <span class="text-danger" id="pmodal_StrategicFitId_valid" >Please select Strategic Fit</span>
+                                </div>
+                            </div>
+                            <div class="col-md86">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Download File (Image,PDF, PPT)
+                                    </label>
+                                    <label class="des_txt">
+                                        Download this template, fill it with the required information and upload as .pdf or .pptx (max. 3 MB).
+                                        Use either the product-related slide or the process simplification slide according to your ideation.
+                                    </label>
+
+                                    <a class="download-btn float-leftIcon download_template" href="#"><i class="fas fa-download" aria-hidden="true"></i> Download/View File</a>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label" id="puploadfile">
+                                        Upload File (JPG,PNG,PDF, PPT) <span class="color-red">*</span>
+                                        <span class="fd_text"> (Upto 3MB Only)</span>
+                                    </label>
+                                    @Html.TextBoxFor(m => m.PostedFile, new { type = "file", accept = "image/png, image/jpeg, application/pdf", @class = "form-control", @id = "pfileupload" })
+                                    @*@Html.ValidationMessageFor(model => model.PostedFile, "", new { @class = "text-danger" })*@
+                                    <span class="text-danger" id="pmodal_PostedFile_valid" >Please select File</span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Remarks <span class="color-red">*</span> @*<span class="fd_text">(max. 250 words)</span>*@
+                                    </label>
+                                    <input type="text" class="form-control bl_clr" readonly="readonly" id="pmodal_remarkStatus" title="" />
+                                    @*<span class="text-danger" id="pmodal_Remarks_valid" hidden>Please enter Remarks</span>*@
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="save_buttons float-right text-right hgy" id="modal_buttons">
+                                    <button type="button" class="btn btn-draft" id="saveInn">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                    @* } *@
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewIdeation/Innovation.js")"></script> 
+@* <script src="@Url.Content("~/js/NewIdeation/Innovation.min.js")" asp-append-version="true"></script> *@

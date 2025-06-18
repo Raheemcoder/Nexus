@@ -1,0 +1,355 @@
+﻿@model Ideation.Models.ProjectUpdates;
+@{
+    ViewBag.Title = "EditProjectUpdates";
+    Layout = "~/Views/Shared/_PULayout.cshtml";
+}
+<style>
+    .ui-menu.ui-widget.ui-widget-content.ui-autocomplete {
+        position: absolute !important;
+        width: 180px !important;
+        display: inline-block;
+    }
+</style>
+<script src="@Url.Content("~/ckeditor/ckeditor.js")" asp-append-version="true"></script>
+<div class="card-box mb-0 edit_history">
+    @using (Html.BeginForm("EditProjectUpdates", "ProjectUpdates", FormMethod.Post, new { id = "ProjectUpdates_Details_Submit", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.JsonFormProjectUpdatesData)
+        @Html.HiddenFor(model => model.ProjectCode)
+        @Html.HiddenFor(model => model.ProjectUpdatesHeaderId)
+        @Html.HiddenFor(model => model.ProjectDocId)
+        @Html.HiddenFor(model => model.OldUploadedFiles)
+        @Html.HiddenFor(model => model.UserName, new { @id = "UserName" })
+        @Html.HiddenFor(model => model.RoleId, new { @id = "RoleId" })
+
+
+        <div class="tb_clr marbt">
+            <h3 class="cen_txt">PROJECT UPDATE DETAILS</h3>
+            <div class="row product_profile">
+                <div class="col-md-6 pr-0">
+                    <div class="edit_product">
+                        <div class="row">
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">Project Id<span class="color-red">*</span></label>
+                                    <span class="value_input" id="ProjectId"></span>
+                                    @*@Html.HiddenFor(model => model.ProjectName,new{@id="ProjectId",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">Project Description<span class="color-red">*</span></label>
+                                    <span class="value_input" id="ProjectDescription"></span>
+                                    @*@Html.HiddenFor(model => model.ProjectDescription,new{@id="ProjectDescription",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">HUBs</label>
+                                    <span class="value_input" id="ProjectHub"></span>
+                                    @*@Html.HiddenFor(model => model.ProjectHub,new{@id="ProjectHub",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">Division<span class="color-red">*</span></label>
+                                    <span class="value_input" id="ProjectDivision"></span>
+                                    @*@Html.HiddenFor(model => model.ProjectDivision,new{@id="ProjectDivision",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">Project Type<span class="color-red">*</span></label>
+                                    <span class="value_input" id="ProjectType"></span>
+                                    @*@Html.HiddenFor(model => model.ProjectType,new{@id="ProjectType",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">Project Classification<span class="color-red">*</span></label>
+                                    <span class="value_input" id="ProjectClassification"></span>
+                                    @*@Html.HiddenFor(model => model.ProjectClassification,new{@id="ProjectClassification",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">HGH Code</label>
+                                    <span class="value_input" id="HghCode"></span>
+                                    @*@Html.HiddenFor(model => model.HghCode,new{@id="HghCode",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">R&D Name</label>
+                                    <span class="value_input" id="RAndDName"></span>
+                                    @*@Html.HiddenFor(model => model.RAndDName,new{@id="RAndDName",@class="value_input"})*@
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="edit_label">Project Status</label>
+                                    <span class="value_input" id="ProjectStatus"></span>
+                                    @*@Html.HiddenFor(model => model.ProjectStatus,new{@id="ProjectStatus",@class="value_input"})*@
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row target_volume ckeditor_height">
+                            <div class="col-lg-8">
+                                <div class="form-group">
+                                    <label class="col-form-label">Comments<span class="color-red">*</span></label>
+                                    <div class=" pd">
+                                        @Html.TextAreaFor(model => model.Comments, new { @class = "form-control", @id = "Comments", @name = "editor" })
+                                        @*                                        <p id="editHistory" hidden> </p>
+                                        *@                                        <span style="display:none" id="Err_Comments" class="Err_PU color-red">Please enter Comments</span>
+
+                                        @*<textarea class="form-control"></textarea>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">SKU</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                        @Html.TextBoxFor(model => model.Sku, new { @class = "form-control form-control-sm", @id = "Sku" })
+
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="head_bar">
+                                <h6>Volume</h6>
+                            </div>
+                            @*   <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Volume</label>
+                                    <div class="pd">*@
+                            @*<input type="text" class="form-control form-control-sm">*@
+                            @* @Html.TextBoxFor(model => model.Volume, new { @class = "form-control form-control-sm", @id="Volume"})
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">M1 Quantity</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                        @Html.TextBoxFor(model => model.M1Quantity, new { @class = "form-control form-control-sm", @id = "M1Quantity", @onkeypress = "return onlyNumbersNotdecimals();" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">M2 Quantity</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                        @Html.TextBoxFor(model => model.M2Quantity, new { @class = "form-control form-control-sm", @id = "M2Quantity", @onkeypress = "return onlyNumbersNotdecimals();" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">M3 Quantity</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                        @Html.TextBoxFor(model => model.M3Quantity, new { @class = "form-control form-control-sm", @id = "M3Quantity", @onkeypress = "return onlyNumbersNotdecimals();" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Y1 Quantity</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                        @Html.TextBoxFor(model => model.Y1Quantity, new { @class = "form-control form-control-sm", @id = "Y1Quantity", @onkeypress = "return onlyNumbersNotdecimals();" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Y2 Quantity</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                        @Html.TextBoxFor(model => model.Y2Quantity, new { @class = "form-control form-control-sm", @id = "Y2Quantity", @onkeypress = "return onlyNumbersNotdecimals();" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Y3 Quantity</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                        @Html.TextBoxFor(model => model.Y3Quantity, new { @class = "form-control form-control-sm", @id = "Y3Quantity", @onkeypress = "return onlyNumbersNotdecimals();" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row target_volume">
+
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Target TTD@*<span class="color-red">*</span>*@</label>
+                                    <div class="pd">
+                                        @Html.TextBoxFor(model => model.TargetTtd, new { @class = "form-control form-control-sm", @id = "TargetTtd", @data_datepicker_monthyear = "", @autocomplete = "off" })
+                                        <span style="display:none" id="Err_TargetTtd" class="Err_PU color-red">Please select Target TTD Date</span>
+                                        @*<input type="text" class="form-control form-control-sm" data-datepicker-monthyear>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Target Production Date@*<span class="color-red">*</span>*@</label>
+                                    <div class="pd">
+                                        @Html.TextBoxFor(model => model.TargetProductionDate, new { @class = "form-control form-control-sm", @id = "TargetProductionDate", @data_datepicker_monthyear = "", @autocomplete = "off" })
+                                        <span style="display:none" id="Err_TargetProductionDate" class="Err_PU color-red">Please select Target Production Date</span>
+                                        @*<input type="text" class="form-control form-control-sm" data-datepicker-monthyear>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Project Lead
+                                    </label>
+                                    <div hidden>
+                                        @*  @Html.DropDownListFor(model=>model.ProjectLead,Model.ProjectLeadList,"All",new{@class="form-control form-control-sm data-singleselect",@id="ProjectLead" })*@
+                                        @Html.DropDownListFor(
+                                    model => model.ProjectLead,
+                                    new SelectList(Model.ProjectLeadList, "Value", "Text"),
+                                    new { @class = "form-control form-control-sm data-singleselect", @id = "ProjectLeadList" , @multiple = false }
+                                    )
+                                    </div>
+
+
+                                    @Html.TextBoxFor(model => model.ProjectLead, new { @class = "form-control form-control-sm tags", @id = "ProjectLead", @multiple = false , @onkeypress = "return preventInput(event);"})
+                                    <div hidden>
+                                        @Html.TextBoxFor(model => model.ProjectLeadID, new { @class = "form-control form-control-sm", @id = "ProjectLeadID", @multiple = false })
+                                    </div>
+                                </div>
+                            </div>
+                            @*                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Project Lead</label>
+                                    <div class="pd">
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                            @*
+                                @Html.DropDownListFor(model => model.ProjectLead,Model.ProjectLeadList,"--Select--",new { @class = "form-control form-control-sm",  @id="ProjectLead"})*@
+                            @*                     @Html.TextBoxFor(model => model.ProjectLead, new { @class = "form-control form-control-sm", @id="ProjectLead"})
+                                        </div>
+                                    </div>
+                                </div>*@
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Currency@*<span class="color-red">*</span>*@</label>
+                                    <div class="pd">
+                                        @*@Html.TextBoxFor(model => model.Currency, new { @class = "form-control form-control-sm", @id="Currency"})*@
+                                        @Html.DropDownListFor(model => model.Currency, Model.CurrencyNameList, "--Select--", new { @class = "form-control form-control-sm", @id = "Currency" })
+                                        <span style="display:none" id="Err_Currency" class="Err_PU color-red">Please select Currency</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Accepted Target Cost@*<span class="color-red">*</span>*@</label>
+                                    <div class="pd">
+                                        @Html.TextBoxFor(model => model.TargetCost, new { @class = "form-control form-control-sm", @id = "TargetCost", @onkeypress = "return onlyNumbers(this);", @onpaste = "return false;" })
+                                        <span style="display:none" id="Err_TargetCost" class="Err_PU color-red">Please enter Target Cost</span>
+                                        @*<input type="text" class="form-control form-control-sm">*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Upload Document</label>
+                                    <div class="pd d-flex align-items-center">
+                                        <input type="file" name="files" class="form-control form-control-sm" onchange="validateFileUpload()" id="UploadDocument" accept=".pdf, .doc, .docx, .xls, .txt, .xlsx, .ppt, .zip, .jpg, .jpeg, .png, .csv" multiple>
+                                        <span class="btn-icon -delete" title="Delete" id="deleteSelectedFile" style="margin-left:10px;"><i class="fas fa-trash"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12 ">
+                                <div class="save_buttons float-right text-right">
+                                    <button type="button" class="btn-add" data-bs-toggle="modal" onclick="validateSaveForm()" @*data-bs-target="#SaveModal"*@ data-title="Save">Save</button>
+                                    <button type="button" class="btn-cnl" onclick="location.href = '@Url.Content("~/ProjectUpdates/ProjectUpdates")';" data-title="Back"> Back</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="tabs_section">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">History</button>
+                            </li>
+                            @* <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Audit Trail</button>
+                                </li>*@
+                            <li class="view_table" data-bs-toggle="modal" data-bs-target="#ViewModal">
+                                <i class="fa fa-eye"></i>
+                            </li>
+                        </ul>
+                        <div class="tab-content scroll_div" id="myTabContent">
+                            <div class="tab-pane fade show active" id="DynamicHistory" role="tabpanel" aria-labelledby="home-tab">
+
+
+                            </div>
+                            <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Hello1</div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+@*save button*@
+
+
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to save?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="Save_Ok">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="ViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg upload">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">View Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="Document_Download_Grid" class="table table-bordered"></table>
+                                <div id="pager_upload"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="@Url.Content("~/js/projectupdates/editprojectupdates.js")" asp-append-version="true"></script>*@
+
+<script src="@Url.Content("~/js/projectupdates/editprojectupdates.min.js")" asp-append-version="true"></script>

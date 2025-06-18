@@ -1,0 +1,3309 @@
+﻿@model Ideation.Models.ClaimsGridDocument
+@{
+    ViewData["Title"] = "Edit Claims Grid";
+    Layout = "/Views/Shared/CG_Layout.cshtml";
+}
+<style>
+    ol.test_number {
+        padding-left: 0px;
+        list-style-type: decimal;
+        position: relative;
+        left: 20px;
+    }
+</style>
+<link href="@Url.Content("~/NewAssets/assets/css/slick.min.css")" rel="stylesheet" />
+<link href="@Url.Content("~/NewAssets/assets/css/slick-theme.min.css")" rel="stylesheet" />
+
+<div id="">
+    <section>
+        <div class="-m_pagetitle">
+            <div class="-m_title ">
+                <h4><span>Master/</span> <span><a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")">Claims Grid/</a></span> <label class="cen_txt">Edit Claims Grid</label></h4>
+            </div>
+        </div>
+
+    </section>
+
+    <style>
+        .brd_tbl table td {
+            border: 1px solid #339b9c !important;
+        }
+
+        .table tr td {
+            overflow: hidden;
+        }
+
+        .formulation_table table thead th {
+            font-size: 12px;
+            font-weight: 400;
+            border: 1px solid #000 !important;
+            padding: 5px;
+        }
+
+        .d-flex {
+            display: flex;
+            justify-content: end;
+        }
+
+        .gap-10 {
+            gap: 10px;
+        }
+
+        .packlabel_claims table tbody td, .communication_claims table tbody td, .packlabel_claims1 table tbody td, .communication_claims1 table tbody td {
+            font-size: 12px;
+            font-weight: 400;
+            border: 1px solid #000 !important;
+            vertical-align: baseline;
+        }
+
+        .packlabel_claims table thead tr, .communication_claims table thead tr, .packlabel_claims1 table thead tr, .communication_claims1 table thead tr {
+            padding: 5px !important;
+            background: #e2f3f0 !important;
+        }
+
+        .packlabel_claims table thead th, .communication_claims table thead th, .packlabel_claims1 table thead th, .communication_claims1 table thead th {
+            border: none !important;
+            padding: 5px !important;
+        }
+
+        .packlabel_claims table tbody td, .communication_claims table tbody td, .packlabel_claims1 table tbody td, .communication_claims1 table tbody td {
+            font-size: 12px;
+            font-weight: 400;
+            border: 1px solid #000 !important;
+            vertical-align: baseline;
+            word-break: break-word;
+        }
+
+        .packlabel_claims table, .communication_claims table, .packlabel_claims1 table, .communication_claims1 table {
+            margin-bottom: 10px
+        }
+
+        .packlabel_claims button, .communication_claims button, .packlabel_claims1 button, .communication_claims1 button {
+            /*background: transparent;*/
+            border: none;
+        }
+
+        .justify-center_1 {
+            display: flex;
+            float: right;
+        }
+
+        .remarks {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 5px;
+        }
+
+        .edit_icon_blue {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6px;
+            background: #1e78ff;
+            border-radius: 50%;
+            color: white;
+            height: 25px;
+        }
+
+        .download_icon_green {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6px;
+            background: green;
+            border-radius: 50%;
+            color: white;
+            height: 25px;
+        }
+
+        .delete_icon_red {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 6px;
+            background: #c62828;
+            border-radius: 50%;
+            color: white;
+            height: 25px;
+        }
+
+        .excelicon_row {
+            display: flex;
+            justify-content: end;
+        }
+
+        #DSG_Remarks textarea, #CFT_Remarks_Modal textarea {
+            width: 100%;
+            height: 100px;
+            padding: 10px;
+        }
+
+        .claims_border-error {
+            border-width: 1.5px;
+            border-color: red;
+            outline: none;
+        }
+
+        .color_red {
+            color: red;
+        }
+
+        .addonpack {
+            background: #01686a !important;
+            color: #fff;
+            padding: 2px 8px 2px 8px;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 0px;
+            border-bottom-left-radius: 0px;
+            border-bottom-right-radius: 10px;
+            border: 1px solid #01686a !important;
+        }
+
+        .paddingRight {
+            padding-right: 5px !important;
+        }
+
+        .paddingLeft {
+            padding-left: 5px !important;
+        }
+
+        .formulation_table table tbody td {
+            width: 200px !important;
+        }
+
+        .download_icon_green i {
+            color: white
+        }
+
+        .dark .communication_claims thead tr {
+            background: #212529 !important;
+        }
+    </style>
+
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["Messageclass"].ToString() alert-dismissable">
+            <button type="button" class="btn-close status-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+            @TempData["Message"].ToString()
+        </div>
+    }
+
+    <section>
+        @* @if (Model.Stage != 3 && Model.Stage != 7 && ViewBag.isEdit == "edit")
+            {
+                <div class="scroll-left">
+                    <marquee behavior="scroll" direction="left">
+                        (Note: The Claims information will be auto saved for every 5 minutes. Please ensure that Project Number is entered to Auto save the data.)
+                    </marquee>
+                </div>
+            }*@
+        @if (Model.Stage != 3 && Model.Stage < 7 && ViewBag.isEdit == "edit")
+        {
+            <div class="scroll-left">
+                <marquee behavior="scroll" direction="left">
+                    (Note: The Claims information will be auto saved for every 5 minutes.)
+                </marquee>
+            </div>
+        }
+        <div class="mb-1 text-right color-blue d-flex align-items-center justify-content-end ">
+            <span>
+                @*   <button class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                    <i class="flaticon-fullscreen fullscreen_expand fullscreen-btn" onclick="var el = document.getElementById('fullscreen'); el.webkitRequestFullscreen();"></i>
+                    <i class="flaticon-close-1 fullscreen_minimize exitscreen-btn" onclick="closeFullscreen()"></i>
+                    </button>*@
+                <button onclick="$(document).toggleFullScreen() " class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                    <i class="flaticon-fullscreen fullscreen_expand fullscreen-btn " data-toggle="tooltip" data-placement="bottom" title="Full Screen Mode"></i>
+                    <i class="flaticon-close-1 fullscreen_minimize exitscreen-btn" data-toggle="tooltip" data-placement="bottom" title="Exit Full Screen Mode"></i>
+                </button>
+            </span>
+            <p class="preview_tab mr-3 mb-0 ml-2 add_editpreview" data-bs-toggle="modal" data-bs-target="#Preview"><i class="flaticon-view"></i> Preview</p>
+            <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")"><span class="color-blue"><i class="fas fa-arrow-left"></i> Back</span></a>
+        </div>
+        @*  <h3 class="cen_txt">EDIT GRID DOCUMENT</h3>*@
+        <div class="table-project">
+            <div class="table-responsive">
+                <table class="table table-bordered mb-0">
+                    <thead>
+                        <tr class="mod_th">
+                            <th scope="col">Project Number</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">HGL Approval Number</th>
+                            <th scope="col">Date</th>
+                            <th scope="col">Version No.</th>
+                            <th scope="col">Download</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="projNo"></td>
+                            <td id="prodName"></td>
+                            <td id="apprNo"></td>
+                            @*<td class="fas fa-calendar-alt" style="padding-right: 5px;" id="date"></td>*@
+                            <td><i class="fas fa-calendar-alt" style="padding-right: 5px;"></i><span id="date"></span></td>
+                            @*<td id="date"></td>*@
+                            <td id="version"></td>
+                            <td>
+                                @*  <button type="button" class="generateClaims_pdf" style="border: none; background: #198754; padding: 5px; border-radius: 50%; color: white;">
+                                    <i class="fas fa-download" aria-hidden="true"></i>
+                                    </button>*@
+                                <i class="flaticon-download generateClaims_pdf" aria-hidden="true"></i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+    <div class="form-wizard-wrapper ">
+        @*<p class="preview_tab " data-bs-toggle="modal" data-bs-target="#Preview">Preview</p>*@
+        <ul class="carousel">
+            @{
+                if (Model.Stage != 3 && Model.Stage != 5)
+                {
+                    <li><a class="form-wizard-link active" href="javascript:;" data-attr="info"><span><i class=""></i>Project Details</span></a></li>
+                    @if (@Model.ProjectBriefId != "")
+                    {
+                        <li><a class="form-wizard-link" href="javascript:;" data-attr="ads"><span>Project Brief - @Model.ProjectBriefId</span></a></li>
+                    }
+                    else
+                    {
+                        <li><a class="form-wizard-link" href="javascript:;" data-attr="ads"><span>Project Brief</span></a></li>
+                    }
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="placement"><span>Product Description <span class="small-text">(includes formula, package, product)</span></span></a></li>
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="schedule"><span>On Pack / Label Claims</span></a></li>
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="review"><span>Claims For Communications <span class="small-text">Other Than Label</span></span></a></li>
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="upload"><span>Supporting Documents</span></a></li>
+                }
+                if (Model.Stage == 3)
+                {
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="info"><span><i class=""></i>Project Details</span></a></li>
+                    @if (@Model.ProjectBriefId != "")
+                    {
+                        <li><a class="form-wizard-link" href="javascript:;" data-attr="ads"><span>Project Brief - @Model.ProjectBriefId</span></a></li>
+                    }
+                    else
+                    {
+                        <li><a class="form-wizard-link" href="javascript:;" data-attr="ads"><span>Project Brief</span></a></li>
+                    }
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="placement"><span>Product Description <span class="small-text">(includes formula, package, product)</span></span></a></li>
+                    <li><a class="form-wizard-link active" href="javascript:;" data-attr="schedule"><span>On Pack / Label Claims</span></a></li>
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="review"><span>Claims For Communications <span class="small-text">Other Than Label</span></span></a></li>
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="upload"><span>Supporting Documents</span></a></li>
+                }
+                if (Model.Stage == 5)
+                {
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="info"><span><i class=""></i>Project Details</span></a></li>
+                    @if (@Model.ProjectBriefId != "")
+                    {
+                        <li><a class="form-wizard-link" href="javascript:;" data-attr="ads"><span>Project Brief - @Model.ProjectBriefId</span></a></li>
+                    }
+                    else
+                    {
+                        <li><a class="form-wizard-link" href="javascript:;" data-attr="ads"><span>Project Brief</span></a></li>
+                    }
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="placement"><span>Product Description <span class="small-text">(includes formula, package, product)</span></span></a></li>
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="schedule"><span>On Pack / Label Claims</span></a></li>
+                    <li><a class="form-wizard-link" href="javascript:;" data-attr="review"><span>Claims For Communications <span class="small-text">Other Than Label</span></span></a></li>
+                    <li><a class="form-wizard-link active" href="javascript:;" data-attr="upload"><span>Supporting Documents</span></a></li>
+
+                }
+
+            }
+            @*<li class="form-wizardmove-button"></li>*@
+        </ul>
+        @using (Html.BeginForm("EditGridDocument", "ClaimsGrid", FormMethod.Post, new { id = "EditClaims", enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(m => m.ClaimsHeaders)
+            @Html.HiddenFor(m => m.ProductDescription)
+            @Html.HiddenFor(m => m.ProjectDetails)
+            @Html.HiddenFor(m => m.ProjectBrief)
+            @Html.HiddenFor(m => m.OnPackClaims)
+            @Html.HiddenFor(m => m.CommunicationClaimsData)
+            @Html.HiddenFor(m => m.SupportingDoc)
+            @Html.HiddenFor(m => m.JsonClaimsData)
+            @Html.HiddenFor(m => m.Stage)
+            @Html.HiddenFor(m => m.ApprovalStatus)
+            @Html.HiddenFor(m => m.DeptDetails)
+            @Html.HiddenFor(m => m.JsonCFTReviewData)
+            @Html.HiddenFor(m => m.OnPackClaimsRemarks)
+            @Html.HiddenFor(m => m.CommunicationClaimsRemarks)
+            @Html.HiddenFor(m => m.GridId)
+            @Html.HiddenFor(m => m.CFTDeptName)
+            @Html.HiddenFor(m => m.ProjectNumber)
+            @Html.HiddenFor(model => model.LoginId)
+            @Html.HiddenFor(model => model.SupportingDocumentData)
+            @Html.HiddenFor(model => model.IRAExcelDocument)
+            @Html.HiddenFor(model => model.DeletedSupportingdocument)
+            @Html.HiddenFor(model => model.DeletedCFTUploadedDocument)
+            @Html.HiddenFor(model => model.Role)
+            <div class="form-wizard-content-wrapper edit_grid">
+
+                @if (Model.Stage != 3 && Model.Stage != 5)
+                {
+                    <div class="form-wizard-content show" id="form_project_details" data-tab-content="info">
+                        <div class="-h_tab_height">
+                            <form>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-width2">
+                                            <div class="form-group has-error">
+                                                <label class="control-label ">Project Number <label class="text-danger m-0">*</label></label>
+                                                @*<select class="form-control" data-singleselect>
+                                                    <option value="tea">ID-400000003-Himalaya Smart Tea</option>
+                                                    </select>*@
+                                                @*@Html.DropDownListFor(model=>model.ProjectNumber,Model.ProjectList,"--Select--",new{@class="form-control form-select-sm mandatory CFTStage",@id="ProjectNo",@disabled="disabled"})*@
+                                                @Html.TextBoxFor(m => m.ProjectNumber, new { @class = "form-control form-control-sm mandatory CFTStage", @id = "ProjectNo", @disabled = "disabled" })
+                                                <span id="Err-ProjectNo" style="display:none;color:red;">Please select Project</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">Product Name <label class="text-danger m-0">*</label></label>
+                                                @*<input type="text" class="form-control" value="Himalaya Dark Spot Clearing Turmeric Face Cream" />*@
+                                                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control form-control-sm mandatory CFTStage", @id = "ProductName" })
+                                                <span id="Err-ProductName" style="display:none;color:red;">Please enter Product Name</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">HGL Approval Number </label>
+                                                @*<input type="text" class="form-control" value="HDSC-022209" />*@
+                                                @Html.TextBoxFor(m => m.HGLApprovalNumber, new { @class = "form-control form-control-sm CFTStage", @id = "HGLApprovalNumber", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                        <div class="col-width4">
+                                            <div class="form-group">
+                                                <label class="control-label">Product Positioning Statement <label class="text-danger m-0">*</label></label>
+                                                @*<textarea class="form-control" rows="3"></textarea>*@
+                                                @Html.TextAreaFor(m => m.ProductPositioningStatement, new { @class = "form-control mandatory CFTStage", @id = "ProductPositioningStatement" })
+                                                <span id="Err-ProductPositioningStatement" style="display:none;color:red;">Please enter ProductPositioningStatement</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">Division</label>
+                                                @*<textarea class="form-control" rows="3"></textarea>*@
+                                                @Html.DropDownListFor(m => m.Division, Model.DivisionList, "--Select--", new { @class = "form-control", @id = "ClaimsDivision" })
+                                                @*<span id="Err-ClaimsDivision" style="display:none;color:red;">Please select Division</span>*@
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="full-wdth clearfix">
+                            @if (ViewBag.isEdit == "edit")
+                            {
+                                <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                            }
+                            <div class="float-right">
+
+                                <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                                @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                                @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                                @if (Model.Stage == 2 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 claimsSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 3 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 CFTSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 4 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 5 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 SaveManagerModal" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 6 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSignOffSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage >= 7 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 AddendumSave" data-toggle="modal">Save</a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-wizard-content" id="form_project_details" data-tab-content="info">
+                        <div class="-h_tab_height">
+                            <form>
+                                <div class="col-md-12">
+                                    <div class="row">
+                                        <div class="col-width2">
+                                            <div class="form-group has-error">
+                                                <label class="control-label ">Project Number <label class="text-danger m-0">*</label></label>
+                                                @*<select class="form-control" data-singleselect>
+                                                    <option value="tea">ID-400000003-Himalaya Smart Tea</option>
+                                                    </select>*@
+                                                @*@Html.DropDownListFor(model=>model.ProjectNumber,Model.ProjectList,"--Select--",new{@class="form-control form-select-sm mandatory CFTStage",@id="ProjectNo",@disabled="disabled"})*@
+                                                @Html.TextBoxFor(m => m.ProjectNumber, new { @class = "form-control form-control-sm mandatory CFTStage", @id = "ProjectNo", @disabled = "disabled" })
+                                                <span id="Err-ProjectNo" style="display:none;color:red;">Please select Project</span>
+                                            </div>
+
+                                        </div>
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">Product Name <label class="text-danger m-0">*</label></label>
+                                                @*<input type="text" class="form-control" value="Himalaya Dark Spot Clearing Turmeric Face Cream" />*@
+                                                @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control form-control-sm mandatory CFTStage", @id = "ProductName" })
+                                                <span id="Err-ProductName" style="display:none;color:red;">Please enter Product Name</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">HGL Approval Number </label>
+                                                @*<input type="text" class="form-control" value="HDSC-022209" />*@
+                                                @Html.TextBoxFor(m => m.HGLApprovalNumber, new { @class = "form-control form-control-sm CFTStage", @id = "HGLApprovalNumber", @disabled = "disabled" })
+                                            </div>
+                                        </div>
+                                        <div class="col-width4">
+                                            <div class="form-group">
+                                                <label class="control-label">Product Positioning Statement <label class="text-danger m-0">*</label></label>
+                                                @*<textarea class="form-control" rows="3"></textarea>*@
+                                                @Html.TextAreaFor(m => m.ProductPositioningStatement, new { @class = "form-control mandatory CFTStage", @id = "ProductPositioningStatement" })
+                                                <span id="Err-ProductPositioningStatement" style="display:none;color:red;">Please enter ProductPositioningStatement</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">Division</label>
+                                                @*<textarea class="form-control" rows="3"></textarea>*@
+                                                @Html.DropDownListFor(m => m.Division, Model.DivisionList, "--Select--", new { @class = "form-control", @id = "ClaimsDivision" })
+                                                @*<span id="Err-ClaimsDivision" style="display:none;color:red;">Please select Division</span>*@
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                        <div class="full-wdth clearfix">
+                            @if (ViewBag.isEdit == "edit")
+                            {
+                                <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                            }
+                            <div class="float-right">
+
+                                <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                                @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                                @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                                @if (Model.Stage == 2 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 claimsSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 3 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 CFTSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 4 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 5 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 SaveManagerModal" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 6 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSignOffSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage >= 7 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 AddendumSave" data-toggle="modal">Save</a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="form-wizard-content" data-tab-content="ads">
+                    <div class="-h_tab_height">
+                        <form id="form_project_brief">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-width5">
+                                        <div class="form-group ">
+                                            <label class="control-label">Must Have claims</label>
+                                            @*<textarea class="form-control" rows="3" readonly>4X faster absorption for Instant Hangover Recovery OR Starts working in 5 mins for Instant Hangover Relief 99% Relief from Hangover Symptoms like headache, nausea, fatigue Safe & Effective Clinically Proven</textarea>*@
+                                            @Html.TextAreaFor(m => m.MustHaveClaims, new { @class = "form-control CFTStage", @id = "MustHaveClaims", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                    <div class="col-width5">
+                                        <div class="form-group">
+                                            <label class="control-label">Nice to Have claims</label>
+                                            @*<textarea class="form-control" rows="3" readonly> Instantly Energize ,Improves Liver Health</textarea>*@
+                                            @Html.TextAreaFor(m => m.NiceToHaveClaims, new { @class = "form-control CFTStage", @id = "NiceToHaveClaims", @disabled = "disabled" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-width4">
+                                        <div class="form-group">
+                                            <label class="control-label">Rephrased Claims </label>
+                                            @*<textarea rows="1" class="form-control" id="editor2"></textarea>*@
+                                            @Html.TextAreaFor(m => m.RephraseClaims, new { @class = "form-control CFTStage", @id = "RephraseClaims", @cols = "30" })
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="full-wdth clearfix">
+                        <a href="javascript:;" class="form-wizard-previous-btn float-left">Previous</a>
+                        <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                        <div class="float-right">
+                            <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                            @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                            @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                            @if (Model.Stage == 2 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 claimsSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 3 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 CFTSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 4 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 DSGSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 5 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 SaveManagerModal" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 6 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 DSGSignOffSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage >= 7 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 AddendumSave" data-toggle="modal">Save</a>
+                            }
+                            @*@if(ViewBag.isEdit == "edit"){
+                                <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                                }*@
+                        </div>
+                    </div>
+
+                </div>
+                <div class="form-wizard-content" data-tab-content="placement">
+                    <div class="-h_tab_height ">
+                        <form id="form_product_description">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-width2">
+                                        <div class="form-group has-error">
+                                            <label class="control-label">License Category <label class="text-danger m-0">*</label></label>
+                                            @*<select class="form-control" data-singleselect>
+                                                <option value="">Ayush classical</option>
+                                                </select>*@
+                                            @Html.DropDownListFor(model => model.LicenseCategory, Model.LicenseCategoryList, "--Select--", new { @class = "form-control form-select-sm mandatory", @id = "LicenseCategory" })
+                                            <span id="Err-LicenseCategory" style="display:none;color:red;">Please select LicenseCategory</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Other HUBS License Category </label>
+                                            @*<input type="text" class="form-control" />*@
+                                            @Html.TextBoxFor(m => m.OtherHUBSLicenseCategory, new { @class = "form-control form-control-sm CFTStage", @id = "otherhubslicensecategory" })
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Dosage/Product form <label class="text-danger m-0">*</label></label>
+                                            @*<input type="text" class="form-control" value="Gel Cream" />*@
+                                            @Html.TextBoxFor(m => m.Dosage, new { @class = "form-control form-control-sm mandatory CFTStage", @id = "Dosage" })
+                                            <span id="Err-Dosage" style="display:none;color:red;">Please enter Dosage Form</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Target organ/disease <label class="text-danger m-0">*</label></label>
+                                            @*<input type="text" class="form-control" value="Skin" />*@
+                                            @Html.TextBoxFor(m => m.TargetOrgan, new { @class = "form-control form-control-sm mandatory CFTStage", @id = "TargetOrgan" })
+                                            <span id="Err-TargetOrgan" style="display:none;color:red;">Please enter Target Organ/Disease</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Formula features <label class="text-danger m-0">*</label></label>
+                                            @*<textarea class="form-control" rows="1">Contains cold presses Organic turmeric, licorice, Vitamin B3 </textarea>*@
+                                            @Html.TextAreaFor(m => m.FormulaFeatures, new { @class = "form-control mandatory CFTStage", @id = "FormulaFeatures" })
+                                            <span id="Err-FormulaFeatures" style="display:none;color:red;">Please enter FormulaFeatures</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Anchor HUB/Participating HUBS<label class="text-danger m-0">*</label></label>
+                                            @*<select class="form-control" data-singleselect>
+                                                <option value="">HUSA</option>
+                                                <option value="">APAC</option>
+                                                <option value="">HGML</option>
+                                                <option value="">RUMEA</option>
+                                                <option value="">EU</option>
+                                                </select>*@
+                                            @Html.ListBoxFor(model => model.AnchorHUB, Model.HubList ?? new List<SelectListItem>(),
+                                        new
+                                             {
+                                                 @class = "form-control data-multiselect",
+                                                 @multiple = "multiple",
+                                        @id = "AnchorHUB"
+                                             })
+                                            <span id="Err-AnchorHUB" style="display:none;color:red;">Please select AnchorHUB</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Non-Participating HUBS</label>
+                                            @*<input type="text" class="form-control" />*@
+                                            @Html.ListBoxFor(model => model.OtherMarkets, Model.HubList ?? new List<SelectListItem>(),
+                                        new
+                                             {
+                                                 @class = "form-control data-multiselect",
+                                                 @multiple = "multiple",
+                                        @id = "OtherMarkets"
+                                             })
+                                            @*          @Html.TextBoxFor(m=>m.OtherMarkets ,new{@class="form-control form-control-sm",@id="OtherMarkets"})*@
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Shelf life at the time of launch<label class="text-danger m-0">*</label></label>
+                                            @*<input type="text" class="form-control" value="3 years at the time of launch" />*@
+                                            @Html.TextBoxFor(m => m.ShelfLife, new { @class = "form-control form-control-sm mandatory CFTStage", @id = "ShelfLife" })
+                                            <span id="Err-ShelfLife" style="display:none;color:red;">Please enter ShelfLife</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width4">
+                                        <div class="form-group">
+                                            <label class="control-label">Direction for use<label class="text-danger m-0">*</label></label>
+                                            @*<textarea class="form-control" rows="1">Gently massage a generous quantity of the Himalaya Dark Spot Clearing Turmeric Face Cream on your cleansed face and neck untill fully absorbed.Use twice daily after cleansing. </textarea>*@
+                                            @Html.TextAreaFor(m => m.DirectionForUse, new { @class = "form-control mandatory CFTStage", @id = "DirectionForUse" })
+                                            <span id="Err-DirectionForUse" style="display:none;color:red;">Please enter Directions For Use</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width3">
+                                        <div class="form-group">
+                                            <label class="control-label">Caution </label>
+                                            @*<textarea class="form-control" rows="1">Slight burning, irritation is common with products contaning glycolic acid </textarea>*@
+                                            @Html.TextAreaFor(m => m.Caution, new { @class = "form-control CFTStage", @id = "Caution" })
+                                        </div>
+                                    </div>
+                                    <div class="col-width3">
+                                        <div class="form-group">
+                                            <label class="control-label">Target Customer<label class="text-danger m-0">*</label></label>
+                                            @*<textarea class="form-control" rows="1">General population with concern of dark spots</textarea>*@
+                                            @Html.TextAreaFor(m => m.TargetCustomer, new { @class = "form-control mandatory CFTStage", @id = "TargetCustomer" })
+                                            <span id="Err-TargetCustomer" style="display:none;color:red;">Please enter TargetCustomer</span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="full-wdth clearfix">
+                        <a href="javascript:;" class="form-wizard-previous-btn float-left">Previous</a>
+                        @*  @if (ViewBag.isEdit == "edit")
+                            {*@
+                        <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                        @*   }*@
+                        <div class="float-right">
+                            <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                            @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                            @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                            @if (Model.Stage == 2 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 claimsSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 3 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 CFTSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 4 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 DSGSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 5 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 SaveManagerModal" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 6 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 DSGSignOffSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage >= 7 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 AddendumSave" data-toggle="modal">Save</a>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.Stage != 3)
+                {
+                    <div class="form-wizard-content" data-tab-content="schedule">
+                        <div class="-h_tab_height">
+
+                            <form id="form_onpack">
+                                @if (@Model.Stage == 3)
+                                {
+                                    <div class="text-right">
+                                        @* <button type="button" class="btn btn-excel" id="onpackExcel" title="Excel Download"><i class='fas fa-file-excel'></i></button>*@
+                                        <button type="button" class="btn-excel mr-1 ml-1 mt-0" title="Excel Download" id="onpackExcel">
+                                            <img src="~/NewAssets/assets/images/excel.png" />
+                                        </button>
+                                    </div>
+                                }
+                                @if (@Model.Stage > 3)
+                                {
+                                    <div class="row">
+                                        <span class="ml-1 mr-5">CFT Remarks <button id="onPackCFTRemarks" type="button" style="background:transparent;border:none"><i class="fas fa-list" aria-hidden="true" style="color:blue"></i></button></span>
+                                    </div>
+                                }
+                                <span id="Err-OnPackGrid" style="display:none;color:red;">Please enter atleast one record for On Pack/Label Claims</span>
+                                @if (Model.Stage != 3)
+                                {
+                                    <div class="row">
+                                        <div class="text-end">
+                                            @*<button class="addonpack" type="button" id="open_onpack_modal"><i class="fa fa-plus" aria-hidden="true"></i></button>*@
+                                            <div class="add_data">
+                                                <i class="fas fa-plus" title="Add" id="open_onpack_modal"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-md-12 OnPackDetails" id="OnPackClaimsDetails">
+                                    <div class="row">
+                                        <div class="col-width2">
+                                            <div class="form-group has-error">
+                                                <label class="control-label">Claims <label class="text-danger m-0">*</label></label>
+                                                @*<textarea rows="1" class="form-control">Clear Skin </textarea>*@
+                                                @Html.TextAreaFor(m => m.Claims, new { @class = "form-control onPackField", @id = "Claims" })
+                                                <span id="Err-Claims" style="display:none;color:red;">Please enter Claims</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">Feasibility of Achieving Claims <label class="text-danger m-0">*</label></label>
+                                                <select class="form-control onPackField" data-singleselect id="FeasibilityClaims">
+                                                    <option value="">Select</option>
+                                                    <option value="Feasible">Feasible</option>
+                                                    <option value="Non Feasible">Non Feasible</option>
+                                                </select>
+                                                <span id="Err-FeasibilityClaims" style="display:none;color:red;">Please select Feasibility</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width3">
+                                            <div class="form-group">
+                                                <label class="control-label">Supporting Technical Statements from R&D <label class="text-danger m-0">*</label></label>
+                                                @*<textarea rows="1" class="form-control" id="editor2"></textarea>*@
+                                                @Html.TextAreaFor(m => m.SupportingStmt, new { @class = "form-control onPackField", @id = "SupportingStmt", @cols = "30" })
+                                                <span id="Err-SupportingStmt" style="display:none;color:red;">Please select Supporting Technical Statements</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width3">
+                                            <div class="form-group">
+                                                <label class="control-label">Measured By<label class="text-danger m-0">*</label></label>
+                                                @*<textarea rows="1" class="form-control" id="editor1">Clear skin refers to -Free from surface impurities, Oil , blemishes, dark spots</textarea>*@
+                                                @Html.TextBoxFor(m => m.MeasuredBy, new { @class = "form-control form-control-sm onPackField", @id = "MeasuredBy", @cols = "30" })
+                                                <span id="Err-MeasuredBy" style="display:none;color:red;">Please select Measured By Value</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width3 ">
+                                            <div class="form-group">
+                                                @*<label class="control-label">DSG Remarks / Restriction<label class="text-danger m-0">*</label></label>*@
+                                                <label class="control-label">DSG Remarks / Restriction</label>
+                                                @*<textarea rows="1" class="form-control"></textarea>*@
+                                                @Html.TextAreaFor(m => m.OnPackRemarks, new { @class = "form-control onPackField", @id = "OnPackRemarks" })
+                                                <span id="Err-OnPackRemarks" style="display:none;color:red;">Please Enter remarks</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width3 responsible_department">
+                                            <div class="form-group">
+                                                <label class="control-label">Responsible Department <label class="text-danger m-0">*</label></label>
+                                                @* <select class="form-control" data-multiselect multiple="multiple">
+                                                    <option value="">Clinical</option>
+                                                    <option value="">FD</option>
+                                                    <option value="">Packaging</option>
+                                                    <option value="">DCSG</option>
+                                                    <option value="">DRA</option>
+                                                    </select>*@
+                                                @Html.ListBoxFor(model => model.ResponsibleDept, Model.DeptList ?? new List<SelectListItem>(),
+                                        new
+                                             {
+                                                 @class = "form-control data-multiselect",
+                                                 @multiple = "multiple",
+                                        @id = "ResponsibleDeptOnPack"
+                                             })
+                                                <br>
+                                                <span id="Err-ResponsibleDeptOnPack" style="display:none;color:red;">Please select Responsible Department</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                @*<button type="button" class="btn btn-add ">Add</button>*@
+                                                @if (@Model.Stage <= 3)
+                                                {
+                                                    <button type="button" class="btn btn-add" id="OnPackDataAdd">Add</button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="button" class="btn btn-add" id="OnPackWithRemarksAdd">Add</button>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="">
+                                        <span id="packCommentsIsFill" style="display:none;color:red">Please Fill Required On Pack Remarks</span>
+                                    </div>
+                                    <div class="add_grid_ table_height">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="">
+                                                    <div class="m-table__main mt-0 mb-4">
+                                                        <div class="m-table__responsive -virtual-scroll">
+                                                            <table id="OnPackClaimsGrid" class="table table-bordered"></table>
+                                                            <div id="pager_claims_documeent"></div>
+                                                            <div class="packlabel_claims"></div>
+                                                            <table id="cft_review_pack_claims"></table>
+                                                            <div id="cft_review_pack_claims_pager"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <div class="full-wdth clearfix">
+                            <a href="javascript:;" class="form-wizard-previous-btn float-left">Previous</a>
+                            @*  @if (ViewBag.isEdit == "edit")
+                                {*@
+                            <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                            @*                    }*@
+                            <div class="float-right">
+                                <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                                @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                                @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                                @if (Model.Stage == 2 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 claimsSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 3 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 CFTSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 4 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 5 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 SaveManagerModal" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 6 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSignOffSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage >= 7 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 AddendumSave" data-toggle="modal">Save</a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-wizard-content show" data-tab-content="schedule">
+                        <div class="-h_tab_height">
+
+                            <form id="form_onpack">
+                                @if (@Model.Stage == 3)
+                                {
+                                    <div class="text-right">
+                                        @* <button type="button" class="btn btn-excel" id="onpackExcel" title="Excel Download"><i class='fas fa-file-excel'></i></button>*@
+                                        <button type="button" class="btn-excel mr-1 ml-1 mt-0" title="Excel Download" id="onpackExcel">
+                                            <img src="~/NewAssets/assets/images/excel.png" />
+                                        </button>
+                                    </div>
+                                }
+                                @if (@Model.Stage > 3)
+                                {
+                                    <div class="row">
+                                        <span>CFT Remarks <button id="onPackCFTRemarks" type="button" style="background:transparent;border:none"><i class="fas fa-list" aria-hidden="true" style="color:blue"></i></button></span>
+                                    </div>
+                                }
+                                <span id="Err-OnPackGrid" style="display:none;color:red;">Please enter atleast one record for On Pack/Label Claims</span>
+                                @if (Model.Stage != 3)
+                                {
+                                    <div class="row">
+                                        <div class="text-end">
+                                            @*<button class="addonpack" type="button" id="open_onpack_modal"><i class="fa fa-plus" aria-hidden="true"></i></button>*@
+                                            <div class="add_data">
+                                                <i class="fas fa-plus" title="Add" id="open_onpack_modal"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                                <div class="col-md-12 OnPackDetails" id="OnPackClaimsDetails">
+                                    <div class="row">
+                                        <div class="col-width2">
+                                            <div class="form-group has-error">
+                                                <label class="control-label">Claims <label class="text-danger m-0">*</label></label>
+                                                @*<textarea rows="1" class="form-control">Clear Skin </textarea>*@
+                                                @Html.TextAreaFor(m => m.Claims, new { @class = "form-control onPackField", @id = "Claims" })
+                                                <span id="Err-Claims" style="display:none;color:red;">Please enter Claims</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                <label class="control-label">Feasibility of Achieving Claims <label class="text-danger m-0">*</label></label>
+                                                <select class="form-control onPackField" data-singleselect id="FeasibilityClaims">
+                                                    <option value="">Select</option>
+                                                    <option value="Feasible">Feasible</option>
+                                                    <option value="Non Feasible">Non Feasible</option>
+                                                </select>
+                                                <span id="Err-FeasibilityClaims" style="display:none;color:red;">Please select Feasibility</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width3">
+                                            <div class="form-group">
+                                                <label class="control-label">Supporting Technical Statements from R&D <label class="text-danger m-0">*</label></label>
+                                                @*<textarea rows="1" class="form-control" id="editor2"></textarea>*@
+                                                @Html.TextAreaFor(m => m.SupportingStmt, new { @class = "form-control onPackField", @id = "SupportingStmt", @cols = "30" })
+                                                <span id="Err-SupportingStmt" style="display:none;color:red;">Please select Supporting Technical Statements</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width3">
+                                            <div class="form-group">
+                                                <label class="control-label">Measured By<label class="text-danger m-0">*</label></label>
+                                                @*<textarea rows="1" class="form-control" id="editor1">Clear skin refers to -Free from surface impurities, Oil , blemishes, dark spots</textarea>*@
+                                                @Html.TextBoxFor(m => m.MeasuredBy, new { @class = "form-control form-control-sm onPackField", @id = "MeasuredBy", @cols = "30" })
+                                                <span id="Err-MeasuredBy" style="display:none;color:red;">Please select Measured By Value</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width2 ">
+                                            <div class="form-group">
+                                                <label class="control-label">DSG Remarks / Restriction<label class="text-danger m-0">*</label></label>
+                                                @*<textarea rows="1" class="form-control"></textarea>*@
+                                                @Html.TextAreaFor(m => m.OnPackRemarks, new { @class = "form-control onPackField", @id = "OnPackRemarks" })
+                                                <span id="Err-OnPackRemarks" style="display:none;color:red;">Please Enter remarks</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-width3 responsible_department">
+                                            <div class="form-group">
+                                                <label class="control-label">Responsible Department <label class="text-danger m-0">*</label></label>
+                                                @* <select class="form-control" data-multiselect multiple="multiple">
+                                                    <option value="">Clinical</option>
+                                                    <option value="">FD</option>
+                                                    <option value="">Packaging</option>
+                                                    <option value="">DCSG</option>
+                                                    <option value="">DRA</option>
+                                                    </select>*@
+                                                @Html.ListBoxFor(model => model.ResponsibleDept, Model.DeptList ?? new List<SelectListItem>(),
+                                        new
+                                             {
+                                                 @class = "form-control data-multiselect",
+                                                 @multiple = "multiple",
+                                        @id = "ResponsibleDeptOnPack"
+                                             })
+                                                <br>
+                                                <span id="Err-ResponsibleDeptOnPack" style="display:none;color:red;">Please select ResponsibleDepartment</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-width2">
+                                            <div class="form-group">
+                                                @*<button type="button" class="btn btn-add ">Add</button>*@
+                                                @if (@Model.Stage <= 3)
+                                                {
+                                                    <button type="button" class="btn btn-add" id="OnPackDataAdd">Add</button>
+                                                }
+                                                else
+                                                {
+                                                    <button type="button" class="btn btn-add" id="OnPackWithRemarksAdd">Add</button>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="row">
+                                        <span id="packCommentsIsFill" style="display:none;color:red">Please Fill Required On Pack Remarks</span>
+                                    </div>
+                                    <div class="add_grid_ table_height">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="">
+                                                    <div class="m-table__main mt-0 mb-1">
+                                                        <div class="m-table__responsive -virtual-scroll">
+                                                            <table id="OnPackClaimsGrid" class="table table-bordered"></table>
+                                                            <div id="pager_claims_documeent"></div>
+                                                            <div class="packlabel_claims"></div>
+                                                            <table id="cft_review_pack_claims"></table>
+                                                            <div id="cft_review_pack_claims_pager"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <div class="full-wdth clearfix">
+                            <a href="javascript:;" class="form-wizard-previous-btn float-left">Previous</a>
+                            @*  @if (ViewBag.isEdit == "edit")
+                                {*@
+                            <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                            @*                    }*@
+                            <div class="float-right">
+                                <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                                @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                                @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                                @if (Model.Stage == 2 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 claimsSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 3 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 CFTSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 4 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 5 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 SaveManagerModal" data-toggle="modal">Save</a>
+                                }@if (Model.Stage == 6 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 DSGSignOffSave" data-toggle="modal">Save</a>
+                                }@if (Model.Stage >= 7 && ViewBag.isEdit == "edit")
+                                {
+                                    <a href="" class="btn btn-success mr-1 AddendumSave" data-toggle="modal">Save</a>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                }
+                <div class="form-wizard-content" data-tab-content="review">
+                    @if (@Model.Stage != 3 && @Model.Stage < 3)
+                    {
+                        <div class="note_review">
+                            Note : If you don't have any data on Claims for Communication, Please navigate to Supporting Documents tab and Click on
+                            <strong>Send to CFT</strong>
+                        </div>
+                    }
+                    else if (@Model.Stage > 3)
+                    {
+                        <div class="note_review">
+                            Note : If you don't have any data on Claims for Communication, Please navigate to Supporting Documents tab.
+                        </div>
+                    }
+                    <div class="-h_tab_height">
+
+                        <form id="form_communication">
+                            <span id="Err-CommunicationClaimsGrid" style="display:none;color:red;">Please enter atleast one record for Claims For Communications</span>
+                            @if (@Model.Stage == 3)
+                            {
+                                @* <div class="text-right">
+                                    <button type="button" class="btn btn-excel" id="communicationExcel" title="Excel Download"><i class='fas fa-file-excel'></i></button>
+                                    <input type="file" class="form-control form-control-sm" id="CFTreviewexcelupload" accept=".xls, .xlsx" onchange=validateCFTfileupload() />
+                                    <span id="Err_InvalidDocFormat" style="color:red;display:none">The file must be of type: .xls, .xlsx</span>
+                                    </div>*@
+
+                                <form>
+                                    <div class="col-md-12 IRADocumentExcel">
+                                        <div class="row product_profile">
+
+                                            <div class="col-lg-3">
+                                                <div class="form-group">
+                                                    <div class="demo-content">
+                                                        <input type="file" class="form-control" id="CFTreviewexcelupload" accept=".xls, .xlsx" onchange=validateCFTfileupload() />
+                                                        <span id="Err-CFTdocument" style="display:none;color:red;">Please upload a Supporting Document</span>
+                                                        <span id="Err_InvalidCFTDocFormat" style="color:red;display:none">The file must be of type:  .xls, .xlsx </span>
+                                                    </div>
+                                                    <div style="color:black;font-size:9px" class="waterMark_">(<strong>NOTE:</strong>The file must be of type: .xls, .xlsx)</div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group">
+                                                    <button type="button" id="Add_CFTDocument" class="mt-1 btn btn-success btn-add Add_SupportingDocuments">Add</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1">
+                                                <div class="form-group">
+                                                    <div class="demo-content pt-2 ps-3">
+                                                        <a href="#" data-bs-toggle="modal" title="View Document" data-bs-target="#CFTDocumentDetail"><i class="fa fa-info-circle"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-7">
+                                                <button type="button" class="btn-excel mr-1 ml-1 mt-0 float-right" title="Excel Download" id="communicationExcel">
+                                                    <img src="~/NewAssets/assets/images/excel.png" />
+                                                </button>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </form>
+
+                            }
+                            @if (@Model.Stage > 3)
+                            {
+                                <div>
+                                    <span class="ml-1 mr-5">CFT Remarks <button id="communicationCFTRemarks" title="Remarks List" type="button" style="background:transparent;border:none"><i class="fas fa-list" aria-hidden="true" style="color:blue"></i></button></span>
+                                    <span>View Document <button id="UploadedExcelDocuments" type="button" title="View Document" style="background:transparent;border:none"><i class="fa fa-info-circle" aria-hidden="true" style="color:blue"></i></button></span>
+
+                                </div>
+                            }
+                            <div class="row">
+                                <span id="communicationCommentsIsFill" style="display:none;color:red">Please Fill Required Communication Remarks</span>
+                            </div>
+                            @if (Model.Stage != 3)
+                            {
+                                <div class="row">
+                                    <div class="text-end">
+                                        @*<button class="addonpack" type="button" id="
+
+                                            "><i class="fa fa-plus" aria-hidden="true"></i></button>*@
+                                        <div class="add_data">
+                                            <i class="fas fa-plus" title="Add" id="open_communication_modal"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="col-md-12 CommuniactionDetails" id="CommunicationClaimDetails">
+                                <div class="row">
+                                    <div class="col-width2">
+                                        <div class="form-group has-error">
+                                            <label class="control-label">Claims <label class="text-danger m-0">*</label></label>
+                                            @*<textarea rows="1" class="form-control">XX% of subjects agree product reduces dark spots in X weeks</textarea>*@
+                                            @Html.TextAreaFor(m => m.CommunicationClaims, new { @class = "form-control claimsField", @id = "CommunicationClaims" })
+                                            <span id="Err-CommunicationClaims" style="display:none;color:red;">Please enter Claims</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            <label class="control-label">Feasibility of Achieving Claims <label class="text-danger m-0">*</label></label>
+                                            <select class="form-control claimsField" data-singleselect id="CommunicationFeasibilityClaims">
+                                                <option value="">Select</option>
+                                                <option value="Feasible">Feasible</option>
+                                                <option value="Non Feasible">Non Feasible</option>
+                                            </select>
+                                            <span id="Err-CommunicationFeasibilityClaims" style="display:none;color:red;">Please select Feasibility</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width3">
+                                        <div class="form-group">
+                                            <label class="control-label">Supporting Technical Statements from R&D <label class="text-danger m-0">*</label></label>
+                                            @*<textarea rows="1" class="form-control" id="editor3">Evalution of parameters / Sensory attributes like non-sticky feel.</textarea>*@
+                                            @Html.TextAreaFor(m => m.SupportingTechStmt, new { @class = "form-control claimsField", @id = "SupportingTechStmt", @cols = "30" })
+                                            <span id="Err-SupportingTechStmt" style="display:none;color:red;">Please enter Supporting Technical Statements</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width3">
+                                        <div class="form-group">
+                                            <label class="control-label">Measured By<label class="text-danger m-0">*</label></label>
+                                            @*<textarea rows="1" class="form-control" id="editor4"></textarea>*@
+                                            @Html.TextBoxFor(m => m.CommunicationClaimsMeasuredBy, new { @class = "form-control form-control-sm claimsField", @id = "CommunicationClaimsMeasuredBy", @cols = "30" })
+                                            <span id="Err-CommunicationClaimsMeasuredBy" style="display:none;color:red;">Please enter Measured By Value</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2 ">
+                                        <div class="form-group">
+                                            @*<label class="control-label">DSG Remarks / Restriction<label class="text-danger m-0">*</label></label>*@
+                                            <label class="control-label">DSG Remarks / Restriction</label>
+                                            @*<textarea rows="1" class="form-control">Subject to regulatory approval in RUMEA along with signed business risk form</textarea>*@
+                                            @Html.TextAreaFor(m => m.CommunicationRemarks, new { @class = "form-control claimsField", @id = "CommunicationRemarks" })
+                                            <span id="Err-CommunicationRemarks" style="display:none;color:red;">Please Enter Remarks</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width3 responsible_department_communication">
+                                        <div class="form-group">
+                                            <label class="control-label ">Responsible Department <label class="text-danger m-0">*</label></label>
+                                            @*<select class="form-control" data-multiselect multiple="multiple">
+
+                                                <option value="">IRA</option>
+                                                <option value="">Clinical</option>
+                                                <option value="">FD</option>
+                                                <option value="">Packaging</option>
+                                                <option value="">DCSG</option>
+                                                <option value="">DRA</option>
+                                                </select>*@
+                                            @Html.ListBoxFor(model => model.ResponsibleDept, Model.DeptList ?? new List<SelectListItem>(),
+                                        new
+                                             {
+                                                 @class = "form-control data-multiselect",
+                                                 @multiple = "multiple",
+                                        @id = "ResponsibleDeptCommunication"
+                                             })
+                                            <br>
+                                            <span id="Err-ResponsibleDeptCommunication" style="display:none;color:red;">Please select Responsible Department</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-width2">
+                                        <div class="form-group">
+                                            @*<button type="button" class="btn btn-add ">Add</button>*@
+                                            @if (@Model.Stage <= 3)
+                                            {
+                                                <button type="button" class="btn btn-add" id="CommunicationClaimsDataAdd">Add</button>
+                                            }
+                                            else
+                                            {
+                                                <button type="button" class="btn btn-add" id="CommunicationClaimsWithRemarksAdd">Add</button>
+                                            }
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div>
+                                <div class="add_grid_">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="">
+                                                <div class="m-table__main mt-0 mb-4">
+                                                    <div class="m-table__responsive -virtual-scroll">
+                                                        <table id="CommuniactionClaimsGrid" class="table table-bordered"></table>
+                                                        <div id="pager_claims_documeent1"></div>
+                                                        <div class="communication_claims"></div>
+                                                        <table id="cft_review_pack_communication"></table>
+                                                        <div id="cft_review_pack_communication_pager"></div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </form>
+
+                        <div class="formulation_table">
+                        </div>
+                    </div>
+                    <div class="full-wdth clearfix">
+                        <a href="javascript:;" class="form-wizard-previous-btn float-left">Previous</a>
+                        @*     @if (ViewBag.isEdit == "edit")
+                            {*@
+                        <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>
+                        @*}*@
+                        <div class="float-right">
+                            @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                            @if (Model.Stage == 2 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 claimsSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 3 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 CFTSave" data-toggle="modal">Save</a>
+                                <button type="button" class="btn btn-info SendToDSG mr-1" data-title="Submit" id="SendToDSG">Send To DSG</button>
+                            }@if (Model.Stage == 4 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 DSGSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 5 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 SaveManagerModal" data-toggle="modal">Save</a>
+                            }@if (Model.Stage == 6 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 DSGSignOffSave" data-toggle="modal">Save</a>
+                            }@if (Model.Stage >= 7 && ViewBag.isEdit == "edit")
+                            {
+                                <a href="" class="btn btn-success mr-1 AddendumSave" data-toggle="modal">Save</a>
+                            }
+
+                            <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+
+                        </div>
+
+                    </div>
+                </div>
+                @if (Model.Stage != 5)
+                {
+                    <div class="form-wizard-content" data-tab-content="upload">
+                        <div class="-h_tab_height">
+                            <form>
+                                <div class="col-md-12">
+                                    <div class="row product_profile">
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Upload Document</label>
+                                                <div class="demo-content">
+                                                    <input type="file" class="form-control" id="supportingDocument" onchange="return fileValidation()" accept=".pdf,.xlsx,.pptx,.doc,.docx" />
+                                                    <span id="Err-supportingDocument" style="display:none;color:red;">Please upload a Supporting Document</span>
+                                                    <span id="Err_InvalidDocFormat" style="color:red;display:none">The file must be of type: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv</span>
+                                                </div>
+                                                @if (ViewBag.isEdit == "edit")
+                                                {
+                                                    <div style="color:black;font-size:9px" class="waterMark_">(<strong>NOTE:</strong>The file must be of type: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv)</div>
+                                                }
+                                            </div>
+                                        </div>
+                                        @if (ViewBag.isEdit == "edit")
+                                        {
+                                            <div class="col-lg-1">
+                                                <div class="form-group">
+                                                    <button type="button" id="Add_SupportingDocuments" class="btn btn-success btn-add Add_SupportingDocuments">Add</button>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+
+                                                <label>View Document</label>
+                                                <div class="demo-content pt-2 ps-3">
+                                                    <a href="#" data-bs-toggle="modal" title="Supporting Documents" data-bs-target="#fileModal"><i class="fa fa-info-circle"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="full-wdth clearfix">
+                            <a href="javascript:;" class="form-wizard-previous-btn float-left">Previous</a>
+                            @*    <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>*@
+                            <div class="float-right">
+                                <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                                @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                                @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                            </div>
+                            <div class="row sticky-bottom EditStage edit-buttons" style="display:none;">
+                                <div class="save_buttons float-right text-right">
+                                    @if (ViewBag.isEdit == "edit")
+                                    {
+                                        <button type="button" class="btn btn-success mr-1 claimsSave" data-title="Save"> Save</button>
+                                        <button type="button" class="btn btn-info mr-1" data-title="Submit" id="SendToCFT">Send To CFT</button>
+                                    }
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom CFTStageButtons edit-buttons" style="display:none;">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    @if (ViewBag.isEdit == "edit")
+                                    {
+                                        @*<button type="button" id="CFTSave" class="btn-ap" data-title="Save"> Save</button>*@
+                                        <button type="button" href="" class="btn btn-success mr-1 CFTSave" data-title="Save"> Save</button>
+
+
+                                        <button type="button" class="btn btn-info SendToDSG" data-title="Submit" id="SendToDSG">Send To DSG</button>
+                                        @*<a href="" class="btn btn-info mr-1" data-title="Submit" id="SendToDSG">Send To DSG</a>*@
+
+                                    }
+
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom DSGStageButtons edit-buttons" style="display:none;">
+                                <div class="save_buttons float-right text-right">
+                                    @if (ViewBag.isEdit == "edit")
+                                    {
+                                        <button type="button" class="btn btn-success btn-ap DSGSave" data-title="Save"> Save</button>
+
+                                        <button type="button" class="btn btn-info btn-sb" data-title="Submit" id="SendForApproval">Send For Approval</button>
+
+                                    }
+
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom ManagerApprovalButtons edit-buttons" style="display:none">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    <button type="button" class="btn btn-success SaveManagerModal" data-title="Save"> Save</button>
+                                    <button type="button" class="btn btn-sb btn-primary" id="SendForBackToDSG" data-title="Submit"> Send back to DSG</button>
+                                    <button type="button" class="btn btn-info" id="SendForDSGSignOff" data-title="Submit">Approve</button>
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom DSGSignOffBeforeSignedOff edit-buttons" style="display:none">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    <button type="button" class="btn btn-success DSGSignOffSave" data-title="Save">Save</button>
+                                    <button type="button" class="btn btn-info" id="signOff">Signed off</button>
+                                    @*<button type="button" class="btn btn-sb btn-primary" data-bs-toggle="modal" onclick="validatePmdReviewSendMailForm()" data-title="Send Mail"> Send Mail</button>*@
+
+                                    @*<button type="button" class="btn-sb"  data-title="Submit" id="SendToCft1">Send To CFT</button>*@
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom DSGSignOff edit-buttons" style="display:none">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    <button type="button" class="btn btn-success DSGSignOffSave" data-title="Save">Save</button>
+                                    @*<button type="button" class="btn btn-sb btn-primary" id="signOff">SignOff</button>*@
+                                    <button type="button" class="btn btn-info" data-title="Save" id="SaveAsAddendum">Save as Addendum</button>
+                                    <button type="button" class="btn btn-sb btn-primary" data-bs-toggle="modal" onclick="validatePmdReviewSendMailForm()" data-title="Send Mail"> Send Mail</button>
+
+                                    @*<button type="button" class="btn-sb"  data-title="Submit" id="SendToCft1">Send To CFT</button>*@
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom Addendum edit-buttons" style="display:none">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    <button type="button" class="btn btn-success AddendumSave" data-title="Save"> Save</button>
+                                    <button type="button" class="btn btn-info" data-title="AddendumSaveUpdate" id="AddendumSaveUpdate"> Save &amp; Update</button>
+                                    @*<button type="button" class="btn btn-sb btn-primary" data-bs-toggle="modal" onclick="validatePmdReviewSendMailForm()" data-title="Send Mail"> Send Mail</button>*@
+
+                                    @*<button type="button" class="btn btn-rej btn-success" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+                                </div>
+                            </div>
+                            @*<div class="row sticky-bottom view-button" style="display:none;">
+                                <div class="save_buttons float-right text-right">
+                                <button type="button" class="btn btn-rej btn-danger" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>
+                                </div>
+                                </div>*@
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="form-wizard-content show" data-tab-content="upload">
+                        <div class="-h_tab_height">
+                            <form>
+                                <div class="col-md-12">
+                                    <div class="row product_profile">
+
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label>Upload Document</label>
+                                                <div class="demo-content">
+                                                    <input type="file" class="form-control" id="supportingDocument" onchange="return fileValidation()" accept=".pdf,.xlsx,.pptx,.doc,.docx" />
+                                                    <span id="Err-supportingDocument" style="display:none;color:red;">Please upload a Supporting Document</span>
+                                                    <span id="Err_InvalidDocFormat" style="color:red;display:none">The file must be of type: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv</span>
+                                                </div>
+                                                @if (ViewBag.isEdit == "edit")
+                                                {
+                                                    <div style="color:black;font-size:9px" class="waterMark_">(<strong>NOTE:</strong>The file must be of type: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv)</div>
+                                                }
+                                            </div>
+                                        </div>
+                                        @if (ViewBag.isEdit == "edit")
+                                        {
+                                            <div class="col-lg-1">
+                                                <div class="form-group">
+                                                    <button type="button" id="Add_SupportingDocuments" class="btn btn-success btn-add Add_SupportingDocuments">Add</button>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+
+                                                <label>View Document</label>
+                                                <div class="demo-content pt-2 ps-3">
+                                                    <a href="#" data-bs-toggle="modal" title="Supporting Documents" data-bs-target="#fileModal"><i class="fa fa-info-circle"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="full-wdth clearfix">
+                            <a href="javascript:;" class="form-wizard-previous-btn float-left">Previous</a>
+                            @*    <a href="javascript:;" class="form-wizard-next-btn btn">Next</a>*@
+                            <div class="float-right">
+                                <a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")" class="btn btn-danger mr-1">Cancel</a>
+                                @*<a href="" class="btn btn-info mr-1" data-bs-toggle="modal" data-bs-target="#send_cft">Send to CFT</a>*@
+                                @*<a href="" class="btn btn-success mr-1" data-toggle="modal" data-target="#saveUpdate">Save</a>*@
+                            </div>
+                            <div class="row sticky-bottom EditStage edit-buttons" style="display:none;">
+                                <div class="save_buttons float-right text-right">
+                                    @if (ViewBag.isEdit == "edit")
+                                    {
+                                        <button type="button" class="btn btn-success mr-1 claimsSave" data-title="Save"> Save</button>
+                                        <button type="button" class="btn btn-info mr-1" data-title="Submit" id="SendToCFT">Send To CFT</button>
+                                    }
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom CFTStageButtons edit-buttons" style="display:none;">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    @if (ViewBag.isEdit == "edit")
+                                    {
+                                        @*<button type="button" id="CFTSave" class="btn-ap" data-title="Save"> Save</button>*@
+                                        <button type="button" href="" class="btn btn-success mr-1 CFTSave" data-title="Save"> Save</button>
+
+
+                                        <button type="button" class="btn btn-info SendToDSG" data-title="Submit" id="SendToDSG">Send To DSG</button>
+                                        @*<a href="" class="btn btn-info mr-1" data-title="Submit" id="SendToDSG">Send To DSG</a>*@
+
+                                    }
+
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom DSGStageButtons edit-buttons" style="display:none;">
+                                <div class="save_buttons float-right text-right">
+                                    @if (ViewBag.isEdit == "edit")
+                                    {
+                                        <button type="button" class="btn btn-success btn-ap DSGSave" data-title="Save"> Save</button>
+
+                                        <button type="button" class="btn btn-info btn-sb" data-title="Submit" id="SendForApproval">Send For Approval</button>
+
+                                    }
+
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom ManagerApprovalButtons edit-buttons" style="display:none">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    <button type="button" class="btn btn-success SaveManagerModal" data-title="Save"> Save</button>
+                                    <button type="button" class="btn btn-sb btn-primary" id="SendForBackToDSG" data-title="Submit"> Send back to DSG</button>
+                                    <button type="button" class="btn btn-info" id="SendForDSGSignOff" data-title="Submit">Approve</button>
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom DSGSignOff edit-buttons" style="display:none">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    <button type="button" class="btn btn-success DSGSignOffSave" data-title="Save">Save</button>
+                                    <button type="button" class="btn btn-info" data-title="Save" id="SaveAsAddendum">Save as Addendum</button>
+                                    <button type="button" class="btn btn-sb btn-primary" data-bs-toggle="modal" onclick="validatePmdReviewSendMailForm()" data-title="Send Mail"> Send Mail</button>
+
+                                    @*<button type="button" class="btn-sb"  data-title="Submit" id="SendToCft1">Send To CFT</button>*@
+                                    @*<button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+                                </div>
+                            </div>
+                            <div class="row sticky-bottom Addendum edit-buttons" style="display:none">
+                                <div class="save_buttons float-right text-right edit-buttons">
+                                    <button type="button" class="btn btn-success AddendumSave" data-title="Save"> Save</button>
+                                    <button type="button" class="btn btn-info" data-title="AddendumSaveUpdate" id="AddendumSaveUpdate"> Save &amp; Update</button>
+                                    <button type="button" class="btn btn-sb btn-primary" data-bs-toggle="modal" onclick="validatePmdReviewSendMailForm()" data-title="Send Mail"> Send Mail</button>
+
+                                    @*<button type="button" class="btn btn-rej btn-success" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>*@
+                                </div>
+                            </div>
+                            @*<div class="row sticky-bottom view-button" style="display:none;">
+                                <div class="save_buttons float-right text-right">
+                                <button type="button" class="btn btn-rej btn-danger" onclick="location.href = './ClaimsGridDocument';" data-title="Cancel"> Cancel</button>
+                                </div>
+                                </div>*@
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+@*user grid table *@
+<script>
+    data = [
+        {
+            "Action": "",
+            "Claims": "rn-200000012",
+            "FeasibilityofAchievingclaims": "Feasible",
+            "SupportingtechnicalstatementsfromRD": "rn-200000012",
+            "MeasuredBy": "rn-200000012",
+            "RemarksRestrictions": "rn-200000012",
+            "ResponsibleDepartment": "Clinical,Packaging",
+            "FDRemarks": "",
+        },
+    ]
+    colmodels = [
+
+        //{
+        //    name: 'Action',
+        //    label: 'Action',
+        //    width: 65,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //    sortable: false,
+        //    formatter: function (cellvalue, options, rowobject) {
+        //        return '<div class="text-center action_icons">' +
+        //            '<label class="mb-0">...</label><ul class="hover_icons"><li><i class="fas fa-eye"></i> View </li><li><i class="fas fa-edit"></i> Edit </li><li><i class="fas fa-download"></i> Download</li></ul>' +
+        //            '</div>';
+        //    }
+        //},
+
+        {
+            name: 'Claims',
+            label: 'Claims',
+            width: 100,
+            resizable: true,
+            ignoreCase: true
+        },
+        {
+            name: 'FeasibilityofAchievingclaims',
+            label: 'Feasibility of Achieving claims',
+            resizable: true,
+            width: 120,
+            ignoreCase: true,
+        },
+        {
+            name: 'SupportingtechnicalstatementsfromRD',
+            label: 'Supporting Technical Statements From R&D',
+            width: 120,
+            resizable: true,
+            ignoreCase: true
+        },
+        {
+            name: 'MeasuredBy',
+            label: 'Measured By',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'RemarksRestrictions',
+            label: 'Remarks Restrictions',
+            resizable: true,
+            width: 120,
+            ignoreCase: true,
+        },
+        {
+            name: 'ResponsibleDepartment',
+            label: 'Responsible Department',
+            resizable: true,
+            width: 120,
+            ignoreCase: true,
+        },
+        {
+            name: 'FDRemarks',
+            label: 'F&D Remarks',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="text-center">' +
+                    '<span><textarea class="form-control" value="Test"></textarea></span>' +
+                    '</div>';
+            }
+        },
+
+
+    ],
+
+        $("#label_claims_grid").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#label_pager',
+            rowNum: 20,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#label_claims_grid tbody tr");
+                var objHeader = $("#label_claims_grid tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#label_claims_grid").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+    $('.ui-jqgrid-bdiv').css({ 'max-height': '60vh' });
+    $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+</script>
+<script>
+    data = [
+        {
+            "Action": "",
+            "Claims": "rn-200000012",
+            "FeasibilityofAchievingclaims": "Feasible",
+            "SupportingtechnicalstatementsfromRD": "rn-200000012",
+            "MeasuredBy": "rn-200000012",
+            "RemarksRestrictions": "rn-200000012",
+            "ResponsibleDepartment": "Clinical,Packaging",
+            "FDRemarks": "",
+        },
+    ]
+    colmodels = [
+
+        //{
+        //    name: 'Action',
+        //    label: 'Action',
+        //    width: 65,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //    sortable: false,
+        //    formatter: function (cellvalue, options, rowobject) {
+        //        return '<div class="text-center action_icons">' +
+        //            '<label class="mb-0">...</label><ul class="hover_icons"><li><i class="fas fa-eye"></i> View </li><li><i class="fas fa-edit"></i> Edit </li><li><i class="fas fa-download"></i> Download</li></ul>' +
+        //            '</div>';
+        //    }
+        //},
+
+        {
+            name: 'Claims',
+            label: 'Claims',
+            width: 100,
+            resizable: true,
+            ignoreCase: true
+        },
+        {
+            name: 'FeasibilityofAchievingclaims',
+            label: 'Feasibility of Achieving claims',
+            resizable: true,
+            width: 120,
+            ignoreCase: true,
+        },
+        {
+            name: 'SupportingtechnicalstatementsfromRD',
+            label: 'Supporting Technical Statements From R&D',
+            width: 120,
+            resizable: true,
+            ignoreCase: true
+        },
+        {
+            name: 'MeasuredBy',
+            label: 'Measured By',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'RemarksRestrictions',
+            label: 'Remarks Restrictions',
+            resizable: true,
+            width: 120,
+            ignoreCase: true,
+        },
+        {
+            name: 'ResponsibleDepartment',
+            label: 'Responsible Department',
+            resizable: true,
+            width: 120,
+            ignoreCase: true,
+        },
+        {
+            name: 'FDRemarks',
+            label: 'F&D Remarks',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="text-center">' +
+                    '<span><textarea class="form-control" value="Test"></textarea></span>' +
+                    '</div>';
+            }
+        },
+
+
+    ],
+
+        $("#claims_grid2").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#label_pager1',
+            rowNum: 20,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#claims_grid2 tbody tr");
+                var objHeader = $("#claims_grid2 tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#claims_grid2").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+    $('.ui-jqgrid-bdiv').css({ 'max-height': '60vh' });
+    $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+</script>
+<script>
+    jQuery(document).ready(function () {
+
+        jQuery('.form-wizard-wrapper').find('.form-wizard-link').click(function () {
+            jQuery('.form-wizard-link').removeClass('active');
+            var innerWidth = jQuery(this).innerWidth();
+            jQuery(this).addClass('active');
+            var position = jQuery(this).position();
+            jQuery('.form-wizardmove-button').css({ "left": position.left, "width": innerWidth });
+            var attr = jQuery(this).attr('data-attr');
+            jQuery('.form-wizard-content').each(function () {
+                if (jQuery(this).attr('data-tab-content') == attr) {
+                    jQuery(this).addClass('show');
+                } else {
+                    jQuery(this).removeClass('show');
+                }
+            });
+        });
+        jQuery('.form-wizard-next-btn').click(function () {
+            var next = jQuery(this);
+            next.parents('.form-wizard-content').removeClass('show');
+            next.parents('.form-wizard-content').next('.form-wizard-content').addClass('show');
+            jQuery(document).find('.form-wizard-content').each(function () {
+                if (jQuery(this).hasClass('show')) {
+                    var formAtrr = jQuery(this).attr('data-tab-content');
+                    jQuery(document).find('.form-wizard-wrapper li a').each(function () {
+                        if (jQuery(this).attr('data-attr') == formAtrr) {
+                            jQuery(this).addClass('active');
+                            var innerWidth = jQuery(this).innerWidth();
+                            var position = jQuery(this).position();
+                            jQuery(document).find('.form-wizardmove-button').css({ "left": position.left, "width": innerWidth });
+                        } else {
+                            jQuery(this).removeClass('active');
+                        }
+                    });
+                }
+            });
+        });
+        jQuery('.form-wizard-previous-btn').click(function () {
+            var prev = jQuery(this);
+            prev.parents('.form-wizard-content').removeClass('show');
+            prev.parents('.form-wizard-content').prev('.form-wizard-content').addClass('show');
+            jQuery(document).find('.form-wizard-content').each(function () {
+                if (jQuery(this).hasClass('show')) {
+                    var formAtrr = jQuery(this).attr('data-tab-content');
+                    jQuery(document).find('.form-wizard-wrapper li a').each(function () {
+                        if (jQuery(this).attr('data-attr') == formAtrr) {
+                            jQuery(this).addClass('active');
+                            var innerWidth = jQuery(this).innerWidth();
+                            var position = jQuery(this).position();
+                            jQuery(document).find('.form-wizardmove-button').css({ "left": position.left, "width": innerWidth });
+                        } else {
+                            jQuery(this).removeClass('active');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+
+<script>
+    $(document).ready(function () {
+        $('.form-group.has-error').closest('.form-wizard-wrapper').find('.form-wizard-link').addClass('parent-has-error');
+    });
+</script>
+
+<div id="plus_add" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Supporting Technical Statements from R&D and Measured By</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="col-width4" id='input-contt'>
+                        <div class="form-group">
+                            <label class="control-label">Supporting Technical Statements from R&amp;D <span class="text-danger">*</span></label>
+                            <textarea rows="2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-width4" id='input-contt2'>
+                        <div class="form-group">
+                            <label class="control-label">Measured By <span class="text-danger">*</span></label>
+                            <textarea rows="2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group mt-3 pt-3">
+                            <div class="">
+                                <i class="fas fa-plus" onclick='addInputt()'></i>
+                                @*<i class="fas fa-trash" id='input-contt3'></i>*@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+                <div class="col-md-12 row">
+                    <div class="text-right">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-add ">Save</button>
+                            <button type="button" class="btn btn-add btn-danger " data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*send cft popup*@
+<div id="send_cft" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">CFT Users</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">Department <span class="text-danger">*</span></label>
+                            <select class="form-control" data-multiselect multiple="multiple">
+                                <option value="">IRA</option>
+                                <option value="">Clinical</option>
+                                <option value="">FD</option>
+                                <option value="">Packaging</option>
+                                <option value="">DCSG</option>
+                                <option value="">DRA</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">CFT Users <span class="text-danger">*</span></label>
+                            <select class="form-control" data-multiselect multiple="multiple">
+                                <option value="">Shreyas@himalayawellness.com</option>
+                                <option value="">Sharan@himalayawellness.com</option>
+                                <option value="">Aparna@himalayawellness.com</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">Remarks <span class="text-danger">*</span></label>
+                            <textarea rows="2" class="form-control"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-add">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>CFT Users</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <textarea rows="3" class="form-control"></textarea>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="">
+                    <div class="text-right">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-add ">Save</button>
+                            <button type="button" class="btn btn-add btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*user modal popup*@
+<div id="Preview" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Preview Claims Grid</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body previewDoc">
+                <section>
+                    <div class="table-project">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr class="mod_th">
+                                        <th scope="col">Project Number</th>
+                                        <th scope="col">Product Name</th>
+                                        <th scope="col">HGL Approval Number</th>
+                                        <th scope="col">Date</th>
+                                        <th scope="col">Version No.</th>
+                                        <th scope="col">Download</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td id="projNo_v" class="projNo_v"></td>
+                                        <td id="prodName_v" class="prodName_v"></td>
+                                        <td id="apprNo_v" class="apprNo_v"></td>
+                                        @*<td class="fas fa-calendar-alt" style="padding-right: 5px;" id="date_v"></td>*@
+                                        <td><i class="fas fa-calendar-alt" style="padding-right: 5px;"></i><span id="date_v"></span></td>
+
+                                        <td id="version_v"></td>
+                                        <td>
+                                            @* <button type="button" class="generateClaims_pdf" style="border: none; background: #198754; padding: 5px; border-radius: 50%; color: white;">*@
+                                            <i class="flaticon-download generateClaims_pdf" aria-hidden="true"></i>
+                                            @* </button>*@
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+                <section class="mt-4 title_content">
+                    <h4 class="title-text">Project Details</h4>
+                    <div class="title_body">
+
+                        <table class="table table-bordered mb-0 table-firstWidth">
+                            <tr>
+                                <th>Project Number </th>
+                                <td class="projNo_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Product Name</th>
+                                <td class="prodName_v"></td>
+                            </tr>
+                            <tr>
+                                <th>HGL Approval Number</th>
+                                <td class="apprNo_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Product Positioning Statement</th>
+                                <td class="ProductPositioningStatement_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Division</th>
+                                <td class="Division_v"></td>
+                            </tr>
+
+                        </table>
+
+                        @* <form>
+                            <div class="row ml-0">
+                            <div class="col-width2">
+                            <div class="form-group has-error">
+                            <label class="control-label">Project Number</label>
+                            <p class="projNo_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width3">
+                            <div class="form-group">
+                            <label class="control-label">Product Name </label>
+                            <p class="prodName_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width2">
+                            <div class="form-group">
+                            <label class="control-label">HGL Approval Number </label>
+                            <p class="apprNo_v"></p>
+                            </div>
+                            </div>
+
+                            </div>
+                            <div class="col-width6">
+                            <div class="form-group">
+                            <label class="control-label">Product Positioning Statement</label>
+                            <p class="ProductPositioningStatement_v"></p>
+                            </div>
+                            </div>
+                            </form>*@
+                    </div>
+                </section>
+                <section class="title_content">
+                    @if (@Model.ProjectBriefId != "")
+                    {
+                        <h4 class="title-text ProjectBriefId_V">
+                            Project Brief -  @Model.ProjectBriefId
+                        </h4>
+                    }
+                    else
+                    {
+                        <h4 class="title-text ProjectBriefId_V">
+                            Project Brief
+                        </h4>
+                    }
+                    <div class="title_body">
+
+                        <table class="table table-bordered mb-0 table-firstWidth">
+
+                            <tr>
+                                <th>Must Have claims</th>
+                                <td class="MustHaveclaims_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Nice to Have claims</th>
+                                <td class="NicetoHaveclaims_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Rephrased Claims</th>
+                                <td class="Rephraseclaims_v viewandpreview"></td>
+                            </tr>
+
+                        </table>
+                        @*  <form>
+                            <div class="row ml-0">
+                            <div class="col-width5">
+                            <div class="form-group">
+                            <label class="control-label">Nice to Have claims</label>
+                            <p class="NicetoHaveclaims_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width5">
+                            <div class="form-group">
+                            <label class="control-label">Must Have claims</label>
+                            <p class="MustHaveclaims_v"></p>
+                            </div>
+                            </div>
+
+                            </div>
+                            </form>*@
+                    </div>
+                </section>
+                <section class="title_content">
+                    <h4 class="title-text">
+                        Product Description (includes formula, package, product)
+                    </h4>
+                    <div class="title_body">
+
+                        <table class="table table-bordered mb-0 table-firstWidth">
+                            <tr>
+                                <th>License Category</th>
+                                <td class="LicenseCategory_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Other HUBS License Category</th>
+                                <td class="otherhubslicensecategory_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Dosage/Product form </th>
+                                <td class="Dosage_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Target organ/disease</th>
+                                <td class="TargetOrgan_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Formula features</th>
+                                <td class="FormulaFeatures_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Anchor HUB/Participating HUBS</th>
+                                <td class="AnchorHUB_v"></td>
+                            </tr>
+
+                            <tr>
+                                <th>Non-Participating HUBS</th>
+                                <td class="OtherMarkets_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Shelf life at the time of launch</th>
+                                <td class="ShelfLife_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Direction for use</th>
+                                <td class="DirectionForUse_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Caution</th>
+                                <td class="Caution_v"></td>
+                            </tr>
+                            <tr>
+                                <th>Target Customer</th>
+                                <td class="TargetCustomer_v"></td>
+                            </tr>
+
+                        </table>
+                        @*
+                            <form>
+                            <div class="row ml-0">
+                            <div class="col-width3">
+                            <div class="form-group has-error">
+                            <label class="control-label">License Category</label>
+                            <p class="LicenseCategory_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width3">
+                            <div class="form-group">
+                            <label class="control-label">Other HUBS License Category</label>
+                            <p class="otherhubslicensecategory_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width2">
+                            <div class="form-group">
+                            <label class="control-label">Dosage/Product form</label>
+
+                            <p class="Dosage_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width2">
+                            <div class="form-group">
+                            <label class="control-label">Target organ/disease</label>
+
+                            <p class="TargetOrgan_v"></p>
+                            </div>
+                            </div>
+                            <div>
+                            <div class="col-width3">
+                            <div class="form-group">
+                            <label class="control-label">Anchor HUB</label>
+
+                            <p class="AnchorHUB_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width3">
+                            <div class="form-group">
+                            <label class="control-label">Other markets if any</label>
+                            <p class="OtherMarkets_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width2">
+                            <div class="form-group">
+                            <label class="control-label">Shelf life at the time of launch</label>
+
+                            <p class="ShelfLife_v"></p>
+                            </div>
+                            </div>
+                            <div class="col-width2">
+                            <div class="form-group">
+                            <label class="control-label">Target Customer</label>
+
+                            <p class="TargetCustomer_v"></p>
+                            </div>
+                            </div>
+                            </div>
+                            <div>
+
+                            <div class="col-width4">
+                            <div class="form-group">
+                            <label class="control-label">Formula features</label>
+
+                            <p class="FormulaFeatures_v"> </p>
+                            </div>
+                            </div>
+                            <div class="col-width5">
+                            <div class="form-group">
+                            <label class="control-label">Caution</label>
+
+                            <p class="Caution_v"></p>
+                            </div>
+                            </div>
+                            </div>
+
+                            <div class="col-width6">
+                            <div class="form-group">
+                            <label class="control-label">Direction for use</label>
+
+                            <p class="DirectionForUse_v"></p>
+                            </div>
+                            </div>
+                            </div>
+                            </form>*@
+                    </div>
+                </section>
+                <section class="title_content">
+                    <h4 class="title-text">
+                        On Pack / Label Claims
+                    </h4>
+                    <div class="title_body">
+
+                        @*                        <div class="add_grid_">
+                            <div class="row">
+                            <div class="col-md-12">
+                            <div class="">
+                            <div class="m-table__main mt-2 mb-4">
+                            <div class="m-table__responsive -virtual-scroll">
+                            <table id="OnPackClaimsGrid" class="table table-bordered"></table>
+                            <div id="pager_claims_documeent"></div>
+
+                            <table id="cft_review_pack_claims"></table>
+                            <div id="cft_review_pack_claims_pager"></div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>
+                            </div>*@
+                        <div class="packlabel_claims">
+                        </div>
+
+                        @*                      <div id="packlabel_claims1">
+
+                            </div>*@
+                        @* <div class="formulation_table">
+
+                            <table style="width:100%">
+                            <thead>
+                            <tr>
+                            <th colspan="3" style="/* width: 5%; */">
+                            <span class="remarkss"><b>Claims Name : </b></span><span>XX% of subjects agree product reduces dark spots in x weeks</span>
+
+                            </th>
+                            <th style="width: 20%;">
+                            <span class="remarkss">
+                            <b>Feasibility of Achieving Claims : </b>
+                            </span>
+                            <span>Feasible</span>
+                            </th>
+                            <th style="width: 13%;">
+                            <span>
+                            <div class="justify-center_1">
+
+                            <a href="#" class="btn-icon -edit "><i class="fas fa-edit"></i></a>
+                            <a href="#" class="btn-icon -delete"><i class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+
+                            </div>
+                            </span>
+                            </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                            <td colspan="3" style="/* width:50%; */">
+                            <span class="remarkss"><b>Supporting technical statements from R&amp;D : </b> </span>
+                            <span>
+                            Evalu ation of parameters/ sensory attributes like non—sticky feel, fast absorbing, soft,smooth, overall improvement in skin texture, glow, radiance, healthier looking skin,) by subjective/ self—assessment questionnaires
+                            </span>
+                            </td>
+
+
+                            <td style="/* width:25%; */">
+                            <span class="remarkss">
+                            <b>Measured By : </b>
+                            </span>
+                            <span>Clinical data  </span>
+
+                            </td>
+                            <td style="/* width:25%; */">
+                            <span class="remarkss">
+                            <b>Responsible Department</b>
+                            </span>
+                            <span>
+                            Clinical
+                            </span>
+                            </td>
+
+                            </tr>
+                            <tr>
+                            <td colspan="5">
+                            <span class="remarkss">
+                            <b>DSG Remarks / Restrictions : </b>
+                            </span>
+                            <span> Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots refer to  (Blemishes, sunspots, a e- s ots, suntan.) </span>
+                            </td>
+
+
+
+                            </tr>
+                            </tbody>
+                            </table><br>
+
+                            </div>*@
+                    </div>
+                </section>
+                <section class="title_content">
+                    <h4 class="title-text">
+                        Claims for Communications Other than Label
+                    </h4>
+                    <div class="title_body">
+
+                        <div id="communication_table1"></div>
+
+                        <div class="communication_claims">
+
+                            @*  <table style="width:100%">
+                                <thead>
+                                <tr>
+                                <th colspan="3" style="/* width: 5%; */">
+                                <span class="remarkss"><b>Claims Name : </b></span><span>XX% of subjects agree product reduces dark spots in x weeks</span>
+
+                                </th>
+                                <th style="width: 20%;">
+                                <span class="remarkss">
+                                <b>Feasibility of Achieving Claims : </b>
+                                </span>
+                                <span>Feasible</span>
+                                </th>
+                                <th style="width: 13%;">
+                                <span>
+                                <div class="justify-center_1">
+
+                                <a href="#" class="btn-icon -edit "><i class="fas fa-edit"></i></a>
+                                <a href="#" class="btn-icon -delete"><i class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+
+                                </div>
+                                </span>
+                                </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                <td colspan="3" style="/* width:50%; */">
+                                <span class="remarkss"><b>Supporting technical statements from R&amp;D : </b> </span>
+                                <span>
+                                Evalu ation of parameters/ sensory attributes like non—sticky feel, fast absorbing, soft,smooth, overall improvement in skin texture, glow, radiance, healthier looking skin,) by subjective/ self—assessment questionnaires
+                                </span>
+                                </td>
+
+
+                                <td style="/* width:25%; */">
+                                <span class="remarkss">
+                                <b>Measured By : </b>
+                                </span>
+                                <span>Clinical data  </span>
+
+                                </td>
+                                <td style="/* width:25%; */">
+                                <span class="remarkss">
+                                <b>Responsible Department</b>
+                                </span>
+                                <span>
+                                Clinical
+                                </span>
+                                </td>
+
+                                </tr>
+                                <tr>
+                                <td colspan="5">
+                                <span class="remarkss">
+                                <b>DSG Remarks / Restrictions : </b>
+                                </span>
+                                <span> Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots refer to  (Blemishes, sunspots, a e- s ots, suntan.) </span>
+                                </td>
+                                </tr>
+                                </tbody>
+                                </table><br>*@
+
+                        </div>
+                    </div>
+                </section>
+                <section class="title_content ">
+                    <h4 class="title-text">
+                        Documents
+                    </h4>
+                    <div class="title_body">
+                        <div class="col-md-12">
+                            <div class="row ml-0">
+                                <div class="col-lg-4">
+                                    <div class="form-group" style="display:flex;gap:100px;">
+                                        <div>
+                                            <span>Supporting Documents</span>
+                                            <a href="#" data-bs-toggle="modal" title="View Documents" data-bs-target="#fileModal" style="margin-left: 10px;">
+                                                <i class="fa fa-info-circle"></i>
+                                            </a>
+                                        </div>
+                                        @if (Model.Stage == 3)
+                                        {
+                                            <div class="IRA_Claims_Remarks_icon">
+                                                <span>IRA Uploaded Documents</span>
+                                                <a href="#" data-bs-toggle="modal" title="View Documents" data-bs-target="#CFTDocumentDetail" style="margin-left: 10px;">
+                                                    <i class="fa fa-info-circle"></i>
+                                                </a>
+                                            </div>
+                                        }
+                                        else if (Model.Stage > 3)
+                                        {
+                                            <div>
+                                                <span>IRA Uploaded Documents</span>
+                                                <button id="PreviewCFTDocuments" type="button" title="View Document" style="background:transparent;border:none;margin-left: 10px;">
+                                                    <i class="fa fa-info-circle" aria-hidden="true" style="color:blue"></i>
+                                                </button>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*savemodal popup*@
+<div id="SaveModal" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Save Confirmation</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <p>Are you sure you want save the details?</p>
+                </div>
+
+                <div class="">
+                    <div class="text-right">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-add " id="claimsSaveOk">OK</button>
+                            <button type="button" class="btn btn-add btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*send save update popup*@
+<div id="saveUpdate" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Save Confirmation</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <p>Are you sure you want save the details?</p>
+                </div>
+
+                <div class="">
+                    <div class="text-right">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-add ">Save</button>
+                            <button type="button" class="btn btn-add btn-danger" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Send To DSG*@
+<div class="modal fade sv hd" id="SendToDSGModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Send Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want send to DSG?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SendToDSGOK">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Send to CFT*@
+<div class="modal fade hd" id="SendCFTModal" tabindex="-1" aria-labelledby="SendCFTModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">CFT Users</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                @* <form autocomplete="off">
+                    <div class="autocomplete" style="width:300px;">
+                    <input id="myInput" type="text" name="myCountry" placeholder="Country" class="form-control">
+                    </div>
+                    <input type="submit">
+                    </form>*@
+                <form class="row bdr_clr autocomplete">
+
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label> Department<label class="text-danger m-0">*</label></label>
+                            @Html.ListBoxFor(model => model.Department, Model.DeptList ?? new List<SelectListItem>(),
+                            new
+                                 {
+                                     @class = "form-control data-multiselect",
+                                     @multiple = "multiple",
+                            @id = "Department"
+                                 })
+                            <span id="Err-Department" style="display:none;color:red;">Please select Department</span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group product_profile multisect_grid">
+                            <label>CFT Users<label class="text-danger m-0">*</label></label>
+
+                            <select class="form-control" multiple="multiple" data-multiselect style="display: none;" id="Dept_UsersDropdown">
+                            </select>
+                            <span id="Error_DeptUsers" class="color-red Error_HgmlData text-danger" style="display:none">Please select Department Users</span>
+                            <span id="Error_DeptUsersSelected" class="color-red text-danger" style="display:none">Please Select Users For All Selected Departments</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group product_profile multisect_grid">
+                            <label>PMD Users</label>
+
+                            @Html.ListBoxFor(model => model.PMDUsers, Model.PMDUsersList ?? new List<SelectListItem>(),
+                            new
+                                 {
+                                     @class = "form-control data-multiselect",
+                                     @multiple = "multiple",
+                            @id = "Dept_PMdUsers"
+                                 })
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Remarks</label><label class="text-danger m-0">*</label>
+                            <textarea id="editor" name="editor2" rows="1" cols="30" data-sample-short="" class="form-control"></textarea>
+                            <span id="error_cft_remarks" style="display:none;color:red;">Please enter Remarks</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="float-right text-right mt-4 pt-1">
+                            <button type="button" class="btn btn-info" id="CFTUsersAdd">Add</button>
+                        </div>
+                    </div>
+
+                </form> <br> <br />
+                <table class="table table-bordered">
+                    <thead class="mail_tbl">
+                        <tr>
+                            <th class="bdr_mail">CFT Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <textarea class="form-control form-control-sm closeModal" cols="30" name="SelectedPmdUsersToSendPrototype" id="selectedCFTUsers" readonly="readonly"></textarea>
+                                <span class="color-red text-danger Error_PopupField" style="display:none" id="Error_SelectCFTUser">Please add atleast one CFT user</span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <table class="table table-bordered">
+                    <thead class="mail_tbl">
+                        <tr>
+                            <th class="bdr_mail">PMD Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <textarea class="form-control form-control-sm closeModal" cols="30" name="SelectedPmdUsersToSendPrototype" id="SelectedPMDUsers" readonly="readonly"></textarea>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SaveDetails">Save</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*File View Modal*@
+<div class="modal fade hd" id="fileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Documents</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="product_profile">
+                @*                <h6 class="pro_det mt-1">Supporting Documents</h6>*@
+                <div class="add_grid_">
+                    <div class="">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Supporting_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* <div class="modal-body">
+                <div class="row">
+                <div class="panel panel-primary filterable mdp">
+                <div class="id_tbl">
+                <table class="table table-bordered">
+                <thead>
+                <tr class="bd1">
+                <th scope="col">Document Name</th>
+                <th scope="col">Uploaded By</th>
+                <th scope="col">Uploaded On</th>
+                <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody class="tb" id="UploadedDocs">
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>*@
+
+        </div>
+    </div>
+</div>
+
+@*CFT Uploaded document View Modal*@
+<div class="modal fade hd" id="CFTDocumentDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">CFT Uploaded Documents</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="product_profile">
+                @*<h6 class="pro_det mt-1">Supporting Documents</h6>*@
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="CFTreview_Document" class="table table-bordered"></table>
+                                        <div id="pager_CFTreview_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @* <div class="modal-body">
+                <div class="row">
+                <div class="panel panel-primary filterable mdp">
+                <div class="id_tbl">
+                <table class="table table-bordered">
+                <thead>
+                <tr class="bd1">
+                <th scope="col">Document Name</th>
+                <th scope="col">Uploaded By</th>
+                <th scope="col">Uploaded On</th>
+                <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody class="tb" id="UploadedDocs">
+                </tbody>
+                </table>
+                </div>
+                </div>
+                </div>
+                </div>*@
+
+        </div>
+    </div>
+</div>
+
+@*CFT REMARKS*@
+<div class="modal fade hd" id="cft_remarks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">CFT REMARKS</h4>
+                <button style="text-align: right;" type="button" class="btn-excel mr-1 ml-100 mt-0" title="Excel Download" id="CFTRemarks_excel11">
+                    <img src="~/NewAssets/assets/images/excel.png" />
+                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="cft_remarks_table" class="table table-bordered"></table>
+                            <div id="cft_remarks_table_pager"></div>
+                        </div>
+                    </div>
+                    @*<div class="row">
+                        <div class="panel panel-primary filterable CFT_popup mdp">
+                        <div class="">
+                        <table class="table table-bordered" id="cft_remarks_table">
+                        </table>
+                        <div id="cft_remarks_table_pager"></div>
+                        </div>
+                        </div>
+                        </div>*@
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*CFT Remarks*@
+<div class="modal fade hd" id="CFT_Remarks_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Submit Confirmation<label class="text-danger m-0">*</label></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <textarea id="DSG_remarks_text1"></textarea>
+                            <span id="Error_DSG_remarks_text1" style="display:none;color:red;">Please enter remarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SendToDSGApproval">Save</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*DSG REMARKS*@
+<div class="modal fade hd" id="DSG_Remarks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title Remarks_title" id="exampleModalLabel">Remarks<label class="text-danger m-0">*</label></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <h3 class="control-label DSG_Sign_Remarks_title" style="display:none"> Remarks<label class="text-danger m-0">*</label></h3>
+                            <textarea id="DSG_remarks_text"></textarea>
+                            <span id="Error_DSG_remarks_text" style="display:none;color:red;">Please enter remarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SendToApproval">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*For Delete Files Confirmation*@
+<div class="modal fade sv hd" id="DeleteClaimsPOPUp" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="confirmation_message">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="claimsDeleteOk">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*onpack claims support and measured by pop up*@
+<div class="modal fade hd" id="onpackclaims_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Technical Statements from R&D and Measured By</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel">
+                        <div id="textarea-container">
+                            <div class="textarea-row d-flex">
+                                <div class="col-md-10">
+                                    <table id="onpack_claims_modal_table">
+                                        <thead>
+                                            <tr>
+                                                <th>Supporting Technical Statements From R&D</th>
+                                                <th>Measured By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="paddingRight">
+                                                    <textarea name="textarea1" id="multipleEditors_0" rows="2" cols="50" class="form-control form-control-sm mt-2 ExtraSupportingStatements"></textarea>
+                                                    <span style="color:red; display:none" id="Error_multipleEditors_0">Please Enter Support Statements</span>
+                                                </td>
+                                                <td class="paddingLeft">
+                                                    <textarea name="textarea2" id="multipleMeasuredEditors_0" rows="2" cols="50" class="form-control form-control-sm mt-2 ExtraMeasuredBy"></textarea>
+                                                    <span style="color:red; display:none" id="Error_multipleMeasuredEditors_0">Please Enter Measured by</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-2">
+                                    @*<button id="add_onpack_support_measuredby" class=" btn btn-add">Add</button>*@
+                                    <i title="Add" class="fa fa-plus plus_icon" id="add_onpack_support_measuredby"></i>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-add" id="onpack_claims_modal_save">Save</button>
+                <button type="button" class="btn btn-add btn-danger " data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*communication claims support and measured by pop up*@
+<div class="modal fade hd" id="communicationclaims_modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Technical Statements from R&D and Measured By</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel">
+                        <div id="textarea-container">
+                            <div class="textarea-row d-flex">
+                                <div class="col-md-10">
+                                    <table id="communication_claims_modal_table">
+                                        <thead>
+                                            <tr>
+                                                <th>Supporting Technical Statements From R&D</th>
+                                                <th>Measured By</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td class="paddingRight">
+                                                    <textarea name="textarea1" id="communication_multipleEditors_0" rows="2" cols="50" class="form-control form-control-sm mt-2 ExtraSupportingStatements"></textarea>
+                                                    <span style="color:red; display:none" id="Error_communication_multipleEditors_0">Please Enter Support Statements</span>
+                                                </td>
+                                                <td class="paddingLeft">
+                                                    <textarea name="textarea2" id="communication_multipleMeasuredEditors_0" rows="2" cols="50" class="form-control form-control-sm mt-2 ExtraMeasuredBy"></textarea>
+                                                    <span style="color:red; display:none" id="Error_communication_multipleMeasuredEditors_0">Please Enter Measured by</span>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-md-2">
+                                    @*<button id="add_communication_support_measuredby" class="btn-add">Add</button>*@
+                                    <i title="Add" class="fa fa-plus plus_icon" id="add_communication_support_measuredby"></i>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-add" id="communication_claims_modal_save">Save</button>
+                <button type="button" class="btn btn-add btn-danger " data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Send to Mail*@
+<div class="modal fade hd" id="sendMailModal" tabindex="-1" aria-labelledby="SendCFTModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Mail Recipients</h4>
+            </div>
+            <div class="modal-body">
+                <form class="row bdr_clr autocomplete">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label> Department<label class="text-danger m-0">*</label></label>
+                            @Html.ListBoxFor(model => model.Department, Model.DeptListForSendMail ?? new List<SelectListItem>(),
+                            new
+                                 {
+                                     @class = "form-control data-multiselect",
+                                     @multiple = "multiple",
+                            @id = "SendMailDepartment"
+                                 })
+                            <span id="Err_SendMail_Department" style="display:none;color:red;">Please select Department</span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group product_profile multisect_grid">
+                            <label>CFT Users<label class="text-danger m-0">*</label></label>
+
+                            <select class="form-control" multiple="multiple" data-multiselect style="display: none;" id="Dept_UsersDropdown_SendMail">
+                            </select>
+                            <span id="Error_SendMail_DeptUsers" class="color-red Error_HgmlData text-danger" style="display:none">Please select Users</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea id="SendMail_Remarks" name="editor2" rows="1" cols="30" data-sample-short="" class="form-control"></textarea>
+                            <span id="Error_SendMail_Remarks" class="color-red Error_HgmlData text-danger" style="display:none">Please select Department Users</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="float-right text-right mt-4 pt-1">
+                            <button type="button" class="btn btn-info" id="SendMailAdd_Users">Add</button>
+                        </div>
+                    </div>
+                </form> <br> <br />
+                <table class="table table-bordered">
+                    <thead class="mail_tbl">
+                        <tr>
+                            <th class="bdr_mail">CFT Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <textarea class="form-control form-control-sm closeModal" cols="30" id="SelectedUsersForSendMail"></textarea>
+                                <span class="color-red Error_PopupField" style="display:none" id="Error_SelectCFTUser">Please add aleast one CFT user</span>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SendMail_Buttom">Send Mail</button>
+                <button type="button" class="btn btn-danger" id="SendmailCancelButton">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*Delete button in jq grid*@
+
+<div class="modal fade sv hd" id="jqGridRow_DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="jqGridRow_DeleteModal_Ok" class="btn btn-add" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-add btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade hd" id="Documents_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_Uploaded_Document" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Uploaded_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="CFTReamrks_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CFT Remarks</h5>
+                <div>
+                    <button style="text-align: right;" type="button" class="btn-excel mr-1 ml-100 mt-0" title="Excel Download" id="CFTRemarks_excel">
+                        <img src="~/NewAssets/assets/images/excel.png" />
+                    </button>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_Show_CFTRemarks" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Show_CFTRemarks"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="ShowIRAUploadedExcel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CFT Uploaded Documents</h5>
+                <div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="GridShow_UploadedExcel" class="table table-bordered"></table>
+                                        <div id="pager_GridShow_UploadedExcel"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="downloadContainer">
+    <!-- The download link will be inserted here -->
+</div>
+<div class="GenerateClaimsPdf" hidden></div>
+<div class="Header" hidden></div>
+<div id="isEdit" data-isedit="@ViewBag.isEdit" hidden></div>
+
+<script src="~/js/EditClaims.js"></script>
+<script src="@Url.Content("~/NewAssets/assets/js/slick.min.js")"></script>
+
+<script>
+    $(document).ready(function () {
+        $('.carousel').slick({
+            infinite: false,
+            slidesToShow: 5,
+            slidesToScroll: 1,
+            dots: false,
+            centerMode: false,
+        });
+    });
+    $(".others_product").hide();
+    $('#others_project').on('change', function () {
+        if (this.value == 'others') {
+            $(".others_product").show();
+        }
+        else {
+            $(".others_product").hide();
+        }
+    });
+    // Call addInput() function on button click
+
+</script>
+<script>
+    $(document).ready(function () {
+        $('.exitscreen-btn').hide();
+        $('.fullscreen_expand').click(function () {
+            $("#fullscreen").addClass("m-table__full-screen");
+            $('.exitscreen-btn').show();
+            $('.fullscreen-btn').hide();
+        });
+        $('.fullscreen_minimize').click(function () {
+            $("#fullscreen").removeClass("m-table__full-screen");
+            $('.exitscreen-btn').hide();
+            $('.fullscreen-btn').show();
+        });
+    });
+    function openFullscreen() {
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { /* Firefox */
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { /* Chrome, Safari and Opera */
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { /* IE/Edge */
+            elem.msRequestFullscreen();
+        }
+    }
+
+
+    function closeFullscreen() {
+        if (document.exitFullscreen) {
+            document.exitFullscreen();
+        } else if (document.mozCancelFullScreen) { /* Firefox */
+            document.mozCancelFullScreen();
+        } else if (document.webkitExitFullscreen) { /* Chrome, Safari and Opera */
+            document.webkitExitFullscreen();
+        } else if (document.msExitFullscreen) { /* IE/Edge */
+            document.msExitFullscreen();
+        }
+    }
+
+    $('#pagination-demo1').paginate();
+
+</script>

@@ -1,0 +1,82 @@
+﻿@model Ideation.Models.PdfData
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <style>
+        .header-pb-pdf .him_logo {
+            float: right;
+            width: 100%;
+            text-align: right
+        }
+
+        .header-pb-pdf .form-control {
+            width: 100%;
+            border: 1px solid #dedede;
+            padding: 5px 10px;
+            height: 30px;
+        }
+
+        .header-pb-pdf td {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 14px !important;
+            vertical-align: top;
+        }
+
+        .header-pb-pdf p {
+            font-family: 'Open Sans', sans-serif;
+            font-size: 16px;
+            vertical-align: top;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .header-pb-pdf.table .td_pad .td {
+            padding: 0px 0px 0px 0px
+        }
+    </style>
+</head>
+<table width="95%" style="border: 1px solid black; border-collapse: collapse;margin:5px auto;" class="header-pb-pdf">
+
+    <tbody>
+        <tr>
+
+            <td colspan="4" scope="colgroup" style="border: 1px solid black;padding: 5px 0px 5px 10px;width:90%;text-align: center;font-weight: 700;">PROJECT BRIEF: NEW PRODUCTS & LINE EXTENSIONS</td> <!-- merge four columns -->
+            <td rowspan="2" style="border: 1px solid black;text-align: center;">
+                <img src="http://tpfloxi-001-site86.atempurl.com/images/logohmnew.png" style="height:60px;" />
+
+            </td> <!-- merge two rows -->
+        </tr>
+        <tr>
+            <td colspan="4" scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">
+                <label><strong>Project name :</strong> </label><label>@Model.ProjectName</label>
+            </td>
+            @*<td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">
+                    <label><strong>Date :</strong> </label><label>@Model.Date</label>
+                </td>*@
+        </tr>
+
+        <tr>
+            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">
+                <label> Hub: </label><label>@Model.Hub</label>
+            </td>
+            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">
+                <label> Division: </label><label>@Model.Division</label>
+            </td>
+            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">
+                <label> Category: </label><label>@Model.Category</label>
+            </td>
+            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">
+                <label> Initiated By: </label><label>@Model.InitiatedBy</label>
+            </td>
+            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">
+                <label> Initiated Date: </label><label>@Model.InitiatedDate</label>
+            </td>
+
+        </tr>
+
+    </tbody>
+</table>

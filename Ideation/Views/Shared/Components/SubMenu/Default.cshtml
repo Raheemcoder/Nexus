@@ -1,0 +1,80 @@
+﻿@model IEnumerable<Ideation.Models.Menu>
+@{
+    var menu_level1 = Model.Where(m => m.ParentMenuId == 0 && m.IsRead == true && m.Relation == "parent").ToList();
+    var submenu_level = Model.Where(m => m.ParentMenuId == 0 && m.IsRead == true && m.Relation == "partialparent").ToList();
+}
+
+@foreach (var menulevel1 in menu_level1)
+{
+    <li class="has-submenu">
+        @{
+            var subMenuList = Model.Where(m => m.ParentMenuId == menulevel1.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+            if (subMenuList.Count() > 0)
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)">@menulevel1.DisplayName <i class="flaticon-down-arrow-1 "></i></a>
+                <ul class="submenu" id="main_menu1">
+                    @foreach (var menuLevel2 in subMenuList)
+                    {
+                        <li>
+                            <a href="@Url.Content(menuLevel2.MenuURL)"> @menuLevel2.DisplayName</a>
+                            @{
+                                var childMenuList = Model.Where(m => m.ParentMenuId == menuLevel2.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+                                if (childMenuList.Count() > 0)
+                                {
+                                    <ul class="submenu">
+                                        @foreach (var menuItem in childMenuList)
+                                        {
+                                            <li><a href="@Url.Content(menuItem.MenuURL)">@menuItem.DisplayName</a></li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)">@menulevel1.DisplayName</a>
+            }
+        }
+    </li>
+}
+@foreach (var menulevel1 in submenu_level)
+{
+    <li class="has-submenu">
+        @{
+            var subMenuList = Model.Where(m => m.ParentMenuId == menulevel1.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+            if (subMenuList.Count() > 0)
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)">@menulevel1.DisplayName <i class="flaticon-down-arrow-1 "></i></a>
+                <ul class="submenu" id="main_menu1">
+                    @foreach (var menuLevel2 in subMenuList)
+                    {
+                        <li>
+                            <a href="@Url.Content(menuLevel2.MenuURL)"> @menuLevel2.DisplayName</a>
+                            @{
+                                var childMenuList = Model.Where(m => m.ParentMenuId == menuLevel2.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+                                if (childMenuList.Count() > 0)
+                                {
+                                    <ul class="submenu">
+                                        @foreach (var menuItem in childMenuList)
+                                        {
+                                            <li><a href="@Url.Content(menuItem.MenuURL)">@menuItem.DisplayName</a></li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)"> <i class="@menulevel1.IconClassName"></i> @menulevel1.DisplayName</a>
+            }
+        }
+    </li>
+}
+
+

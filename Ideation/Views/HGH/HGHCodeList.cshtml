@@ -1,0 +1,234 @@
+﻿
+
+@model Ideation.Models.HGH
+@{
+    ViewData["Title"] = "HGH Code";
+    Layout = "/Views/Shared/HGHLayout.cshtml";
+}
+<style>
+    .date_icon {
+        position: relative;
+    }
+
+        .date_icon i.fas {
+            position: absolute;
+            right: 8px;
+            top: 23px;
+        }
+
+    .status-alert {
+        position: absolute;
+        right: 0;
+    }
+</style>
+<section>
+    @Html.HiddenFor(model => model.LoginId)
+    @Html.HiddenFor(model => model.Role)
+    @Html.HiddenFor(model => model.ProjectValue)
+</section>
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert_green @TempData["Messageclass"].ToString() alert-dismissable">
+        <button type="button" class="btn-close status-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["Message"].ToString()
+    </div>
+}
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> HGH Code</h4>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex">
+                <div class="col-width2">
+                    <div class="form-group  ">
+                        <label for="" class="control-label">Project Id</label>
+                        <input type="text" class="form-control " placeholder="" id="ProjectId" data-projectid value="">
+                        <span class="text-danger hide select-from-list">Please select Project from the list</span>
+                        <span class="text-danger hide already-selected">Project has been already selected</span>
+                        <span class="text-danger hide not-valid">Please select a valid Project</span>
+                    </div>
+                </div>
+                <div class="col-width1 date_icon">
+                    <div class="form-group">
+                        <label for="" class="control-label">Start Date</label>
+                        <input type="text" class="form-control" id="FromDate" data-datepicker-startdate1 readonly>
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <span class="text-danger _hide" id="Err_StartDate">Please select Start Date</span>
+                </div>
+                <div class="col-width1 date_icon">
+                    <div class="form-group">
+                        <label for="" class="control-label">End Date</label>
+                        <input type="text" class="form-control" id="ToDate" data-datepicker-enddate1 readonly>
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                    <span class="text-danger _hide" id="Err_StartDate">Please select End Date</span>
+                </div>
+                <div class="col-width1 mt-3">
+                    <button class="btn btn-search" title="search" id="searchbtn" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh" title="refresh" id="refreshbtn" type="button">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="legends_list">
+                    <ul class="d-flex">
+                        <li class=""><i class="fas fa-history color-warning"></i> History</li>
+                        <li class=""><i class="fas fa-pen color-blue"></i> Edit</li>
+                        <li class=""><i class="fas fa-reply color-primary"></i> SAP Retry</li>
+                        <li class=""><i class="fas fa-info text-info"></i>SAP Remarks</li>
+                        <li class=""><i class="fas fa-trash text-danger"></i>Delete</li>
+                    </ul>
+                </div>
+                <div class="d-flex excel_expand align-items-center">
+                    <div class="images_excel" id="DownloadListExcel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" />
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add_button ml-2">
+                        <a href="@Url.Content("~/HGH/ADDHGHCode")"><button type="button" class="btn btn-success">Link HGH Code</button></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="HGHList" class="table table-bordered"></table>
+                            <div id="pager_HGHList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div id="remarks" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Remarks
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="remarks_grid" class="table table-bordered"></table>
+                                    <div id="remarks_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="history" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    LifeCycle History
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="lifecycle_list">
+                        <ul>
+                            <li class="completed">Draft</li>
+                            <li><i class="fas fa-arrow-right completed"></i></li>
+                            <li class="completed">HGH Code linked</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="history_grid" class="table table-bordered"></table>
+                                    <div id="history_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="PrototypeHistory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">LifeCycle History - <span class="ProjectId"></span></h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="list_status">
+                            <ul>
+                                <span id="AddLi"></span>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mt-1">
+                        <div class="images_excel float-right text-right">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" title="Excel Download" id="DownloadExcel">
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary mt-2 mdp">
+                        <div class="id_tbl approval_history1 new_initiation">
+                            <table id="ViewApprovalHistory" class="table table-bordered"></table>
+                            <div id="pager_ViewApprovalHistory"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/hgh/HGHCodeList.js")" asp-append-version="true"></script>

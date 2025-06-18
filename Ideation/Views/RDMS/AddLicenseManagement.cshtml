@@ -1,0 +1,242 @@
+﻿@model Ideation.Models.RDMS
+@{
+    ViewData["Title"] = "License Management";
+    Layout = "~/Views/Shared/RDMSLayout.cshtml";
+}
+
+@Html.HiddenFor(m => m.AutosuggestDropdown)
+@Html.HiddenFor(m => m.LoginId)
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+<section>
+    <div class="-m_title_ ">
+        <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Add License Management</h4>
+    </div>
+    @using (Html.BeginForm("InsertRDMSData", "RDMS", FormMethod.Post, new { id = "AddRDMSData", enctype = "multipart/form-data" }))
+    {
+
+        @Html.HiddenFor(model => model.RequestedData)
+        @Html.HiddenFor(model => model.Remarks)
+        @Html.HiddenFor(model => model.ProductGroup)
+        @Html.HiddenFor(model => model.Action)
+        <div class="">
+            <div class="d-flex justify-content-end pt-2 mb-2">
+                <button type="button" class="btn btn-success mr-1" id="Btn_Save">Save</button>
+                <button type="button" class="btn btn-success mr-1 " id="Btn_Confirm">Save &amp; Confirm</button>
+                <div class="back_aroow text-right"><a href="@Url.Content("~/RDMS/LicenseManagementList")"><i class="fas fa-arrow-left"></i> Back</a></div>
+            </div>
+        </div>
+    }
+</section>
+
+<section>
+    <div class="add_management">
+        <p class="bg_head">License Info</p>
+        <div class="d-flex border_padding">
+            <div class="col-width2">
+                <label class="control-label">
+                    Document Category <span class="text-danger">*</span>
+                </label>
+                @Html.DropDownListFor(m => m.Category,
+                new SelectList(Model.DropDownMastersDataList.Where(i => i.Type.ToLower() == "doccategory"), "Id", "Name"), "--Select--",
+                new { @class = "form-control data-singleselect F_Value", @id = "DocCategory", @data_singleselect = "" })
+                <span id="E_DocCategory" class="hide text-danger">Please select document category</span>
+            </div>
+            <div class="col-width1">
+                <label class="control-label">
+                    Document Type <span class="text-danger">*</span>
+                </label>
+                <select class="form-control addOption F_Value data-singleselect" id="LicenceType">
+                    <option value="">--Select--</option>
+                </select>
+                <span id="E_LicenceType" class="hide text-danger">Please select document type</span>
+            </div>
+            <div class="col-width2">
+                <label class="control-label">Manufacturing Plant <span class="text-danger">*</span></label>
+                <input type="text" class="form-control F_Value" id="ManufacturingPlant" data-manufacturing-plant />
+                <span class="text-danger hide" id="E_ManufacturingPlant">please select manufacturing plant</span>
+                <span class="text-danger hide select-from-list">please select manufacturing plant from the list</span>
+                <span class="text-danger hide already-selected">Manufacturing plant has been already selected</span>
+                <span class="text-danger hide not-valid">Please select a valid manufacturing plant</span>
+            </div>
+            <div class="col-width2 hide">
+                <label class="control-label">ManufacturePlantId <span class="text-danger">*</span></label>
+                <input type="text" class="form-control F_Value" id="ManufacturePlantId" />
+            </div>
+
+            <div class="col-width2">
+                <label class="control-label">Document No. <span class="text-danger">*</span></label>
+                <input type="text" class="form-control F_Value" id="DocumentNumber" />
+                <span id="E_DocumentNumber" class="hide text-danger">Please enter document no.</span>
+            </div>
+            <div class="col-width1 date_icon">
+                <label class="control-label">Valid From <span class="text-danger HideForCategory2">*</span></label>
+                <input type="text" class="form-control F_Value ImpactDates_text_freezed" value="" id="ValidFrom" datepicker-startdate autocomplete="off" readonly />
+                <i class="fas fa-calendar"></i>
+                <span id="E_ValidFrom" class="hide text-danger">Please select valid from</span>
+            </div>
+            <div class="col-width1 date_icon">
+                <label class="control-label">Valid To <span class="text-danger">*</span></label>
+                <input type="text" class="form-control F_Value ImpactDates_text_freezed" value="" id="ValidTo" datepicker-enddate autocomplete="off" readonly />
+                <i class="fas fa-calendar"></i>
+                <span id="E_ValidTo" class="hide text-danger">Please select valid to</span>
+            </div>
+            <div class="col-width2">
+                <label class="control-label"> File Upload <span class="text-danger">*</span></label>
+                <input type="file" name="files" class="form-control F_Value" onchange="validateFileUpload('H')" id="H_FileUpload" accept=".pdf" />
+                <div class="sku_note">(Note: The file must be a type: pdf)</div>
+                <span id="E_H_FileUpload" class="hide text-danger">Please select file</span>
+                <span class="text-danger hide H_invalidFormat">The file must be a type: pdf</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="add_management mt-3 dec-sub-div hide">
+        <p class="bg_head">Declaration Submission</p>
+        <div class="border_padding">
+            <div class="d-flex">
+
+                <div class="col-width1 date_icon">
+                    <label class="control-label">
+                        Declaration Date
+                    </label>
+                    <input type="text" class="form-control ImpactDates_text_freezed" id="dec-date" autocomplete="off" readonly/>
+                    <i class="fas fa-calendar"></i>
+                </div>
+
+                <div class="col-width2">
+                    <label class="control-label">
+                        File Upload
+                    </label>
+                    <input type="file" name="files" class="form-control"
+                           onclick="return checkBeforeOpen()" onchange="ValidateFile()" id="dec-file" accept=".pdf" multiple />
+                    <div class="sku_note">(Note: The file must be a type: pdf)</div>
+                    <span class="text-danger hide dec-date-empty-span">Please select the declaration date to add the file</span>
+                    <span class="text-danger hide dec-file-empty-span">Please select the file to add</span>
+                    <span class="text-danger hide dec-file-overflow-span">The file size should be less than 100 MB</span>
+                    <span class="text-danger hide dec-file-invalid-span">The file must be a type pdf</span>
+                </div>
+
+                <div class="mt-3">
+                    <button type="button" class="btn btn-success mr-2" id="dec-file-add">Add</button>
+                </div>
+
+                <div class="remarks-color mt-3 pt-1" role="button" onclick="OpenDeclarationFilePopup()">
+                    <i class="fas fa-info-circle" title="Declaration Document"></i>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="add_management mt-3">
+        <p class="bg_head">Product Info</p>
+        <div class="border_padding">
+            <div class="d-flex ">
+                <div class="col-width2">
+                    <label class="control-label"> Product Name <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control tags" id="ProductGroupId" data-productgroup onpaste="return false" />
+                    <span class="text-danger hide" id="E_ProductGroupId">Please select product name</span>
+                    <span class="text-danger hide select-from-list">Please select product name from the list</span>
+                    <span class="text-danger hide already-selected">Product name already exists</span>
+                    <span class="text-danger hide not-valid">Please select a valid product name</span>
+                </div>
+
+                <div class="col-width2 date_icon">
+                    <label class="control-label">
+                        Effective From
+                    </label>
+                    <input type="text" class="form-control F_Value" id="EffectiveFrom" autocomplete="off" />
+                    <i class="fas fa-calendar"></i>
+                    <span class="text-danger hide" id="E_EffectiveFrom">Please select effective from </span>
+                </div>
+
+                <div class="col-width2">
+                    <label class="control-label">
+                        File Upload
+                    </label>
+                    <input type="file" name="files" class="form-control" onchange="validateFileUpload('P')" id="P_FileUpload" accept=".pdf" />
+                    <div class="sku_note">(Note: The file must be a type: pdf)</div>
+                    <div><span id="EditedProductDocument"></span> <i class="fas fa-trash hide text-danger ml-2" id="DeleteProductGroupFile"></i></div>
+                    <span class="text-danger hide P_invalidFormat">The file must be a type: pdf</span>
+                </div>
+                <div class="col-width1">
+                    <div class="d-flex mt-3 pt-1">
+                        <button type="button" class="btn btn-success mr-1" id="btn_add">Add</button>
+                        <button type="button" class="btn btn-danger mr-1" id="btn_delete" style="line-height: 1 !important; padding: 5px 13px !important; color: #fff; font-size: 12px !important;">Delete</button>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row mt-3">
+                <div class="m-table__main">
+                    <span class="hide text-danger" id="E_validateGrid"></span>
+                    <div class="m-table__responsive -virtual-scroll">
+                        <table id="ProductGroup_Grid" class="table table-bordered"></table>
+                        <div id="ProductGroup_pager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ApproveModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xs upload">
+            <div class="modal-content">
+                <div class="modal-header -bg-green">
+                    <h4 class="modal-title modaltitle" id="ModalLabel"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="modalmsg"></p>
+                    <div class="form-group">
+                        <label class="control-label">
+                            Remarks
+                        </label><span class="color-red">*</span>
+                        @Html.TextAreaFor(model => model.Remarks, new { @class = "form-control F_Value ApprovalRemarks", @rows = "2", @spellcheck = "false", id = "ApprovalRemarks" })
+                        <span id="E_ApprovalRemarks" class="color-red Error_closeModal" style="display:none">Please enter the remarks</span>
+                    </div>
+                    <div class="text-right mt-2">
+                        <button type="button" class="btn btn-success" id="ByClick_OK" data-title="Ok"> Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="DecFilePopup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Declaration Document
+                </h4>
+                <button type="button" class="close" id="closebtn" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="declartionviewfiles" class="table table-bordered"></table>
+                            <div id="pager_declartionviewfiles"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/RDMS/AddLicenseManagement.js")" asp-append-version="true"></script>

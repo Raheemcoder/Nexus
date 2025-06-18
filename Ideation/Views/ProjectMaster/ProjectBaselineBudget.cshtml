@@ -1,0 +1,407 @@
+﻿@model Ideation.Models.ProjectMasters;
+
+@{
+    ViewBag.Title = "Budget Request";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+
+    .hide {
+        display: none !important;
+    }
+    .color-green_ {
+        color: #47d359;
+    }
+
+    .color-blue {
+        color: #215c98;
+    }
+
+    .list_baseline ul {
+        display: flex;
+        list-style-type: none;
+        justify-content: end;
+        margin-bottom: 0px;
+    }
+
+        .list_baseline ul li {
+            margin-left: 20px;
+            font-size: 10px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+            .list_baseline ul li b {
+                color: #000;
+                font-weight: normal;
+            }
+
+    .project_id {
+        color: #ff6b00;
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+
+        .project_id span b {
+            color: #000;
+            font-weight: normal;
+        }
+
+    .budget_status .pending {
+        background: transparent;
+        border: 0px;
+        font-size: 11px;
+        padding: 0px;
+        color: orange;
+        box-shadow: none;
+    }
+
+    .budget_status .approval {
+        background: transparent;
+        border: 0px;
+        font-size: 11px;
+        padding: 0px;
+        color: green;
+        box-shadow: none;
+    }
+
+    .input_budget input {
+        border: 1px solid #757575 !important;
+        height: 24px;
+        padding: 5px;
+        font-size: 10px;
+    }
+
+    .merged_list th.ui-state-default.ui-th-column-header.ui-th-ltr {
+        border-bottom: 1px solid #dedede !important;
+    }
+
+    .merged_list thead tr.jqg-first-row-header th {
+        border: 0 !important;
+    }
+
+    #list_ApproveBaselineBudget, #list_OverallBaselineBudget {
+        display: none !important;
+    }
+
+    .TotalBudget {
+        font-weight: normal !important;
+    }
+
+    button.btn.btn-warning {
+        background-color: #FFBA33;
+        border-color: #FFBA33;
+        padding: 2px 15px 2px 15px;
+        margin: 2px;
+        font-size: 14px;
+        color: #fff;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 10px;
+    }
+</style>
+<section>
+
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.Role)
+    
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+        <div class="list_baseline">
+            <ul>
+                <li style="display:none">
+                    <b>Project Id:</b> <span class="projectidhidden"></span>
+                </li>
+                <li>
+                    <b>Project Id:</b> <span class="projectid"></span>
+                </li>
+                <li>
+                    <b> Template Name:</b> <span class="template"></span>
+                </li>
+                @*<li>
+            <b> Created Date:</b> <span class="createdDate"></span>
+        </li>*@
+                <li>
+                    <b> Start Date:</b> <span class="startDate"></span>
+                </li>
+                <li>
+                    <b> End Date:</b> <span class="endDate"></span>
+                </li>
+                <li>
+                    <b> Approved  Baseline Budget (INR):</b> <span class="ApprovedBaselineBudget"></span>
+                </li>
+                <li>
+                    <b> Approved  Additional Budget (INR):</b> <span class="ApprovedAdditionalBudget"></span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="row">
+            @*<div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">From year</label>
+                    <input type="text" class="form-control" id="FromDate" readonly>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">To year</label>
+                    <input type="text" class="form-control" id="ToDate" readonly>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <div class="form-group mb-0 mt-4">
+                    <button type="button" id="SearchData" class="btn btn-info c-add-details waves-light waves-effect" title="Search">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>*@
+            <div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">Requested year <span class="color-red">*</span></label>
+                    <select class="year form-select-sm RequestYear" data-singleselect >
+                    </select>
+                    <span style="color:red;display:none;" id="Error_in_Year" class="color-red">Please select year</span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group mb-0 mt-4 pt-2">
+                    <div class="d-flex action_icons align-items-center" title="">
+                        <a class="mr-2" title="Request for Additional Budget" data-toggle="modal" id="AdditionalBudgetRequest">
+                            <img src="@Url.Content("~/images/money-bag.png")" width="22px">
+                        </a>
+                        <a title="Approval Info" class="btn-icon -history" data-toggle="modal" id="approvalHistory">
+                            <i class="fas fa-history"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="text-right mt-4">
+                    <button type="button" id="SaveDetails" class="btn btn-success m-0 c-add-details waves-light waves-effect">
+                        Save
+                    </button>
+                    <button type="button" id="SubmitDetails" class="btn btn-success m-0 c-add-details waves-light waves-effect">
+                        Save &amp; Confirm
+                    </button>
+                    <a href="@Url.Content("~/ProjectMaster/BudgetRequestList")">
+                        <button type="button" id="Back" class="btn btn-warning m-0 c-add-details waves-light waves-effect">
+                            Back
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll ">
+                            <table id="ProjectBasedOnCategory" class="table table-bordered"></table>
+                            <div id="ProjectBasedOnCategory_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade budget_popup" id="AdditionBudgetRequest" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Additional Budget Request</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">Project Id: <span class="Add_ProjectId project_id"></span></div>
+                    <div class="col-md-6 hideforAdmin">
+                        <div class="text-right">
+                            <button type="button" id="SaveAdditionalRequest" class="btn btn-success m-0 c-add-details waves-light waves-effect">
+                                Save &amp; Confirm
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-2 hideforAdmin">
+                                <div class="form-group mb-0 ">
+                                    <label class="control-label">Year</label><span class="color-red">*</span>
+                                    <input type="text" class="form-control Add_year" readonly />
+                                    <span class="Error_Year color-red" style="display:none"> Please select year</span>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 hideforAdmin">
+                                <div class="form-group">
+                                    <label class="control-label">Department</label><span class="color-red">*</span>
+                                    <select class="form-control DepartmentValue" data-singleselect id="ADD_Department">
+                                        <option value="">--select--</option>
+                                    </select>
+                                    <span class="Error_Department color-red" style="display:none"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2 hideforAdmin">
+                                <div class="form-group">
+                                    <label class="control-label">Category</label><span class="color-red">*</span>
+                                    <select class="form-control CategoryValue" data-singleselect id="ADD_Category">
+                                        <option value="">--select--</option>
+                                    </select>
+                                    <span class="Error_Category color-red" style="display:none"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-2 hideforAdmin">
+                                <div class="form-group">
+                                    <label class="control-label">Requested Budget</label><span class="color-red">*</span>
+                                    @Html.TextBoxFor(model => model.ReqBudget, new { @class = "form-control clearThisData requestedBudget", @rows = "2", @onkeypress = "return onlyNumbers(this);", @spellcheck = "false" })
+                                    <span class="Error_ReqBudget color-red" style="display:none">Please enter requested budget</span>
+                                </div>
+                            </div>
+                            <div class="col-md-3 hideforAdmin">
+                                <div class="form-group">
+                                    <label class="control-label">Remarks</label><span class="color-red">*</span>
+                                    @Html.TextAreaFor(model => model.ApprovalRemarks, new { @class = "form-control clearThisData AdditionalRemarks", @rows = "2", @spellcheck = "false" })
+                                    <span class="Error_Remarks color-red" style="display:none">Please enter remarks</span>
+                                </div>
+                            </div>
+                            <div class="col-md-1 mt-4 hideforAdmin">
+                                <button type="button" id="AddAdditionalRequest" class="btn btn-info c-add-details waves-light waves-effect">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="AdditionalGrid" class="table table-bordered"></table>
+                                        <div id="AdditionalGrid_Pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade budget_popup" id="historypopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approval Info</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-10">Project Id: <span class="project_id"></span></div>
+                    <div class="col-md-2 text-right"><button type="button" class="btn btn-excel" title="Excel Download" id="HistoryExcelDownload"><img src="@Url.Content("~/N_assets/images/excel.png")"></button></div>
+                </div>
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="history_grid" class="table table-bordered"></table>
+                                        <div id="history_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="SavePopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Save the Details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveOk" class="btn btn-xs btn-add c-btn" data-bs-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-xs btn-rej c-btn" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="SubmitPopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Submit Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to save the details and send for approval?
+                                </label><br />
+                                <label class="hideforadditinal">Remarks</label><span class="color-red hideforadditinal">*</span>
+                                @Html.TextAreaFor(model => model.ApprovalRemarks, new { @class = "form-control hideforadditinal ApprovalRemarks", @rows = "2", @spellcheck = "false", id = "" })
+                                <span id="Error_ApprovalRemarks" class="color-red" style="display:none">Please enter the Remarks</span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SubmitOK" class="btn btn-xs btn-add c-btn">Save</button>
+                <button type="button" class="btn btn-xs btn-rej c-btn cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="DeletetePopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cnl" id="deleteResource" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-rej" id="cancelDeleteResource" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/js/ProjectMaster/projectbaselinebudget.js")" asp-append-version="true"></script>

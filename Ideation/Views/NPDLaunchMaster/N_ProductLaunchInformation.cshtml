@@ -1,0 +1,154 @@
+﻿@model Ideation.Models.NPDLaunchMaster
+@{
+    ViewBag.Title = "Product Launch Information";
+    Layout = "~/Views/Shared/N_NPDLMLayout.cshtml";
+    var serializedIsNpdList = System.Text.Json.JsonSerializer.Serialize(Model.IsNpdList);
+    var DivisionList = Model.NpdHGMLDivisionList;
+}
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span>Product Launch Information</h4>
+        </div>
+    </div>
+</section>
+<style>
+    .datepicker .datepicker-days tr:hover td {
+        background: transparent;
+    }
+
+        .datepicker .datepicker-days tr:hover td:hover {
+            background: #e5e2e3;
+        }
+
+    td.disabled.day {
+        background: transparent !important;
+        color: #9c9c9c !important;
+    }
+</style>
+
+<section>
+    @using (Html.BeginForm("ProductLaunchInformation", "NPDLaunchMaster", FormMethod.Post, new { id = "ProductLaunchInformation_Submit", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.ProductLaunchInformationData)
+        @Html.HiddenFor(model => model.IsNpdList)
+        @Html.HiddenFor(model => model.SourceString)
+
+        <input type="hidden" id="IsNpdList_Serialized" value="@serializedIsNpdList" />
+        <div>
+
+            <div class="">
+                <div class="project_modules ">
+                    <ul class="nav nav-tabs DivisionDetails">
+                        <li><a data-toggle="tab" onclick="getDivisiondetails(this)" class="active allDivisions">All  <span class="allDivisionTotal division-count"></span></a></li>
+                        @foreach (var item in DivisionList)
+                        {
+                            <li><a data-toggle="tab" onclick="getDivisiondetails(this)">@item.DivisionName <span class="division-count" id="@(item.DivisionName.Replace(" ","").ToLower())"></span></a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="tabs-Data_ d-flex data_climsList">
+
+                            <div class="filter_status">
+                                <div class="d-flex">
+                                    <div class="col-width2">
+                                        <div class="form-group flaoting_">
+                                            @Html.DropDownListFor(model => model.CategoryName, Model.HGMLCategoryList, "All", new { @class = "form-control status_ floating_select data-singleselect", @id = "NpdHgmlCategory" })
+                                            <label class="control-label form_lable floating_lable">HGML Category</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-width2">
+                                        <div class="form-group flaoting_">
+                                            @Html.DropDownListFor(model => model.NpdLaunchYearType, Model.NpdLaunchYearTypeList, "All", new { @class = "form-control status_ floating_select data-singleselect singleselect_year", @id = "NpdLaunchYearType" })
+                                            <label class="control-label form_lable floating_lable">Launch Year</label>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2 NpdLaunchYear calender-icon">
+                                        <div class="form-group year_Picker">
+                                            @Html.TextBoxFor(model => model.NpdLaunchYear, new { @class = "form-control date-datepicker-year datepicker-input",@autocomplete = "off",@id = "NpdLaunchYear" })
+                                            <span class="cal_"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-width2">
+                                        <div class="form-group flaoting_">
+                                            @Html.DropDownListFor(model => model.Status, Model.StatusList, "All", new { @class = "form-control status_ floating_select data-singleselect", @id = "Status" })
+                                            <label class="control-label form_lable floating_lable">Status</label>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-width1">
+                                        <button type="button" id="onClickSearch" class="btn btn-search" title="Search"><i class="fas fa-search" aria-hidden="true"></i></button>
+                                        <button class="btn btn-refresh" title="refresh" id="refresh" type="button">
+                                            <i class="fas fa-sync-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="animate__animated2 slideInUp mt-2">
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="legends_list">
+                                    <ul class="d-flex ">
+                                        <li class="edit-color"><i class="fas fa-pen"></i> Edit</li>
+                                        <li class="view-color"><i class="fas fa-save"></i> Save</li>
+                                        <li class=""><i class="fas fa-times-circle btn-times"></i> Close</li>
+
+                                    </ul>
+                                </div>
+                                <div class="d-flex excel_expand align-items-center">
+                                    <div class="images_excel">
+                                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="ExcelDownload" title="Excel Download">
+                                    </div>
+                                    <div>
+                                        <div class="expand_initiate table_expand" title="Full Screen">
+                                            <div>
+                                                <div onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="button_top float-right">
+                                    <button type="button" class="btn btn-cancel" onclick="location.href ='@Url.Content("~/NPDLaunchMaster/N_NPDList")';" data-title="Cancel"> Back</button>
+                                    <button type="button" class="btn btn-draft SaveProductLaunchInfo">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div id="content1" class="tab-pane fade in active">
+                                <div class="animate__animated2 slideInUp mt-1">
+                                    <div class="">
+                                        <div class="">
+                                            <div class="row">
+                                                <div class="m-table__main grid_height">
+                                                    <div class="m-table__responsive -virtual-scroll -scroll-grid">
+                                                        <table id="ProductLaunchInfo_Grid" class="table table-bordered"></table>
+                                                        <div id="pager_ProductLaunchInfo_Grid"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button_top float-right pt-2 pb-2">
+            <button type="button" class="btn btn-cancel" onclick="location.href ='@Url.Content("~/NPDLaunchMaster/N_NPDList")';" data-title="Cancel"> Back</button>
+            <button type="button" class="btn btn-draft SaveProductLaunchInfo">Save</button>
+        </div>
+    }
+</section>
+
+<script src="@Url.Content("~/js/npdlaunchmaster/N_productlaunchinformation.js")" asp-append-version="true"></script>
+
+

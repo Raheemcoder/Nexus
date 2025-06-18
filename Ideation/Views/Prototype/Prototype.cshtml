@@ -1,0 +1,185 @@
+﻿@model Ideation.Models.Prototype;
+@{
+    ViewBag.Title = "Prototype";
+    Layout = "~/Views/Shared/_PROTLayout.cshtml";
+}
+@Html.HiddenFor(model=>model.Role)
+@Html.HiddenFor(model=>model.RoleId)
+@Html.HiddenFor(model=>model.empId)
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+
+<div class="card-box">
+    <div id="message" class="m-login__erromsg">
+        @if (TempData["Message"] != null && TempData["Message"] != "")
+        {
+            <div class="alert @TempData["Messageclass"].ToString() alert-dismissible" role="alert" id="message_alert">
+                @TempData["Message"].ToString()
+                <button type="button" id="cc" class="btn-close pt-1" data-bs-dismiss="alert" aria-label="Close">
+                    @*  <span aria-hidden="true">&times;</span>*@
+                </button>
+            </div>
+        }
+    </div>
+
+
+
+    <div class="page_start d-flex justify-content-between">
+        <div class="page-title">
+            <h4 class="-mb-3">List</h4>
+        </div>
+        <div class="">
+            <a href="@Url.Content("~/Prototype/AddPrototype")"><button type="button" class="btn-sb AddProto" style="display:none">Add prototype</button></a>
+        </div>
+    </div>
+    <div class="row sub_form bg_mainrow">
+
+        @Html.HiddenFor(model=>model.PrototypeDetailsHeaderData, new { @id = "PrototypeDetailsHeaderData"})
+
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Project No
+                </label>
+                @Html.DropDownListFor(model=>model.ProjectNo,Model.ProjectNoList,"All",new{@class="form-control form-control-sm data-singleselect",@id="PrototypeProjectNo"})
+
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Product Name
+                </label>
+                @Html.DropDownListFor(model=>model.ProductName,Model.ProjectNames,"All",new{@class="form-control form-control-sm data-singleselect",@id="PrototypeProdutName"})
+
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Status
+                </label>
+                @Html.DropDownListFor(model=>model.StatusId,Model.statusNames,"All",new{@class="form-control form-control-sm data-singleselect",@id="PrototypeStatusName"})
+
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group sg">
+                <button type="button" id="SearchPrototypeData" class="btn btn-info c-add-details waves-light waves-effect mt-4 pb-2"  title="Search"><i class="fas fa-search" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex">
+
+        <span><label class="btn-icon -edit"><i class="fa fa-edit" aria-hidden="true"></i></label>Edit</span>
+        <span><label class="btn-icon -view"><i class="fas fa-eye" aria-hidden="true"></i></label>View</span>
+        <span><label class="btn-icon -delete"><i class="fas fa-trash" aria-hidden="true"></i></label>Delete</span>
+        <span><label class="btn-icon -download"><i class="fas fa-download" aria-hidden="true"></i></label>Download</span>
+        <span><label class="btn-icon -history"><i class="fas fa-history" aria-hidden="true"></i></label>View History</span>
+        <span><label class="btn-icon -info"><i class="fas fa-info-circle" aria-hidden="true"></i></label>Info</span>
+        </div>
+        <div>
+            <button type="button" id="ExcelDownload" class="btn-add btn btn-success c-add-details waves-light waves-effect"><i class="fas fa-download" aria-hidden="true"></i> Excel</button>
+
+        </div>
+
+    </div>
+    <div class="panel panel-primary filterable mdp12">
+        <div class="">
+            <div class="m-table__main mt-2 mb-4">
+                <div class="m-table__responsive -virtual-scroll">
+                    <table id="Prototype_Details_Header" class="table table-bordered"></table>
+                    <div id="pager_Prototype_Details_Header"></div>
+                </div>
+            </div>
+         </div>
+    </div>
+</div>
+
+@*Approval pop up*@
+<div class="modal fade hd" id="PrototypeHistory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="list_status">
+                            <ul>
+                                <span id="AddLi"></span>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mt-2">
+                        <div class="float-right text-right ">
+                            <button type="button" class="btn-add" id="DownloadExcel"><i class="fas fa-file-export"></i>Export</button>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary mt-2 mdp">
+                        <div class="id_tbl approval_history1 new_initiation">
+                            <table id="ViewApprovalHistory" class="table table-bordered"></table>
+                            <div id="pager_ViewApprovalHistory"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*get hub status pop up*@
+
+<div class="modal fade hd" id="HUBStatusInfo" tabindex="-1" aria-labelledby="Examplemodel" aria-hidden="true">
+    <div class="modal-dialog ideation  modal-lg">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">HUB Status Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="m-table__main HubStatusView mt-2">
+                    <div class="id_tbl new_initiation">
+                        <table id="HubStatus_Table_data" class="table table-bordered table-striped HubStatus_Table"></table>
+                        <div id="HubStatus_pager"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+             </div>
+        </div>
+    </div>
+</div>
+
+@*Delete button in jq grid*@
+<div class="modal fade sv hd" id="ToDeleteTheSelectedGridRow" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="ToDeleteTheSelectedGridRow_Ok" class="btn btn-danger" data-bs-dismiss="modal">Ok</button>
+                <button type="button" class="btn btwar btn-cnl" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="Prototypepdf" hidden></div>
+
+<script src="@Url.Content("~/js/prototype/prototype.js")" asp-append-version="true"></script>
+
+

@@ -1,0 +1,525 @@
+﻿@model Ideation.Models.MyMilestone
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+
+    var jsonData = Context.Session.GetString("getProjectList");
+    var getProjectList = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Ideation.Models.PMUMapping>>(jsonData);
+
+    var hubData = Context.Session.GetString("HubList");
+    var getHubList = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Ideation.Models.HubListData>>(hubData);
+
+    var StatusData = Context.Session.GetString("StatusList");
+    var getStatusList = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Ideation.Models.StatusListData>>(StatusData);
+
+    var SearchedHub = Context.Session.GetString("SearchedHub");
+    var SearchedProjectId = Context.Session.GetString("SearchedProjectId");
+    var SearchedStatusId = Context.Session.GetString("SearchedStatusId");
+}
+
+<style>
+    .checkboxdisplay input {
+        position: relative;
+        top: -2px;
+        margin-right: 10px;
+    }
+
+    .checkboxdisplay {
+        color: #000
+    }
+</style>
+<div class="card-box">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title">
+                <h4 class="-mb-3">My Milestones</h4>
+            </div>
+            @Html.HiddenFor(m => m.ProjectId)
+            @Html.HiddenFor(m => m.Countlist)
+            @Html.HiddenFor(m => m.RoleId)
+            @Html.HiddenFor(m => m.SearchProjectId)
+            @Html.HiddenFor(m => m.JsonData)
+            <input type="hidden" value="@hubData" id="getHubList" />
+            <div id="message">
+                @if (TempData["Message"] != null)
+                {
+                    <div id="message" class="alert @TempData["MessageClass"].ToString() alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        @TempData["Message"].ToString()
+                    </div>
+
+
+                }
+            </div>
+            <div class="">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="page-title">
+                            @*<h4 class="-mb-3">My Milestones</h4>*@
+                        </div>
+                        @Html.HiddenFor(m => m.ProjectId)
+                        @Html.HiddenFor(m => m.Countlist)
+                        @Html.HiddenFor(m => m.RoleId)
+
+
+                    </div>
+                </div>
+            </div>
+            <form>
+                <div class="col-md-12 p-0">
+                    <div class="page-title d-flex justify-content-between">
+                            <div><h4> <span class="project-hub-name"></span></h4></div>
+                            <div><a class="color-blue" href="@Url.Content("~/Milestone/MyMilestoneMaster")"><i class="fas fa-angle-left"></i> Back</a></div>
+                        @*<div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Project Name</label>
+                            <select class="form-control projectDrop" data-multiselect multiple="multiple" id="Project_ID">
+                                @foreach (var item in getProjectList)
+                                {
+                                    @if (@item.PMUMappingStatus == null)
+                                    {
+                                        @if ((SearchedProjectId != null) && (SearchedProjectId == (@item.ProjectId).ToString()))
+                                        {
+                                            <option value="@item.ProjectId" selected>@item.ProjectName</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ProjectId">@item.ProjectName</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        @if ((SearchedProjectId != null) && (SearchedProjectId == (@item.ProjectId).ToString()))
+                                        {
+                                            <option value="@item.ProjectId" data-bgcolor="#358375 !important;" selected>@item.ProjectName</option>
+
+                                        }
+                                        else
+                                        {
+                                            <option value="@item.ProjectId" data-bgcolor="#358375 !important;">@item.ProjectName</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">HUB</label>
+                            <select class="form-control hubDrop" data-multiselect multiple="multiple" id="HubId">
+                                @foreach (var item in getHubList)
+                                {
+                                    @if ((SearchedHub != null) && (SearchedHub == (@item.HubId).ToString()))
+                                    {
+                                        <option value="@item.HubId" selected>@item.HubName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.HubId">@item.HubName</option>
+                                    }
+                                }
+                                </select>
+
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Status</label>
+                            <select class="form-control" data-multiselect multiple="multiple" id="StatusId">
+                                @foreach (var item in getStatusList)
+                                {
+                                    @if ((SearchedStatusId != null) && (SearchedStatusId == (@item.StatusName).ToString()))
+                                    {
+                                        <option value="@item.StatusName" selected>@item.StatusName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.StatusName">@item.StatusName</option>
+                                    }
+                                }
+                                </select>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <div class="subject_search mt-3 pt-3" id="">
+                                <button type="button" id="SearchUser" class="btn btn_search"><i class="fas fa-search" aria-hidden="true"></i></button>
+                            </div>
+                        </div>
+                    </div>*@
+
+                    </div>
+                </div>
+            </form>
+            <div class="row d-flex justify-content-between flex-row mb-3">
+                <div class="col-md-3">
+                    <div class="d-flex  flex-row mb-3 ">
+                        <label class="control-label "><b>Number of records :</b>  </label> <div id="cardscount" style="padding-left: 3px;color:black"><b></b></div>
+                    </div>
+                </div>
+                <div>
+                    <input type="text" id="global-search" class="global-search search_filter form_search m-0" placeholder="Search...">
+                </div>
+            </div>
+
+
+            <div class="m-block">
+                <div class="m-block__container">
+                    <div class="m-block__list">
+                        <div class="row printdata" id="cardContainer">
+
+                            <div class="first_open board_list">
+                                <h4>Open <span class="count_num count_open"></span></h4>
+                                <div class="height_scroll open_list_progress">
+
+                                </div>
+                            </div>
+
+                            <div class="second_open board_list">
+                                <h4>In Progress <span class="count_num count_inprogress"></span></h4>
+                                <div class="height_scroll list_inProgress">
+
+                                </div>
+                            </div>
+
+                            <div class="third_open board_list">
+                                <h4>Overdue <span class="count_num count_overdue"></span></h4>
+                                <div class="height_scroll overdue_list">
+
+                                </div>
+                            </div>
+
+                            <div class="fourth_open board_list">
+                                <h4>Completed <span class="count_num count_completed"></span></h4>
+                                <div class="height_scroll Completed">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @Html.HiddenFor(m => m.selectedendDate)
+            @Html.HiddenFor(m => m.SlNo)
+            @Html.HiddenFor(m => m.PMUVersion)
+            @Html.HiddenFor(m => m.MilestoneName)
+
+            <div id="addModal" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" tabindex="-1">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header -bg-green">
+                            <div class="">
+                                <h3 class="modal-title prj-header"></h3>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="m-modal__container">
+                                <div class="form-horizontal m-form">
+                                    <div class="m-form__container">
+                                        @*@using (Html.BeginForm("AddMilestone", "Master", FormMethod.Post, new { @class = "m-login-form m-form__form", @id = "UserMasterForm" }))
+                                    {*@
+                                        @*<form class="m-form__form">*@
+                                        <div class="row ">
+                                            <div class="col-md-12 col-lg-12">
+                                                <div class="row align-items-center">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            @*<label class="control-label">Milestone*</label>*@
+                                                            <label class="control-label mr-4">Task</label>
+                                                            <div class="">
+                                                                @Html.TextBoxFor(model => model.MilestoneName, "-- select --", new { @id = "milestone", @class = "form-control input-disabled", @readonly = "readonly" })
+
+                                                                @*<select class="form-control" id="milestone" disabled="disabled" style="color:black"></select>*@
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">Start Date</label>
+                                                            @*<i class="fas fa-calendar-alt calendar-icon"></i>*@
+                                                            @*<input type="text" class="form-control datepicker" />*@
+                                                            @Html.TextBoxFor(m => m.StartDate, new { @id = "StartDate", @class = "form-control  input-disabled", @readonly = "readonly" })
+                                                            @Html.ValidationMessageFor(m => m.StartDate, null, new { @class = "text-danger" })
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <label class="control-label">End Date</label>
+                                                            <div class="">
+                                                                @*<i class="fas fa-calendar-alt calendar-icon"></i>*@
+                                                                @*@if (Context.Session.GetString("RoleId").ToString() == "3")
+                                                                {
+                                                                @Html.TextBoxFor(m => m.EndDate, new { @id = "EndDate", @class = "form-control input-disabled", @readonly = "readonly" })
+                                                                @Html.ValidationMessageFor(m => m.EndDate, null, new { @class = "text-danger" })
+                                                                }
+                                                                else
+                                                                {
+                                                                @Html.TextBoxFor(m => m.EndDate, new { @id = "EndDate", @class = "form-control" })
+                                                                @Html.ValidationMessageFor(m => m.EndDate, null, new { @class = "text-danger" })
+                                                            }*@
+                                                                @Html.TextBoxFor(m => m.EndDate, new { @id = "EndDate", @class = "form-control input-disabled", @readonly = "readonly" })
+                                                                @Html.ValidationMessageFor(m => m.EndDate, null, new { @class = "text-danger" })
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group ">
+                                                            @*<label class="control-label">Status*</label>*@
+                                                            <div class="">
+                                                                <div class="form-control__inline -buttons">
+                                                                    @*<button type="button" value="Open" class="btn btn-xs btn-info c-btn status">Open</button>*@
+                                                                    @*<button type="button" value="Open" id="open" class="btn btn-xs btn-primary open_status c-btn status  btn-outline-success">Open</button>*@
+                                                                    <button type="button" value="DateExtension" id="date-ext" class="btn btn-xs c-btn -outline-success status btn btn-outline-success completed_status">Date Extension</button>
+                                                                    @*<button type="button" value="Completed" id="completed" class="btn btn-xs c-btn status btn-outline-success" style="color:black">Completed</button>*@
+                                                                    <button type="button" value="Completed" id="completed" class="btn btn-xs c-btn -outline-success status btn btn-outline-success completed_status">Completed</button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    @*on click of complete*@
+                                                    <div class="DisplayCompletedDate col-md-8">
+
+                                                        <div class="col-md-6">
+                                                            <div class="form-group  ">
+                                                                <label class="control-label">Actual Completion Date*</label>
+                                                                <div class="">
+                                                                    <div class="">
+                                                                        <div class="">
+                                                                            <i class="fas fa-calendar-alt calendar-icon"></i>
+                                                                            @Html.TextBoxFor(m => m.ActualCompletedDate, new { @id = "ActualCompletedDate", @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                                                                            @Html.ValidationMessageFor(m => m.EndDate, null, new { @class = "text-danger" })
+                                                                            <span class="need-completed-date" style="color:red"></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Completed Remarks*</label>
+                                                                <div class="">
+                                                                    <textarea rows="3" id="Remarks" class="form-control -auto"></textarea>
+                                                                    <span id="Remarkserror" style="color:red"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                    @*on click of date extend*@
+                                                    <div class="display-extended-date col-md-8">
+                                                        <div class="col-md-6">
+                                                            <div class="form-group  ">
+                                                                <label class="control-label">Extension Date*</label>
+                                                                <div class="">
+                                                                    <div class="">
+                                                                        <div class="">
+                                                                            <i class="fas fa-calendar-alt calendar-icon"></i>
+                                                                            @Html.TextBoxFor(m => m.ExtendedDate, new { @id = "ExtendedDate", @class = "form-control", @autocomplete = "off", @readonly = "readonly" })
+                                                                            @Html.ValidationMessageFor(m => m.ExtendedDate, null, new { @class = "text-danger" })
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <div class="form-group">
+                                                                <label class="control-label">Date Extension Remarks*</label>
+                                                                <div class="">
+                                                                    <textarea rows="3" id="extended-remarks" class="form-control -auto"></textarea>
+                                                                    <span class="need-extended-remarks" style="color:red"></span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    @*<div class="col-md-4" id="Versionchange">
+                                                    <div class="form-group">
+                                                        <label class="control-label">Version*</label>
+                                                        <div class="">
+                                                        @Html.TextBoxFor(model => model.Version, new { @id = "Version", @class = "form-control" })
+                                                        <span id="VersionError" style="color:red;"></span>
+                                                    </div>
+                                                    </div>
+                                                </div>*@
+
+                                                    @* @if (Context.Session.GetString("RoleId").ToString() == "1" || Context.Session.GetString("RoleId").ToString() == "2")
+                                                {
+                                                    <div class="form-group  col-md-12">
+                                                        @Html.CheckBoxFor(m => m.AccepptMailtrigger, new { @class = "displaycheck" })
+                                                        Do you want to trigger the mail for this changes
+                                                    </div>
+                                                        <div class="form-group col-md-12">
+                                                        @Html.CheckBoxFor(m => m.AccepptVersionCreation, new { @class = "displaycheck" })
+                                                        Do you want to create the new version for this changes
+                                                    </div>
+                                                }*@
+
+                                                </div>
+                                                <div class="col-md-12 m-form__page--buttons">
+                                                    @*<input type="button" value="Submit" class="btn btn-xs btn-info c-btn -sudmit" id="btnSubmit" />
+                                                <button type="button" class="btn btn-xs btn-warning c-btn -cancel" data-dismiss="modal">Cancel</button>*@
+                                                    <div class="save_buttons mr-2">
+                                                        <button type="submit" class="btn-add" id="btnSubmit"> Save</button>
+                                                        <a><button type="button" class="btn-rej -cancel" id="btnCancel"> Cancel</button></a>
+                                                    </div>
+                                                    @if (Context.Session.GetString("RoleId").ToString() == "1" || Context.Session.GetString("RoleId").ToString() == "2")
+                                                    {
+                                                        @*   <input type="button" value="Approve" class="btn btn-xs btn-success c-btn -sudmit" id="btnApprove" />
+                                                    <input type="button" value="Reject" class="btn btn-xs btn-warning c-btn -cancel" id="btnReject" />*@
+                                                        <div class="save_buttons">
+                                                            <button type="submit" class="btn-add" id="btnApprove"> Approve</button>
+                                                            <a><button type="button" class="btn-cnl" id="btnReject"> Reject</button></a>
+                                                        </div>
+                                                    }
+                                                    @*<button type="button" class="btn btn-xs btn-warning c-btn -cancel" data-dismiss="modal">Cancel</button>*@
+
+                                                </div>
+                                            </div>
+
+                                            @*</form>*@
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="dependentMilestones" class="modal fade" role="dialog">
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header -bg-green">
+                            <div class="">
+                                <h5 class="modal-title">Dependent Task(s) Details</h5>
+                            </div>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span>
+                                    <i class="fas fa-times"></i>
+                                </span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="m-modal__container">
+                                <div class="form-horizontal m-form">
+                                    <div class="m-form__container">
+                                        <span id="displaySpanmsg"></span>
+                                        @*<b>On Approving the Proposed end date the dependent milestones date(s) will be updated.Please enter appropriate remarks on approving, Are you sure you want to proceed ?</b>*@
+                                        <p> </p>
+                                        <div class="row">
+
+                                            <div class="">
+
+                                                <div class="m-table__main">
+                                                    <div class="m-table__responsive -virtual-scroll">
+                                                        <table id="jqgrid" class="table table-bordered"></table>
+                                                        <div id="pager"></div>
+                                                    </div>
+
+
+                                                </div>
+                                            </div>
+
+
+                                            <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                                <div class="save_buttons float-right text-right">
+                                                    <button type="button" class="btn-add" id="btndepent" hidden>Ok</button>
+
+                                                    <button type="submit" class="btn-add" id="btnok">Yes</button>
+                                                    <button type="button" id="BtnCanceldependent" class="btn-cnl"> No</button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="UserConfirmationforenddate" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content confirmationpop">
+
+                        <div class="modal-body text-center confirmationpop">
+                            <h4>On updating the End Date the request will be sent for approval, still you want to continue?</h4>
+                            <button type="button" id="endChangeDate" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                            <button type="button" id="EndNoButton" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal fade" id="UserConfirmationforCompleteMilestone" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content confirmationpop">
+
+                        <div class="modal-body text-center confirmationpop">
+                            <h4>Are you sure you want to complete the task?</h4>
+                            <button type="button" id="CompleteMilestone" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                            <button type="button" id="EndNoButton" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal" role="dialog" id="VersionRemarkspop" data-backdrop="static">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Version Change Remarks</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                        </div>
+                        <div class="col-md-12" id="Versionchange">
+                            <div class="modal-body">
+                                <span style="color:black;"><b>Version</b><span style="color:red;">*</span></span>
+
+                                @Html.TextBoxFor(model => model.Version, new { @id = "Version", @class = "form-control" })
+                                <span id="VersionError" style="color:red;"></span>
+
+                            </div>
+                        </div>
+                        <div class="modal-body">
+                            @*<h6 id="Deletelement" class="modal-title deletemsg"> Please enter the remarks for version change</h6>*@
+                            <span style="color:black;"><b>Remarks </b><span style="color:red;">*</span></span>
+                            @Html.TextBoxFor(model => model.Version, new { @id = "VersionRemarks", @class = "form-control" })
+                            <span id="VersionRemarksError" style="color:red;"></span>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" id="SaveVerionRemarks" class="btn btn-xs btn-info c-btn">Ok</button>
+                            <button type="button" id="CancelVerionRemarks" class="btn btn-xs btn-success c-btn">Cancel</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        </div>
+</div>
+
+
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>*@
+@*<script src='@Url.Content(String.Concat("~/JS/MyMilestone/MyMilestone.js?v=",System.Configuration.ConfigurationManager.AppSettings["VersionNumber"]))'></script>*@
+
+
+@*<script src="~/js/MyMilestone/MyMilestone.js"></script>*@
+<script src="@Url.Content("~/js/MyMilestone/MyMilestone.min.js")" asp-append-version="true"></script>

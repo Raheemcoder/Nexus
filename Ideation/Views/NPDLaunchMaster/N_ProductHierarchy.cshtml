@@ -1,0 +1,99 @@
+﻿@model Ideation.Models.NPDLaunchMaster
+
+@{
+    ViewBag.Title = "NPD Launch Master";
+    Layout = "~/Views/Shared/N_NPDLMLayout.cshtml";
+}
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a></span>Product Hierarchy</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    @using (Html.BeginForm("SaveProductHierarchyData", "NPDLaunchMaster", FormMethod.Post, new { id = "ProductHierarchy_Form_Submit", enctype = "multipart/form-data" }))
+    {
+        <div>
+            <div class="">
+
+                @Html.HiddenFor(model => model.NPDLaunchMasterProductHierarchyData, new { @id = "NPDLaunchMasterProductHierarchyData" })
+                @Html.HiddenFor(model => model.CategoryString, new { @id = "NPDCategoryString" })
+                @Html.HiddenFor(model => model.DivisionString, new { @id = "NPDDivisionString" })
+                @Html.HiddenFor(model => model.ProductString, new { @id = "NPDProductString" })
+                @Html.HiddenFor(model => model.FormulationString, new { @id = "NPDFormulationString" })
+                @Html.HiddenFor(model => model.SubCategoryString, new { @id = "NPDSubCategoryString" })
+                @Html.HiddenFor(model => model.ProductHierarchyData)
+                @Html.HiddenFor(model => model.UserName, new { @id = "UserName" })
+                <div class="filter_status prototype_filter d-flex justify-content-between">
+                    <div class="d-flex">
+                        <div class="col-width2">
+                            <div class="form-group flaoting_ ">
+                                @Html.DropDownListFor(model => model.ProductName, Model.HGMLProductGroupList, "All", new { @class = "form-control status_ floating_select data-singleselect",@id = "NpdHgmlProductGroup" })
+                                <label class="control-label form_lable floating_lable">HGML Product Group</label>
+                            </div>
+                        </div>
+                        <div class="col-width2">
+                            <div class="form-group flaoting_ ">
+                                @Html.DropDownListFor(model => model.DivisionName, Model.HGMLDivisionList, "All", new { @class = "form-control status_ floating_select data-singleselect",@id = "NpdHmlDivision" })
+                                <label class="control-label form_lable floating_lable">HGML Division</label>
+                            </div>
+                        </div>
+                        <div class="col-width2">
+                            <div class="form-group flaoting_">
+                                @Html.DropDownListFor(model => model.FormulationName, Model.HGMLFormulationList, "All", new { @class = "form-control status_ floating_select data-singleselect",@id = "NpdHgmlFormulation" })
+                                <label class="control-label form_lable floating_lable">HGML Product Format</label>
+                            </div>
+                        </div>
+
+                        <div class="col-width1">
+                            <button type="button" id="SearchProductHierarchyData" class="btn btn-search" title="Search" onclick="location.href = '#';"><i class="fas fa-search" aria-hidden="true"></i></button>
+                            <button class="btn btn-refresh" title="refresh" id="refresh" type="button">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex excel_expand align-items-center">
+                        <div class="images_excel">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="ExcelDownload" title="Excel Download">
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand" title="Full Screen">
+                                <div>
+                                    <div onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="ml-2">
+                            <button type="button" class="btn btn-cancel" onclick="location.href ='@Url.Content("~/NPDLaunchMaster/N_NPDList")';" data-title="Cancel"> Back</button>
+                            <button type="button" class="btn btn-draft SaveProductHierarchyData" data-bs-toggle="modal" data-title="Save"> Save</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll -scroll-grid">
+                                    <table id="ProductHierarchy_Grid" class="table table-bordered"></table>
+                                    <div id="pager_ProductHierarchy_Grid"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button_top float-right pt-2 pb-2">
+            <button type="button" class="btn btn-cancel" onclick="location.href ='@Url.Content("~/NPDLaunchMaster/N_NPDList")';" data-title="Cancel"> Back</button>
+            <button type="button" class="btn btn-draft SaveProductHierarchyData" data-bs-toggle="modal" data-title="Save"> Save</button>
+         </div>
+     }
+    </section>
+<script src="@Url.Content("~/js/npdlaunchmaster/N_ProductHierarchy.js")" asp-append-version="true"></script>
+

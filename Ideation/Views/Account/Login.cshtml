@@ -1,0 +1,119 @@
+﻿@model Ideation.Models.Account
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+    <script src="https://kit.fontawesome.com/ce2a6a1038.js" crossorigin="anonymous"></script>
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="@Url.Content("~/images/leaf.ico")">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/animate.min.css")" rel="stylesheet"  asp-append-version="true"/>
+    <link href="@Url.Content("~/css/main.css")" rel="stylesheet"  asp-append-version="true" />
+    <link href="@Url.Content("~/css/Style.css")" rel="stylesheet"  asp-append-version="true"/>
+
+</head>
+<body class="login_bg">
+    <div>
+        <div class="card_login">
+
+            <div class="d-flex bdf">
+                <div class="h_logo">
+                    <a href="https://himalayawellness.in/" target="_blank">
+                        <img src="@Url.Content("~/images/ideation-logo.png")" style="width: 18%;" />
+                        @* <img src="@Url.Content("~/images/TP/Small_TP_Logo_Transparent.png")" style="width: 18%;" /> *@
+
+                    </a>
+                    @*<h4 class="isp">The Innovation Submission Platform</h4>*@
+                </div>
+                <div class="ml-auto">
+                    <a href="https://himalayawellness.in/" target="_blank">
+                        <img src="@Url.Content("~/images/logohmnew.png")" class="img_height" />
+                    </a>
+                </div>
+            </div>
+            <br />
+            <div class="row">
+                <div class="col-lg-4 ">
+                    <div class="login_name">
+                        <div class="d-flex flx">
+                            @* <h2 class="mt-4 pt-1">Welcome to</h2>
+
+                            <h2 class="ideation_head">Ideation !</h2>*@
+                        </div>
+                        <div class="login_continue lgx">
+                            <p>Log in to continue</p>
+                        </div>
+                        @*<form class="lg_for">
+                            <div class="form-group">
+                                <label class="control-label">Username <span class="color-black">*</span></label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Password <span class="color-black">*</span></label>
+                                <input type="email" class="form-control">
+                            </div>
+                            <div class="pt-2">
+                                <a href="@Url.Content("/ProjectBrief/ProjectBrief")"><input type="button" class="btn btn-primary btn_gradient" value="Login"></a>
+                            </div>
+                        </form>*@
+                        @using (Html.BeginForm("Login", "Account", FormMethod.Post, new { @class = "lg_for" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <div class="form-group">
+                                <label class="control-label">Username <span class="color-red">*</span></label>
+                                <label class="des_txt">
+                                    (Enter User Name without @@himalayawellness.com)
+                                </label>
+                                @Html.TextBoxFor(model => model.Username, new  { @class = "form-control", autofocus=""} )
+                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group">
+                                <label class="control-label">Password <span class="color-red">*</span></label>
+                                @Html.PasswordFor(model => model.Password, new  { @class = "form-control"} )
+                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="pt-2">
+                                <input type="submit" class="btn btn-primary btn_gradient" value="Login">
+                            </div>
+                        }
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div id="message">
+                                @if (TempData["Message"] != null)
+                                {
+                                    <div class="alert @TempData["Messageclass"].ToString() alert-dismissible" role="alert">
+                                      
+                                        @Html.Raw(@TempData["Message"].ToString())
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-8 pl-0">
+
+                    <div class="right_image">
+                        <img src="@Url.Content("~/images/S3.png")" alt="login_right" class="s3_im">
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.js")" asp-append-version="true"></script>
+</body>
+</html>
+

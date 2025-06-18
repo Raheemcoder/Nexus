@@ -1,0 +1,624 @@
+﻿@{
+    Layout = "~/Views/Shared/_RRLayout.cshtml";
+    ViewBag.Title = "RiskManagement";
+}
+
+
+
+<div class="card-box mb-3 sg pt-2 risk_register" id="card_section">
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="-m_title">
+            <h3>Project Feasibility Score Card</h3>
+        </div>
+        <div class="risk_legend">
+            <ul>
+                <li><span class="low_circle"></span>Low Risk</li>
+                <li><span class="medium_circle"></span>Medium Risk</li>
+                <li><span class="high_circle"></span>High Risk</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-md-6">
+            <div class="risk_dropdown">
+                <label class="control-label">
+                    <strong>Project Id:</strong> ID-400000003-Himalaya Smart Tea
+                </label>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        USP Positioning
+                    </h4>
+                    <div>
+                        <span class="first_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Claims/Format Novelty vs Market Trend
+                    </label>
+                    <select class="form-control" id="purpose">
+                        <option value="">Select</option>
+                        <option value="low">Low-new &lt; 2yr </option>
+                        <option value="medium">Medium-Existing &lt; 5yr </option>
+                        <option value="high">High-Existing &lt; 10yr </option>
+                    </select>
+                    <span class="risk_bar"></span>
+                </div>
+                <hr />
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Efficacy / Aesthetic
+                    </label>
+                    <select class="form-control" id="purpose1">
+                        <option value="">Select</option>
+                        <option value="low">Low Risk-superior</option>
+                        <option value="medium">Medium Risk-Parity </option>
+                        <option value="high">High Risk-Inferiority </option>
+                    </select>
+                    <span class="risk_bar1"></span>
+                </div>
+                <hr />
+                <div class="risk_dropdown riskz">
+                    <label class="control-label">
+                        Sustainability
+                    </label>
+                    <select class="form-control" id="purpose2">
+                        <option value="">Select</option>
+                        <option value="low">Low- As Per WS 4 (RM Naturality &gt; 96/biodegradability/PM PCR)</option>
+                        <option value="medium">Medium: Below WS4 but at par wit industry/benchmark</option>
+                        <option value="high">High: Below industry- significantly bellow Benchmark</option>
+                    </select>
+                    <span class="risk_bar2"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        Design
+                    </h4>
+                    <div>
+                        <span class="load_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Regulatory/PR
+                    </label>
+                    <select class="form-control" id="design">
+                        <option value="">Select</option>
+                        <option value="low">Low-No discussion/No noise</option>
+                        <option value="medium">Medium-3 to 5 Y implementation date/Noise</option>
+                        <option value="high">High-&lt; 1 y implementation date/Hot List</option>
+                    </select>
+                    <span class="design_bar"></span>
+                </div>
+                <hr />
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Cost
+                    </label>
+                    <select class="form-control" id="design1">
+                        <option value="">Select</option>
+                        <option value="low">Low-Prototype developed with +5% variability </option>
+                        <option value="medium">Medium-Prototype developed with +20% variability</option>
+                        <option value="high">High-Prototype developed with +50% variability.</option>
+                    </select>
+                    <span class="design_bar1"></span>
+                </div>
+                <hr />
+                <div class="risk_dropdown riskz">
+                    <label class="control-label">
+                        Safety/Stability
+                    </label>
+                    <select class="form-control" id="design2">
+                        <option value="">Select</option>
+                        <option value="low">Low: Use of known chassis and actives</option>
+                        <option value="medium">Medium:  unknown to Himalaya but industry known and accepted</option>
+                        <option value="high">High Unknown/known to be challenging variability.</option>
+                    </select>
+                    <span class="design_bar2"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        Supply
+                    </h4>
+                    <div>
+                        <span class="color_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Cost
+                    </label>
+                    <select class="form-control" id="supply">
+                        <option value="">Select</option>
+                        <option value="low">Low-Total clarity 5% variability RM/PM/Coversion cost</option>
+                        <option value="medium">Medium-Moderate uncertainty 20%variability RM/PM/Coversion cost</option>
+                        <option value="high">High-No information/ +50%variability RM/PM/Coversion cost</option>
+                    </select>
+                    <span class="supply_bar"></span>
+                </div>
+                <hr />
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        RM/PM
+                    </label>
+                    <select class="form-control" id="supply1">
+                        <option value="">Select</option>
+                        <option value="low">Low-All available  with AVD</option>
+                        <option value="medium">Medium-All available  no AVD</option>
+                        <option value="high">High-Not available &#64; current price volume quality certification</option>
+                    </select>
+                    <span class="supply_bar1"></span>
+                </div>
+                <hr />
+                <div class="risk_dropdown riskz">
+                    <label class="control-label">
+                        Mixing & Filling
+                    </label>
+                    <select class="form-control" id="supply2">
+                        <option value="">Select</option>
+                        <option value="low">Low-All available  with AVD</option>
+                        <option value="medium">Medium-All available  no AVD</option>
+                        <option value="high">High-Not available &#64; current price volume quality certification</option>
+                    </select>
+                    <span class="supply_bar2"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        Deliver
+                    </h4>
+                    <div>
+                        <span class="delivery_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Project Timeline
+                    </label>
+                    <select class="form-control" id="deliver">
+                        <option value="">Select</option>
+                        <option value="low">Low-Project timeline as per the Brief</option>
+                        <option value="medium">Medium-Project timeline delayed by 1 Quarter</option>
+                        <option value="high">High-Project timeline delayed by more than 2Quarter</option>
+                    </select>
+                    <span class="deliver_bar"></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div id="conslusion" class="conslusion_section">
+                <label class="control-label"><b> Conclusion</b></label>
+                <div>
+                    <span>
+                        Bases on above four drivers e.g. Positioning, Design, supply & Deliver, over all project Risk Score Card is
+                    </span>
+                </div>
+                <span class="conslusion_bar"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div id="conslusion" class="conslusion_section">
+                <label class="control-label"><b> Remarks</b></label>
+                <div>
+                    <textarea class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="save_buttons float-right text-right">
+            <button type="button" class="btn-ap"> Save</button>
+            <button type="button" class="btn-rej" onclick="location.href = './RiskRegister';" data-title="Back"> Back</button>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+        $(".first_circle").css('visibility', 'hidden')
+        $(".risk_bar").css('visibility', 'hidden')
+        $(".risk_bar1").css('visibility', 'hidden')
+        $(".risk_bar2").css('visibility', 'hidden')
+        $(".load_circle").css('visibility', 'hidden')
+        $(".design_bar").css('visibility', 'hidden')
+        $(".design_bar1").css('visibility', 'hidden')
+        $(".design_bar2").css('visibility', 'hidden')
+        $(".color_circle").css('visibility', 'hidden')
+        $(".supply_bar").css('visibility', 'hidden')
+        $(".supply_bar1").css('visibility', 'hidden')
+        $(".supply_bar2").css('visibility', 'hidden')
+        $(".delivery_circle").css('visibility', 'hidden')
+        $(".deliver_bar").css('visibility', 'hidden')
+        $(".conslusion_bar").css('visibility', 'hidden')
+
+        $('#purpose').on('change', function () {
+            if (this.value == '') {
+                $(".risk_bar").removeClass('Medium High Low');
+                $(".first_circle").css('visibility', 'hidden')
+                $(".risk_bar").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".risk_bar").addClass('Low');
+                $(".risk_bar").removeClass('Medium High');
+                $(".risk_bar").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".risk_bar").addClass('Medium');
+                $(".risk_bar").removeClass('Low High');
+                $(".risk_bar").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".risk_bar").addClass('High');
+                $(".risk_bar").removeClass('Low Medium');
+                $(".risk_bar").css('visibility', 'visible')
+            }
+            LoadMainColor();
+            LoadMainColorNew();
+        });
+        $('#purpose1').on('change', function () {
+            if (this.value == '') {
+                $(".risk_bar1").removeClass('Medium High Low');
+                $(".first_circle").css('visibility', 'hidden')
+                $(".risk_bar1").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".risk_bar1").addClass('Low');
+                $(".risk_bar1").removeClass('Medium High');
+                $(".risk_bar1").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".risk_bar1").addClass('Medium');
+                $(".risk_bar1").removeClass('Low High');
+                $(".risk_bar1").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".risk_bar1").addClass('High');
+                $(".risk_bar1").removeClass('Low Medium');
+                $(".risk_bar1").css('visibility', 'visible')
+            }
+            LoadMainColor();
+            LoadMainColorNew();
+        });
+        $('#purpose2').on('change', function () {
+            if (this.value == '') {
+                $(".risk_bar2").removeClass('Medium High Low');
+                $(".first_circle").css('visibility', 'hidden')
+                $(".risk_bar2").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".risk_bar2").addClass('Low');
+                $(".risk_bar2").removeClass('Medium High');
+                $(".risk_bar2").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".risk_bar2").addClass('Medium');
+                $(".risk_bar2").removeClass('Low High');
+                $(".risk_bar2").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".risk_bar2").addClass('High');
+                $(".risk_bar2").removeClass('Low Medium');
+                $(".risk_bar2").css('visibility', 'visible')
+            }
+            LoadMainColor();
+            LoadMainColorNew();
+        });
+        function LoadMainColor() {
+            var item = $('#purpose').val()
+            var item1 = $('#purpose1').val()
+            var item2 = $('#purpose2').val()
+            if (item == 'high' || item1 == 'high' || item2 == 'high') {
+                $(".first_circle").css('visibility', 'visible')
+                $(".first_circle").addClass('High_risk');
+                $(".first_circle").removeClass('Medium_risk Low_risk');
+            }
+            else if (item == 'medium' || item1 == 'medium' || item2 == 'medium') {
+                $(".first_circle").css('visibility', 'visible')
+                $(".first_circle").addClass('Medium_risk');
+                $(".first_circle").removeClass('High_risk Low_risk');
+            }
+            else if (item == 'low' || item1 == 'low' || item2 == 'low') {
+                $(".first_circle").css('visibility', 'visible')
+                $(".first_circle").addClass('Low_risk');
+                $(".first_circle").removeClass('Medium_risk High_risk');
+            }
+        }
+
+        $('#design').on('change', function () {
+            if (this.value == '') {
+                $(".design_bar").removeClass('Medium High Low');
+                $(".load_circle").css('visibility', 'hidden')
+                $(".design_bar").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".design_bar").addClass('Low');
+                $(".design_bar").removeClass('Medium High');
+                $(".design_bar").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+
+            }
+            else if (this.value == 'medium') {
+                $(".design_bar").addClass('Medium');
+                $(".design_bar").removeClass('Low High');
+                $(".design_bar").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".design_bar").addClass('High');
+                $(".design_bar").removeClass('Low Medium');
+                $(".design_bar").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            LoadMainColor2();
+            LoadMainColorNew();
+        });
+        $('#design1').on('change', function () {
+            if (this.value == '') {
+                $(".design_bar1").removeClass('Medium High Low');
+                $(".load_circle").css('visibility', 'hidden')
+                $(".design_bar1").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".design_bar1").addClass('Low');
+                $(".design_bar1").removeClass('Medium High');
+                $(".design_bar1").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".design_bar1").addClass('Medium');
+                $(".design_bar1").removeClass('Low High');
+                $(".design_bar1").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".design_bar1").addClass('High');
+                $(".design_bar1").removeClass('Low Medium');
+                $(".design_bar1").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            LoadMainColor2();
+            LoadMainColorNew();
+        });
+        $('#design2').on('change', function () {
+            if (this.value == '') {
+                $(".design_bar2").removeClass('Medium High Low');
+                $(".load_circle").css('visibility', 'hidden')
+                $(".design_bar2").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".design_bar2").addClass('Low');
+                $(".design_bar2").removeClass('Medium High');
+                $(".design_bar2").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".design_bar2").addClass('Medium');
+                $(".design_bar2").removeClass('Low High');
+                $(".design_bar2").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".design_bar2").addClass('High');
+                $(".design_bar2").removeClass('Low Medium');
+                $(".design_bar2").css('visibility', 'visible')
+                $(".load_circle").css('visibility', 'visible')
+            }
+            LoadMainColor2();
+            LoadMainColorNew();
+        });
+        function LoadMainColor2() {
+            var item = $('#design').val()
+            var item1 = $('#design1').val()
+            var item2 = $('#design2').val()
+            if (item == 'high' || item1 == 'high' || item2 == 'high') {
+                $(".load_circle").addClass('High_risk');
+                $(".load_circle").removeClass('Medium_risk Low_risk');
+
+            }
+            else if (item == 'medium' || item1 == 'medium' || item2 == 'medium') {
+                $(".load_circle").addClass('Medium_risk');
+                $(".load_circle").removeClass('High_risk Low_risk');
+            }
+            else if (item == 'low' || item1 == 'low' || item2 == 'low') {
+                $(".load_circle").addClass('Low_risk');
+                $(".load_circle").removeClass('Medium_risk High_risk');
+            }
+        }
+
+        $('#supply').on('change', function () {
+            if (this.value == '') {
+                $(".supply_bar").removeClass('Medium High Low');
+                $(".color_circle").css('visibility', 'hidden')
+                $(".supply_bar").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".supply_bar").addClass('Low');
+                $(".supply_bar").removeClass('Medium High');
+                $(".supply_bar").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".supply_bar").addClass('Medium');
+                $(".supply_bar").removeClass('Low High');
+                $(".supply_bar").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".supply_bar").addClass('High');
+                $(".supply_bar").removeClass('Low Medium');
+                $(".supply_bar").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            LoadMainColor3();
+            LoadMainColorNew();
+        });
+        $('#supply1').on('change', function () {
+            if (this.value == '') {
+                $(".supply_bar1").removeClass('Medium High Low');
+                $(".color_circle").css('visibility', 'hidden')
+                $(".supply_bar1").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".supply_bar1").addClass('Low');
+                $(".supply_bar1").removeClass('Medium High');
+                $(".supply_bar1").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".supply_bar1").addClass('Medium');
+                $(".supply_bar1").removeClass('Low High');
+                $(".supply_bar1").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".supply_bar1").addClass('High');
+                $(".supply_bar1").removeClass('Low Medium');
+                $(".supply_bar1").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            LoadMainColor3();
+            LoadMainColorNew();
+        });
+        $('#supply2').on('change', function () {
+            if (this.value == '') {
+                $(".supply_bar2").removeClass('Medium High Low');
+                $(".color_circle").css('visibility', 'hidden')
+                $(".supply_bar2").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".supply_bar2").addClass('Low');
+                $(".supply_bar2").removeClass('Medium High');
+                $(".supply_bar2").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".supply_bar2").addClass('Medium');
+                $(".supply_bar2").removeClass('Low High');
+                $(".supply_bar2").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'high') {
+                $(".supply_bar2").addClass('High');
+                $(".supply_bar2").removeClass('Low Medium');
+                $(".supply_bar2").css('visibility', 'visible')
+                $(".color_circle").css('visibility', 'visible')
+            }
+            LoadMainColor3();
+            LoadMainColorNew();
+        });
+        function LoadMainColor3() {
+            var item = $('#supply').val()
+            var item1 = $('#supply1').val()
+            var item2 = $('#supply2').val()
+            if (item == 'high' || item1 == 'high' || item2 == 'high') {
+                $(".color_circle").addClass('High_risk');
+                $(".color_circle").removeClass('Medium_risk Low_risk');
+                $(".delivery_circle").removeClass('Medium_risk Low_risk');
+            }
+            else if (item == 'medium' || item1 == 'medium' || item2 == 'medium') {
+                $(".color_circle").addClass('Medium_risk');
+                $(".color_circle").removeClass('High_risk Low_risk');
+            }
+            else if (item == 'low' || item1 == 'low' || item2 == 'low') {
+                $(".color_circle").addClass('Low_risk');
+                $(".color_circle").removeClass('Medium_risk High_risk');
+            }
+        }
+        $('#deliver').on('change', function () {
+            if (this.value == '') {
+                $(".deliver_bar").removeClass('Medium High Low');
+                $(".delivery_circle").css('visibility', 'hidden')
+                $(".deliver_bar").css('visibility', 'hidden')
+            }
+            else if (this.value == 'low') {
+                $(".deliver_bar").addClass('Low');
+                $(".deliver_bar").removeClass('Medium High');
+                $(".deliver_bar").css('visibility', 'visible')
+                $(".delivery_circle").css('visibility', 'visible')
+            }
+            else if (this.value == 'medium') {
+                $(".deliver_bar").addClass('Medium');
+                $(".deliver_bar").removeClass('Low High');
+                $(".deliver_bar").css('visibility', 'visible')
+                $(".delivery_circle").css('visibility', 'visible')
+
+            }
+            else if (this.value == 'high') {
+                $(".deliver_bar").addClass('High');
+                $(".deliver_bar").removeClass('Low Medium');
+                $(".deliver_bar").css('visibility', 'visible')
+                $(".delivery_circle").css('visibility', 'visible')
+            }
+            LoadMainColor4();
+            LoadMainColorNew();
+        });
+        function LoadMainColor4() {
+            var item = $('#deliver').val()
+            if (item == 'high') {
+                $(".delivery_circle").addClass('High_risk');
+                $(".delivery_circle").removeClass('Medium_risk Low_risk');
+            }
+            else if (item == 'medium') {
+                $(".delivery_circle").addClass('Medium_risk');
+                $(".delivery_circle").removeClass('High_risk Low_risk');
+            }
+            else if (item == 'low') {
+                $(".delivery_circle").addClass('Low_risk');
+                $(".delivery_circle").removeClass('Medium_risk High_risk');
+            }
+        }
+
+
+        function LoadMainColorNew() {
+            var item = $('#deliver').val()
+            var item1 = $('#supply').val()
+            var item2 = $('#supply1').val()
+            var item3 = $('#supply2').val()
+            var item4 = $('#design').val()
+            var item5 = $('#design1').val()
+            var item6 = $('#design2').val()
+            var item7 = $('#purpose').val()
+            var item8 = $('#purpose1').val()
+            var item9 = $('#purpose2').val()
+            if (item == 'high' || item1 == 'high' || item2 == 'high' || item3 == 'high' || item4 == 'high' || item5 == 'high' || item6 == 'high' || item7 == 'high' || item8 == 'high' || item9 == 'high') {
+                $(".conslusion_bar").addClass('High_risk');
+                $(".conslusion_bar").removeClass('Medium_risk Low_risk');
+                $(".conslusion_bar").css('visibility', 'visible')
+            }
+            else if (item == 'medium' || item1 == 'medium' || item2 == 'medium' || item3 == 'medium' || item4 == 'medium' || item5 == 'medium' || item6 == 'medium' || item7 == 'medium' || item8 == 'medium' || item9 == 'medium') {
+                $(".conslusion_bar").addClass('Medium_risk');
+                $(".conslusion_bar").removeClass('High_risk Low_risk');
+                $(".conslusion_bar").css('visibility', 'visible')
+            }
+            else if (item == 'low' || item1 == 'low' || item2 == 'low' || item3 == 'low' || item4 == 'low' || item5 == 'low' || item6 == 'low' || item7 == 'low' || item8 == 'low' || item9 == 'low') {
+                $(".conslusion_bar").addClass('Low_risk');
+                $(".conslusion_bar").removeClass('Medium_risk High_risk');
+                $(".conslusion_bar").css('visibility', 'visible')
+            }
+        }
+    });
+</script>

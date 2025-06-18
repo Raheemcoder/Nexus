@@ -1,0 +1,203 @@
+﻿@model Ideation.Models.MilestoneMaster
+@{
+    ViewBag.Title = "MilestoneMaster";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+}
+<div id="message">
+    @if (TempData["Milestonemessage"] != null)
+    {
+        <div id="message" class="alert @TempData["MessageClass"].ToString() alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            @TempData["Milestonemessage"].ToString();
+        </div>
+
+
+    }
+</div>
+<div class="card-box">
+<div class="row d-flex align-items-center" >
+    <div class="col-md-7">
+        <div class="page-title left_title">
+            <h4 class="-mb-3">Milestone Master</h4>
+            @Html.HiddenFor(m => m.count)
+            @*@Html.HiddenFor(m => m.SequenceNo)*@
+            @Html.HiddenFor(m => m.Status)
+        </div>
+
+        
+      
+    </div>
+    <div class="col-md-5 page-add__button mb-3">
+        <button type="button" class="btn btn-xs btn-info c-btn" data-toggle="modal" data-target="#addModal" id="Addmilestone" >Add New Milestone</button>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12">
+        <div class="m-table__main">
+            <div class="m-table__responsive -virtual-scroll m-table__responsivemaster">
+                <table id="jqgrid" class="table table-bordered"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<div id="addModal" class="modal fade m-modal -table-modal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h4 id="element" class="modal-title">Milestone</h4>
+                </div>
+                <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body milestone">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            @*<form class="m-form__form">*@
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12">
+                                        <div class="row">
+                                            <div class="col-md-4">                                            
+                                        <div class="form-group">
+                                                    <label class="control-label">Sequence No <span class="color-red">*</span></label>
+                                            <div class="">
+                                                @Html.HiddenFor(m => m.MilestoneId)
+                                                @Html.HiddenFor(m => m.count, new { @class = "form-control" })
+                                                 @*@Html.DropDownListFor(model => model.SequenceNo, (IEnumerable<SelectListItem>)ViewBag.SetSequnce, "-- select --", new { @id = "SetSequnce", @class = "form-control data - singleselect" })*@
+                                                @Html.DropDownListFor(model => model.SequenceNo, new SelectList (ViewBag.SetSequnce,"Value","Text"), "-- select --", new { @id = "SetSequnce", @class = "form-control data - singleselect" })
+                                                @Html.ValidationMessageFor(m => m.SequenceNo, null, new { @class = "text-danger" })
+                                            </div>
+                                            
+                                        </div>
+                                        </div>
+                                            <div class="col-md-4">
+                                        <div class="form-group">
+                                                    <label class="control-label">Milestone Name <span class="color-red">*</span></label>
+                                            <div class="">
+                                                @Html.TextBoxFor(m => m.MilestoneName, new { @id = "Name", @class = "form-control" })
+                                                @Html.ValidationMessageFor(m => m.MilestoneName, null, new { @class = "text-danger" })
+                                                @*<input type="text" class="form-control">*@
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <div class="col-md-4" hidden>
+                                        <div class="form-group  relationTypeDiv">
+                                                    <label class="control-label">Relation Type <span class="color-red">*</span></label>
+                                            <div class="">
+                                                @Html.DropDownListFor(m => m.RelationType, new List<SelectListItem>{
+                                                 new SelectListItem{ Text="FS ( Sequence)",Value="FS ( Sequence)" },
+                                                  new SelectListItem{ Text="SS ( Parallel )",Value="SS ( Parallel )"}
+                                                  }, "--select--", new { @class = "form-control", @id = "relationtype" })
+                                                @Html.ValidationMessageFor(m => m.RelationType, null, new { @class = "text-danger" })
+
+
+
+                                            </div>
+                                        </div>
+                                        </div>
+                                            <div class="col-md-4" id="SpecialSet">
+                                        <div class="form-group">
+                                                    <label class="control-label">Set Relation <span class="color-red">*</span></label>
+                                            <div class="">
+                                                @*@Html.DropDownListFor(model => model.MilestoneName, (IEnumerable<SelectListItem>)ViewBag.SetRealtion, new { @id = "Setrelation", @class = "form-control multiselectDropdown", multiple = "multiple", style = "height:100%;size='8'" })*@
+                                                @Html.DropDownListFor(model => model.MilestoneName,new SelectList (ViewBag.SetRealtion,"Value","Text") , new { @id = "Setrelation", @class = "form-control multiselectDropdown", multiple = "multiple", style = "height:100%;size='8'" })
+                                                @Html.ValidationMessageFor(m => m.RelationType, null, new { @class = "text-danger" })
+
+                                                @*<select class="form-controlmultiselectDropdown" size="8" style="height: 100%; display: none;" multiple="multiple" data-multiselect="">*@
+
+
+
+                                                @*<option>1</option>
+                                                    <option>2</option>
+                                                    <option>3</option>
+                                                    <option>4</option>
+                                                    <option>5</option>
+                                                    <option>6</option>
+                                                    <option>7</option>
+                                                    <option>8</option>
+                                                    <option>9</option>
+                                                    <option>10</option>
+                                                    <option>11</option>
+                                                    <option>12</option>
+                                                    <option>13</option>
+                                                    <option>14</option>
+                                                    <option>15</option>
+                                                    <option>16</option>
+                                                    <option>17</option>
+                                                    <option>18</option>
+                                                    <option>19</option>
+                                                    <option>20</option>*@
+                                                @*</select>*@
+                                                @*<div class="btn-group" style="width: 220px;">
+                                                    <button type="button" class="multiselect dropdown-toggle btn btn-default" data-toggle="dropdown" title="None selected" style="width: 220px; overflow: hidden; text-overflow: ellipsis;" aria-expanded="false"><span class="multiselect-selected-text">None selected</span> <b class="caret"></b></button>
+                                                    <ul class="multiselect-container dropdown-menu" style="max-height: 300px; overflow: hidden auto;">
+                                                        <li class="multiselect-item filter" value="0"><div class="input-group"><span class="input-group-addon"><i class="glyphicon glyphicon-search"></i></span><input class="form-control multiselect-search" type="text" placeholder="Search"><span class="input-group-btn"><button class="btn btn-default multiselect-clear-filter" type="button"><i class="glyphicon glyphicon-remove-circle"></i></button></span></div></li><li class="multiselect-item multiselect-all"><a tabindex="0" class="multiselect-all"><label class="checkbox"><input type="checkbox" value="multiselect-all">  Select all</label></a></li><li class=""><a tabindex="0"><label class="checkbox"><input type="checkbox" value="1"> 1</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="2"> 2</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="3"> 3</label></a></li><li class=""><a tabindex="0"><label class="checkbox"><input type="checkbox" value="4"> 4</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="5"> 5</label></a></li><li class=""><a tabindex="0"><label class="checkbox"><input type="checkbox" value="6"> 6</label></a></li><li class=""><a tabindex="0"><label class="checkbox"><input type="checkbox" value="7"> 7</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="8"> 8</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="9"> 9</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="10"> 10</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="11"> 11</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="12"> 12</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="13"> 13</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="14"> 14</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="15"> 15</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="16"> 16</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="17"> 17</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="18"> 18</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="19"> 19</label></a></li><li><a tabindex="0"><label class="checkbox"><input type="checkbox" value="20"> 20</label></a></li></ul></div>*@
+                                            </div>
+                                        </div>
+                                        </div>
+                                            <div class="col-md-4">
+                                         <div class="form-group">
+                                                    <label class="control-label">Duration <span class="color-red">*</span></label>
+                                            <div class="">
+                                                @Html.TextBoxFor(m => m.Duration, new { @id = "Duration", @class = "form-control" })
+                                                @*@Html.ValidationMessageFor(m => m.Duration, null, new { @class = "text-danger" })*@
+                                                @*<input type="text" class="form-control">*@
+                                            </div>
+                                        </div>
+                                        </div>
+                                            <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Status <span class="color-red">*</span></label>
+                                            <div class="">
+                                                <div class="radio-list m-radio__list">
+                                                    <div class="radio-inline p-0">
+                                                        <div class="radio radio-info">
+                                                            @Html.RadioButtonFor(model => model.Status, "true", new { @id = "option1", @Checked = "checked" })
+                                                            @*@Html.ValidationMessageFor(m => m.Status, null, new { @class = "text-danger" })*@
+                                                            @*<input type="radio" name="statusgroup" id="radio1" checked>*@
+                                                            <label for="radio1">Active</label>
+                                                        </div>
+                                                        <div class="radio radio-info">
+                                                            @Html.RadioButtonFor(model => model.Status, "false", new { @id = "option2" })
+                                                            @*@Html.ValidationMessageFor(m => m.Status, null, new { @class = "text-danger" })*@
+                                                            @*<input type="radio" name="statusgroup" id="radio2">*@
+                                                            <label for="radio2">InActive</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 m-form__page--buttons">
+                                        @*<input type="button" value="Submit" class="btn btn-xs btn-info c-btn -sudmit" id="btnSubmit" />
+                                        <input type="button" value="Cancel" class="btn btn-xs btn-warning c-btn -cancel" id="btnCancel" data-dismiss="modal" />*@
+                                        <div class="save_buttons float-right text-right">
+                                            <input type="button" class="btn-add" id="btnSubmit" value="Submit" />
+                                            <button type="button" class="btn-cnl" id="btnCancel" data-dismiss="modal"> Cancel</button>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            @*</form>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src='@Url.Content(String.Concat("~/JS/Master/MilestoneList.js?v=", System.Configuration.ConfigurationManager.AppSettings["VersionNumber"]))'></script>
+@*<script src='@Url.Content(String.Concat("~/JS/Master/MilestoneMasterAdd.js?v=",System.Configuration.ConfigurationManager.AppSettings["VersionNumber"]))'></script>*@
+
+<script src="~/js/Master/MilestoneMasterAdd.js"></script>

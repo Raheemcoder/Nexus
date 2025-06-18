@@ -1,0 +1,218 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewBag.Title = "Baseline Budget ";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+<style>
+    a.color-blue {
+        color: blue !important;
+    }
+
+        a.color-blue:hover {
+            color: #000 !important;
+        }
+
+    .tabs_data .fade:not(.show) {
+        opacity: 1;
+    }
+
+    .color-green_ {
+        color: #47d359;
+    }
+
+    .color-blue {
+        color: #215c98;
+    }
+
+    .tabs_list li a.active, .tabs_list li a:hover {
+        padding: 7px 20px;
+        background: #fd6100;
+        border-radius: 20px 0px;
+        color: #fff;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li a {
+        padding: 7px 20px;
+        background: #dedede;
+        border-radius: 20px 0px;
+        color: #000;
+        margin: 0px 0px;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li, .tabs_list li:hover {
+        padding: 0px;
+        margin: 0px;
+        background: transparent;
+    }
+
+    .list_baseline ul {
+        display: flex;
+        list-style-type: none;
+        justify-content: end;
+        margin-bottom: 0px;
+    }
+
+        .list_baseline ul li {
+            margin-left: 20px;
+            font-size: 10px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+            .list_baseline ul li b {
+                color: #000;
+                font-weight: normal;
+            }
+
+    td input {
+        border: 1px solid #000 !important;
+    }
+
+    .list_badge .m-table__main .table td:nth-child(1) {
+        padding: 5px 8px !important;
+    }
+
+    .list_badge .ui-jqgrid .ui-jqgrid-htable th {
+        padding: 4px 17px !important;
+    }
+
+    .list_badge .jqgfirstrow {
+        display: none
+    }
+
+    .info_popup {
+        background: #01686a !important;
+        border: #01686a !important;
+    }
+
+    .list_baseline {
+        background: #e8e8e8;
+        padding: 5px;
+    }
+
+    td.text-right {
+        text-align: right !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-hrtable, .ui-jqgrid .ui-jqgrid-sdiv {
+        width: 100% !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-hrdiv, .ui-jqgrid .ui-jqgrid-ftable {
+        width: 100% !important;
+    }
+
+    .ui-jqgrid-sdiv td {
+        padding: 0px 4px !important;
+        border: 1px solid #dedede !important;
+        border-top: 0px !important;
+        font-weight: 600 !important;
+    }
+</style>
+<section>
+    <div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong id="alertText"></strong>
+    </div>
+
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.Role)
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+        <div class="text-right mb-2">
+            <span title="Department Wise Budget" class="GetDepartmentBudgets"><i class="fas fa-info mr-2" aria-hidden="true"></i></span>
+            <button type="button" class="btn btn-excel" title="Excel Download" id="ExcelDownload"><img src="@Url.Content("~/N_assets/images/excel.png")"></button>
+            <a onclick="BackButton()">
+                <button type="button" id="Back" class="btn btn-danger m-0 c-add-details waves-light waves-effect">
+                    Back
+                </button>
+            </a>
+        </div>
+        <div class="list_baseline pb-1">
+            <ul>
+                <li class="projectName"> </li>
+
+                <li>
+                    <b>L2 Approved Baseline Budget (INR):</b> <span class="ApprovedBaselineBudget"></span>
+                </li>
+                <li>
+                    <b>L2 Approved Additional Budget (INR):</b> <span class="ApprovedAdditionalBudget"></span>
+                </li>
+
+                <li>
+                    <b>L2 Total Budget (INR):</b> <span class="TotalBudget"></span>
+                </li>
+
+            </ul>
+        </div>
+        @*<div class="list_baseline pb-1 mt-1 hideBar" >
+                <ul class="categoriesandvalues">
+                </ul>
+            </div>*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="Info" class="table table-bordered"></table>
+                            <div id="Info_pager"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<div class="modal fade budget_popup" id="ShowDepartmentList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title">Department wise Budget Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 text-right"><button type="button" class="btn btn-excel mr-2" title="Excel Download" id="DepartmentExcelDownload"><img src="@Url.Content("~/N_assets/images/excel.png")"></button></div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <input type="text" id="budget_projectid" hidden />
+                                        <table id="DepartmentBudget" class="table table-bordered"></table>
+                                        <div id="pager_DepartmentBudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-danger m-0 c-add-details waves-light waves-effect">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/js/ProjectMaster/L2ApprovedProjectInfo.js")"></script>
+
+

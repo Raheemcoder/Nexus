@@ -1,0 +1,280 @@
+﻿@model Ideation.Models.RID
+@{
+    ViewData["Title"] = "Region Wise Compliance";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var division = @Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.DivisionName;
+    var count = 0;
+    var ingtypelist = Model.IngredientTypeList;
+    var firsingredientId = ingtypelist.FirstOrDefault().IngredientTypeId;
+    var firstingredientTypeName = ingtypelist.FirstOrDefault().IngredientTypeName;
+}
+<style>
+    .preview_popup th {
+        background: #ffe0ca !important;
+        border: 1px solid #000;
+        width: 130px;
+    }
+
+    .preview_popup td {
+        border: 1px solid #000;
+    }
+
+    .preview_popup .richediter img {
+        height: 160px;
+        margin-bottom: 0px
+    }
+
+    .preview_popup .richediter b {
+        margin-top: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    div.preview_popup {
+        background: #05050585;
+    }
+
+    .recomandation_title {
+        border-bottom: 0px solid #9d9d9d;
+        font-size: 14px;
+        font-weight: normal;
+        margin-bottom: 10px;
+        background: #fccaa2;
+        color: #000;
+        padding: 5px 10px;
+        line-height: 1;
+    }
+
+    .cremarks_icon {
+        justify-content: center !important;
+        align-items: center;
+    }
+
+    .modal-title .text-right b {
+        color: #f86e00;
+    }
+
+    .grid-scroll {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden !important;
+    }
+</style>
+
+@*To show response message*@
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+</section>
+
+<section>
+    <div id="message" class="m-login__erromsg">
+        @if (TempData["FS_SaveMessage"] != null)
+        {
+            <div class="alert @TempData["FS_SaveMessageClass"].ToString() alert-dismissible justify-content-between" role="alert" id="message_alert">
+                @TempData["FS_SaveMessage"].ToString()
+                <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+            </div>
+        }
+    </div>
+</section>
+
+@*header link*@
+<section>
+    <div class="">
+        <div class="-m_title_">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home/ </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division/ </a>
+                </span>
+                RWC
+            </h4>
+        </div>
+    </div>
+</section>
+
+@*hidden fields*@
+<section>
+    @Html.HiddenFor(m => m.DivisionId)
+    @Html.HiddenFor(m => m.DivisionBasedIngredientListJson)
+    @Html.HiddenFor(m => m.ComplianceRequestListJson)
+    @Html.HiddenFor(m => m.IngredientTypeList)
+    @Html.HiddenFor(m => m.LoginId)
+</section>
+
+@*Page tab and grid*@
+<section>
+
+    <div class="project_modules">
+        <input type="text" id="firstingredient" hidden value="@firsingredientId" />
+        <input type="hidden" id="firstingredienttypename" value="@firstingredientTypeName" />
+        <ul class="nav nav-tabs ingredienttype_content">
+            @foreach (var type in Model.IngredientTypeList)
+            {
+                count++;
+
+                <li>
+                    @if (Model.IngredientTypeId != 0)
+                    {
+                        if (Model.IngredientTypeId == @type.IngredientTypeId)
+                        {
+                            <a href="javascript:void(0)" class="active all_content"
+                               onclick="GetIngredientTypesGridData(this)"
+                               IngredientTypeId="@type.IngredientTypeId" IngredientTypeName="@type.IngredientTypeName" 
+                               id="selectedingredient_@type.IngredientTypeId">@type.IngredientTypeName</a>
+                        }
+                        else
+                        {
+                            <a href="javascript:void(0)" class=""
+                               onclick="GetIngredientTypesGridData(this)"
+                               IngredientTypeId="@type.IngredientTypeId" IngredientTypeName="@type.IngredientTypeName"
+                               id="selectedingredient_@type.IngredientTypeId">@type.IngredientTypeName</a>
+                        }
+                    }
+                    else
+                    {
+                        if (count > 0 && count == 1)
+                        {
+                            <a href="javascript:void(0)" class="active all_content"
+                               onclick="GetIngredientTypesGridData(this)"
+                               IngredientTypeId="@type.IngredientTypeId" IngredientTypeName="@type.IngredientTypeName"
+                               id="selectedingredient_@type.IngredientTypeId">@type.IngredientTypeName</a>
+                        }
+                        else if (count >= 2)
+                        {
+                            <a href="javascript:void(0)" class=""
+                               onclick="GetIngredientTypesGridData(this)"
+                               IngredientTypeId="@type.IngredientTypeId" IngredientTypeName="@type.IngredientTypeName"
+                               id="selectedingredient_@type.IngredientTypeId">@type.IngredientTypeName</a>
+                        }
+                    }
+
+                </li>
+            }
+        </ul>
+    </div>
+
+    <div class="tab-content">
+        <div class="tab-pane fade in active">
+
+            <section class="page-header-search-action d-flex align-items-center justify-content-between">
+                <div class="filter_status prototype_filter">
+                    <div class="d-flex justify-content-between">
+                        <div class="d-flex">
+
+                            <div class="col-width1 ">
+                                <div class="form-group rid_calendericon">
+                                    <label class="control-label">Start Date</label>
+                                    <input type="text" class="form-control ImpactDates_text_freezed" id="Search_Start_Date" autocomplete="off"
+                                           data-datepicker-startdate readonly>
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-width1 ">
+                                <div class="form-group rid_calendericon">
+                                    <label class="control-label">End Date</label>
+                                    <input type="text" class="form-control ImpactDates_text_freezed" id="Search_End_Date" autocomplete="off"
+                                           data-datepicker-enddate readonly>
+                                    <i class="fas fa-calendar"></i>
+                                </div>
+                            </div>
+
+                            <div class="col-width2">
+                                <div class="form-group">
+                                    <label class="control-label">Search</label>
+                                    <input type="text" class="form-control" id="global_search" autocomplete="off">
+                                </div>
+                            </div>
+
+                            <div class="col-width1 mt-3 pt-1">
+                                <button class="btn btn-search" title="Search" type="button" id="search_ingredient">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button class="btn btn-refresh" title="Refresh" type="button" id="refresh_date">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="add_button">
+                    <button type="button" class="btn btn-draft" title="Add New Ingredient" onclick="GetAddEditFSDetails(0,1)">
+                        Add Ingredient
+                    </button>
+                </div>
+            </section>
+
+            <section class="page-lengend">
+                <div class="d-flex align-items-center justify-content-between">
+                    <div class="d-flex">
+                        <div class="ingradient_edited mr-2">
+                            <label class="mb-0"><span></span> Ingredients Edited</label>
+                        </div>
+                        <div class="ingradient_edited rollback_ingre mr-2">
+                            <label class="mb-0"><span></span> Ingredients Rollbacked to Initiator</label>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <div>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <div class="legends_list circle_list ">
+                                    <ul class="d-flex ">
+                                        <li><span class="purple_circle"></span> Higher Management/HUB Decision Required</li>
+                                        <li><span class="green_circle"></span> Allowed</li>
+                                        <li><span class="yellow_circle"></span> Allowed With Restrictions</li>
+                                        <li><span class="red_circle"></span> Prohibited</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="images_excel ">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand">
+                                <div>
+                                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+
+            <section class="page-grid">
+                <div class="animate__animated2 slideInUp mt-3">
+                    <div class="">
+                        <div class="">
+                            <div class="row">
+                                <div class="m-table__main grid_height rid_heigt">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="IngredientListGrid" class="table table-bordered"></table>
+                                        <div id="IngredientListGrid_Pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</section>
+
+<script src="@Url.Content("~/js/NewRID/FoodSupplementRWCList.js")"></script>

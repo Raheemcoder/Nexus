@@ -1,0 +1,653 @@
+﻿@model Ideation.Models.ProjectMasters
+
+@{
+    ViewBag.Title = "Baseline Budget ";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    a.color-blue {
+        color: blue !important;
+    }
+
+    .hide {
+        display: none !important;
+    }
+
+    a.color-blue:hover {
+        color: #000 !important;
+    }
+
+    .tabs_data .fade:not(.show) {
+        opacity: 1;
+    }
+
+    .project_id {
+        color: #ff6b00;
+        font-weight: bold;
+        margin-bottom: 10px;
+        font-size: 12px;
+    }
+
+    .tabs_list li a.active, .tabs_list li a:hover {
+        padding: 7px 20px;
+        background: #fd6100;
+        border-radius: 20px 0px;
+        color: #fff;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li a {
+        padding: 7px 20px;
+        background: #dedede;
+        border-radius: 20px 0px;
+        color: #000;
+        margin: 0px 0px;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li, .tabs_list li:hover {
+        padding: 0px;
+        margin: 0px;
+        background: transparent;
+    }
+
+    .list_baseline ul {
+        display: flex;
+        list-style-type: none;
+        justify-content: end;
+        margin-bottom: 0px;
+    }
+
+        .list_baseline ul li {
+            margin-left: 20px;
+            font-size: 10px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+            .list_baseline ul li b {
+                color: #000;
+                font-weight: normal;
+            }
+
+    td input {
+        border: 1px solid #000 !important;
+    }
+
+    .list_badge .m-table__main .table td:nth-child(1) {
+        padding: 5px 8px !important;
+    }
+
+    .list_badge .ui-jqgrid .ui-jqgrid-htable th {
+        padding: 4px 17px !important;
+    }
+
+    .list_badge .jqgfirstrow {
+        display: none
+    }
+
+    .info_popup {
+        background: #01686a !important;
+        border: #01686a !important;
+    }
+
+    .select2-container.select2-container--default.select2-container--open {
+        z-index: 9999;
+    }
+
+    .tranfer_Border {
+        border: 1.5px solid #65bfb7;
+        padding: 3px;
+        border-radius: 10px;
+        background: #f1f8ff;
+        float: left;
+        width: 100%;
+    }
+
+    .form-control.budget_transfer {
+        height: 12px;
+        border: none !important;
+        box-shadow: none;
+        text-align: right;
+    }
+
+    .tranfer_Border p {
+        font-size: 10px;
+        font-weight: bold;
+    }
+
+    .tranfer_Border .control-label {
+        margin: 0px;
+    }
+
+    .tranfer_Border .col-lg-2 {
+        margin: 0px -6px -12px 0px;
+        width: 14%;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        font-size: 10px !important;
+    }
+
+    .m-table__main .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+        font-size: 12px !important;
+    }
+
+    #budgetTransfer_grid tr td:last-child {
+        border: 1.5px solid #008eff !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-hrdiv, .ui-jqgrid .ui-jqgrid-ftable {
+        width: 100% !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-hrtable, .ui-jqgrid .ui-jqgrid-sdiv {
+        width: 100% !important;
+    }
+
+    .ui-jqgrid-sdiv td {
+        padding: 0px 4px !important;
+        border: 1px solid #dedede !important;
+        border-top: 0px !important;
+        font-weight: 600 !important;
+    }
+
+    .m-table__main .ui-jqgrid .ui-jqgrid-btable {
+        margin: 0px !important;
+    }
+
+    .m-table__main .ui-jqgrid tr.ui-search-toolbar td > input {
+        height: 22px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-pager .ui-paging-info {
+        font-size: 9px !important;
+    }
+
+    .tranfer_Border p, label.form-label, .form-group label {
+        font-size: 11px;
+    }
+
+    .tranfer_Border .control-label {
+        margin: 0px;
+        font-size: 11px;
+    }
+
+    .ui-jqgrid .ui-jqgrid-pager {
+        min-height: 20px;
+        line-height: 1.4;
+    }
+
+        .ui-jqgrid .ui-jqgrid-pager .ui-pager-control, .ui-jqgrid .ui-jqgrid-toppager .ui-pager-control {
+            height: 20px;
+        }
+
+        .ui-jqgrid .ui-jqgrid-pager .ui-pager-table {
+            height: 20px;
+        }
+
+    .toTransfer {
+        padding: 0px !important;
+    }
+
+        .toTransfer input.form-control {
+            height: 20px;
+            padding: 5px !important;
+        }
+
+    .ui-jqgrid tr.jqgroup td, .ui-jqgrid tr.jqgrow td {
+        height: auto !important;
+    }
+
+    .m-table__main .table td.toTransfer {
+        padding: 0px !important;
+        height: 20px !important;
+        margin: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-bdiv {
+        max-height: 23vh;
+        overflow: auto;
+    }
+
+    .sg .btn-info, .sg .btn-info:hover, .sg .btn-info:focus {
+        padding: 6px 15px !important;
+    }
+
+    .col-width1 {
+        width: 12%;
+        float: left;
+        padding-left: 5px;
+        padding-right: 5px;
+    }
+
+    .col-width2 {
+        width: 26%;
+        float: left;
+        padding-left: 10px;
+    }
+
+    .select2-container--default .select2-selection--single {
+        height: 24px !important;
+    }
+
+    .select2-container span.select2-selection__rendered {
+        line-height: 12px !important;
+        font-size: 10px !important;
+    }
+
+    input.form-control {
+        height: 24px;
+    }
+
+    .button_last button {
+        font-size: 12px !important;
+        padding: 2px 15px 2px 15px !important;
+    }
+
+    .m-table__main .ui-jqgrid tr.ui-search-toolbar td > input {
+        height: 18px !important;
+    }
+
+    .list_badge .ui-jqgrid .ui-jqgrid-htable th {
+        padding: 4px 10px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        font-size: 10px !important;
+        padding: 0px 5px !important;
+    }
+
+    .text-right {
+        text-align: right !important;
+    }
+
+    .modal-xl.width_modal {
+        max-width: 1230px !important;
+    }
+    .yeartitle {
+        font-size: 12px;
+    }
+    .ui-jqgrid-sdiv a.color-blue {
+        color: black !important;
+    }
+</style>
+
+<section>
+    @if (TempData["Message"] != null && TempData["MessageClass"].ToString() != "alert-danger")
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert" style="padding: 5px 10px;">&times;</button>
+        </div>
+    }
+
+    else if (TempData["MessageClass"]?.ToString() == "alert-danger")
+    {
+       <span id="HiddenOutMsg" hidden>@TempData["Message"].ToString()</span>
+    }
+
+    @using (Html.BeginForm("BudgetTransferSave", "ProjectMaster", FormMethod.Post, new { id = "BudgetTransfer_Save", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.ProjectDataToSave)
+        @Html.HiddenFor(model => model.ProjectId)
+        @Html.HiddenFor(model => model.IsSave)
+        @Html.HiddenFor(model => model.Remarks)
+
+        <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+            <div class="d-flex justify-content-between mb-2">
+                <div class="">
+                    <div class="page-title">
+                        <h4 class="mb-0">Budget Transfer</h4>
+                    </div>
+                </div>
+                <div class="mb-0 button_last text-right">
+                    <button type="button" id="" onclick="location.href = './BudgetTransferList';" class="btn-cnl" title="Back">
+                        Back
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <div class="">
+                    <div>
+                        <div class="tranfer_Border mb-2">
+
+                            <div class="col-width2">
+                                <div class="form-group mb-0">
+                                    <label class="control-label">Project Id </label>
+                                    <p class="mb-0 ProjectId"></p>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group mb-0">
+                                    <label class="control-label">Total Budget (INR)</label>
+                                    <p class="mb-0 TotalBudget"></p>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group mb-0">
+                                    <label class="control-label">Baseline Budget (INR)</label>
+                                    <p class="mb-0 BaselineAmount"></p>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group mb-0">
+                                    <label class="control-label">Additional Budget (INR)</label>
+                                    <p class="mb-0 AdditionalAmount"></p>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group mb-0">
+                                    <label class="control-label">Transfer Budget (INR)</label>
+                                    <p class="mb-0 transferAmount"></p>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group mb-0">
+                                    <label class="control-label">Expenses (INR)</label>
+                                    <p class="mb-0 Expense"></p>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group mb-0">
+                                    <label class="control-label">Balance (INR)</label>
+                                    <p class="mb-0 Balance"></p>
+                                </div>
+                            </div>
+                            <div class="">
+                                <div class="info_budget mt-2">
+                                    <i class="fas fa-info-circle YearBudget" title="Year Budget Info" aria-hidden="true"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-2">
+                                <div class="form-group mb-0 ">
+                                    <label class="control-label mb-0">From Year</label>
+                                    @Html.DropDownListFor(model => model.Year, Model.FromYearList, "select", new { @class = "form-control floating_select data-singleselect", @id = "FromYear" })
+                                    <span style="display:none" class="color-red error_fromyear">Please select from year</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group mb-0 ">
+                                    <label class="control-label mb-0">To Year</label>
+                                    <select class="form-control" id="ToYear" data-singleselect>
+                                        <option class="" value="">select</option>
+                                    </select>
+                                    @* @Html.DropDownListFor(model => model.Year, Model.ToYearList, "select", new { @class = "form-control data-singleselect", @id = "ToYear" })*@
+                                    <span style="display:none" class="color-red error_toyear">Please select to year</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group mb-0 ">
+                                    <label class="control-label mb-0">From Department</label>
+                                    <select class="form-control" id="Department" data-singleselect>
+                                        <option class="" value="">select</option>
+                                    </select>
+                                    @*@Html.DropDownListFor(model => model.Year, Model.DepartmentList, "select", new { @class = "form-control data-singleselect", @id = "Department" })*@
+                                    <span style="display:none" class="color-red error_department">Please select department</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-1">
+                                <div class="form-group mb-0 mt-3">
+                                    <button type="button" id="Search" class="btn btn-info c-add-details waves-light waves-effect" title="Search">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-lg-2">
+                                <div class="form-group mb-0 ">
+                                    <label class="control-label mb-0">Amount To Transfer</label>
+                                    <input type="text" onkeypress="return onlyNumbers(this);" onkeyup="checkinputValueforTotal(this)" class="form-control AmountToTransfer" />
+                                    <span class="text-danger hide">Please enter amount to transfer</span>
+                                </div>
+                            </div>
+                            <div class="col-lg-3">
+                                <div class="mb-0 mt-3 button_last text-right">
+                                    <button type="button" class="btn btn-success m-0 c-add-details waves-light waves-effect SaveData">
+                                        Save
+                                    </button>
+                                    <button type="button" class="btn btn-danger m-0 c-add-details waves-light waves-effect ConfirmTransfer" title="Confirm Transfer" data-toggle="modal">
+                                        Confirm Transfer
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-2"><span class="yeartitle">From Year Budget Details</span></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list_badge">
+                                    <div class="m-table__main mt-2 mb-2 ">
+                                        <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                            <table id="TransferGridFromYear" class="table table-bordered"></table>
+                                            <div id="pager_TransferGridFromYear"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-2"><span class="yeartitle">To Year Budget Details</span></div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="list_badge">
+                                    <div class="m-table__main mt-2 mb-2 ">
+                                        <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                            <table id="TransferGridToYear" class="table table-bordered"></table>
+                                            <div id="pager_TransferGridToYear"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="text-right button_last">
+                                    <button type="button" class="btn btn-success m-0 c-add-details waves-light waves-effect SaveData">
+                                        Save
+                                    </button>
+                                    <button type="button" class="btn btn-danger m-0 c-add-details waves-light waves-effect ConfirmTransfer" title="Confirm Transfer" data-toggle="modal">
+                                        Confirm Transfer
+                                    </button>
+                                    <button type="button" id="" onclick="location.href = './BudgetTransferList';" class="btn-cnl" title="Back">
+                                        Back
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    }
+</section>
+
+<div class="modal fade budget_popup" id="ShowConfirmPopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Budget Transfer Details</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex align-items-center">
+                    <div class="col-md-2">
+                        <span class=""><b>Please confirm to trasfer</b></span>
+                    </div>
+                    <div class="col-md-4">
+                        <textarea class="form-control cancelThisData ApprovalRemarks" placeholder="The Remarks field is required.*" id="ApprovalRemarks"></textarea>
+                        <span id="Error_ApprovalRemarks" class="color-red Error_closeModal" style="display:none">Please enter the remarks</span>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="save_buttons float-right text-right button_last">
+                            <button type="button" class="btn-add" data-bs-toggle="modal" id="ConfirmSave" data-title="Save">OK</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="pt-2"><span class="yeartitle">From Year Budget Details</span></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <table id="PopFromtrasferGrid" class="table table-bordered"></table>
+                                        <div id="pager_PopFromtrasferGrid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="pt-2"><span class="yeartitle">To Year Budget Details</span></div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <table id="PopTotrasferGrid" class="table table-bordered"></table>
+                                        <div id="pager_PopTotrasferGrid"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3">
+                    <div class="save_buttons float-right text-right button_last">
+                        <button type="button" class="btn-rej" data-bs-dismiss="modal" data-title="Cancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want save the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="Save_Ok" class="btn-add">OK</button>
+                <button type="button" class="btn-rej" data-bs-dismiss="modal" data-title="Cancel">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="AlertPopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="AlertMessage" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-rej" data-dismiss="modal" data-title="Cancel">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade budget_popup" id="ShowBudget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Budget Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-10">ProjectId: <span class="project_id projname"></span></div>
+                    <div class="col-md-2 text-right"><button type="button" class="btn btn-excel YearExcelDownload" title="Excel Download" id="YearExcelDownload"><img src="@Url.Content("~/N_assets/images/excel.png")"></button></div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <table id="YearWisebudget" class="table table-bordered"></table>
+                                        <div id="pager_YearWisebudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-danger m-0 c-add-details waves-light waves-effect">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade budget_popup" id="showYearWiseBudget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-8">Project Id: <span class="project_data project_id"></span></div>
+                    <div class="col-md-2">Year: <span class="year_data project_id"></span></div>
+                    <div class="col-md-2 text-right"><button type="button" class="btn btn-excel" title="Excel Download" id="DepartmentBudgetDownload"><img src="@Url.Content("~/images/excel.png")"></button></div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <input type="text" id="budget_projectid" hidden />
+                                        <table id="YearWiseIndividualbudget" class="table table-bordered"></table>
+                                        <div id="pager_YearWiseIndividualbudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-danger m-0 c-add-details waves-light waves-effect">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="@Url.Content("~/js/projectmaster/projectbudgettransfer.js")" asp-append-version="true"></script>

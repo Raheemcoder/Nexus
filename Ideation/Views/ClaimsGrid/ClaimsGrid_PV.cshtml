@@ -1,0 +1,668 @@
+﻿@model Ideation.Models.ClaimsGridDocument
+@{
+    ViewData["Title"] = "ClaimsGrid_Pv";
+}
+
+
+
+
+<style>
+    .brd_tbl table td {
+        border: 1px solid #339b9c !important;
+    }
+
+    .table tr td {
+        overflow: hidden;
+    }
+
+    .formulation_table table thead th {
+        font-size: 12px;
+        font-weight: 400;
+        border: 1px solid #000 !important;
+        padding: 5px;
+    }
+
+    .d-flex {
+        display: flex;
+        justify-content: end;
+    }
+
+    .gap-10 {
+        gap: 10px;
+    }
+
+    .packlabel_claims table tbody td, .communication_claims table tbody td, .packlabel_claims1 table tbody td, .communication_claims1 table tbody td {
+        font-size: 12px;
+        font-weight: 400;
+        border: 1px solid #000 !important;
+        vertical-align: baseline;
+    }
+
+    .packlabel_claims table thead tr, .communication_claims table thead tr, .packlabel_claims1 table thead tr, .communication_claims1 table thead tr {
+        padding: 5px !important;
+        background: #e2f3f0 !important;
+    }
+
+    .packlabel_claims table thead th, .communication_claims table thead th, .packlabel_claims1 table thead th, .communication_claims1 table thead th {
+        border: none !important;
+        padding: 5px !important;
+    }
+
+    .packlabel_claims table tbody td, .communication_claims table tbody td, .packlabel_claims1 table tbody td, .communication_claims1 table tbody td {
+        font-size: 12px;
+        font-weight: 400;
+        border: 1px solid #000 !important;
+        vertical-align: baseline;
+        word-break: break-word;
+    }
+
+    .packlabel_claims table, .communication_claims table, .packlabel_claims1 table, .communication_claims1 table {
+        margin-bottom: 10px
+    }
+
+    .packlabel_claims button, .communication_claims button, .packlabel_claims1 button, .communication_claims1 button {
+        /*background: transparent;*/
+        border: none;
+    }
+
+    .justify-center_1 {
+        display: flex;
+        float: right;
+    }
+
+    .remarks {
+        display: flex;
+        justify-content: space-between;
+        padding-bottom: 5px;
+    }
+
+    .edit_icon_blue {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 6px;
+        background: #1e78ff;
+        border-radius: 50%;
+        color: white;
+        height: 25px;
+    }
+
+    .download_icon_green {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 6px;
+        background: green;
+        border-radius: 50%;
+        color: white;
+        height: 25px;
+    }
+
+    .delete_icon_red {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 6px;
+        background: #c62828;
+        border-radius: 50%;
+        color: white;
+        height: 25px;
+    }
+
+    .excelicon_row {
+        display: flex;
+        justify-content: end;
+    }
+
+    #onpackExcel, #communicationExcel {
+        display: inline-flex;
+        justify-content: end;
+        width: inherit;
+    }
+
+        #onpackExcel img, #communicationExcel img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+        }
+
+        #onpackExcel i, #communicationExcel i {
+            font-size: 24px;
+            color: green;
+        }
+
+    #cft_remarks_table td {
+        white-space: normal !important;
+        padding: 5px;
+    }
+
+    #DSG_Remarks textarea, #CFT_Remarks_Modal textarea {
+        width: 100%;
+        height: 100px;
+        padding: 10px;
+    }
+
+    .claims_border-error {
+        border-width: 1.5px;
+        border-color: red;
+        outline: none;
+    }
+
+    .color_red {
+        color: red;
+    }
+
+    .addonpack {
+        background: #01686a !important;
+        color: #fff;
+        padding: 2px 8px 2px 8px;
+        border-top-left-radius: 10px;
+        border-top-right-radius: 0px;
+        border-bottom-left-radius: 0px;
+        border-bottom-right-radius: 10px;
+        border: 1px solid #01686a !important;
+    }
+
+    .paddingRight {
+        padding-right: 5px !important;
+    }
+
+    .paddingLeft {
+        padding-left: 5px !important;
+    }
+
+    .formulation_table table tbody td {
+        width: 200px !important;
+    }
+
+    /*.hidden-row {
+                display: none;
+            }*/
+    .download_icon_green i {
+        color: white
+    }
+</style>
+
+
+@using (Html.BeginForm("ClaimsGrid_PV", "ClaimsGrid", FormMethod.Post, new { id = "EditClaims", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(m => m.ClaimsHeaders)
+    @Html.HiddenFor(m => m.MustHaveClaims)
+    @Html.HiddenFor(m => m.NiceToHaveClaims)
+    @Html.HiddenFor(m => m.ProductDescription)
+    @Html.HiddenFor(m => m.ProjectDetails)
+    @Html.HiddenFor(m => m.OnPackClaims)
+    @Html.HiddenFor(m => m.CommunicationClaimsData)
+    @Html.HiddenFor(m => m.SupportingDoc)
+    @Html.HiddenFor(m => m.JsonClaimsData)
+    @Html.HiddenFor(m => m.Stage)
+    @Html.HiddenFor(m => m.ApprovalStatus)
+    @Html.HiddenFor(m => m.DeptDetails)
+    @Html.HiddenFor(m => m.JsonCFTReviewData)
+    @Html.HiddenFor(m => m.OnPackClaimsRemarks)
+    @Html.HiddenFor(m => m.CommunicationClaimsRemarks)
+    @Html.HiddenFor(m => m.GridId)
+    @Html.HiddenFor(m => m.CFTDeptName)
+
+    @Html.HiddenFor(m => m.ProjectNumber)
+
+    @Html.HiddenFor(model => model.LoginId)
+
+
+
+
+
+
+}
+
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h4 class="modal-title">View Claims Grid</h4>
+        <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+    </div>
+    <div class="modal-body previewDoc">
+        <section>
+            <div class="table-project">
+                <div class="table-responsive">
+                    <table class="table table-bordered mb-0">
+                        <thead>
+                            <tr class="mod_th">
+                                <th scope="col">Project Number</th>
+                                <th scope="col">Product Name</th>
+                                <th scope="col">HGL Approval Number</th>
+                                <th scope="col">Date</th>
+                                <th scope="col">Version No.</th>
+                                <th scope="col">Download</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td id="projNo_v" class="projNo_v">@Model.ProjectNumber</td>
+                                <td id="prodName_v" class="prodName_v">@Model.ProductName</td>
+                                <td id="apprNo_v" class="apprNo_v">@Model.HGLApprovalNumber</td>
+                                @*<td class="fas fa-calendar-alt" style="padding-right: 5px;" id="date_v"></td>*@
+                                <td><i class="fas fa-calendar-alt" style="padding-right: 5px;"></i><span id="date_v"></span></td>
+
+                                <td id="version_v"></td>
+                                <td>
+                                    @* <button type="button" class="generateClaims_pdf" style="border: none; background: #198754; padding: 5px; border-radius: 50%; color: white;">*@
+                                    <i class="flaticon-download generateClaims_pdf" aria-hidden="true"></i>
+                                    @* </button>*@
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <section class="mt-4 title_content">
+            <h4 class="title-text">Project Details</h4>
+            <div class="title_body">
+                <table class="table table-bordered mb-0 table-firstWidth">
+                    <tr>
+                        <th>Project Number </th>
+                        <td class="projNo_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Product Name</th>
+                        <td class="prodName_v"></td>
+                    </tr>
+                    <tr>
+                        <th>HGL Approval Number</th>
+                        <td class="apprNo_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Product Positioning Statement</th>
+                        <td class="ProductPositioningStatement_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Division</th>
+                        <td class="Division_v"></td>
+                    </tr>
+                </table>
+                @*                <form>
+                    <div class="row ml-0">
+                    <div class="col-width2">
+                    <div class="form-group has-error">
+                    <label class="control-label">Project Number </label>
+
+                    <p class="projNo_v">@Model.ProjectNumber </p>
+                    </div>
+                    </div>
+                    <div class="col-width3">
+                    <div class="form-group">
+                    <label class="control-label">Product Name </label>
+                    <p class="prodName_v">@Model.ProductName</p>
+                    </div>
+                    </div>
+                    <div class="col-width2">
+                    <div class="form-group">
+                    <label class="control-label">HGL Approval Number</label>
+                    <p class="apprNo_v">@Model.HGLApprovalNumber</p>
+                    </div>
+                    </div>
+
+                    </div>
+                    <div class="col-width6">
+                    <div class="form-group">
+                    <label class="control-label">Product Positioning Statement </label>
+                    <p class="ProductPositioningStatement_v">@Model.ProductPositioningStatement</p>
+                    </div>
+                    </div>
+                    </form>*@
+            </div>
+        </section>
+        <section class="title_content">
+            @if (@Model.ProjectBriefId != "")
+            {
+                <h4 class="title-text ProjectBrieId_V">
+                    Project Brief -  @Model.ProjectBriefId
+                </h4>
+            }
+            else
+            {
+                <h4 class="title-text ProjectBrieId_V">
+                    Project Brief
+                </h4>
+            }
+            <div class="title_body">
+                <table class="table table-bordered mb-0 table-firstWidth">
+                    <tr>
+                        <th>Must Have claims</th>
+                        <td class="MustHaveclaims_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Nice to Have claims</th>
+                        <td class="NicetoHaveclaims_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Rephrased Claims</th>
+                        <td class="viewandpreview">@Html.Raw(Model.RephraseClaims)</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+        <section class="title_content">
+            <h4 class="title-text">
+                Product Description (includes formula, package, product)
+            </h4>
+            <div class="title_body">
+                <table class="table table-bordered mb-0 table-firstWidth">
+                    <tr>
+                        <th>License Category</th>
+                        <td class="LicenseCategory_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Other HUBS License Category</th>
+                        <td class="otherhubslicensecategory_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Dosage/Product form </th>
+                        <td class="Dosage_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Target organ/disease</th>
+                        <td class="TargetOrgan_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Formula features</th>
+                        <td class="FormulaFeatures_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Anchor HUB/Participating HUBS</th>
+                        <td class="AnchorHUB_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Non-Participating HUBS</th>
+                        <td class="OtherMarkets_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Shelf life at the time of launch</th>
+                        <td class="ShelfLife_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Direction for use</th>
+                        <td class="DirectionForUse_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Caution</th>
+                        <td class="Caution_v"></td>
+                    </tr>
+                    <tr>
+                        <th>Target Customer</th>
+                        <td class="TargetCustomer_v"></td>
+                    </tr>
+                </table>
+                @*  <form>
+                    <div class="row ml-0">
+                    <div class="col-width3">
+                    <div class="form-group has-error">
+                    <label class="control-label">License Category</label>
+                    <p class="LicenseCategory_v">@Model.LicenseCategory</p>
+                    </div>
+                    </div>
+                    <div class="col-width3">
+                    <div class="form-group">
+                    <label class="control-label">Other HUBS License Category</label>
+                    <p class="otherhubslicensecategory_v">@Model.OtherHUBSLicenseCategory</p>
+                    </div>
+                    </div>
+                    <div class="col-width2">
+                    <div class="form-group">
+                    <label class="control-label">Dosage/Product form</label>
+
+                    <p class="Dosage_v">@Model.Dosage</p>
+                    </div>
+                    </div>
+                    <div class="col-width2">
+                    <div class="form-group">
+                    <label class="control-label">Target organ/disease</label>
+
+                    <p class="TargetOrgan_v">@Model.TargetOrgan</p>
+                    </div>
+                    </div>
+                    <div>
+                    <div class="col-width3">
+                    <div class="form-group">
+                    <label class="control-label">Anchor HUB</label>
+                    <p class="AnchorHUB_v">@Model.AnchorHUB</p>
+                    </div>
+                    </div>
+                    <div class="col-width3">
+                    <div class="form-group">
+                    <label class="control-label">Other markets if any</label>
+                    <p class="OtherMarkets_v">@Model.OtherMarkets</p>
+                    </div>
+                    </div>
+                    <div class="col-width2">
+                    <div class="form-group">
+                    <label class="control-label">Shelf life at the time of launch</label>
+                    <p class="ShelfLife_v">@Model.ShelfLife</p>
+                    </div>
+                    </div>
+                    <div class="col-width2">
+                    <div class="form-group">
+                    <label class="control-label">Target Customer</label>
+                    <p class="TargetCustomer_v"@Model.TargetCustomer></p>
+                    </div>
+                    </div>
+                    </div>
+                    <div>
+
+                    <div class="col-width4">
+                    <div class="form-group">
+                    <label class="control-label">Formula features </label>
+                    <p class="FormulaFeatures_v">@Model.FormulaFeatures</p>
+                    </div>
+                    </div>
+                    <div class="col-width5">
+                    <div class="form-group">
+                    <label class="control-label">Caution</label>
+                    <p class="Caution_v">@Model.Caution</p>
+                    </div>
+                    </div>
+                    </div>
+
+                    <div class="col-width6">
+                    <div class="form-group">
+                    <label class="control-label">Direction for use</label>
+                    <p class="DirectionForUse_v"></p>
+
+                    </div>
+                    </div>
+                    </div>
+                    </form>*@
+            </div>
+        </section>
+        <section class="title_content">
+            <h4 class="title-text">
+                On Pack / Label Claims
+            </h4>
+            <div class="title_body">
+                <div class="packlabel_claims">
+                </div>
+
+            </div>
+        </section>
+        <section class="title_content">
+            <h4 class="title-text">
+                Claims for Communications Other than Label
+            </h4>
+            <div class="title_body">
+                <div class="communication_claims">
+                </div>
+            </div>
+        </section>
+        <section class="title_content ">
+            <h4 class="title-text">
+                Documents
+            </h4>
+            <div class="title_body">
+                <div class="col-md-12">
+                    <div class="row ml-0">
+                        <div class="col-lg-4">
+                            <div class="form-group" style="display:flex;gap:100px;">
+                                <div>
+                                    <span>Supporting Documents</span>
+                                    <a href="#" data-bs-toggle="modal" data-bs-target="#documentModal" title="Supporting Documents" style="margin-left: 10px;">
+                                        <i class="fa fa-info-circle"></i>
+                                    </a>
+                                </div>
+                                @if (Model.Stage == 3)
+                                {
+                                    <div class="IRA_Claims_Remarks_icon">
+                                        <span>IRA Uploaded Documents</span>
+                                        <a href="#" data-bs-toggle="modal" title="View Documents" data-bs-target="#CFTDocumentDetail" style="margin-left: 10px;">
+                                            <i class="fa fa-info-circle"></i>
+                                        </a>
+                                    </div>
+                                }
+                                else if (Model.Stage >= 3)
+                                {
+                                    <div>
+                                        <span>IRA Uploaded Documents</span>
+                                        <button id="PreviewCFTDocuments" type="button" title="View Documents" style="background:transparent;border:none;margin-left: 10px;">
+                                            <i class="fa fa-info-circle" aria-hidden="true" style="color:blue"></i>
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+
+    </div>
+</div>
+@*File View Modal*@
+<div class="modal fade hd" id="documentModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Documents</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+                                        <th scope="col">Document Name</th>
+                                        <th scope="col">Uploaded By</th>
+                                        <th scope="col">Uploaded On</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tb" id="SupportingDocuments_v">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade hd" id="Documents_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_Uploaded_Document" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Uploaded_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*CFT Uploaded document View Modal*@
+<div class="modal fade hd" id="CFTDocumentDetail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">CFT Uploaded Documents</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="product_profile">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="CFTreview_Document" class="table table-bordered"></table>
+                                        <div id="pager_CFTreview_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="ShowIRAUploadedExcel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CFT Uploaded Documents</h5>
+                <div>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="GridShow_UploadedExcel" class="table table-bordered"></table>
+                                        <div id="pager_GridShow_UploadedExcel"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="downloadContainer">
+    <!-- The download link will be inserted here -->
+</div>
+<div class="GenerateClaimsPdf" hidden></div>
+<div class="Header" hidden></div>
+<div id="isEdit" data-isedit="@ViewBag.isEdit" hidden></div>
+
+<script src="~/js/ClaimsGrid_PV.js"></script>

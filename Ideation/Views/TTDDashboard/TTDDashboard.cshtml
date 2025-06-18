@@ -1,0 +1,614 @@
+﻿@model Ideation.Models.TTDDashboard
+@{
+    ViewData["Title"] = "TTD Dashboard";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+    var role = Context.Session.GetString("Role")?.ToString();
+
+
+}
+<style>
+    .btn-group {
+        height: 23px !important;
+    }
+
+    .alert-success {
+        color: #0f5132 !important;
+        background-color: #d1e7dd !important;
+        border-color: #badbcc !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #e6e6e6;
+        border-left: 0px;
+        border-top: 0px !important;
+    }
+
+    .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        text-align: left !important;
+        border: 1px solid #dedede !important;
+        border-left: 0px !important;
+        border-top: 0px !important;
+    }
+
+    td .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 22px;
+    }
+
+    td .select2-container .select2-selection--single {
+        height: 23px;
+    }
+
+    .pr_fields_ textarea {
+        width: 100% !important;
+    }
+
+    .create_pr .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        padding: 5px !important;
+    }
+
+    .col-width1 {
+        width: 130px;
+    }
+
+    .col-width2 {
+        width: 160px;
+        margin: 0 2px;
+    }
+
+    .prototype_filter input.form-control {
+        height: 22px;
+        padding: 5px 10px !important;
+    }
+
+    .form-control[type=file] {
+        cursor: pointer;
+        padding: 5px 5px;
+    }
+
+    .ui-widget.ui-widget-content.ui-autocomplete {
+        box-shadow: 0px 0px 3px !important;
+    }
+
+    .back_aroow {
+        position: absolute;
+        right: 20px;
+        margin-top: -5px;
+    }
+
+    td textarea, td input {
+        padding: 5px !important;
+    }
+
+    .freeze_scroll .ui-jqgrid .ui-jqgrid-bdiv {
+        height: auto !important;
+/*        min-height:30vh !important;
+*/        max-height: calc(-270px + 100vh) !important;
+    }
+
+    .freeze_scroll .ui-jqgrid .frozen-bdiv.ui-jqgrid-bdiv {
+        height: auto !important;
+/*        min-height: 30vh !important;
+*/        background: #fff;
+        max-height: calc(-283px + 100vh) !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable {
+        width: 100% !important;
+    }
+
+    .ui-jqgrid .frozen-bdiv.ui-jqgrid-bdiv .ui-jqgrid-btable {
+        width: auto !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-hbox {
+        float: left;
+        padding-right: 0px;
+    }
+
+    .freeze_scroll1 .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        text-align: center !important;
+        color: #fff !important;
+    }
+
+    .ui-search-toolbar td.ui-search-clear {
+        display: none;
+    }
+
+    .frozen-bdiv.ui-jqgrid-bdiv .ui-jqgrid-btable.ui-common-table {
+        border-collapse: collapse !important;
+        background: #fff;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+    .body-content {
+        overflow: hidden;
+    }
+
+    .ui-widget.ui-widget-content, .ui-jqgrid .ui-jqgrid-view, .ui-jqgrid .ui-jqgrid-hdiv, .ui-jqgrid .ui-jqgrid-bdiv {
+        width: 100% !important;
+        width: inherit !important;
+    }
+
+
+    .frozen-div.ui-jqgrid-hdiv.ui-state-default .ui-jqgrid-labels.jqg-third-row-header th div {
+        top: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+        height: auto !important;
+        top: 0px !important;
+    }
+
+    table.ui-pg-table.navtable.ui-common-table {
+        display: none;
+    }
+
+    select.form-control {
+        padding: 5px;
+        height: 22px !important
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #dadada;
+        opacity: 1;
+    }
+
+    td .select2-container .select2-selection--single {
+        height: 23px;
+        display: grid;
+    }
+
+    .ui-jqgrid tr.jqgroup td, .ui-jqgrid tr.jqgrow td {
+        padding: 5px 5px !important;
+    }
+
+    .ui-widget.ui-widget-content.ui-autocomplete {
+        box-shadow: 0px 0px 3px !important;
+        width: 110px !important;
+    }
+
+    .frozen-bdiv.ui-jqgrid-bdiv .ui-jqgrid-btable tr.jqgrow td {
+        white-space: nowrap !important;
+    }
+
+    td select.form-control:not([size]):not([multiple]) {
+        height: 42px;
+        border: 1px solid transparent !important;
+        background: transparent;
+        margin: 0px;
+    }
+
+    td select.form-control:focus {
+        border: 1px solid #0094ff !important;
+    }
+
+    .select_values .select2-container .select2-selection--single .select2-selection__rendered {
+        font-size: 10px;
+        padding: 0px 3px !important;
+        text-align: left;
+        line-height: 1.5;
+    }
+
+    .select_values .select2-container .select2-selection--single {
+        height: 26px;
+        border: 0px !important;
+        border-bottom: 1px solid #dedede !important;
+        border-radius: 0px;
+        background: transparent;
+    }
+
+    .select_values .select2-container--default .select2-search--dropdown {
+        padding: 0px;
+    }
+
+    .select_values .select2-results__option {
+        padding: 5px 5px !important;
+        text-align: left !important;
+    }
+
+    .select_values .select2-container .select2-selection--single .select2-selection__arrow {
+        display: none;
+    }
+
+    .select_values .select2-container .select2-selection--single {
+        height: auto !important;
+    }
+
+    .text-center.select_values {
+        display: grid;
+    }
+
+    .ui-jqgrid tr.jqgroup, .ui-jqgrid tr.jqgrow {
+        outline-style: none;
+        height: auto !important;
+    }
+
+    .select_values .select2-container {
+        width: 62px !important;
+    }
+
+    .ui-jqgrid-labels.jqg-second-row-header th.ui-state-default {
+        color: #000 !important;
+    }
+
+    .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr, .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        white-space: nowrap !important;
+    }
+
+    .ui-jqgrid-bdiv::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+        display: block;
+    }
+
+    .ui-jqgrid-bdiv:hover::-webkit-scrollbar,
+    .ui-jqgrid-bdiv:hover::-webkit-scrollbar-thumb {
+        overflow: visible;
+        border-radius: 0px;
+    }
+
+    .ui-jqgrid-bdiv:hover::-webkit-scrollbar-thumb {
+        background: rgba(0,0,0,.3);
+    }
+
+    .text-center.input_form.remarks_icon {
+        display: flex;
+        align-items: center;
+    }
+
+        .text-center.input_form.remarks_icon i.fas {
+            margin-left: 10px;
+            font-size: 14px;
+        }
+
+    .remarks_calender {
+        position: relative;
+    }
+
+        .remarks_calender i.fas {
+            position: absolute;
+            top: 4px;
+            right: 10px;
+        }
+
+    .ui-jqgrid-labels.jqg-second-row-header th.ui-state-default {
+        color: #000 !important;
+        font-size: 12px;
+        font-weight: normal !important;
+    }
+
+    td select.form-control:not([size]):not([multiple]) {
+        border: 1px solid #a9a9a9 !important;
+    }
+
+    .readonly {
+        background-color: white !important;
+    }
+
+    .prod-name .select2-container .select2-selection--single {
+        height: 22px;
+    }
+
+    ._hide {
+        display: none;
+    }
+
+    .text-center.input_form.remarks_icon i.fas {
+        margin-left: 10px;
+        font-size: 14px;
+    }
+
+    .m-table__main .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+        white-space: initial !important;
+        word-break: break-word;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        white-space: initial !important;
+        word-break: break-word;
+    }
+
+        .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td span {
+            white-space: initial !important;
+            word-break: break-word;
+        }
+
+    .btn-group.show {
+        position: absolute;
+        width: 110px !important;
+        margin-top: -10px;
+        margin-left: -55px;
+    }
+
+    button.multiselect.dropdown-toggle.btn.btn-default {
+        width: 110px !important;
+    }
+
+    .btn-group {
+        height: 22px;
+    }
+
+        .btn-group .btn:focus {
+            box-shadow: none !important;
+        }
+
+    ul.multiselect-container.dropdown-menu.show {
+        z-index: 100000;
+        max-height: 170px !important;
+        overflow: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #e9ecef;
+        opacity: 1;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td span {
+        white-space: initial !important;
+        word-break: break-word;
+        font-size: 9px;
+    }
+    .ttd_grid {
+        z-index: 0;
+        position: relative;
+    }
+    .datepicker .datepicker-days tr:hover td {
+        background: transparent;
+    }
+
+        .datepicker .datepicker-days tr:hover td:hover {
+            background: #e5e2e3;
+        }
+    .freeze_scroll .ui-jqgrid .frozen-bdiv.ui-jqgrid-bdiv {
+        overflow: hidden !important;
+    }
+</style>
+<input type="text" hidden class="dateremarksvalidclass">
+<input type="text" hidden id="Role" value="@role" />
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>TTD Dashboard</h4>
+        </div>
+    </div>
+</section>
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close" style=" margin-top: -10px; margin-right: 10px;">
+        <span aria-hidden="true">&times;</span>
+    </button>
+    <strong id="alertText"></strong>
+</div>
+<section>
+    <div class="prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex">
+                <div class="col-width1">
+                    <div class="form-group  ">
+                        <label for="fromdate" class="control-label">Current Year</label>
+                        <input type="text" class="form-control readonly" id="ProdYear" placeholder="" data-datepicker-year1 readonly>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group prod-name">
+                        <label class="control-label">Product</label>
+                        <select class="form-control select2-hidden-accessible" id="ProdName" data-singleselect="" tabindex="-1" aria-hidden="true">
+                            <option value="">Select</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-width1 mt-3 pt-1">
+                    <button class="btn btn-search" title="Search" type="button" id="btnsearch">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh" title="Refresh" type="button" id="btnrefresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex excel_expand align-items-center">
+                <div class="add_button ml-2 d-flex">
+                    <button type="button" class="btn btn-success add_grn mr-1 viewbtn" id="addbtn">Add Row</button>
+                    <button type="button" class="btn btn-success add_grn viewbtn" id="savebtn">Save </button>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="legends_list action_icons mb-2 hidelegends">
+                <ul class="d-flex">
+                    <li class="edit-color"><i class="fas fa-pen"></i> Edit</li>
+                    <li class="view-color"><i class="fas fa-save"></i> Save</li>
+                    <li class="remarks-color"><i class="fas fa-trash text-danger"></i>Delete</li>
+                    <li class=""><i class="fas fa-times-circle color-history"></i> Close</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    <div class=" mt-1">
+        <div class="">
+            <div class="">
+                <div class="col-md-12 p-0">
+                    <div class="freeze_scroll ttd_grid">
+                        <table id="TTDDashboard_grid"></table>
+                        <div id="TTDDashboardpager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section><div class="modal fade sv hd" id="confirmationPopUpforSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgforsave">
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade sv hd" id="confirmationPopUpforDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Delete Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgfordelete">
+                    Are you sure you want the Delete?
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmdelete">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dateremarksmodal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title dataremarkstitle">
+                    Remarks
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body ">
+                <div class="col-md-12 p-0 row">
+                    <div class="col-md-10">
+                        <label> Product : </label>
+                        <strong class="dataremarksproduct"> </strong>
+                    </div>
+                </div>
+                <div class="col-md-12 p-0 remarksedit">
+                    <label class="control-label">Remarks</label>
+                    <textarea class="form-control dateremarkstext remarksedit removespaces" rows="3"></textarea>
+                    <span class="_hide text-danger" id="remarks_mandate">Please enter Remarks</span> 
+                </div>
+                <div class="col-md-12 mt-2 remarksedit">
+                    <div class="float-right">
+                        <button type="button" class="btn btn-success adddateremarks remarksedit">Add</button>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <input type="text" hidden class="dateremarksdatecolumn">
+                    <input type="text" hidden class="dateremarkscolumn">
+                    <input type="text" hidden class="dateremarksrowno">
+                    <input type="text" hidden class="dateremarksvalidclass">
+                    <input type="text" hidden class="ttdlineno">
+                </div>
+                <div class="mt-4 p-0">
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="dateremarks_grid" class="table table-bordered"></table>
+                                <div id="dateremarks_pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="historymodal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title historytitle">
+                    History
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="p-0">
+                    <div class="col-md-12 p-0">
+                        <label> Product : </label>
+                        <strong class="historyproduct"></strong>
+                    </div>
+                </div>
+                <div class="p-0">
+                    <div class="col-md-12 p-0">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="history_grid" class="table table-bordered"></table>
+                                <div id="history_pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="Remarks_modal" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remarks <sup class="color-red hide" id="remarks-mandatory">*</sup></h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl d-flex flex-column">
+                            <span class="mb-2">Are you sure, you want to save the  data</span>
+                            <textarea id="Remarks_text" class="remarksfiled noSpacesField mb-2 p-2" rows="5"></textarea>
+                            <span id="Err_Remarks_text" style="display:none;color:red;">Please enter remarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-draft" id="SendtoApproveRevert">Save</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="@Url.Content("~/js/ProjectTracker/TTDDashboard.js")" asp-append-version="true"></script>*@
+<script src="@Url.Content("~/js/ProjectTracker/TTDDashboard.min.js")" asp-append-version="true"></script>

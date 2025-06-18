@@ -1,0 +1,131 @@
+﻿@model Ideation.Models.EffortTracker
+
+@{
+    ViewData["Title"] = "Project Remarks";
+    Layout = "/Views/Shared/EffortBookingLayout.cshtml";
+}
+<style>
+    .datepicker .datepicker-days tr td.active ~ td {
+        color: #af1623 !important;
+        background: transparent !important;
+    }
+</style>
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Project Remarks</h4>
+        </div>
+    </div>
+</section>
+@Html.HiddenFor(model => model.ProjectRemarksData, new { @id = "ProjectRemarksJsonData" })
+@Html.HiddenFor(model => model.FromDate, new { @id = "fromdateforrefresh" })
+@Html.HiddenFor(model => model.ToDate, new { @id = "todateforrefresh" })
+
+<section>
+    <div>
+        <div class="">
+            <div class="project_Master prototype_filter d-flex justify-content-between filter_status">
+                <div class="d-flex">
+                    <div class="col-width2">
+                        <div class="form-group  ">
+                            <label class="control-label ">Project Id</label>
+                            @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.ProjectList, "ProjectCode", "ProjectName"), "All", new { @class = "form-control projectid data-singleselect", @id = "Project_id" })
+
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group  ">
+                            <label for="fromdate" class="control-label">From Date</label>
+                            @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control  Datepicker_StartDate", @id = "FromDate" })
+
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group ">
+                            <label for="fromdate" class="control-label">To Date</label>
+                            @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control Datepicker_EndDate", @id = "ToDate" })
+
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group flaoting_">
+                            <label class="control-label">User Name</label>
+                            @Html.DropDownListFor(m => m.UserName, new SelectList(Model.UserNamesList, "UserId", "UserName"), "All", new { @class = "form-control userid data-singleselect", @id = "User_Id" })
+
+                        </div>
+                    </div>
+                    <div class="col-width1 mt-3">
+                        <button class="btn btnsearch" title="search" type="button" id="SearchProjectRemarksData">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-refresh" title="refresh" type="button" id="btnrefresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex excel_expand align-items-center">
+                        <div class="images_excel" id="ExcelDownload">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" />
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand pr-3">
+                                <div>
+                                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="animate__animated2 slideInUp mt-1">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll -project_master_scroll">
+                                <table id="ProjectRemarks_Grid" class="table table-bordered"></table>
+                                <div id="pager_ProjectRemarks"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+@****************************Remarks section*******************************8*@
+<div id="remarks_section" class="modal fade document_modal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Project Names</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="ProjectRemarks_Grid1" class="table table-bordered"></table>
+                                    <div id="pager_ProjectRemarks1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/EffortBooking/ProjectRemarks.js")" asp-append-version="true"></script>

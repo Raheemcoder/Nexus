@@ -1,0 +1,126 @@
+﻿@model Ideation.Models.NPDLaunchMaster
+@{
+    ViewBag.Title = "ProductLaunchInformation";
+    Layout = "~/Views/Shared/_NPDLMLayout.cshtml";
+    var serializedIsNpdList = System.Text.Json.JsonSerializer.Serialize(Model.IsNpdList);
+
+}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+
+<div class="card-box mb-2 card_height pb-3 sg">
+    @using (Html.BeginForm("ProductLaunchInformation", "NPDLaunchMaster", FormMethod.Post, new { id = "ProductLaunchInformation_Submit", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.ProductLaunchInformationData)
+        @Html.HiddenFor(model => model.IsNpdList)
+        @Html.HiddenFor(model => model.SourceString)
+
+        <input type="hidden" id="IsNpdList_Serialized" value="@serializedIsNpdList" />
+
+        <div class="col-md-12 mb-2">
+            <div class="page-title title_  mt-3">
+                <h4>New Product Launch Information</h4>
+            </div>
+        </div>
+
+
+        <div class="row ">
+            <div class="col-md-3 multi__select">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">
+                        HGML Category
+                    </label>
+                    @Html.ListBoxFor(model => model.CategoryName, Model.HGMLCategoryList ?? new List<SelectListItem>(),
+                new
+                     {
+                         @class = "form-control data-multiselect",
+                         @multiple = "multiple",
+                @id = "NpdHgmlCategory"
+                     })
+                    @*     @Html.ListBoxFor(model => model.CategoryName, Model.HGMLCategoryList ?? new List<SelectListItem>(),
+                        new { @class = "form-control multiselectDropdown ddlmulti example-dropUp", @multiple = "multiple",
+                        @id="NpdHgmlCategory" })*@
+
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">
+                        HGML Division
+                    </label>
+                    @Html.DropDownListFor(model => model.DivisionName, Model.HGMLDivisionList, "All", new { @class = "form-control form-control-sm data-singleselect", @id = "NpdHmlDivision" })
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group mb-0">
+                    <label class="control-label">
+                        Launch Year
+                    </label>
+                    @Html.DropDownListFor(model => model.NpdLaunchYearType, Model.NpdLaunchYearTypeList, new { @class = "form-control data-singleselect singleselect_year", @id = "NpdLaunchYearType" })
+                </div>
+            </div>
+            <div class="col-md-2 NpdLaunchYear">
+                <div class="form-group mb-0 mt-4 pt-1 datepicker-container">
+                    @Html.TextBoxFor(model => model.NpdLaunchYear, new { @class = "form-control date-datepicker-year datepicker-input", @id = "NpdLaunchYear" })
+                    <span class="cal_"><i class="fas fa-calendar-alt" aria-hidden="true"></i></span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group mb-0">
+                    <label class="control-label">
+                        Status
+                    </label>
+                    @Html.DropDownListFor(model => model.Status, Model.StatusList, "All", new { @class = "form-control data-singleselect", @id = "Status" })
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group mb-0 mt-4" style="margin-top: -4px;">
+                    <button type="button" id="onClickSearch" title="Search" class="btn btn-info c-add-details waves-light waves-effect"><i class="fas fa-search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+
+        @*jqgrid*@
+
+        <div class="add_grid_">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="text-right mt-3">
+                            <button type="button" id="ExcelDownload" class="btn-add ex_bt excel_btn"><i class="fas fa-download ex_download mr-2 " aria-hidden="true"></i>Excel</button>
+                            <button type="button" class="btn-ap SaveProductLaunchInfo" data-bs-toggle="modal" data-title="Save"> Save</button>
+                            <button type="button" class="btn-rej" onclick="location.href='@Url.Content("~/NPDLaunchMaster/NPDList")';" data-title="Back">Back</button>
+                        </div>
+                        <div class="m-table__main mt-2 mb-2">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="ProductLaunchInfo_Grid" class="table table-bordered"></table>
+                                <div id="pager_ProductLaunchInfo_Grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+
+                <div class="save_buttons float-right text-right">
+
+                    <button type="button" class="btn-ap SaveProductLaunchInfo" data-bs-toggle="modal" data-title="Save"> Save</button>
+
+                    @*<button type="button" class="btn-sb" data-bs-toggle="modal" data-bs-target="#SubmitModal" data-title="Submit">Submit</button>*@
+
+                    <button type="button" class="btn-rej" onclick="location.href='@Url.Content("~/NPDLaunchMaster/NPDList")';" data-title="Back">Back</button>
+
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+
+
+<script src="@Url.Content("~/js/npdlaunchmaster/productlaunchinformation.min.js")" asp-append-version="true"></script>
+@*<script src="@Url.Content("~/js/npdlaunchmaster/productlaunchinformation.js")" asp-append-version="true"></script>*@
+<script src="~/assets_eppm/js/app.js"></script>

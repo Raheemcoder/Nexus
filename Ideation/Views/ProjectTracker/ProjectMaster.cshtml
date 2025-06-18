@@ -1,0 +1,65 @@
+﻿@model Ideation.Models.ProjectMaster
+@{
+    ViewData["Title"] = "ProjectMaster";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+}
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span><span>Master/ </span>Project Master</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+
+    <div class="animate__animated2 slideInUp mt-2">
+        <div>
+            <div id="message" class="m-login__erromsg">
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert @TempData["MessageStyle"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+                        @TempData["Message"].ToString()
+                        <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+                    </div>
+                }
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="d-flex align-items-center">
+                    <div class="images_excel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload">
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-2">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="jqgrid" class="table table-bordered"></table>
+                                <div id="pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="@Url.Content("~/js/ProjectTracker/ProjectMasterList.js")"></script>

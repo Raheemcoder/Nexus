@@ -1,0 +1,276 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var ManagerRole = Context.Session.GetString("checkManager");
+
+    var userName = Context.Session.GetString("UserName");
+    var firstLetter = userName.Substring(0, 1);
+    var AppshortName = Context.Session.GetString("AppShortName");
+    var role = Context.Session.GetString("Role");
+
+}
+<!DOCTYPE html>
+<html lang="en" class="skew">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISpace</title>
+
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/N_assets/images/leaf.ico")" />
+    <link href="@Url.Content("~/N_assets/css/layout.min.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" integrity="sha512-xX2rYBFJSj86W54Fyv1de80DWBq7zYLn2z0I9bIhQG+rxIF6XVJUpdGnsNHWRa6AvP89vtFupEPDP8eZAtu9qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link href="@Url.Content("~/N_assets/css/animate.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/fonts/fontawesome/css/fontawesome.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/select2/select2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/jqgrid/css/jquery-ui.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/jqgrid/css/ui.jqgrid.min.css")" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link href="https://www.codehim.com/demo/bootstrap-multiselect-dropdown/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/libscripts.bundle.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/popper.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/grid.locale-en.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/jqzip/jszip.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/select2/select2.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/app.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/jquery.fullscreen-min.js")"></script>
+    <script src="@Url.Content("~/plugins/moment/moment.js")"></script>
+    <script src="@Url.Content("~/assets_eppm/plugins/jqgrid/js/jszip.min.js")"></script>
+    <script src="@Url.Content("~/js/aes.js")"></script>
+    <script src="@Url.Content("~/assets_eppm/js/app.js")"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
+    <script src="@Url.Content("~/js/Layout.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/layout.min.js")"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        var ROOT = "@Url.Content("~/")";
+    </script>
+
+
+</head>
+
+<body class="new_layout effort_booking" id="jquery-script-menu">
+
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container">
+            <div class="c-loader__inner">
+            </div>
+            <div class="c-loader__outer">
+            </div>
+            <div class="c-loader__img">
+            </div>
+        </div>
+    </div>
+
+    <header id="topnav" class="header_section">
+
+        <div class="ispace-logo">
+            <a href="@Url.Content("~/Landing/Index")"><img src="~/N_assets/images/ispace-logo.png" alt="ispace" height="30px" /></a>
+        </div>
+
+        <div>
+            <div class="d-flex">
+                <div>
+                    <div class="header_nav">
+                        <div id="navigation">
+                            <ul class="navigation-menu" id="main_menu">
+
+                                @await Component.InvokeAsync("MainMenu")
+
+                                <li class="has-submenu">
+                                    <a href="@Url.Content("~/EffortBooking/EffortBooking")">Effort Booking</a>
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="@Url.Content("~/EffortBooking/Apportion")">Apportion</a>
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="@Url.Content("~/EffortBooking/MyProjects")">My Projects</a>
+                                </li>
+                                @if (role.ToLower() == "admin")
+                                {
+                                    <li class="has-submenu">
+                                        <a href="@Url.Content("~/EffortBooking/ProjectResourceMaster")">Project Resource Master</a>
+                                    </li>
+                                }
+                                <li class="has-submenu">
+                                    <a href="@Url.Content("~/EffortBooking/ProjectRemarks")">Project Remarks</a>
+                                </li>
+                                <li class="has-submenu">
+                                    <a href="@Url.Content("~/EffortBooking/EffortReport")">Report</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex align-items-center user_info top_position">
+                        <div class="d-flex user_name_ cursor">
+                            <span class="circular_icon" style="cursor: pointer">@firstLetter</span>
+                            <label class="mb-0" style="cursor: pointer">@userName</label>
+                            <span style="cursor: pointer">
+                                <img src="~/N_assets/images/himalaya_leaf logo.png" width="22px" />
+                            </span>
+                            <div class="logout">
+                                <ul>
+                                    <li><a href="@Url.Content("~/Login/Login")"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid body-content element " id="element">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted ">
+        &copy; @DateTime.Now.Year - Himalaya Wellness Company. All rights reserved
+    </footer>
+
+    <div class="modal fade sv hd" id="ConfirmDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="ConfirmDialogMessage" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="ConfirmOKbutton">OK</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="ConfirmCanclebutton">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade sv hd" id="AlertDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alert</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="AlertDialogMessage" class="modal-body">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="AlertOKbutton">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+
+        function setNavigation() {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "#");
+            path = decodeURIComponent(path);
+
+            $("#main_menu li a, #main_menu1 li a").each(function () {
+                var href = $(this).attr('href');
+                var subURL = $(this).attr('data-subURL');
+                var URLs = '';
+                if (subURL != undefined) {
+                    URLs = subURL.split(';');
+                }
+
+                if (path === href || URLs.indexOf(path) >= 0) {
+                    if ($(this).parents('#main_menu, #main_menu1').length >= 1) {
+                        $(this).parents('li').addClass('active');
+                    }
+                    else {
+                        $(this).addClass('activeparents');
+                        $(this).parents('li').addClass('activeparents');
+                    }
+                }
+            });
+        }
+        setNavigation();
+    </script>
+    <script>
+        $(".fullscreen-btn").on("click", function () {
+            $("#fullscreen").addClass("m-table__full-screen");
+        });
+        $(".exitscreen-btn").on("click", function () {
+            $("#fullscreen").removeClass("m-table__full-screen");
+        });
+
+        function toggleFullScreen(elem) {
+            if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+                if (elem.requestFullScreen) {
+                    elem.requestFullScreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullScreen) {
+                    elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+    </script>
+    <script>
+        $(".logout").click(function () {
+            $(".theme-light").addClass("switch");
+            $(".dark").addClass("switch");
+            $(".switch_login").addClass("switch1");
+        });
+        $(".tile_projects a").click(function () {
+            $(this).closest("li").addClass("active");
+        });
+        $(".menuhamburger a").click(function () {
+            $(this).toggleClass("active");
+            $(".main-menu").toggleClass("menu_left");
+        });
+        $(".navigation-menu li").click(function () {
+            $(this).toggleClass("submenu_open");
+            $(".navigation-menu li").not(this).removeClass("submenu_open");
+        });
+        $(function () {
+            $(".fullscreen-supported").toggle($(document).fullScreen() != null);
+            $(".fullscreen-not-supported").toggle($(document).fullScreen() == null);
+            $(document).on("fullscreenchange", function (e) {
+                $("#jquery-script-menu").toggleClass("fullscreen_btn");
+            });
+            $(document).on("fullscreenerror", function (e) {
+            });
+        });
+
+        $('.ui-jqgrid-bdiv').css({ 'max-height': 'calc(100vh - 270px)' });
+        $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+    </script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+</body>
+</html>

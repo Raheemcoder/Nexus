@@ -1,0 +1,236 @@
+﻿@model Ideation.Models.MilestoneMaster
+@{
+    ViewBag.Title = "PMUMapping";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+}
+
+<link href="~/assets/plugins/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+<div class="card-box">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title">
+                <h4 class="-m-3 mb-2">Sub Milestone</h4>
+            </div>
+        </div>
+        <div id="message" class="m-login__erromsg">
+            @if (TempData["MessagePMU"] != null)
+            {
+                <div class="alert @Convert.ToString(TempData["MessageClassPMU"]) alert-dismissible" role="alert" id="message_alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                    </button>
+                    @Convert.ToString(TempData["MessagePMU"])
+                </div>
+            }
+        </div>
+
+    </div>
+
+
+
+
+    <div class="m-form -filter-form" id="milestonedropdown">
+        <div class="m-form__container">
+            <div class="m-form__List">
+                <div class="row">
+
+                    <div class="col-md-3 Mistonelistdiv project_list">
+                        <label class="control-label">Milestone List</label>
+                        <select class="form-control projectDrop custmscroll" data-multiselect id="MilestoneList">
+                            <option value="0">Select Milestone Name</option>
+                            @if (ViewBag.MilestoneList != null)
+                            {
+                                foreach (var item in ViewBag.MilestoneList)
+                                {
+                                    <option id="@item.Value" name="MilestoneList" value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                        <span id="MilestoneList_ErrorMilestoneList_Error" style="color:red"></span>
+                    </div>
+
+                    <div class="col-md-2 Mistonelistdiv mt-25">
+                        <button type="button" id="AddSubMilestone" class="btn-add mt-0">Add Sub Milestone</button>
+                    </div>
+                    <div class="col align-self-end Mistonelistdiv refresh-approve">
+                        <div class="float-right save_approve refresh_approve">
+                            <button type="button" id="SaveModel" class="btn-add mt-0">Save</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-table__main">
+                <div class="m-table__responsive -virtual-scroll">
+                    <table id="jqgrid" class="table table-bordered"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<input type="hidden" id="LoggedinUser" value="Context.Session.GetString(" UserName").ToString()" />
+@if (Context.Session.GetString("projectName") != null)
+{
+    var projectName = Context.Session.GetString("projectName");
+    var projectId = Context.Session.GetString("projectId");
+    <input type="hidden" id="selectedProjectName" value="@projectName" />
+    <input type="hidden" id="selectedProjectId" value="@projectId" />
+}
+
+
+<div id="addModal" class="modal fade m-modal -table-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h4 id="element" class="modal-title">Milestone</h4>
+                </div>
+                <button type="button" class="close" id="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body milestone">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Sequence No <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.HiddenFor(m => m.MilestoneId)
+                                                    @Html.HiddenFor(m => m.count, new { @class = "form-control" })
+
+
+                                                    @Html.TextBoxFor(m => m.SequenceNo, new { @id = "SequenceNo", @class = "form-control input-disabled", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.SequenceNo, null, new { @class = "text-danger" })
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Milestone Name <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.TextBoxFor(m => m.MilestoneName, new { @id = "Name", @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.MilestoneName, null, new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group  relationTypeDiv">
+                                                <label class="control-label">Relation Type <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.DropDownListFor(m => m.RelationType, new List<SelectListItem>{
+                                                     new SelectListItem{ Text="FS ( Sequence)",Value="FS ( Sequence)" },
+                                                      new SelectListItem{ Text="SS ( Parallel )",Value="SS ( Parallel )"}
+                                                      }, "--select--", new { @class = "form-control input-disabled", @id = "relationtype" })
+                                                    @Html.ValidationMessageFor(m => m.RelationType, null, new { @class = "text-danger" })
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" id="SpecialSet">
+                                            <div class="form-group">
+                                                <label class="control-label">Set Relation <span class="color-red">*</span></label>
+                                                <div class="">
+
+                                                    @*@Html.DropDownListFor(m => m.MilestoneName, new SelectList(ViewBag.SetRealtion, "Value", "Text"), new { @id = "Setrelation", @class = "form-control data-multiselect", multiple = "multiple" })
+                                                    @Html.ValidationMessageFor(m => m.RelationType, null, new { @class = "text-danger" })*@
+
+                                                    @Html.DropDownListFor(m => m.MilestoneName, new List<SelectListItem>{
+                                                   
+                                                    }, "--select--", new { @id = "Setrelation",@class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.RelationType, null, new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Duration <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.TextBoxFor(m => m.Duration, new { @id = "Duration", @class = "form-control" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" hidden>
+                                            <div class="form-group">
+                                                <label class="control-label">Status <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    <div class="radio-list m-radio__list">
+                                                        <div class="radio-inline p-0">
+                                                            <div class="radio radio-info">
+                                                                @Html.RadioButtonFor(model => model.Status, "True", new { @id = "option1", @Checked = "checked" })
+
+                                                                <label for="radio1">Active</label>
+                                                            </div>
+                                                            <div class="radio radio-info">
+                                                                @Html.RadioButtonFor(model => model.Status, "false", new { @id = "option2" })
+
+                                                                <label for="radio2">InActive</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 m-form__page--buttons">
+
+                                    <div class="save_buttons float-right text-right">
+                                        <input type="button" class="btn-add" id="btnSubmit" data-dismiss="modal" value="Submit" />
+                                        <button type="button" class="btn-cnl" id="btnCancel" data-dismiss="modal"> Cancel</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="UserConfirmationforInactiveMilestone" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content confirmationpop">
+
+            <div class="modal-body text-center confirmationpop">
+                <h4>Are you sure you want to Inactive the Milestone? By Inactivating the Milestone, the Dependent Milestones will be Inactive.</h4>
+               
+                <div id="DependingSubMilestoneList"></div>
+                <div class="d-flex justify-content-end">
+                    <button type="button" id="InactiveMilestone" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                    <button type="button" id="EndNoButton" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="~/js/Master/SubMilestone.js"></script>

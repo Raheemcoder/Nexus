@@ -1,0 +1,502 @@
+﻿@model ClaimsGridDocument
+@using Newtonsoft.Json
+@{
+    ViewData["Title"] = "Claims Grid";
+    Layout = "/Views/Shared/N_ClaimsGridLayout.cshtml";
+    var DivisionList = Model.DivisionList;
+}
+<style>
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+    .modal-header-align .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        text-align: left !important;
+    }
+
+    .approval_history_table {
+        height: 60vh;
+        overflow: auto;
+    }
+
+    .modal-dialog.modal-xl {
+        max-width: 98% !important;
+    }
+
+    .lifecycle_list li.warning {
+        background: #ff9221 !important;
+        color: #fff !important;
+    }
+
+    .history_table table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid #dee2e6;
+        border: 1px solid #dedede !important;
+        background: #ddd2d2;
+    }
+
+    .m-table__main .table td {
+        padding: 10px 8px !important;
+        border: 1px solid #dedede;
+    }
+
+    .filter_status .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #f37d1f;
+        line-height: 27px;
+    }
+
+    td.p-2._cft_back {
+        background: #81e297;
+    }
+
+    .ui-widget-content a.grid-icon-only {
+        color: #0052cb;
+    }
+    .text-muted{
+        color: #4e4efd !important;
+    }
+</style>
+<input type="hidden" value="@JsonConvert.SerializeObject(Model.ClaimsGridList)" id="Griddata" />
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert_green @TempData["Messageclass"].ToString() alert-dismissable">
+        <button type="button" class="btn-close status-alert alert_msg_close" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["Message"].ToString()
+    </div>
+}
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span>Claims Grid</h4>
+        </div>
+    </div>
+</section>
+
+<div class="GenerateClaimsPdf" hidden></div>
+<div class="Header" hidden></div>
+
+<section>
+    <div>
+        <div class="">
+            <div class="project_modules ">
+                <ul class="nav nav-tabs DivisionDetails">
+                    <li><a data-toggle="tab" onclick="getDivisiondetails(this)" data-divisionid="" class="active allDivisions">All  <span class="allDivisionTotal division-count"></span></a></li>
+                    @foreach (var item in DivisionList)
+                    {
+                        <li><a data-toggle="tab" onclick="getDivisiondetails(this)" data-divisionid="@item.Value">@item.Text <span class="division-count" id="@(item.Text.Replace(" ","").ToLower())"></span></a></li>
+                    }
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <div class="tabs-Data_ cg_data d-flex data_climsList justify-content-start">
+                        <div class="filter_status">
+                            <div class="d-flex">
+                                <div class="col-width2">
+                                    <div class="form-group flaoting_ ">
+                                        <select class="form-select form-select-sm" data-singleselect id="projectDropdown">
+                                            <option value="All">All</option>
+                                        </select>
+                                        <label class="control-label form_lable floating_lable">Project No</label>
+                                    </div>
+                                </div>
+                                @Html.HiddenFor(m => m.JSONClaimsGridData, new { @id = "JSONClaimsGridData" })
+                                @Html.HiddenFor(m => m.Statuses, new { @id = "Statuses" })
+                                @Html.HiddenFor(model => model.Role)
+                                @Html.HiddenFor(model => model.LoginId)
+                                <div class="col-width2">
+                                    <div class="form-group flaoting_">
+                                        <select class="form-select form-select-sm" data-singleselect id="statusDrpDown">
+                                            <option value="All">All</option>
+                                        </select>
+                                        <label class="control-label form_lable floating_lable">Status</label>
+                                    </div>
+                                </div>
+                                <div class="col-width1">
+                                    <button class="btn btn-search" title="search" id="SearchPrototypeData" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-refresh" title="refresh" type="button" id="btnrefresh">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="animate__animated2 slideInUp mt-2">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="legends_list">
+                                <ul class="d-flex ">
+                                    <li class="edit-color"><i class="fas fa-pen"></i> Edit</li>
+                                    <li class="view-color"><i class="fas fa-eye"></i> View</li>
+                                    <li class="download-color"><i class="fas fa-download"></i> Download</li>
+                                    <li class="detete-color"><i class="fas fa-trash"></i> Delete</li>
+                                    <li class="history-color"><i class="fas fa-history"></i> View History</li>
+                                    <li class="document-color"><i class="fas fa-file"></i> Supporting Document</li>
+                                    <li class="remarks-color"><i class="fas fa-info"></i>CFT Status</li>
+                                </ul>
+                            </div>
+                            <div class="d-flex excel_expand align-items-center">
+                                <div class="images_excel ">
+                                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="ExcelDownload" title="Excel Download" />
+                                </div>
+                                <div>
+                                    <div class="expand_initiate table_expand">
+                                        <div>
+                                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Full Screen"></i>
+                                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content">
+                        <div id="content1" class="tab-pane fade in active">
+                            <div class="animate__animated2 slideInUp mt-1">
+                                <div class="">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="m-table__main grid_height">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="claims_documeent" class="table table-bordered"></table>
+                                                    <div id="pager_claims_documeent"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="content2" class="tab-pane fade">
+                            <div class="animate__animated2 slideInUp mt-1">
+                                <div class="">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="m-table__main grid_height">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Claimslist_grid1" class="table table-bordered"></table>
+                                                    <div id="Claimslist_pager1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="content3" class="tab-pane fade">
+                            <div class="animate__animated2 slideInUp mt-1">
+                                <div class="">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="m-table__main grid_height">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Claimslist_grid2" class="table table-bordered"></table>
+                                                    <div id="Claimslist_pager2"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="content4" class="tab-pane fade">
+                            <div class="animate__animated2 slideInUp mt-1">
+                                <div class="">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="m-table__main grid_height">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Claimslist_grid3" class="table table-bordered"></table>
+                                                    <div id="Claimslist_pager3"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="content5" class="tab-pane fade">
+                            <div class="animate__animated2 slideInUp mt-1">
+                                <div class="">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="m-table__main grid_height">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Claimslist_grid4" class="table table-bordered"></table>
+                                                    <div id="Claimslist_pager4"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="content6" class="tab-pane fade">
+                            <div class="animate__animated2 slideInUp mt-1">
+                                <div class="">
+                                    <div class="">
+                                        <div class="row">
+                                            <div class="m-table__main grid_height">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Claimslist_grid5" class="table table-bordered"></table>
+                                                    <div id="Claimslist_pager5"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*******************Modal History**************************@
+<div id="history" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Approval History
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row approve_reject_claims">
+                    <div class="lifecycle_list clims_history list_status">
+                        <ul>
+                            <li class="completed">Draft</li>
+                            <li><i class="fas fa-arrow-right text-success"></i></li>
+                            <li class="">CFT Review</li>
+                            <li><i class="fas fa-arrow-right text-success"></i></li>
+                            <li class="">DSG Review</li>
+                            <li><i class="fas fa-arrow-right text-success"></i></li>
+                            <li class="">Manager Approval</li>
+                            <li><i class="fas fa-arrow-right text-success"></i></li>
+                            <li class="">DSG Signoff</li>
+                            <li><i class="fas fa-arrow-right text-success"></i></li>
+                            <li class="">Signed off</li>
+                            <li><i class="fas fa-arrow-right text-success"></i></li>
+                            <li class="">Addendum</li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="row">
+                    <div>
+                        <div class="images_excel float-right">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="HistoryExcel" title="Excel Download" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2  history_table">
+                                <div class="m-table__responsive -virtual-scroll approval_history_table">
+                                    <table class="table table-boardered" id="Claims_Remarks">
+                                        <thead>
+                                            <tr>
+                                                <th style="width:10px;">From Stage</th>
+                                                <th style="width:10px;">To Stage</th>
+                                                <th style="width:120px;">Assigned To</th>
+                                                <th style="width:10px;">Received On</th>
+                                                <th style="width:10px;">Submitted On</th>
+                                                <th style="width:110px;">Submitted By</th>
+                                                <th style="width:10px;">No Of Days Taken</th>
+                                                <th style="width:160px;">Remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        </tbody>
+                                    </table>
+                                    <div id="Claims_Remarks_Pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*******************Modal CFT Remarks**************************@
+<div id="CFTStatus" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    CFT Status
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table class="table table-bordered">
+                                        <thead>
+                                            <tr class="bd1">
+                                                <th scope="col">Department Name</th>
+                                                <th scope="col">Users</th>
+                                                <th scope="col">Status</th>
+                                                <th scope="col">CFT remarks</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="tb" id="cftApprovalTable">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@********************supporting docucumnets**************@
+<div id="fileModal" class="modal fade document_modal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Supporting Documents</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="documents_grid" class="table table-bordered"></table>
+                                    <div id="documents_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*******************Modal CFT sub Remarks**************************@
+<div id="CFTRModal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    CFT Remarks
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <table class="table table-bordered">
+                                    <thead>
+                                        <tr class="bd1" id="CFTRHeader">
+
+                                            <th scope="col" class="col-width3">Claims</th>
+                                            <th scope="col">IRA Remarks</th>
+                                        </tr>
+
+                                    </thead>
+                                    <tbody class="tb" id="CFTRBody">
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@****************************Supporting Documnets************************@
+<div id="supporting_documents" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Supporting Documents
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                    <div id="pager_Grid_Supporting_Document"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete button in jq grid*@
+<div class="modal fade sv hd" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="DeleteRecord" class="btn btn-cancel" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-hgml" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@******************View data************************@
+<div id="previewmodal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div id="resultDiv"></div>
+    </div>
+</div>
+<script>
+    console.log('hi');
+</script>
+
+<script src="@Url.Content("~/js/NewClaimsGrid/ListClaims.js")" asp-append-version="true"></script>

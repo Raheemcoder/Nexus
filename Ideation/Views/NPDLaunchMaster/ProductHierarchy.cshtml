@@ -1,0 +1,130 @@
+﻿@model Ideation.Models.NPDLaunchMaster
+
+@{
+    ViewBag.Title = "NPDLaunchMaster";
+    Layout = "~/Views/Shared/_NPDLMLayout.cshtml";
+
+}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+
+
+<div class="card-box mb-2 card_height pb-3 sg">
+
+
+    @using (Html.BeginForm("SaveProductHierarchyData", "NPDLaunchMaster", FormMethod.Post, new { id = "ProductHierarchy_Form_Submit", enctype = "multipart/form-data" }))
+    {
+        <div class="col-md-12 mb-2">
+            <div class="page-title title_ mt-3">
+                <h4>Product Hierarchy</h4>
+            </div>
+        </div>
+        @Html.HiddenFor(model => model.NPDLaunchMasterProductHierarchyData, new { @id = "NPDLaunchMasterProductHierarchyData" })
+        @Html.HiddenFor(model => model.CategoryString, new { @id = "NPDCategoryString" })
+        @Html.HiddenFor(model => model.DivisionString, new { @id = "NPDDivisionString" })
+        @Html.HiddenFor(model => model.ProductString, new { @id = "NPDProductString" })
+        @Html.HiddenFor(model => model.FormulationString, new { @id = "NPDFormulationString" })
+        @Html.HiddenFor(model => model.SubCategoryString, new { @id = "NPDSubCategoryString" })
+        @Html.HiddenFor(model => model.ProductHierarchyData)
+        @Html.HiddenFor(model => model.UserName, new { @id = "UserName" })
+
+        <div class="row ">
+            <div class="col-auto">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">
+                        HGML Product Group
+                    </label>
+                    @Html.DropDownListFor(model => model.ProductName, Model.HGMLProductGroupList, "All", new { @class = "form-control form-control-sm data-singleselect", @id = "NpdHgmlProductGroup" })
+                </div>
+            </div>
+
+            <div class="col-auto">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">
+                        HGML Division
+                    </label>
+                    @Html.DropDownListFor(model => model.DivisionName, Model.HGMLDivisionList, "All", new { @class = "form-control form-control-sm data-singleselect", @id = "NpdHmlDivision" })
+                </div>
+            </div>
+            @*<div class="col-auto">
+                    <div class="form-group mb-0 ">
+                        <label class="control-label">
+                            HGML Category
+                        </label>
+                        @Html.DropDownListFor(model=>model.CategoryName,Model.HGMLCategoryList,"All",new{@class="form-control form-control-sm data-singleselect",@id="NpdHgmlCategory"})
+                    </div>
+                </div>*@
+
+            <div class="col-auto">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">
+                        HGML Product Format
+                    </label>
+                    @Html.DropDownListFor(model => model.FormulationName, Model.HGMLFormulationList, "All", new { @class = "form-control form-control-sm data-singleselect", @id = "NpdHgmlFormulation" })
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group mb-0 mt-4">
+                    <button type="button" id="SearchProductHierarchyData" class="btn btn-info c-add-details waves-light waves-effect"><i class="fas fa-search" title="Search" aria-hidden="true"></i></button>
+                </div>
+            </div>
+        </div>
+        @*jqgrid*@
+
+        <div class="add_grid_">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="text-right">
+                            <button type="button" id="ExcelDownload" class="btn-add ex_bt excel_btn"><i class="fas fa-download ex_download mr-2 " aria-hidden="true"></i>Excel</button>
+                            <button type="button" class="btn-ap SaveProductHierarchyData" data-bs-toggle="modal" data-title="Save"> Save</button>
+                            <button type="button" class="btn-rej" onclick="location.href = './NPDList';" data-title="Cancel"> Cancel</button>
+                        </div>
+                        <div class="m-table__main mt-2 mb-2">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="ProductHierarchy_Grid" class="table table-bordered"></table>
+                                <div id="pager_ProductHierarchy_Grid"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*<div class="sticky-bottom NPD_sticky">*@
+            <div class="">
+                <div class="save_buttons float-right text-right">
+                    <button type="button" class="btn-ap SaveProductHierarchyData" data-bs-toggle="modal" data-title="Save"> Save</button>
+                    <button type="button" class="btn-rej" onclick="location.href = './NPDList';" data-title="Cancel"> Cancel</button>
+
+                </div>
+
+            </div>
+        </div>
+    }
+</div>
+
+
+@*save button*@
+@*<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header -bg-green">
+                    <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want save the details?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="ToSave_OK" class="btn btn-success">OK</button>
+                    <button type="button" class="btn-cnl" data-bs-dismiss="modal">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+*@
+
+
+<script src="@Url.Content("~/js/npdlaunchmaster/ProductHierarchy.js")" asp-append-version="true"></script>
+
+@*<script src="@Url.Content("~/js/npdlaunchmaster/ProductHierarchy.min.js")" asp-append-version="true"></script>*@

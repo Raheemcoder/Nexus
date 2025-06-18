@@ -1,0 +1,175 @@
+﻿@model Ideation.Models.User
+@{
+    ViewBag.Title = @ViewBag.PageTitle;
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+}
+<link href="https://www.codehim.com/demo/bootstrap-multiselect-dropdown/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="https://www.codehim.com/demo/bootstrap-multiselect-dropdown/dist/js/bootstrap-multiselect.js"></script>
+
+<script src="@Url.Content("~/js/jquery.validate.min.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/jquery.validate.unobtrusive.min.js")" asp-append-version="true"></script>
+<style>
+
+    .btn-group > .btn {
+        border-radius: 5px;
+        border-color: #c6c6c6;
+        height: 36px;
+        text-align: left;
+        font-size: 13px;
+    }
+</style>
+<div class="card-box mb-0">
+    <h4 class="pt-3">@ViewBag.PageTitle</h4>
+    @using (Html.BeginForm("Add", "User", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row bdr_clr">
+            @Html.HiddenFor(m => m.UserId)
+            @Html.HiddenFor(m=>m.History)
+            @Html.HiddenFor(m=>m.DivisionNames)
+            @Html.HiddenFor(m=>m.CategoryNames)
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="form-label">Role<span class="color-red"> *</span></label>
+                    @Html.DropDownListFor(model => model.Role,Model.RoleList,"Select",new { @class = "form-control form-control-sm"})
+                    @Html.ValidationMessageFor(model => model.Role, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="form-label">User Type<span class="color-red"> *</span></label>
+                    @Html.DropDownListFor(model => model.UserType,Model.UserTypeList,"Select",new { @class = "form-control form-control-sm"})
+                    @Html.ValidationMessageFor(model => model.UserType, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="form-label">Name<span class="color-red"> *</span></label>
+                    @Html.TextBoxFor(model => model.Name,new { @class = "form-control form-control-sm"})
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="form-label">Email Id<span class="color-red"> *</span></label>
+                    @Html.TextBoxFor(model => model.EmailId,new { @class = "form-control form-control-sm"})
+                    @Html.ValidationMessageFor(model => model.EmailId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            @if (ViewBag.PageTitle == "Edit User")
+            {
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="form-label">Login ID<span class="color-red"> *</span></label>
+                        @Html.TextBoxFor(model => model.LoginId,new { @class = "form-control form-control-sm mandat",@readonly="readonly"})
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="form-label">Login ID<span class="color-red"> *</span></label>
+                        @Html.TextBoxFor(model => model.LoginId,new { @class = "form-control form-control-sm"})
+                        @Html.ValidationMessageFor(model => model.LoginId,"", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+            }
+            <div class="col-md-3">
+                <div class="form-group product_profile">
+                    <label>HUB<span class="color-red">*</span></label>
+                    @*                 @Html.ListBoxFor(m => m.Hub, Model.HubList ?? new List<SelectListItem>(), new { @class = "form-control multiselectDropdown ddlmulti example-dropUp", @multiple = "multiple",@id="Hubdropdown" })
+                *@                @Html.DropDownListFor(model => model.Hub,Model.HubList,"Select",new { @class = "form-control form-control-sm data-singleselect"})
+                    @Html.ValidationMessageFor(model => model.Hub, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="form-label">Division<span class="color-red"> *</span></label>
+                    @Html.ListBoxFor(m => m.Division, Model.DivisionList ?? new List<SelectListItem>(), new { @class = "form-control multiselectDropdown  example-dropUp", @multiple = "multiple",@id="UserDivision" })
+
+                    @Html.ValidationMessageFor(model => model.Division, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            @if (ViewBag.PageTitle == "Edit User")
+            {
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="form-label">Category  <span class="color-red"> *</span></label>
+                        @*  <select class="form-control addCategory-Option data-singleselect" id="" name="Category">
+                <option value="">Select</option>
+                @Html.HiddenFor(model => model.Category, new { @class="form-control form-control-sm" ,@id="Category"} )
+                </select>*@
+                        @Html.ListBoxFor(m => m.Category,new List<SelectListItem>(), new { @class = "form-control", @multiple = "multiple",@id="Category" })
+
+                        @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-3">
+                    <div class="form-group">
+                        <label class="form-label">Category  <span class="color-red"> *</span></label>
+
+                        @Html.ListBoxFor(m => m.Category,new List<SelectListItem>(), new { @class = "form-control multiselectDropdown  example-dropUp", @multiple = "multiple",@id="Category" })
+
+                        @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+            }
+            <div class="col-md-3">
+                <div class="form-group product_profile">
+                    <label>Manager@*<span class="color-red"> *</span>*@</label>
+@*                    @Html.DropDownListFor(model => model.Manager,Model.UserList,"Select",new { @class = "form-control form-control-sm data-singleselect"})
+*@@*                    @Html.ValidationMessageFor(model => model.Manager, "", new { @class = "text-danger" })
+*@                    @Html.ListBoxFor(m => m.Manager, Model.UserList ?? new List<SelectListItem>(), new { @class = "form-control multiselectDropdown ddlmulti example-dropUp", @multiple = "multiple",@id="managerdropdown" })
+@*                @Html.ValidationMessageFor(model => model.Manager, "", new { @class = "text-danger" })
+*@
+                </div>
+            </div>
+            <div class="col-3">
+                <div class="form-group">
+                    <label class="form-label">Status<span class="color-red"> *</span></label>
+                    <div class="status_rd_btns">
+                        <div class="custom-control custom-radio custom-control-inline">
+
+                            @Html.RadioButtonFor(m => m.Active, "1", new { @id = "IsReplacingRadio1", @class = "custom-control-input", @type = "radio",})
+
+                            <label class="custom-control-label" for="IsReplacingRadio1">Active</label>
+                        </div>
+                        <div class="custom-control custom-radio custom-control-inline">
+
+                            @Html.RadioButtonFor(m => m.Active, "0", new { @id = "IsReplacingRadio2", @class = "custom-control-input", @type = "radio" })
+
+                            <label class="custom-control-label" for="IsReplacingRadio2">In Active</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row pt-3">
+            <div class="save_buttons float-right text-right">
+                @if (Model.IsEdit)
+                {
+                    <button type="submit" class="btn-add" id="submituser"> Save</button>
+                }
+                <a href="@Url.Content("~/User/List")">
+                    <button type="button" class="btn-cnl"> Back</button>
+                </a>
+            </div>
+        </div>
+
+    }
+</div>
+
+<script src="@Url.Content("~/js/user/UserAdd.js")" asp-append-version="true"></script>

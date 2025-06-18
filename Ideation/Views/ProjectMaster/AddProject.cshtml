@@ -1,0 +1,156 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewBag.Title = "Add Project";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    .card_bx {
+        box-shadow: 0px 0px 9px #dedede;
+        padding: 10px !important;
+        border-radius: 10px !important;
+        background: #fff;
+    }
+
+    .card_heightadd {
+        min-height: 80vh;
+    }
+
+    .card-box_add {
+        padding: 0px 20px;
+        margin-bottom: 30px;
+        margin: 0 3% 0 3%;
+    }
+</style>
+
+<div class="card-box_add mb-2 card_heightadd pb-3 sg">
+
+    <div class="col-md-12 mb-2">
+        <div class="page-title title_  mt-3">
+            <h4>Add Project</h4>
+        </div>
+    </div>
+
+    <div class="card_height_project">
+        <div class="row product_profile card_bx ">
+            @using (Html.BeginForm("SaveAddProjectData", "ProjectMaster", FormMethod.Post, new { id = "AddNewProject", enctype = "multipart/form-data" }))
+            {
+                <div class="row">
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Project Name<span class="color-red">*</span></label>
+                            <div class="demo-content">
+                                @Html.TextBoxFor(model => model.Product, new { @class = "form-control form-control-sm", @id = "PMPrjName" })
+                                <span style="display:none" id="Err_PrjName" class="Err_PM color-red">Please Enter Project Name</span>
+                                <span style="display:none" id="Err_PrjName_Exceed" class="Err_PM color-red">Please enter the Project Name within 40 characters</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Portfolio<span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.Portfolio, Model.PortfolioList, "Select", new { @class = "form-control form-control-sm data-singleselect PMPortfolioName", @id = "PMPortfolioName" })
+                            <span style="display:none" id="Err_Portfolio" class="Err_PM color-red">Please Select Portfolio</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Bucket<span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.BucketName, new SelectList(string.Empty, "Value", "Text"), "Select", new { @class = "form-control form-control-sm data-singleselect PMBucketName", @id = "PMBucketName" })
+                            <span style="display:none" id="Err_Bucket" class="Err_PM color-red">Please Select Bucket</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Item Type<span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.ItemTypeName, new SelectList(string.Empty, "Value", "Text"), "Select", new { @class = "form-control form-control-sm data-singleselect", @id = "PMItemTypeName" })
+                            <span style="display:none" id="Err_ItemType" class="Err_PM color-red">Please Select Item Type</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Template<span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.Template, new SelectList(string.Empty, "Value", "Text"), "Select", new { @class = "form-control form-control-sm data-singleselect", @id = "PMTemplateName" })
+                            <span style="display:none" id="Err_Template" class="Err_PM color-red">Please Select Template</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group d-flex flex-column">
+                            <label>HUB<span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.HubName, Model.HubDataList, new { @class = "form-control form-control-sm data-multiselect", @id = "PMHubMaster", @multiple = "multiple", onchange = "updateHiddenHubValue()" })
+                            <span style="display:none" id="Err_Hub" class="Err_PM color-red">Please Select Hub</span>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Start Date<span class="color-red">*</span></label>
+                            <div class="ckediter_tolbar">
+                                @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control form-control-sm", @id = "PMStartDate", @data_datepicker_startdate = "", @autocomplete = "off", @readonly = "readonly" })
+                                <span style="display:none" id="Err_StartDate" class="Err_PM color-red">Please Select StartDate</span>
+                                <span style="display:none" id="Val_StartDate" class="Err_PM color-red">Please Select Or Enter Date Format as <strong>DD/MM/YYYY</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>End Date<span class="color-red">*</span></label>
+                            <div class="ckediter_tolbar">
+                                @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control form-control-sm", @id = "PMEndDate", @data_datepicker_enddate = "", @autocomplete = "off", @readonly = "readonly" })
+                                <span style="display:none" id="Err_EndDate" class="Err_PM color-red">Please Select EndDate</span>
+                                <span style="display:none" id="Val_EndDate" class="Err_PM color-red">Please Select Or Enter Date Format as <strong>DD/MM/YYYY</strong></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    @Html.HiddenFor(model => model.ProjectBriefId, new { @id = "PrjBriefId" })
+                    @Html.HiddenFor(model => model.Product, new { @id = "ProductName" })
+                    @Html.HiddenFor(model => model.ProjectCode, new { @id = "PrjCode" })
+                    @Html.HiddenFor(model => model.HubList, new { @id = "SelectedHubs" })
+                    @Html.HiddenFor(model => model.SetBucket, new { @id = "SetBucket" })
+                    @Html.HiddenFor(model => model.SetItemType, new { @id = "SetItemType" })
+                    @Html.HiddenFor(model => model.SetTemplate, new { @id = "SetTemplate" })
+                    @Html.HiddenFor(model => model.Usergrp, new { @id = "UserGrp" })
+
+
+                    <div class="col-md-12">
+                        <div class="save_buttons float-right text-right">
+                            <button type="button" class="btn-add" data-bs-toggle="modal" onclick="validateNewProjectForm()" data-title="Save"> Save & Confirm</button>
+                            <button type="button" class="btn-rej" onclick="location.href = './ProjectMaster';" data-title="Cancel"> Cancel</button>
+                        </div>
+                    </div>
+
+                </div>
+            }
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade sv hd" id="SaveAddProjectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @if (Model.ProjectBriefId != null)
+                {
+                    <span>Do you want to create the project for project brief <strong> @Model.ProjectBriefId </strong>?</span>
+                }
+                else
+                {
+                    <span> Do you want to create the project?</span>
+                }
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SaveNewProject">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/projectmaster/addnewproject.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/assets_eppm/js/app.js")" asp-append-version="true"></script>

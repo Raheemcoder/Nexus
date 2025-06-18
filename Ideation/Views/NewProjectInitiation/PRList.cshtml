@@ -1,0 +1,355 @@
+﻿@model Ideation.Models.PRCreation
+@{
+    ViewData["Title"] = "PR Request";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+
+<link href="~/css/11font-awesome.min.css" rel="stylesheet" />
+<style>
+    .fa-reply:before {
+        content: "" !important;
+    }
+
+    .action_icons a {
+        padding: 0px 3px !important;
+    }
+
+    .PR_Details_Link {
+        color: blue;
+        cursor: pointer;
+    }
+
+    ._hide {
+        display: none;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #e6e6e6 !important;
+        border-left: 0px;
+        border-top: 0px !important;
+    }
+
+    .fa-arrow-right.warning {
+        background: #dedede !important;
+        color: #ff9221 !important;
+    }
+</style>
+
+@*To show saved response message*@
+@if (TempData["Message"] != null)
+{
+    <div id="message" class="m-login__erromsg">
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    </div>
+}
+
+@*To show response message*@
+<section>
+    <div id="response-message-div" class="m-login__erromsg hide">
+
+    </div>
+</section>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> PR Request</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    @Html.HiddenFor(model => model.LoginId)
+    @Html.HiddenFor(model => model.Role)
+    @Html.HiddenFor(model => model.PRNoList)
+    @Html.HiddenFor(model => model.FromDate)
+</section>
+
+<section>
+    <div class="filter_status prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex">
+                <div class="col-width3">
+                    <div class="form-group">
+                        <label class="control-label">PR No</label>
+                        <input type="text" class="form-control " id="pr-no" data-pr-no />
+                        <span class="text-danger hide select-from-list">Please select PR No from the list</span>
+                        <span class="text-danger hide already-selected">PR No has been already selected</span>
+                        <span class="text-danger hide not-valid-pr">Please select a valid PR No</span>
+                    </div>
+                </div>
+                <div class="col-width1">
+                    <div class="form-group rid_calendericon">
+                        <label class="control-label">From Date</label>
+                        <input type="text" class="form-control ImpactDates_text_freezed" id="fromdate" readonly>
+                        <span class="text-danger _hide" id="Err_StartDate">Please select Start Date</span>
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="col-width1">
+                    <div class="form-group rid_calendericon">
+                        <label class="control-label">To Date</label>
+                        <input type="text" class="form-control ImpactDates_text_freezed" id="todate" readonly>
+                        <span class="text-danger _hide" id="Err_EndDate">Please select End Date</span>
+                        <i class="fas fa-calendar"></i>
+                    </div>
+                </div>
+                <div class="col-width1 mt-3">
+                    <button class="btn btn-search" title="search" id="search_btn" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh ml-1" title="refresh" id="refresh_btn" type="button">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="d-flex excel_expand align-items-center">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                @if (Model.Role.ToLower() != "pr admin" && Model.Role.ToLower() != "admin" && Model.Role.ToLower() != "approver")
+                {
+                    <div class="add_button ml-2 ">
+                        <a href="@Url.Content("~/NewProjectInitiation/PRCreation")" class="btn btn-success">Create PR</a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    <div>
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="legends_list">
+                <ul class="d-flex ">
+                    <li><i class="fas fa-pen text-primary"></i> Edit</li>
+                    <li><i class="fas fa-trash text-danger"></i> Delete</li>
+                    <li><i class="fas fa-history text-warning"></i> History</li>
+                    <li><i class="fas fa-file text-success"></i> Vendor Details</li>
+                    <li><i class="fas fa-thumbs-up text-success"></i> Approve & Create PR</li>
+                    <li><i class="fas fa-thumbs-down text-danger"></i> Reject</li>
+                    <li><i class="fas fa-repeat text-primary"></i> Roll Back to Initiator</li>
+                    <li><i class="fas fa-info text-info"></i> SAP Remarks</li>
+                    <li><i class="fas fas fa-reply color-blue"></i> SAP Retry</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="PRListGrid" class="table table-bordered"></table>
+                            <div id="PRListGrid_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="PRDetailsPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title">
+                    PR Details
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body PR_table">
+                <div class="d-flex mb-2">
+                    <span class="mr-3">PR Ref No: <b class="refNo"></b></span>
+                    <span class="mr-3">PR No: <b class="prNo"></b></span>
+                    <span class="mr-3">Department: <b class="department"></b></span>
+                    <span class="mr-3">Category: <b class="category"></b></span>
+                    <span class="mr-3">PR Created By: <b class="prBy"></b></span>
+                    <span class="mr-3">PR Created On: <b class="prDate"></b></span>
+                    <div class="images_excel ml-auto">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="details_exceldownload" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="PRDetailsGrid" class="table table-bordered"></table>
+                                    <div id="PRDetailsGrid_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="PRHistoryPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title">
+                    Modification History : <span><b id="mat-code-desc"></b></span>
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body PR_table">
+                <div class="d-flex mb-2">
+                    <span class="mr-3">PR Ref No: <b class="refNo"></b></span>
+                    <span class="mr-3">PR No: <b class="prNo"></b></span>
+                    <span class="mr-3">Department: <b class="department"></b></span>
+                    <span class="mr-3">Category: <b class="category"></b></span>
+                    <span class="mr-3">PR Created By: <b class="prBy"></b></span>
+                    <span>PR Created On: <b class="prDate"></b></span>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="PRHistoryGrid" class="table table-bordered"></table>
+                                    <div id="PRHistoryGrid_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="Document_show_popup" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Vendor Quotations</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive sd_documents">
+                                        <table id="Grid_Vendor_Document" class="table table-bordered"></table>
+                                        <div id="Grid_Vendor_Document_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="auditTrail" class="modal fade budget_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">PR Life Cycle History <b class="pr-ref-no-excel"></b></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row text-center">
+                    <div class="lifecycle_list clims_history list_status">
+
+                    </div>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="d-flex justify-content-end">
+                        <div class="images_excel">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="HistoryExcel" title="Excel Download">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="m-table__main mt-2 mb-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="audit_trail" class="table table-bordered jqgrid-table"></table>
+                                    <div id="audit_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" data-bs-dismiss="modal" class="btn btn-cancel">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="SAPFailedShow" class="modal fade budget_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title">SAP Remarks</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <input type="text" id="budget_projectid" hidden />
+                                        <table id="SapFailedRemarks" class="table table-bordered"></table>
+                                        <div id="pager_SapFailedRemarks"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-cancel">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/PRList.js")"></script>

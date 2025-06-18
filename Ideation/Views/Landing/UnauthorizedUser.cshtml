@@ -1,0 +1,66 @@
+﻿@{
+    Layout = null;
+    var userName = Context.Session.GetString("UserName");
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>UnAuthorized User - Ispace</title>
+        <script src="https://kit.fontawesome.com/ce2a6a1038.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" 
+        integrity="sha512-xX2rYBFJSj86W54Fyv1de80DWBq7zYLn2z0I9bIhQG+rxIF6XVJUpdGnsNHWRa6AvP89vtFupEPDP8eZAtu9qA==" crossorigin="anonymous"
+        referrerpolicy="no-referrer" />
+
+        <link href="@Url.Content("~/fonts/fontawesome/css/fontawesome.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/assets_EPPM/css/icons/fontawesome/css/fontawesome.min.css")" rel="stylesheet" />
+        <link href="@Url.Content("~/css/font-awesome4.7.0.min.css")" rel="stylesheet" />
+        <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+        <link href="@Url.Content("~/css/common.css")" rel="stylesheet" />
+        <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+        <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+    </head>
+   
+    <body class="error_bg">
+        <div id="wrapper">
+            <div class="container-fluid d-flex justify-content-between align-items-center ">
+                <div class="">
+                    <a class="logo" href="@Url.Content("~/Landing/Index")">
+                        <img src="@Url.Content("~/assets_EPPM/img/logohmnew.png")" alt="Himalaya" class="lg_im" />
+                        <span class="error_home"><i class="fa fa-home"></i></span>
+                    </a>
+                </div>
+                <div class="d-flex justify-content-end align-items-center ">
+                    <ul class="navbar-nav">
+                        <li class="list-inline-item dropdown notification-list user_toggle">
+                            <a class="nav-link dropdown-toggle waves-effect waves-light nav-user d-flex justify-content-between align-items-center profile-pic" data-toggle="dropdown" href="#" role="button"
+                               aria-haspopup="false" aria-expanded="false">
+                                <span class="usr_nmr">@userName</span>
+                                <img b-ikyrktfwkp="" src="@Url.Content("~/images/user.png")" alt="user" class="usr_img">
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
+                                <!-- item-->
+                                <a href="@Url.Content("~/Login/Logout")" class="dropdown-item notify-item">
+                                    <i class="fa fa-sign-out"></i> <span>Logout</span>
+                                </a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="error_bg_image">
+            <div class="col-md-12">
+                <div class="error_text">
+                    <img src="@Url.Content("~/images/danger.png")" class="alert_danger" />
+                    <h5 class="d-inline">Oops… You do not have access for the page, Please contact admin.</h5>
+                    <a class="color-blue back-btn" href="@Url.Content("~/Landing/Index")"><i class="fas fa-angle-left "></i> Back</a>
+                </div>
+            </div>
+        </div>
+    </body>
+
+</html>

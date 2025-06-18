@@ -1,0 +1,133 @@
+﻿@model Ideation.Models.TemplateData
+@{
+    ViewData["Title"] = "Budget Planning";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+<style>
+    .btn-draft {
+        border-radius: 4px;
+    }
+
+    .checkbox_position {
+        position: relative;
+        top: 3px;
+    }
+
+    .header_style {
+        height: auto !important;
+        margin-top: 1px;
+        margin-bottom: 1px;
+        font-family: 'robotoregular';
+        font-size: 11px;
+        line-height: 1.3;
+        color: #000;
+        font-family: 'roboto_mediumregular';
+    }
+
+    #saveButton {
+        border-radius: 3px;
+    }
+</style>
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Budget Planning</h4>
+        </div>
+    </div>
+</section>
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+@if (Convert.ToString(Context.Session.GetString("TemplateId")) != "")
+{
+    var templateId = Context.Session.GetString("TemplateId");
+    <input type="hidden" id="selectedTemplateId" value="@templateId" />
+}
+<section>
+    <div class="prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+
+            <div class="filter_status prototype_filter">
+                <div class="d-flex">
+                    <div class="col-width3">
+                        <div class="form-group">
+                            <label class="control-label">Template Name</label>
+                            @Html.DropDownListFor(model => model.Description, new SelectList(Model.TemplateList, "Value", "Text", ""), "Please select Template Name", new { @class = "form-control form-control-sm data-singleselect", @id = "TemplateName" })
+                        </div>
+                    </div>
+                    <div class="col-width1 filter_button mt-3">
+                        <button class="btn btn-search" title="Search" id="SearchTMData" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-refresh" title="Refresh" id="refreshdata" type="button">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="d-flex excel_expand align-items-center">
+                    <div class="add_button ml-2">
+                        <button type="button" data-bs-toggle="modal" id="saveButton" class="btn btn-draft">Save</button>
+                    </div>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download" />
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section>
+    <div class="animate__animated2 slideInUp mt-2">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="budget-planning-list" class="table table-bordered"></table>
+                            <div id="budget-planning-list-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade sv hd" id="SavePopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1">
+                    Are you sure you want to Save the Details?
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="SaveOk">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewProjectInitiation/NewBudgetPlanning.js")"></script>

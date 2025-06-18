@@ -1,0 +1,121 @@
+﻿@model Ideation.Models.TemplateData
+@{
+    ViewData["Title"] = "PR Team Master";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+<style>
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+    #saveButton {
+        border-radius: 3px;
+    }
+</style>
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>PR & Expenses Team Master </h4>
+        </div>
+    </div>
+</section>
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+<section>
+    <div class="prototype_filter">
+        <div class="filter_status prototype_filter">
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+            <div class="add_button ml-2">
+            </div>
+            <div class="mt-4">
+                <div class="d-flex excel_expand align-items-center">
+                    <div class="add_button ml-2">
+                        <button type="button" data-bs-toggle="modal" id="saveButton" class="btn btn-draft">Save</button>
+                    </div>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download" />
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+<section>
+    <div class="animate__animated2 slideInUp mt-2">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="pr-team-list" class="table table-bordered"></table>
+                            <div id="pr-team-list-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade sv hd" id="SavePopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1">
+                    Are you sure you want to Save the Details?
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="SaveOk">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade sv hd" id="ConfirmationPopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmation_msg">
+
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="saveresources">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewProjectInitiation/PRTeamMaster.js")"></script>

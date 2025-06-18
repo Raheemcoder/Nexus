@@ -1,0 +1,1268 @@
+﻿@model Ideation.Models.Reformulation
+@{
+    ViewData["Title"] = "Project Brief";
+    Layout = "/Views/Shared/N_PB_Layout.cshtml";
+
+    var userName = Context.Session.GetString("UserName");
+    var hub = Context.Session.GetString("Hub");
+}
+
+@*pagename, preview and back*@
+<section>
+    <div class="new_fields">
+        <div class="-m_title_ ">
+            <h4>
+                <span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>
+                <span>Create New/ </span>
+                Reformulation
+            </h4>
+        </div>
+        <div class="note_savedata_">
+            (Note: The Project Brief information will be auto saved for every 5 minutes . Please ensure that Project Name,Division and Category is entered to Auto save the data.)
+        </div>
+        <div class="right_top">
+            <ul>
+                <li class="preview" id="Preview_Modal"><i class="fa fa-eye"></i> Preview</li>
+                <li><a href="@Url.Content("~/ProjectBrief/ProjectBrief")"><i class="fas fa-arrow-left"></i> Back</a></li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+@*Form Header*@
+<section class="widht_100">
+    <div class="d-flex">
+        <div class="initiated_section create_new_filter" id="Reformulation_Table">
+            <div class="hub_name" id="Reformulation_Hub">@hub </div>
+            <div class="form_initiated">
+                <div class="col-initiated">
+                    <div class="d-flex align-items-center">
+                        <label class="control-label">Division <span class="color-red">*</span></label>
+                        <div class="_init_width_dropdown" id="Reformulation_Division">
+                            @Html.DropDownListFor(model => model.Division, Model.DivisionList, "--Select--", new { @class = "form-control data-singleselect", @id = "Division" })
+                            @Html.ValidationMessageFor(model => model.Division, "", new { @class = "text-danger", @id = "NoDivision" })
+                            <span id="Error_Reformulation_Division" class="color-red removeError" style="display:none">Please select Division</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-initiated">
+                    <div class="d-flex align-items-center">
+                        <label class="control-label">Category <span class="color-red">*</span></label>
+                        <div class="_init_width_dropdown" id="Reformulation_Category">
+                            <select class="form-control addCategoryOption data-singleselect" id="Category" name="Category">
+                                <option value="">--Select--</option>
+                            </select>
+                            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger", @id = "NoCategory" })
+                            <span id="Error_Reformulation_Category" class="color-red removeError" style="display:none">Please select Category</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-initiated by_date_iniitia">
+                    <div class="d-flex align-items-center">
+                        <label class="control-label">Initiated By: </label>
+                        <div class="" id="Reformulation_InitiatedBy">
+                            <span> @userName</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-initiated by_date_iniitia">
+                    <div class="d-flex align-items-center">
+                        <label class="control-label"> Initiated Date:</label>
+                        <div class="" id="Reformulation_InitiatedDate">
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-initiated by_date_iniitia">
+                    <div class="d-flex align-items-center">
+                        <label class="control-label">Status: </label>
+                        <div class="status_value">
+                            New
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="expand_initiate">
+                <div>
+                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                        <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Full Screen"></i>
+                        <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@using (Html.BeginForm("NewReformulation", "ProjectBrief", FormMethod.Post, new { @class = "widht_100", id = "ReformulationSubmit", enctype = "multipart/form-data" }))
+{
+    @*Form navigation, buttons ans form*@
+    <section>
+
+        @*Hidden files*@
+        @Html.HiddenFor(model => model.ProjectHeaders)
+        @Html.HiddenFor(model => model.reformulationProductDescription)
+        @Html.HiddenFor(model => model.reformulationProjectDetails)
+        @Html.HiddenFor(model => model.reformulationAdditionalFormulationRequirements)
+        @Html.HiddenFor(model => model.reformulationBusinessInformation)
+        @Html.HiddenFor(model => model.reformulationPackagingProfile)
+        @Html.HiddenFor(model => model.SustainabilityData)
+        @Html.HiddenFor(model => model.InitiatorRemarks)
+        @Html.HiddenFor(model => model.SaveOrSubmit)
+        @Html.HiddenFor(model => model.StatusValue, new { @id = "ReformulationStatus" })
+        @Html.HiddenFor(model => model.ProjectId, new { @id = "ProjectId" })
+        @Html.HiddenFor(model => model.UserName, new { @value = userName, @id = "UserName" })
+
+        @Html.HiddenFor(model => model.SupportingDocumentData)
+        @Html.HiddenFor(model => model.DeletedSupportingdocument)
+
+        @Html.HiddenFor(model => model.BenchMarkImagesData)
+        @Html.HiddenFor(model => model.DeletedBenchMarkImages)
+
+        <div class="button_top float-right mt-2">
+            @if (Model.IsEdit)
+            {
+                if (Model.Role != "PMD Team")
+                {
+                    <button type="button" class="btn btn-draft" id="saveReformulation" onclick="ValidateSaveForm()" data-title="Save"> Save as Draft</button>
+                    <button type="button" class="btn btn-approval" id="ReformulationSubmitToManager" onclick="validatesubmitformToManager()" data-title="Submit">Send for Approval</button>
+                    <button type="button" class="btn btn-hgml" id="ReformulationSubmit" onclick="validatesubmitform()" data-title="Submit">Send to HGML</button>
+                }
+            }
+            <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn btn-cancel" data-title="Cancel"> Back</button>
+        </div>
+        <div>
+            <ul class="link_href mb-2 mt-2">
+                <li><a href="#ci" onclick="moveToTop('ci', 'highlight_section')" class="active">Project Name</a></li>
+                <li><a href="#bh" onclick="moveToTop('bh', 'highlight_section')">Product Description</a></li>
+                <li><a href="#sd1" onclick="moveToTop('sd1', 'highlight_section')">Project Details</a></li>
+                <li><a href="#sd" onclick="moveToTop('sd', 'highlight_section')">Additional Formulation Requirements</a></li>
+                <li><a href="#ship_location" onclick="moveToTop('ship_location', 'highlight_section')">Business Information</a></li>
+                <li><a href="#PackagingProfileDiv" id="PackagingProfileNav" style="display:none;" onclick="moveToTop('PackagingProfileDiv', 'highlight_section')">Product Profile: Packaging Profile</a></li>
+                <li><a href="#ship_address" onclick="moveToTop('ship_address', 'highlight_section')">Sustainability</a></li>
+                <li><a href="#sd11" onclick="moveToTop('sd11', 'highlight_section')">Supporting Documents</a></li>
+            </ul>
+        </div>
+        <div class="cust_fields_master">
+            <div id="ci" class="highlight_section ship_to">
+                <div class="details_section">
+                    <h4>Project Name</h4>
+                    <div class="form_section">
+                        <div>
+                            <div class="form-group">
+                                <label class="control-label">Project Name <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.ProjectName, new { @id = "ProjectName", @class = "form-control" })
+                                <span style="color:red; display:none" id="Error-ProjectName" class="removeError">Please enter Project Name</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="bh" class="ship_to">
+                <div class="details_section">
+                    <h4>Product Description</h4>
+                    <span style="color:red;display:none" id="Err-ProductDescription" class="removeError">Please enter atleast one data for Product Description</span>
+                    <div class="form_section">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Existing Brand Name <span class="color-red">*</span></label>
+                                        @Html.TextBoxFor(model => model.ExistingBrandName, new { @class = "form-control ProductDescription ProductDesctipitonEmpty", @id = "ProductDescriptionExistingName" })
+                                        <span class="Err-ProductDescription removeError" style="color:red;display:none">Please enter Existing Brand name</span>
+                                        <span id="nameAlreadyExists_Err" class="removeError" style="color:red;display:none">Product already exists. Please add another product</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label"> New Brand Name (if applicable)</label>
+                                        @Html.TextBoxFor(model => model.NewBrandName, new { @id = "ProductDescriptionNewBrandName", @class = "form-control ProductDesctipitonEmpty" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">SKU <span class="color-red">*</span></label>
+                                        @Html.TextBoxFor(model => model.SkuProjectDetails, new { @id = "SKUDetails", @class = "form-control ProductDesctipitonEmpty" })
+                                        <div>
+                                            <span id="Err-ProductDescription-sku" style="color:red;display:none" class="removeError">Please enter SKU</span>
+                                        </div>
+                                        <span class="sku_note">
+                                            (Please enter the SKU values with comma separated (Ex: 50 ml , 100 ml))
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group mb-0 mt-4">
+                                        <button type="button" id="ProductDescriptionAdd" class="btn btn-draft">Add</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="add_grid_">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="m-table__main mt-2 mb-4">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="prd_desc" class="table table-bordered"></table>
+                                                <div id="pager_moulds"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="sd1" class="ship_to">
+                <div class="details_section">
+                    <h4>Project Details</h4>
+                    <div class="form_section">
+                        <div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Business Rational (Reason for Proposed change) <span class="color-red">*</span></label>
+                                        @Html.TextAreaFor(model => model.BusinessRational, new { @class = "form-control", @id = "ProjectDetailsBusinessRational" })
+                                        <span id="Err-ProjectDetails-BusinessRational" style="color:red;display:none" class="removeError">Please enter Business Rational</span>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Benchmark samples – Formulation</label>
+                                        @Html.TextBoxFor(model => model.BenchMarkSampleFormulation, new { @class = "form-control ", @id = "ProjectDetailsBenchmarkSampleFormulation" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Benchmark Products Image</label>
+                                        <input type="file" class="form-control" id="ProjectDetailsBenchMarkSampleImage" accept="image/*" onchange="return fileBenchValidation()" multiple />
+                                    </div>
+                                    <span id="Err_InvalidBenchmarkImage" style="color:red;display:none" class="removeError">The image must be a file of type: jpg, jpeg, png, gif, jfif, tiff, bmp, svg</span>
+                                    <span style="color:red; display:none" class="ShowmsgWhenAdd removeError">Please select Benchmark samples Image</span>
+                                </div>
+
+                                <div class="col-md-2">
+                                    <div class="form-group mb-0 mt-4 d-flex">
+                                        <div>
+                                            <button type="button" id="Add_BenchMarkImages" class="btn btn-draft Add_BenchMarkImages">Add</button>
+                                        </div>
+                                        <div>
+                                            <a href="#" class="smaple_images cursor ViewData" id="ViewData1" title="Benchmark Samples Image"><i class="fas fa-images "></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Desired Indications</label>
+                                        @Html.TextBoxFor(model => model.DesiredIndication, new { @class = "form-control ", @id = "ProjectDetailsDesiredIndications" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Desired Dosage Form</label>
+                                        @Html.TextBoxFor(model => model.DesiredDosageForm, new { @class = "form-control ", @id = "ProjectDetailsDesiredDosageForm" })
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="sd" class="ship_to">
+                <div class="details_section">
+                    <h4>Additional Formulation Requirements</h4>
+                    <div class="form_section">
+                        <div>
+                            <div class="row">
+                                <div class="form-group">
+                                    @Html.TextAreaFor(model => model.AdditionalRequirments, new { @placeholder = "*Any addition, removal, change in ingredients in an existing formulation will require stability and clinical studies", @class = "form-control", @id = "AdditionalRequirementsTextBox", @spellcheck = "false" })
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Shelf life</label>
+                                        @Html.TextBoxFor(model => model.ShelfLife, new { @class = "form-control ", @id = "AdditionalRequirmentsShelfLife" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Free from</label>
+                                        @Html.TextBoxFor(model => model.FreeFrom, new { @class = "form-control ", @id = "AdditionalRequirmentsOthers" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Others</label>
+                                        @Html.TextBoxFor(model => model.OthersAdditional, new { @class = "form-control ", @id = "AdditionalRequirmentsFreeFrom" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="ship_to" id="ship_location">
+                    <div class="details_section">
+                        <h4>Business Information</h4>
+                        <span id="err-business_info" style="color:red;display:none" class="removeError">Please enter atleast one data for Business Information</span>
+                        <span class="Err-BIcombination removeError" style="color:red;display:none">Selected Product and SKU combination already exists</span>
+                        <div class="form_section">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Product <span class="color-red">*</span></label>
+                                            @Html.DropDownListFor(model => model.ProductBusinessInfo, new List<SelectListItem>(), "--Select--", new { @class = "form-control BusinessInformationManditoryField ProductOption", @id = "BusinessInformationProductName" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please select Product</span>
+                                            <span class="Error_BI_Product removeError" style="color:red;display:none"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">SKU <span class="color-red">*</span></label>
+                                            @Html.DropDownListFor(model => model.SkuBusinessInfo, new List<SelectListItem>(), "--Select--", new { @class = "form-control BusinessInformationManditoryField ProductOption", @id = "BusinessInformationSKU" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please select SKU</span>
+                                            <span class="Error_BI_Product removeError" style="color:red;display:none"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Proposed launch date <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.ProposedLaunchDate, new { @class = "form-control BusinessInformationManditoryField data-datepicker", @id = "BusinessInformationLaunchDate", @autocomplete = "off" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please select Proposed launch date</span>
+                                            <span class="DateError_ProposedLaunchDate'" style="color:red;display:none">Launch date cannot be lass than today's date'</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Proposed Selling Price <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.ProposedSellingPrice, new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationSellingPrice", @onkeypress = "return onlyNumbers(this);" })
+                                            <span class="Err-BusinessInformation" style="color:red;display:none">Please enter Proposed SP</span>
+                                            <span id="Err-Zero-SP" style="color:red;display:none" class="removeError">Please enter non zero number</span>
+                                            <span id="Err-NAN-SP" style="color:red;display:none" class="removeError">Please enter Proposed SP in digits</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Expected COP <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.ProposedTP, new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationProposedTP", @onkeypress = "return onlyNumbers(this);" })
+                                            <span class="Err-BusinessInformation" style="color:red;display:none">Please enter Expected COP</span>
+                                            <span id="Err-Zero-TP" style="color:red;display:none" class="removeError">Please enter non zero number</span>
+                                            <span id="Err-NAN-TP" style="color:red;display:none" class="removeError">Please enter Expected COP in digits</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Proposed MRP <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.ProposedMRP, new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationProposedMRP", @onkeypress = "return onlyNumbers(this);" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Proposed MRP</span>
+                                            <span id="Err-Zero-MRP" style="color:red;display:none" class="removeError">Please enter non zero number</span>
+                                            <span id="Err-NAN-MRP" style="color:red;display:none" class="removeError">Please enter MRP Quantity in digits</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Currency <span class="color-red">*</span></label>
+                                            @Html.DropDownListFor(model => model.Currency, Model.CurrencyList, "--Select--", new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationCurrency" })
+                                            <span id="ErrorInBusinessInfo_Currency" class="ToRemoveValue removeError" style="color:red" hidden>Please select currency</span>
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please select Currency</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Expected GP % <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.ExpectedGP, new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationExpectedGP", @onkeypress = "return onlyNumbers(this);" })
+                                            <span class="Err-BusinessInformation" style="color:red;display:none">Please enter Expected GP %</span>
+                                            <span id="Err-NAN-GP" style="color:red;display:none" class="removeError">Please enter Expected GP% Quantity in digits</span>
+                                            <span id="Error_Range_ExpectedGP" style="color:red;display:none" class="removeError">Please enter Expected GP% between 1 and 100</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">M1 Quantity <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.m1, new { @class = "form-control  BusinessInformationManditoryField", @id = "BusinessInformationM1", @oninput = "return onlyNumbersNotdecimals(this);" })
+                                            <span id="Err-NAN-M1" style="color:red;display:none" class="removeError">Please enter M1 Quantity in digits</span>
+                                            <span id="Err-Zero-M1" style="color:red;display:none" class="removeError">Please enter non zero number</span>
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M1 Quantity</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">M2 Quantity <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.m2, new { @class = "form-control  BusinessInformationManditoryField", @id = "BusinessInformationM2", @oninput = "return onlyNumbersNotdecimals(this);" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M2 Quantity</span>
+                                            <span id="Err-Zero-M2" style="color:red;display:none" class="removeError">Please enter non zero number</span>
+                                            <span id="Err-NAN-M2" style="color:red;display:none" class="removeError">Please enter M2 Quantity in digits</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">M3 Quantity <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.m3, new { @class = "form-control  BusinessInformationManditoryField", @id = "BusinessInformationM3", @oninput = "return onlyNumbersNotdecimals(this);" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M3 Quantity</span>
+                                            <span id="Err-Zero-M3" style="color:red;display:none" class="removeError">Please enter non zero number</span>
+                                            <span id="Err-NAN-M3" style="color:red;display:none" class="removeError">Please enter M3 Quantity in digits</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">M4 Quantity</label>
+                                            @Html.TextBoxFor(model => model.m4, new { @class = "form-control  ", @id = "BusinessInformationM4", @oninput = "return onlyNumbersNotdecimals(this);"})
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">M5 Quantity</label>
+                                            @Html.TextBoxFor(model => model.m5, new { @class = "form-control  ", @id = "BusinessInformationM5", @oninput = "return onlyNumbersNotdecimals(this);"})
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">M6 Quantity</label>
+                                            @Html.TextBoxFor(model => model.m6, new { @class = "form-control  ", @id = "BusinessInformationM6", @oninput = "return onlyNumbersNotdecimals(this);"})
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Y1 Quantity <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.y1, new { @class = "form-control  BusinessInformationManditoryField", @id = "BusinessInformationY1", @oninput = "return onlyNumbersNotdecimals(this);" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Y1 Quantity</span>
+                                            <span id="Err-Zero-Y1" style="color:red;display:none" class="removeError">Please enter non zero number</span>
+                                            <span id="Err-NAN-Y1" style="color:red;display:none" class="removeError">Please enter Y1 Quantity in digits </span>
+                                            <span id="Y1Less" style="color:red;display:none" class="removeError">Please enter Y1 Quantity greater than or equal to M1+M2+M3+M4+M5+M6 quantity </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Y2 Quantity <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.y2, new { @class = "form-control  BusinessInformationManditoryField", @id = "BusinessInformationY2", @oninput = "return onlyNumbersNotdecimals(this);" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Y2 Quantity</span>
+                                            <span id="Err-NAN-Y2" style="color:red;display:none" class="removeError">Please enter Y2 Quantity in digits</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Y3 Quantity <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.y3, new { @class = "form-control  BusinessInformationManditoryField", @id = "BusinessInformationY3", @oninput = "return onlyNumbersNotdecimals(this);" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Y3 Quantity</span>
+                                            <span id="Err-Zero-Y2" class="removeError" style="color:red;display:none">Enter non zero number </span>
+                                            <span id="Err-NAN-Y3" class="removeError" style="color:red;display:none">Enter Y3 Quantity in digits </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Business Value <span class="sku_note">(Y2 Quantity * Proposed Selling Price)</span></label>
+                                            @Html.TextBoxFor(model => model.BusinessValue, new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationBusinessValue", @readonly = "readonly" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <label class="mt-3">Revision in packaging format required</label>
+                                        <div class="">
+                                            <label class="radio-inline">
+                                                <input data-val="true"
+                                                       type="radio" name="survey" id="Radio1" value="Yes">
+                                                Yes &nbsp;
+                                            </label>
+                                            <label class="radio-inline">
+                                                <input type="radio" name="survey" id="Radio2" checked="checked" value="No">
+                                                No
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">UOM <span class="color-red">*</span></label>
+                                            @Html.TextBoxFor(model => model.Uom, new { @class = "form-control  BusinessInformationManditoryField", @id = "BusinessInformationUOM", @onkeypress = "return onlyAlphabets();" })
+                                            <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter UOM</span>
+                                            <span class="UomErr removeError" style="color:red;display:none">Please enter only alphabets for UOM</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 text-right">
+                                        <div class="form-group mb-2 mt-2">
+                                            <button type="button" id="BusinessInformationAdd" class="btn btn btn-draft">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add_grid_">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-2">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="business_info" class="table table-bordered"></table>
+                                                    <div id="pager_businessinfo"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="PackagingProfileDiv" class="ship_to" style="display:none">
+                <div class="details_section">
+                    <h4>Product Profile: Packaging Profile</h4>
+                    <div class="form_section">
+
+                        <span id="Err-PackagingProfile" style="color:red;display:none" class="removeError">Enter atleast one packaging profile data</span>
+                        <span id="Err-PackagingProfileBI" style="color:red;display:none" class="removeError">Enter packaging profile data before Business Information</span>
+                        <span class="Err-PPcombination removeError" style="color:red;display:none">Selected Product and SKU combination already exists</span>
+                        <span id="Error_PPR_Product_Sku" class="color-red Error_PackagingProfile"></span>
+                        <div class="product_title">
+                            <h6>Expected Packaging Material</h6>
+                        </div>
+                        <div id="PackagingProfile">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Product <span class="color-red">*</span></label>
+                                            @Html.DropDownListFor(model => model.ProductPackaging, new List<SelectListItem>(), "--Select--", new { @class = "form-control ManditoryFieldPackagingProfile PackagingProfile ProductOption", @id = "PackagingProfileProduct" })
+                                            <span class="Error_PP_Product removeError" style="color:red;display:none"></span>
+                                            <span class="Err-PackagingProfileProduct removeError" style="color:red;display:none">Please Select Product</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">SKU <span class="color-red">*</span></label>
+                                            <select class="form-control multiselectDropdown ddlmulti example-dropUp PackagingProfile" multiple="multiple" id="PackagingProfileSKU">
+                                            </select>
+                                            <span class="Err-PackagingProfileSKU removeError" style="color:red;display:none">Please select SKU</span>
+                                            <span class="Err-PPNoMoreSKU removeError" style="color:red;display:none">All the available SKU's are already added for the selected Product</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Mold</label>
+                                            @Html.DropDownListFor(model => model.Mould, Model.MoldList, "--Select--", new { @id = "PackagingProfileMould", @class = "form-control PackagingProfile Toremove" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Primary Packaging <span class="color-red">*</span></label>
+                                            @Html.TextAreaFor(model => model.PrimaryPackaging, new { @class = "form-control  PackagingProfile", @id = "PackagingProfilePrimaryPackaging" })
+                                            <span class="Err-PackagingProfilePrimaryPackaging removeError" style="color:red;display:none">Please Enter Primary Packaging</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Secondary Packaging</label>
+                                            @Html.TextAreaFor(model => model.SecondaryPackaging, new { @id = "PackagingProfileSecondaryPackaging", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group ">
+                                            <label class="control-label">Tertiary Packaging</label>
+                                            @Html.TextAreaFor(model => model.TertiaryPackaging, new { @id = "PackagingProfileTertiaryPackaging", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Benchmark Products</label>
+                                            @Html.TextAreaFor(model => model.BenchMarkProducts, new { @id = "PackagingProfileBenchMarkProduct", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Desired Packaging Characteristics</label>
+                                            @Html.TextAreaFor(model => model.DesiredPackagingCharacters, new { @id = "PackagingProfileDesiredPackagingCharacters", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Others (If any)</label>
+                                            @Html.TextAreaFor(model => model.Others, new { @id = "PackagingProfileOthers", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
+                                            <label class="control-label">Image Upload</label>
+                                            <input type="file" name="files" class="form-control PackagingProfile" onchange="validateFileUpload()" id="image_upload" accept="image/gif, image/jpeg, image/png" multiple>
+                                            <div>
+                                                <span id="Display_PackageImagesUpload" class=" DisplayImage_Pack"></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-0 mt-4">
+                                            <button type="button" id="PackagingProfileAdd" class="btn btn-draft">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add_grid_" style="display:none">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="">
+                                                <div class="m-table__main mt-2 mb-4">
+                                                    <div class="m-table__responsive -virtual-scroll">
+                                                        <table id="expected" class="table table-bordered"></table>
+                                                        <div id="pager_expected"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="PackagingProfileGrid" style="display:none">
+                            <div class="tb_clr marbt">
+                                <div class="formulation_table" id="Packaging_Profile_Table"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="ship_to" id="ship_address">
+                    <div class="details_section">
+                        <h4>Sustainability</h4>
+                        <span style="color:red;display:none" id="Error_Sustainability" class="Error_EmptyGrid">Please enter atleast one data for Sustainability</span>
+                        <div class="form_section">
+
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Product <span class="color-red">*</span></label>
+                                            @Html.DropDownListFor(model => model.SustainabilityProduct, new List<SelectListItem>(), "--Select--", new { @class = "form-control Sustainability", @id = "SUS_Product" })
+                                            <span style="color:red; display:none" id="Error_SUS_Product" class="Error_Sustainability"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label"> What sustainability goals are targeted? <span class="color-red">*</span></label>
+                                            @Html.TextAreaFor(model => model.TargetedGoals, new { @class = "form-control Sustainability", @id = "SUS_TargetedGoals" })
+                                            <span style="color:red; display:none" id="Error_SUS_TargetedGoals" class="Error_Sustainability">Please enter what sustainability goals are targeted? </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Reusable</label>
+                                            @Html.TextBoxFor(model => model.Reusable, new { @class = "form-control Sustainability", @id = "SUS_Reusable" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Recycle</label>
+                                            @Html.TextBoxFor(model => model.Recycle, new { @class = "form-control Sustainability", @id = "SUS_Recycle" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Reducing</label>
+                                            @Html.TextBoxFor(model => model.Reducing, new { @class = "form-control Sustainability", @id = "SUS_Reducing" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Recovering</label>
+                                            @Html.TextBoxFor(model => model.Recovering, new { @class = "form-control Sustainability", @id = "SUS_Recovering" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group  mt-4 mb-0">
+                                            <button type="button" id="Add_Sustainability" class="btn btn-draft">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <span id="Error_SUS_Product_Sku" class="color-red Error_Sustainability"></span>
+                            <div class="add_grid_">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-2 mb-4">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Table_Sustainability" class="table table-bordered"></table>
+                                                    <div id="pager_Table_Sustainability"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <div class="ship_to" id="sd11">
+                    <div class="details_section">
+                        <h4>Supporting Documents</h4>
+                        <div class="form_section">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">Supporting Documents</label>
+                                            <input type="file" class="form-control file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv" id="Supportingdocuments" name="AttachSpecFile" onchange="return fileValidation()" />
+                                            <span id="Err_SupportingDocuments" style="color:red;display:none">The file must be of type: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv</span>
+                                            <span id="ErrorMsg_Document" style="color:red;display:none">Please select supporting document</span>
+                                            <span id="GetDocName"></span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group mt-4 mb-0">
+                                            <button type="button" id="Add_SupportingDocuments" class="btn btn-draft Add_SupportingDocuments">Add</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="add_grid_">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-3 mb-3">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                                    <div id="pager_Grid_Supporting_Document"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Initiator Remarks</label>
+                                        @Html.TextAreaFor(model => model.InitiatorRemarks, new { @id = "editor", @name = "editor2", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="button_top float-right floating_buttons ">
+            @if (Model.IsEdit)
+            {
+                if (Model.Role != "PMD Team")
+                {
+                    <button type="button" class="btn btn-draft" id="saveReformulation" onclick="ValidateSaveForm()" data-title="Save"> Save as Draft</button>
+                    <button type="button" class="btn btn-approval" id="ReformulationSubmitToManager" onclick="validatesubmitformToManager()" data-title="Submit">Send for Approval</button>
+                    <button type="button" class="btn btn-hgml" id="ReformulationSubmit" onclick="validatesubmitform()" data-title="Submit">Send to HGML</button>
+                }
+            }
+            <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn btn-cancel" data-title="Cancel"> Back</button>
+        </div>
+
+    </section>
+}
+
+@*preview of form popup*@
+<div id="Preview_Modal_Popup" class="modal fade layout_popup preview" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Preview
+                </h4>
+                <button type="button" class="close previewPopup"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="details_section">
+                    <div class="form_section">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <tr>
+                                    <th class="tablewidth">Division</th>
+                                    <td class="PreviewDivision"></td>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Category</th>
+                                    <td class="PreviewCategory"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section">
+                    <h4>
+                        Project Name
+                    </h4>
+                    <div class="form_section">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <tr>
+                                    <th class="tablewidth">Project Name</th>
+                                    <td class="PreviewProjectName"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section">
+                    <h4>
+                        Product Description
+                    </h4>
+                    <div class="form_section">
+                        <div class="add_grid_">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="m-table__main mt-2 mb-4">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="preview_prd_desc" class="table table-bordered"></table>
+                                                <div id="preview_pager_moulds"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section">
+                    <h4>
+                        Project Details
+                    </h4>
+                    <div class="form_section">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <tr>
+                                    <th class="tablewidth">Business Rational (Reason for Proposed change)</th>
+                                    <td class="PreviewBusinessRational"></td>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Benchmark samples – Formulation</th>
+                                    <td class="PreviewBenchmarksamples"></td>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Benchmark Products Image</th>
+                                    <td class="PreviewBenchmarkProductsImage">
+                                        <div class="add_grid_">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="">
+                                                        <div class="m-table__main mt-2">
+                                                            <div class="m-table__responsive -virtual-scroll">
+                                                                <table id="Preview_Grid_BenchMarkImage" class="table table-bordered"></table>
+                                                                <div id="Preview_pager_Grid_BenchMarkImage"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Desired Indications</th>
+                                    <td class="PreviewDesiredIndications"></td>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Desired Dosage Form</th>
+                                    <td class="PreviewDesiredDosageForm"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section">
+                    <h4>
+                        Additional Formulation Requirements
+                    </h4>
+                    <div class="form_section">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <tr>
+                                    <div>
+                                        <textarea class="Previewtextbox form-control bg-white mb-1" readonly 
+                                        placeholder="Any addition, removal, change in ingredients in an existing formulation will require stability and clinical studies"></textarea>
+                                    </div>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Shelf life</th>
+                                    <td class="PreviewShelflife"></td>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Free from</th>
+                                    <td class="PreviewFreefrom"></td>
+                                </tr>
+                                <tr>
+                                    <th class="tablewidth">Others</th>
+                                    <td class="PreviewOthers"></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section">
+                    <h4>
+                        Business Information
+                    </h4>
+                    <div class="form_section">
+                        <div class="add_grid_">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="m-table__main mt-2">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="preview_business_info" class="table table-bordered"></table>
+                                                <div id="preview_pager_businessinfo"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section" style="display:none" id="Preview_PackagingProfile">
+                    <h4>
+                        Product Profile: Packaging Profile
+                    </h4>
+
+                    <div class="form_section">
+                        <div class="tb_clr marbt">
+                            <div id="Packaging_Profile_Preview" class="formulation_table">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section">
+                    <h4>
+                        Sustainability
+                    </h4>
+                    <div class="form_section">
+                        <div class="add_grid_">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="m-table__main mt-2 mb-4">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="preview_Table_Sustainability" class="table table-bordered"></table>
+                                                <div id="preview_pager_Table_Sustainability"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="details_section">
+                    <h4>
+                        Supporting Documents
+                    </h4>
+                    <div class="form_section">
+                        <div class="add_grid_">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="m-table__main mt-3 mb-3">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="preview_Grid_Supporting_Document" class="table table-bordered"></table>
+                                                <div id="preview_pager_Grid_Supporting_Document"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel previewPopup">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*save button*@
+<div class="modal fade layout_popup" id="SaveModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="confirmpopupmesssage">Are you sure you want save the details?</span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SaveReformulation">OK</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Submit button*@
+<div class="modal fade sv hd SubmitReformulation" id="SubmitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Submit Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want submit the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ConformReformulation">Ok</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*For Manager approval*@
+<div class="modal fade sv hd SubmitReformulation" id="SubmitModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Submit Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want submit the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ConformReformulation_Manager">Ok</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*cancel button*@
+<div class="modal fade sv hd" id="CancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Confirm Dialog</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to go back?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = '@Url.Content("~/ProjectBrief/ProjectBrief")';">OK</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*jqgrid delete row popup*@
+<div class="modal fade sv hd" id="jqGridRow_DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Delete Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="jqGridRow_DeleteModal_Ok" class="btn btn-cancel" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Packaging images popup*@
+<div class="modal fade hd" id="Images_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Packaging Images</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="uploaded_images_table" class="table table-bordered"></table>
+                                        <div id="pager_uploaded_images_table"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*document popup*@
+<div class="modal fade hd" id="Document_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Benchmark Samples Image</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_BenchMarkImage" class="table table-bordered"></table>
+                                        <div id="pager_Grid_BenchMarkImage"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        $(window).scroll(function () {
+            if ($(document).scrollTop() >= 50) {
+                $("body").addClass("test");
+            } else {
+                $("body").removeClass("test");
+            }
+        });
+    });
+
+    var prevSectionId = "";
+    function moveToTop(sectionId, additionalClass) {
+        var section = document.getElementById(sectionId);
+        if (section) {
+            var allLinks = document.querySelectorAll('.link_href a');
+            allLinks.forEach(function (link) {
+                link.classList.remove('active');
+            });
+
+            if (prevSectionId !== "") {
+                var prevSection = document.getElementById(prevSectionId);
+                if (prevSection) {
+                    prevSection.classList.remove(additionalClass);
+                }
+            }
+
+            var clickedLink = document.querySelector('.link_href a[href="#' + sectionId + '"]');
+            if (clickedLink) {
+                clickedLink.classList.add('active');
+            }
+
+            section.classList.add(additionalClass);
+
+            var sectionTop = section.getBoundingClientRect().top + window.scrollY;
+            window.scrollTo({ top: sectionTop, behavior: 'smooth' });
+
+            prevSectionId = sectionId;
+        }
+    }
+    function updateLabel(selectElement) {
+        var label = selectElement.nextElementSibling;
+
+        if (selectElement.value !== "") {
+            label.style.top = "10px";
+            label.style.fontSize = "12px";
+
+            label.style.color = "#555";
+        }
+        else {
+            label.style.top = "50%";
+            label.style.fontSize = "16px";
+            label.style.color = "";
+        }
+    }
+
+    function highlightSection(sectionId) {
+        document.querySelectorAll('.link_href li a').forEach(function (elem) {
+            elem.classList.remove('active');
+        });
+        document.querySelector('.link_href li a[href="#' + sectionId + '"]').classList.add('active');
+    }
+
+    document.querySelectorAll('.ship_to').forEach(function (section) {
+        var observer = new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                if (mutation.attributeName === 'class') {
+                    var sectionId = section.id;
+                    if (section.classList.contains('highlight_section')) {
+                        highlightSection(sectionId);
+                    }
+                }
+            });
+        });
+        observer.observe(section, { attributes: true });
+    });
+
+    $('.body-content').scroll(function () {
+        var sticky = $('.body-content'),
+            scroll = $('.body-content').scrollTop();
+        if (scroll >= 130) sticky.addClass('fixed');
+        else sticky.removeClass('fixed');
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var sections = document.querySelectorAll('.ship_to');
+
+        var observer = new IntersectionObserver(function (entries, observer) {
+            entries.forEach(function (entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('highlight_section');
+                } else {
+                    entry.target.classList.remove('highlight_section');
+                }
+            });
+        }, { threshold: 0.5 });
+
+        sections.forEach(function (section) {
+            observer.observe(section);
+        });
+    });
+</script>
+<script src="~/js/ProjectBrief/NewReformulation.js"></script>
+<script src="~/js/ProjectBrief/NewReformulationAutoSave.js"></script>

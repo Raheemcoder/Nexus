@@ -1,0 +1,78 @@
+﻿@model Ideation.Models.MyMilestone
+@{
+    ViewBag.Title = "ApproveMilestone";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+
+    var selectedStatus = Context.Session.GetString("SelectedStatus"); ;
+}
+
+<style>
+    .displayalert div#message_alert {
+        width: 100% !important;
+    }
+</style>
+
+<div class="card-box">
+
+    <input type="hidden" value="@selectedStatus" id="selectedStatus" />
+
+    @*page heading*@
+    <div class="row">
+        <div class="page-title">
+            <h4 class="-mb-3">My Milestones</h4>
+        </div>
+    </div>
+
+    @*page alert and search filter*@
+    <div class="mb-4 milestone_tracker displayalert d-flex justify-content-between align-items-center">
+        <div class="m-form -filter-form mb-0" style="width:40%">
+            <div class="m-form__container">
+                <div class="m-form__List">
+                    <div class="">
+
+                        <div class="">
+                            <div id="message" class="m-login__erromsg">
+                                @if (TempData["Message"] != null)
+                                {
+                                    <div class="alert @Convert.ToString(TempData["MessageClass"]) alert-dismissible" role="alert" id="message_alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                                        </button>
+                                        @Convert.ToString(TempData["Message"])
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center">
+            <div class="">
+                <select class="form-control form-select" data-singleselect id="StatuList">
+                </select>
+            </div>
+            <div class="col-auto">
+                @*<button type="button" id="SreachStatus" class="btn-add mt-2 submit_btn">Sreach</button>*@
+                <button type="button" class="btn btn_search" id="searchstatus"><i class="fas fa-search"></i></button>
+            </div>
+        </div>
+    </div>
+
+    @*page jqgrid*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-table__main">
+                <div class="m-table__responsive -virtual-scroll">
+                    <table id="jqgrid" class="table table-bordered"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="@Url.Content("~/js/MyMilestone/MyMilestoneMaster.js")" asp-append-version="true"></script>
+@*<script src="~/js/MyMilestone/ApproveUserRequest.js"></script>*@

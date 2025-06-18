@@ -1,0 +1,227 @@
+﻿@model Ideation.Models.RID
+@{
+    ViewData["Title"] = "Add Ingredients";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var division = @Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.DivisionName;
+}
+
+<head>
+    <style>
+        .demo-content {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .heading {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .m-table__main .table .jqgfirstrow td {
+            padding: 0px !important;
+        }
+
+        .jqgfirstrow {
+            display: contents;
+        }
+    </style>
+</head>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home / </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division / </a>
+                </span>
+                <label id="title" class="heading"></label>
+            </h4>
+        </div>
+    </div>
+</section>
+
+@*Hidden Fields*@
+@Html.HiddenFor(m => m.Division_Id)
+@Html.HiddenFor(m => m.IngredientReqId)
+@Html.HiddenFor(m => m.FunctionsId_selected)
+@Html.HiddenFor(m => m.IngredientId)
+@Html.HiddenFor(m => m.Source)
+@Html.HiddenFor(m => m.IngredientListData)
+@Html.HiddenFor(m => m.IngredientFileData)
+@Html.HiddenFor(m => m.IngredientNameList)
+@Html.HiddenFor(m => m.IsConfirmed)
+
+@*To show response message*@
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+</section>
+
+<section class="animate__animated1 slideInUp">
+    <div class="view_project">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="control-label">Ingredient Name <span class="text-danger">*</span></label>
+                    @Html.TextBoxFor(m => m.IngredientName, new { @class = "form-control alphanumeric textvalid  noSpacesField readonly", @autocomplete = "off" })
+                    <span id="IngredientName_valid" class="text-danger _hide">Please enter Ingredient Name</span>
+                    <span id="IngredientName_exists" class="text-danger _hide">Ingredient Name Already Exists</span>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="control-label">Synonyms</label>
+                    @Html.TextBoxFor(m => m.Synonyms, new { @class = "form-control alphanumeric noSpacesField", @autocomplete = "off" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="control-label">CAS number</label>
+                    @Html.TextBoxFor(m => m.CASNumber, new { @class = "form-control noSpacesField", @autocomplete = "off" })
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group">
+                    <label class="control-label">Functions <span class="text-danger">*</span></label>
+                    @Html.ListBoxFor(m => m.FunctionId_arr, new SelectList(Model.FunctionDetails, "Value", "Text", ""), new { @class = "form-control textvalid", @data_multiselect = "", @multiple = "multiple" })
+                    <span id="FunctionId_arr_valid" class="text-danger _hide ">Please select Functions </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+
+    <div class="d-flex justify-content-end align-items-center">
+        <div class="d-flex excel_expand align-items-center">
+            <div>
+                <div class="expand_initiate table_expand">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height add_ingradient">
+                        <div class="m-table__responsive -virtual-scroll">
+                            @Html.HiddenFor(m => m.DivisionBasedIngredientListJson)
+                            <table id="list" class="table table-bordered"></table>
+                            <div id="list_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="button_top float-right mt-2">
+        @if (Model.IsConfirmed == 0)
+        {
+            <button type="button" class="btn btn-draft" id="save_draftbtn">Save As Draft</button>
+        }
+        <button type="button" class="btn btn-draft" id="savebtn">Save &amp; Confirm</button>
+        <button type="button" class="btn btn-cancel" id="cancelbtn" data-dismiss="modal">Cancel</button>
+    </div>
+
+</section>
+
+<div id="Remarks_modal" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remarks <sup class="color-red hide" id="remarks-mandatory">*</sup></h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl d-flex flex-column">
+                            <span class="mb-2">Are you sure, you want to submit and send for approval</span>
+                            <textarea id="Remarks_text" class="remarksfiled noSpacesField mb-2 p-2 form-control" rows="5"></textarea>
+                            <span id="Err_Remarks_text" style="display:none;color:red;">Please enter remarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-draft" id="SendtoApproveRevert">Save</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="IngredientModal1" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    View Files
+                </h4>
+                <button type="button" class="close" id="closebtn" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="viewlist" class="table table-bordered"></table>
+                                    <div id="pager_expected2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmpopup1" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Box</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span>Are you sure you want to delete</span>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" id="ConfirmDeletebutton" data-bs-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="~/assets/css/jquery.paginate.css" rel="stylesheet" />
+<script src="~/assets/js/jquery.paginate.js"></script>
+
+<script>
+    console.log(1);
+</script>
+
+<script src="@Url.Content("~/js/NewRID/AddIngredient.js")"></script>
+@*<script src="@Url.Content("~/js/NewRID/AddIngredient.min.js")" asp-append-version="true"></script>*@

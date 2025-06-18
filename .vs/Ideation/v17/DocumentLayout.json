@@ -1,0 +1,281 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\Project-Nexus\\Project-Nexus\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\bundleconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\bundleconfig.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\wwwroot\\js\\newrid\\addingredient.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\wwwroot\\js\\newrid\\addingredient.js||{14D17961-FE51-464D-9111-C4AF11D7D99A}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\views\\login\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\views\\login\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\views\\landing\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\views\\landing\\index.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\views\\shared\\ideation_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\views\\shared\\ideation_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\views\\newinnovation\\yourinnovation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\views\\newinnovation\\yourinnovation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\controllers\\newinnovationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\controllers\\newinnovationcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\controllers\\landingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\controllers\\landingcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\views\\projecttracker\\summary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\views\\projecttracker\\summary.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\controllers\\projecttrackercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\controllers\\projecttrackercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\wwwroot\\n_assets\\css\\login_n.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\wwwroot\\n_assets\\css\\login_n.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\views\\innovation\\yourinnovation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\views\\innovation\\yourinnovation.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\wwwroot\\css\\dashboard.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\wwwroot\\css\\dashboard.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\wwwroot\\css\\style.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\wwwroot\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\wwwroot\\css\\main.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|d:\\project-nexus\\project-nexus\\ideation\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{3FBF17B4-3D07-43DE-87D1-962D8528F7D1}|Ideation\\Ideation.csproj|solutionrelative:ideation\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{1c4feeaa-4718-4aa9-859d-94ce25d182ba}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AddIngredient.js",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\js\\NewRID\\AddIngredient.js",
+              "RelativeDocumentMoniker": "Ideation\\wwwroot\\js\\NewRID\\AddIngredient.js",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\js\\NewRID\\AddIngredient.js",
+              "RelativeToolTip": "Ideation\\wwwroot\\js\\NewRID\\AddIngredient.js",
+              "ViewState": "AgIAAGwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001646|",
+              "WhenOpened": "2025-06-18T09:37:23.309Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "bundleconfig.json",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\bundleconfig.json",
+              "RelativeDocumentMoniker": "Ideation\\bundleconfig.json",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\bundleconfig.json",
+              "RelativeToolTip": "Ideation\\bundleconfig.json",
+              "ViewState": "AgIAAD4BAAAAAAAAAAAuwFMBAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-06-18T08:41:31.332Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Index.cshtml",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Landing\\Index.cshtml",
+              "RelativeDocumentMoniker": "Ideation\\Views\\Landing\\Index.cshtml",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Landing\\Index.cshtml",
+              "RelativeToolTip": "Ideation\\Views\\Landing\\Index.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABoAAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-17T11:51:49.585Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Login\\Login.cshtml",
+              "RelativeDocumentMoniker": "Ideation\\Views\\Login\\Login.cshtml",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Login\\Login.cshtml",
+              "RelativeToolTip": "Ideation\\Views\\Login\\Login.cshtml",
+              "ViewState": "AgIAAJsAAAAAAAAAAAAAALEAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-17T11:38:27.997Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "YourInnovation.cshtml",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\NewInnovation\\YourInnovation.cshtml",
+              "RelativeDocumentMoniker": "Ideation\\Views\\NewInnovation\\YourInnovation.cshtml",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\NewInnovation\\YourInnovation.cshtml",
+              "RelativeToolTip": "Ideation\\Views\\NewInnovation\\YourInnovation.cshtml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAN4BAAANAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-18T04:27:51.301Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "LandingController.cs",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\LandingController.cs",
+              "RelativeDocumentMoniker": "Ideation\\Controllers\\LandingController.cs",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\LandingController.cs",
+              "RelativeToolTip": "Ideation\\Controllers\\LandingController.cs",
+              "ViewState": "AgIAACwAAAAAAAAAAAAQwD4AAAAUAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T11:51:31.632Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Ideation_layout.cshtml",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Shared\\Ideation_layout.cshtml",
+              "RelativeDocumentMoniker": "Ideation\\Views\\Shared\\Ideation_layout.cshtml",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Shared\\Ideation_layout.cshtml",
+              "RelativeToolTip": "Ideation\\Views\\Shared\\Ideation_layout.cshtml",
+              "ViewState": "AgIAABUAAAAAAAAAAAAAAB4AAAAMAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-18T06:21:06.518Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "NewInnovationController.cs",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\NewInnovationController.cs",
+              "RelativeDocumentMoniker": "Ideation\\Controllers\\NewInnovationController.cs",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\NewInnovationController.cs",
+              "RelativeToolTip": "Ideation\\Controllers\\NewInnovationController.cs",
+              "ViewState": "AgIAAHUAAAAAAAAAAAAAADUAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-18T04:24:50.105Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ProjectTrackerController.cs",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\ProjectTrackerController.cs",
+              "RelativeDocumentMoniker": "Ideation\\Controllers\\ProjectTrackerController.cs",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\ProjectTrackerController.cs",
+              "RelativeToolTip": "Ideation\\Controllers\\ProjectTrackerController.cs",
+              "ViewState": "AgIAADQAAAAAAAAAAAAQwEAAAAAVAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-18T07:14:25.281Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Summary.cshtml",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\ProjectTracker\\Summary.cshtml",
+              "RelativeDocumentMoniker": "Ideation\\Views\\ProjectTracker\\Summary.cshtml",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\ProjectTracker\\Summary.cshtml",
+              "RelativeToolTip": "Ideation\\Views\\ProjectTracker\\Summary.cshtml",
+              "ViewState": "AgIAACgBAAAAAAAAAAAAAC0BAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-18T07:14:39.477Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "YourInnovation.cshtml",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Innovation\\YourInnovation.cshtml",
+              "RelativeDocumentMoniker": "Ideation\\Views\\Innovation\\YourInnovation.cshtml",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Views\\Innovation\\YourInnovation.cshtml",
+              "RelativeToolTip": "Ideation\\Views\\Innovation\\YourInnovation.cshtml",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAAAHsAAAAeAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2025-06-18T06:29:06.695Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "login_N.css",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\N_assets\\css\\login_N.css",
+              "RelativeDocumentMoniker": "Ideation\\wwwroot\\N_assets\\css\\login_N.css",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\N_assets\\css\\login_N.css",
+              "RelativeToolTip": "Ideation\\wwwroot\\N_assets\\css\\login_N.css",
+              "ViewState": "AgIAANgBAAAAAAAAAAAewOQBAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-06-17T11:59:54.043Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "main.css",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\css\\main.css",
+              "RelativeDocumentMoniker": "Ideation\\wwwroot\\css\\main.css",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\css\\main.css",
+              "RelativeToolTip": "Ideation\\wwwroot\\css\\main.css",
+              "ViewState": "AgIAAOEAAAAAAAAAAAAMwPYAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-06-17T11:58:35.36Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "Style.css",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\css\\Style.css",
+              "RelativeDocumentMoniker": "Ideation\\wwwroot\\css\\Style.css",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\css\\Style.css",
+              "RelativeToolTip": "Ideation\\wwwroot\\css\\Style.css",
+              "ViewState": "AgIAAGoAAAAAAAAAAAAMwH8AAAAHAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-06-17T11:58:52.598Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Dashboard.css",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\css\\Dashboard.css",
+              "RelativeDocumentMoniker": "Ideation\\wwwroot\\css\\Dashboard.css",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\wwwroot\\css\\Dashboard.css",
+              "RelativeToolTip": "Ideation\\wwwroot\\css\\Dashboard.css",
+              "ViewState": "AgIAAMMAAAAAAAAAAAAAANwAAAAbAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2025-06-17T11:59:19.966Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Ideation\\Controllers\\AccountController.cs",
+              "ToolTip": "D:\\Project-Nexus\\Project-Nexus\\Ideation\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Ideation\\Controllers\\AccountController.cs",
+              "ViewState": "AgIAABwAAAAAAAAAAAAQwCkAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-17T10:41:43.951Z"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

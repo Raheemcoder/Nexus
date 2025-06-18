@@ -1,0 +1,2119 @@
+﻿@{
+    ViewBag.Title = "PendingWithCFT";
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+}
+<script src="~/ckeditor/ckeditor.js"></script>
+<div class="card-box mb-0">
+
+    <div class="tb_clr marbt">
+        <h3 class="cen_txt">Pending With CFT</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr class="mod_th">
+                    <th scope="col">Project Type</th>
+                    <th scope="col">Hub</th>
+                    <th scope="col">Division</th>
+                    <th scope="col">Initiated By</th>
+                    <th scope="col">Initiated Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">Version</th>
+                    <th scope="col">Remarks</th>
+                    <th scope="col">Download</th>
+
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+
+                    <td class="rd">New PRD</td>
+                    <td>India</td>
+                    <td>Consumer Care</td>
+                    <td>Kiran Kumar [R&D]</td>
+                    <td>12 April 2022</td>
+                    <td><button class="btn btn-warning">Pending With CFT</button></td>
+                    <td>V 1</td>
+                    <td class="rd1"><a href="@Url.Content("#")" data-bs-toggle="modal" data-bs-target="#exampleModal">View Remarks</a></td>
+                    <td><a href="@Url.Content("~/images/Charcoal Range_Project brief.pdf")" download="Project Brief"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+
+                </tr>
+
+
+            </tbody>
+        </table>
+        <form class="bck_prd">
+            <h6 class="pro_det">Project Details</h6>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Project Name <span class="color-red">*</span></label>
+                <div class="col-sm-10 pd">
+                    <input type="text" class="form-control form-control-sm" value="Project Name 1">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <lable class="col-sm-2 col-form-label">Business Objective <span class="color-red">*</span></lable>
+                <div class="ckediter_tolbar col-sm-10">
+                    <textarea id="editor" name="editor2" cols="30" data-sample-short class="form-control">Establish Himalaya’s presence 
+Rs 2 shampoo Sachet segment (opportunity size INR 832 Cr Urban India market)</textarea>
+                </div>
+            </div>
+            <h6 class="pro_det">Product Positioning</h6>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Target Consumer <span class="color-red">*</span></label>
+                <div class="col-sm-10 pd">
+                    <input type="text" class="form-control form-control-sm" value="Sachet format users
+is the primary driver for sachet usage">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <lable class="col-sm-2 col-form-label">Competitive Offerings</lable>
+                <div class="col-sm-10">
+
+                    @*  <p class="pr_ed">
+                    Top key hair care brands have a sizable Sachet contribution. This allows brands to expand its reach and access
+                    to larger part of population. Following are the key brands which we should benchmark in view of
+                    achieving our ambitio
+                    </p>
+                    <p>
+                    <span> <img src="@Url.Content("~/images/shampoo.png")" class="ig_cg"> </span>
+                    </p>*@
+
+                    <textarea id="editorcfr" name="editor3" cols="30" data-sample-short class="form-control">
+                    <p class="pr_ed">
+                        Top key hair care brands have a sizable Sachet contribution. This allows brands to expand its reach and access
+                        to larger part of population. Following are the key brands which we should benchmark in view of
+                        achieving our ambitio
+                    </p>
+                    <p>
+                    <span> <img src="@Url.Content("~/images/shampoo.png")" class="ig_cg"> </span>
+                    </p>
+                     </textarea>
+                </div>
+            </div>
+            <div class="row mb-2">
+                <lable class="col-sm-2 col-form-label">Unmet Need</lable>
+                <div class="col-sm-10">
+
+
+
+                    <textarea id="editorcfr1" name="editor3" cols="30" data-sample-short class="form-control">
+                    <p>
+                    <span> <img src="@Url.Content("~/images/circle.png")" class="ig_cg"> </span>
+                    </p>
+
+                    <p class="pr_ed">
+                        94% HHs in India uses shampoo sachet format in India.
+                        Over years, Himalaya have managed to emerge as the biggest herbal brand in bottle segment.
+                        However, the presence in sachet segment remains insignificant.
+                        Presence in Rs 2 Sachet will help Himalaya to create relevance and expand reach.
+                    </p>
+                     </textarea>
+                </div>
+            </div>
+            <div class="col-md-12">
+            <div class="row">
+               <div class="col-md-4">
+                  <div class="form-group">
+                     <lable class="col-form-label" style="position:relative; top:4px;">Product <span class="color-red">*</span></lable>
+                     <div class="col-sm-12 mt-3">
+                        <input type="text" class="form-control first_profile" style="border-color:#d1d1d1">
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="form-group">
+                     <label class="col-form-label">Expected Features <span class="color-red">*</span></label>
+                     <div class="ckediter_tolbar feature_benefits ">
+                        <textarea id="editor4_features" name="editor4" cols="30" data-sample-short class="form-control ">
+                            <span id=""></span>
+                        </textarea>
+                        <textarea class="form-control" id="expected_profile"></textarea>
+                     </div>
+                  </div>
+               </div>
+               <div class="col-md-4">
+                  <div class="form-group">
+                     <label class="col-form-label">Expected Benefits <span class="color-red">*</span></label>
+                     <div class="ckediter_tolbar feature_benefits">
+                        <textarea id="editor4_benefits" name="editor4" cols="30" data-sample-short class="form-control ">
+                        </textarea>
+                        <textarea class="form-control" id="benefits_profile"></textarea>
+                     </div>
+                  </div>
+               </div>
+              @* <div class="col-md-1 pl-0">
+                  <button type="button" class="btn-add margin_top115"> Add</button>
+               </div>*@
+            </div>
+            <div class="add_grid_">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="">
+                        <div class="m-table__main mt-2 mb-4">
+                           <div class="m-table__responsive -virtual-scroll">
+                              <table id="worksheet" class="table table-bordered"></table>
+                              <div id="pager_worksheet"></div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+
+            <h6 class="pro_det">Product Profile: Formulation Profile</h6>
+
+            
+<div class="row product_profile">
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Product <span class="color-red">*</span></label>
+                     <input type="text" class="form-control" id="first_profile" />
+                    </div>
+                </div>
+                @*<div class="col-md-3">
+                    <div class="form-group">
+                    <label>SKU</label>
+                    <input type="text" class="form-control" value="SKU01" />
+                    </div>
+                </div>*@
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Desired Ingredients</label>
+                    <textarea name="editor1" cols="30" class="ttt form-control" id="ingredients_profile"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Indication/Conditions</label>
+                        <textarea name="editor1" cols="30" class="ttt form-control" id="indication_profile"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Must have claim <span class="color-red">*</span></label>
+                        <textarea name="editor1" cols="30" class="ttt form-control" id="claim_profile"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Nice to have claims  <span class="color-red">*</span></label>
+                        <textarea name="editor1" cols="30" class="ttt form-control" id="nice_profile"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Dosage Form</label>
+                        <textarea name="editor1" cols="30" class="ttt form-control" id="combo_profile"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Benchmark Products</label>
+                        <textarea name="editor1" cols="30" class="ttt form-control" id="benchmark_profile"></textarea>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Desired Product Characteristics</label>
+                        <textarea name="editor1" cols="30" class="ttt form-control" id="characteristics_profile"></textarea>
+                    </div>
+                </div>
+               @* <div class="col-md-12">
+               <div class="float-right text-right">
+                  <button type="button" class="btn-add">Add</button>
+               </div>
+            </div>*@
+            <div class="add_grid_">
+            <div class="row">
+               <div class="col-md-12">
+                  <div class="">
+                     <div class="m-table__main mt-2 mb-4">
+                        <div class="m-table__responsive -virtual-scroll">
+                           <table id="product_profile" class="table table-bordered"></table>
+                           <div id="pager_product"></div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+            </div>
+
+
+            <h6 class="pro_det">Product Profile: Packaging Profile</h6>
+
+            
+
+             <div class="col-md-12">
+            <div class="product_packag product_profile">
+               <div class="product_title">
+                  <h6>Benchmark samples</h6>
+               </div>
+               <div class="col-md-12">
+                  <div class="row">
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Product <span class="color-red">*</span></label>
+                           <input type="text" class="form-control" id="product22" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">SKU <span class="color-red">*</span></label>
+                           <input type="text" class="form-control" id="sku22" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Primary Packaging</label>
+                           <input type="text" class="form-control" id="sku23" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Secondary Packaging</label>
+                           <input type="text" class="form-control" id="desired21" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Tertiary Packaging</label>
+                           <input type="text" class="form-control" id="Desired211" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Others (If any)</label>
+                           <input type="text" class="form-control" id="Others3" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Images Upload</label>
+                           <input type="file" class="form-control" id="image_upload" />
+                        </div>
+                     </div>
+                     @*<div class="col-md-3">
+                        <div class="float-left text-left mt-3 pt-3">
+                           <button type="button" class="btn-add">Add</button>
+                        </div>
+                     </div>*@
+                  </div>
+               </div>
+               <div class="add_grid_">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="">
+                           <div class="m-table__main mt-2 mb-4">
+                              <div class="m-table__responsive -virtual-scroll">
+                                 <table id="benchmark" class="table table-bordered"></table>
+                                 <div id="pager_benchmark"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-12">
+            <div class="product_packag product_profile">
+               <div class="product_title">
+                  <h6>Expected Packaging Material</h6>
+               </div>
+               <div class="col-md-12">
+                  <div class="row">
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Product <span class="color-red">*</span></label>
+                           <input type="text" class="form-control" id="product2"/>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">SKU <span class="color-red">*</span></label>
+                           <input type="text" class="form-control" id="sku2" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Benchmark Products</label>
+                           <input type="text" class="form-control" id="sku123" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Desired Product Characteristics</label>
+                           <input type="text" class="form-control" id="desired11"/>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Desired Product Characteristics</label>
+                           <input type="text" class="form-control" id="Desired12" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Others (If any)</label>
+                           <input type="text" class="form-control"  id="Others1"/>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Images Upload</label>
+                           <input type="file" class="form-control" id="image_upload" />
+                        </div>
+                     </div>
+                    @* <div class="col-md-3">
+                        <div class="float-left text-left mt-3 pt-3">
+                           <button type="button" class="btn-add">Add</button>
+                        </div>
+                     </div>*@
+                  </div>
+               </div>
+               <div class="add_grid_">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="">
+                           <div class="m-table__main mt-2 mb-4">
+                              <div class="m-table__responsive -virtual-scroll">
+                                 <table id="expected" class="table table-bordered"></table>
+                                 <div id="pager_expected"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-12">
+            <div class="product_packag product_profile">
+               <div class="product_title">
+                  <h6>Please specify (Off-shelf / New moulds)</h6>
+               </div>
+               <div class="col-md-12">
+                  <div class="row">
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Product <span class="color-red">*</span></label>
+                           <input type="text" class="form-control" id="product1"/>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">SKU <span class="color-red">*</span></label>
+                           <input type="text" class="form-control" id="sku1" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Benchmark Products</label>
+                           <input type="text" class="form-control" id="sku12" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Desired Product Characteristics</label>
+                           <input type="text" class="form-control" id="desired"/>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Desired Product Characteristics</label>
+                           <input type="text" class="form-control" id="Desired1" />
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Others (If any)</label>
+                           <input type="text" class="form-control"  id="Others"/>
+                        </div>
+                     </div>
+                     <div class="col-md-3">
+                        <div class="form-group">
+                           <label class="control-label">Images Upload</label>
+                           <input type="file" class="form-control" id="image_upload" />
+                        </div>
+                     </div>
+                     @*<div class="col-md-3">
+                        <div class="float-left text-left mt-3 pt-3">
+                           <button type="button" class="btn-add">Add</button>
+                        </div>
+                     </div>*@
+                  </div>
+               </div>
+               <div class="add_grid_">
+                  <div class="row">
+                     <div class="col-md-12">
+                        <div class="">
+                           <div class="m-table__main mt-2 mb-4">
+                              <div class="m-table__responsive -virtual-scroll">
+                                 <table id="new_moulds" class="table table-bordered"></table>
+                                 <div id="pager_moulds"></div>
+                              </div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+             <div class="product_profile">
+            <h6 class="pro_det">Business Information</h6>
+
+            <div class="row">
+                <div class="col-md-3">
+                  <div class="form-group">
+                     <label>Product <span class="color-red">*</span></label>
+                     <input type="text" class="form-control" id="product" />
+                  </div>
+               </div>
+               <div class="col-md-3">
+                  <div class="form-group">
+                     <label>SKU <span class="color-red">*</span></label>
+                     <input type="text" class="form-control" id="sku"/>
+                  </div>
+               </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Proposed Names of product<span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="proposed">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                      <label>Proposed launch date <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="date" data-datepicker>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Proposed Selling Price <span class="color-red">*</span></label>
+                        <input type="text" class="form-control " id="price">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Proposed MRP/TP <span class="color-red">*</span></label>                   
+                        <input type="text" class="form-control" id="mrp_tp">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Expected GP % <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="gp">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Business Value <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="bv">
+                    </div>
+                </div>
+                @*<div class="col-lg-3">
+                <label><strong>Tertiary Packaging</strong></label>
+                <div class="demo-content">
+                <textarea name="editor1" cols="30"></textarea>
+                </div>
+                </div>*@
+
+                @*<div class="col-lg-3">
+                    <label>&nbsp;</label>
+                    <div class="demo-content">
+                        <p class="bench_pad1"><strong>Launch Quantity (First 3 months)</strong></p>
+                    </div>
+                </div>*@
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>M1 <span class="color-red">*</span></label>                    
+                        <input type="text" class="form-control" id="m1">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>M2 <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="m2">
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>M3 <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="m3">
+                    </div>
+                </div>
+                @*<div class="col-lg-3">
+                    <label>&nbsp;</label>
+                    <div class="demo-content">
+                        <p class="bench_pad1">Annual Quantity (Y1 volumes) </p>
+                    </div>
+                </div>*@
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Y1 <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="y1">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Y2 <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="y2">
+                    </div>
+                </div>
+                <div class="col-md-3">
+                  <div class="form-group">
+                    <label>Y3 <span class="color-red">*</span></label>
+                        <input type="text" class="form-control" id="y3">
+                    </div>
+                </div>
+                
+                @*<div class="col-md-3">
+                  <div class="float-left text-left mt-3 pt-3">
+                     <button type="button" class="btn-add">Add</button>
+                  </div>
+               </div>*@
+               <div class="add_grid_">
+               <div class="row">
+                  <div class="col-md-12">
+                     <div class="">
+                        <div class="m-table__main mt-2">
+                           <div class="m-table__responsive -virtual-scroll">
+                              <table id="business_info" class="table table-bordered"></table>
+                              <div id="pager_businessinfo"></div>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+                </div>
+            </div>
+            
+            <div class="row sticky-bottom">
+
+
+                <div class="save_buttons float-right text-right pdd">
+
+                    <button type="button" class="btn-sb" data-bs-toggle="modal" data-bs-target="#myModal" data-title="Send Back">Send back</button>
+                    <button type="button" class="btn-cnl" data-bs-toggle="modal" data-bs-target="#myModal" data-title="Reject"> Reject</button>
+                    <button type="button" class="btn-ap" data-bs-toggle="modal" data-bs-target="#myModal" data-title="Approve"> Approve</button>
+
+                </div>
+
+            </div>
+        </form>
+
+    </div>
+
+</div>
+
+@*Approval pop up*@
+<div class="modal fade hd" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @*<div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>*@
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+
+                                        <th scope="col">Designation</th>
+                                        <th scope="col">Confirmed By</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                    <tr class="filters fil_bck">
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody class="tb">
+
+                                    <tr>
+                                        <td>GM</td>
+                                        <td>Akash A</td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>HGML</td>
+                                        <td>Shreyas K R </td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>PMD</td>
+                                        <td>Dr. Archana</td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>CFT</td>
+                                        <td>Amrish Mahajan</td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form>
+                @*<div class="modal-header">
+                <h5 class="modal-title">Modal Window</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>*@
+                <div class="modal-body">
+                    <h6 class="apr_hed modal-title"></h6>
+                    <form class="tx_pad">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pd">
+                                    <label class="control-label">
+                                        Remarks
+                                    </label>
+
+                                    <textarea class="form-control" rows="6"></textarea>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+
+
+                                @* <div class="save_buttons float-right text-right">
+
+                                <button type="button" class="btn-ap" onclick="location.href = '/ProjectBrief/ProjectBrief';"> Approve</button>
+
+                                </div>*@
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-sb test" onclick="location.href = './Send';">Send back</button>
+                    <button type="button" class="btn-cnl test1 " onclick="location.href = './Reject';">Cancel</button>
+                    <button type="button" class="btn-ap test2 " onclick="location.href = './Approve';">Approve</button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.filterable .btn-filter').click(function () {
+            var $panel = $(this).parents('.filterable'),
+                $filters = $panel.find('.filters input'),
+                $tbody = $panel.find('.table tbody');
+            if ($filters.prop('disabled') == true) {
+                $filters.prop('disabled', false);
+                $filters.first().focus();
+            } else {
+                $filters.val('').prop('disabled', true);
+                $tbody.find('.no-result').remove();
+                $tbody.find('tr').show();
+            }
+        });
+
+        $('.filterable .filters input').keyup(function (e) {
+            /* Ignore tab key */
+            var code = e.keyCode || e.which;
+            if (code == '9') return;
+            /* Useful DOM data and selectors */
+            var $input = $(this),
+                inputContent = $input.val().toLowerCase(),
+                $panel = $input.parents('.filterable'),
+                column = $panel.find('.filters th').index($input.parents('th')),
+                $table = $panel.find('.table'),
+                $rows = $table.find('tbody tr');
+            /* Dirtiest filter function ever ;) */
+            var $filteredRows = $rows.filter(function () {
+                var value = $(this).find('td').eq(column).text().toLowerCase();
+                return value.indexOf(inputContent) === -1;
+            });
+            /* Clean previous no-result if exist */
+            $table.find('tbody .no-result').remove();
+            /* Show all rows, hide filtered ones (never do that outside of a demo ! xD) */
+            $rows.show();
+            $filteredRows.hide();
+            /* Prepend no-result row if all rows are filtered */
+            if ($filteredRows.length === $rows.length) {
+                $table.find('tbody').prepend($('<tr class="no-result text-center"><td colspan="' + $table.find('.filters th').length + '">No result found</td></tr>'));
+            }
+        });
+    });
+
+
+</script>
+<script>
+    CKEDITOR.replace('editormagic2', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord',
+        removePlugins: 'elementspath'
+    });
+    CKEDITOR.replace('editormagic1', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic3', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic4', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic5', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic6', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic7', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic8', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic9', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic10', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic11', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editormagic12', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editor', {
+        height: 105,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+        {
+            "name": "links",
+            "groups": ["links"]
+        },
+        {
+            "name": "paragraph",
+            "groups": ["list", "blocks"]
+        },
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editorcmpoff', {
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+        {
+            "name": "links",
+            "groups": ["links"]
+        },
+        {
+            "name": "paragraph",
+            "groups": ["list", "blocks"]
+        },
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editorcfr', {
+        height: 275,
+        width: 950,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+        {
+            "name": "links",
+            "groups": ["links"]
+        },
+        {
+            "name": "paragraph",
+            "groups": ["list", "blocks"]
+        },
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editorcfr1', {
+        height: 275,
+        width: 950,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+        {
+            "name": "links",
+            "groups": ["links"]
+        },
+        {
+            "name": "paragraph",
+            "groups": ["list", "blocks"]
+        },
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editorcfr2', {
+        height: 160,
+        width: 950,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+        {
+            "name": "links",
+            "groups": ["links"]
+        },
+        {
+            "name": "paragraph",
+            "groups": ["list", "blocks"]
+        },
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editorcfr3', {
+        height: 160,
+        width: 950,
+        toolbarGroups: [{
+            "name": "basicstyles",
+            "groups": ["basicstyles"]
+        },
+        {
+            "name": "links",
+            "groups": ["links"]
+        },
+        {
+            "name": "paragraph",
+            "groups": ["list", "blocks"]
+        },
+
+        {
+            "name": "insert",
+            "groups": ["insert"]
+        },
+
+        ],
+
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+
+    CKEDITOR.replace('editor4_features', {
+       height: 150,
+       toolbarGroups: [{
+           "name": "basicstyles",
+           "groups": ["basicstyles"]
+       },
+       {
+           "name": "links",
+           "groups": ["links"]
+       },
+       {
+           "name": "paragraph",
+           "groups": ["list", "blocks"]
+       },
+   
+       {
+           "name": "insert",
+           "groups": ["insert"]
+       },
+   
+           //{
+           //    "name": "about",
+           //    "groups": ["about"]
+           //}
+       ],
+       // Remove the redundant buttons from toolbar groups defined above.
+       removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+   });
+   
+    CKEDITOR.replace('editor4_benefits', {
+       height: 150,
+       toolbarGroups: [{
+           "name": "basicstyles",
+           "groups": ["basicstyles"]
+       },
+       {
+           "name": "links",
+           "groups": ["links"]
+       },
+       {
+           "name": "paragraph",
+           "groups": ["list", "blocks"]
+       },
+   
+       {
+           "name": "insert",
+           "groups": ["insert"]
+       },
+   
+           //{
+           //    "name": "about",
+           //    "groups": ["about"]
+           //}
+       ],
+       // Remove the redundant buttons from toolbar groups defined above.
+       removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+   });
+</script>
+
+
+
+
+<script>
+   data = [
+       {
+           "Action": "",
+           "Product": "Product1",
+           "ExpectedFeatures": "Easy Squeezability & tear-ability of the sachet Price point Highlight",
+           "ExpectedBenefits": "Reduces Hair Fall; Makes Hair",
+       },
+      
+       
+   
+   ]
+   colmodels = [
+        {
+           name: 'Action',
+           label: 'Action',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                  return `<div class="text-center icon_section align-items-left">
+      <a class="icon_color btn_button" title="Edit" id="edit_worksheet"><i class="fa fa-edit mr-2" title="Edit"></i></a>
+      <a class="icon_color btn_button" title="Delete" ><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+      </div>`;
+              }
+       },
+       {
+           name: 'Product',
+           label: 'Product',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'ExpectedFeatures',
+           label: 'Expected Features',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'ExpectedBenefits',
+           label: 'Expected Benefits',
+           resizable: true,
+           ignoreCase: true,
+       },
+       
+      
+   ],
+   
+       $("#worksheet").jqGrid({
+           url: '',
+           datatype: 'local',
+           data: data,
+           mtype: 'GET',
+           colModel: colmodels,
+           loadonce: true,
+           viewrecords: true,
+           pager: '#pager_worksheet',
+           rowNum: 20,
+           scroll: 1,
+   
+           gridComplete: function () {
+               var objRows = $("#worksheet tbody tr");
+               var objHeader = $("#worksheet tbody tr td");
+   
+               if (objRows.length > 1) {
+                   var objFirstRowColumns = $(objRows[1]).children("td");
+                   for (i = 0; i < objFirstRowColumns.length; i++) {
+                       $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                   }
+               }
+   
+           }
+       });
+   //$("#worksheet").jqGrid('filterToolbar', {
+   //    autosearch: true,
+   //    stringResult: false,
+   //    searchOnEnter: false,
+   //    defaultSearch: "cn"
+   //});
+   
+   $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+   $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '10vh' });
+   var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+   if ($TableHeight > 330) {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+   }
+   else {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+   }
+   $("#benefits_profile").hide();
+   $("#expected_profile").hide();
+   $("#edit_worksheet").click(function(){
+       $(".margin_top115").addClass("top_margin");
+    var tr=$(this).closest("tr");
+    var productValue=$(tr).children("td").eq(1).text();
+    $(".first_profile").val(productValue);
+    $("#cke_editor4_features").hide();
+    $("#expected_profile").show();
+    var product1Value=$(tr).children("td").eq(2).text();
+    $("#expected_profile").val(product1Value);
+    $("#cke_editor4_benefits").hide();
+    $("#benefits_profile").show();
+     var indicationValue=$(tr).children("td").eq(3).text();     
+    $("#benefits_profile").val(indicationValue);
+    });
+</script>
+
+
+@*Product profile script*@
+<script>
+   data = [
+       {
+           "Action": "",
+           "Product": "Product1",
+           "DesiredIngredients": "Bhrigaraja & Palasha",
+           "IndicationConditions": "1 sachet per Hair wash, shampoo",
+           "Musthaveclaims": "Reduces Hair Fall",
+           "Nicetohaveclaims": "Reduces Hair Fall",
+           "DosageForm": "Liquid",
+           "BenchmarkProducts": "Pantene Hair Fall Control, Dove Hair Fall rescue",
+           "DesiredProductCharacteristics": "3 years Free from Paraben Sachet format",
+       },
+      
+       
+   
+   ]
+   colmodels = [
+        {
+           name: 'Action',
+           label: 'Action',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                  return `<div class="text-center icon_section align-items-left">
+      <a class="icon_color btn_button" title="Edit" id="edit_profile"><i class="fa fa-edit mr-2" title="Edit"></i></a>
+      <a class="icon_color btn_button" title="Delete" ><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+      </div>`;
+              }
+       },
+       {
+           name: 'Product',
+           label: 'Product',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'DesiredIngredients',
+           label: 'Desired Ingredients',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'IndicationConditions',
+           label: 'Indication Conditions',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Musthaveclaims',
+           label: 'Must Have Claims',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Nicetohaveclaims',
+           label: 'Nice to Have Claims',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'DosageForm',
+           label: 'Dosage Form',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'BenchmarkProducts',
+           label: 'Benchmark Products',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'DesiredProductCharacteristics',
+           label: 'Desired Product Characteristics',
+           resizable: true,
+           ignoreCase: true,
+       },
+       
+      
+   ],
+   
+       $("#product_profile").jqGrid({
+           url: '',
+           datatype: 'local',
+           data: data,
+           mtype: 'GET',
+           colModel: colmodels,
+           loadonce: true,
+           viewrecords: true,
+           pager: '#pager_product',
+           rowNum: 20,
+           scroll: 1,
+   
+           gridComplete: function () {
+               var objRows = $("#product_profile tbody tr");
+               var objHeader = $("#product_profile tbody tr td");
+   
+               if (objRows.length > 1) {
+                   var objFirstRowColumns = $(objRows[1]).children("td");
+                   for (i = 0; i < objFirstRowColumns.length; i++) {
+                       $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                   }
+               }
+   
+           }
+       });
+   //$("#product_profile").jqGrid('filterToolbar', {
+   //    autosearch: true,
+   //    stringResult: false,
+   //    searchOnEnter: false,
+   //    defaultSearch: "cn"
+   //});
+   
+   $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+   $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '10vh' });
+   var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+   if ($TableHeight > 330) {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+   }
+   else {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+   }
+   $("#edit_profile").click(function(){
+    var tr=$(this).closest("tr");
+    var productValue=$(tr).children("td").eq(1).text();
+    $("#first_profile").val(productValue);
+    var product1Value=$(tr).children("td").eq(2).text();
+    $("#ingredients_profile").val(product1Value);
+     var indicationValue=$(tr).children("td").eq(3).text();     
+    $("#indication_profile").val(indicationValue);
+    var markValue=$(tr).children("td").eq(4).text();
+    $("#claim_profile").val(markValue);
+    var DesiredValue=$(tr).children("td").eq(5).text();
+    $("#nice_profile").val(DesiredValue);
+    var Desired3Value=$(tr).children("td").eq(6).text();
+    $("#combo_profile").val(Desired3Value);
+    var OthersValue=$(tr).children("td").eq(7).text();
+    $("#benchmark_profile").val(OthersValue);
+    var charValue=$(tr).children("td").eq(8).text();
+    $("#characteristics_profile").val(charValue);
+    });
+   
+</script>
+
+
+@*Benchmark sample script*@
+<script>
+   data = [
+       {
+           "Action": "",
+           "Product": "Product1",
+           "SKU": "SKU001",
+           "PrimaryPackaging": "Singular Sachet",
+           "SecondaryPackaging": "Singular Sachet",
+           "TertiaryPackaging": "Shipper",
+           "Others": "Shipper",
+           "ImageUpload": "",
+       },
+      
+       
+   
+   ]
+   colmodels = [
+       {
+           name: 'Action',
+           label: 'Action',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                  return `<div class="text-center icon_section align-items-left">
+      <a class="icon_color btn_button" title="Edit" id="edit_benchmark"><i class="fa fa-edit mr-2" title="Edit"></i></a>
+      <a class="icon_color btn_button" title="Delete" ><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+      </div>`;
+              }
+       },
+       {
+           name: 'Product',
+           label: 'Product',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'SKU',
+           label: 'SKU',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'PrimaryPackaging',
+           label: 'Primary Packaging',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'SecondaryPackaging',
+           label: 'Secondary Packaging',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'TertiaryPackaging',
+           label: 'Tertiary Packaging',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Others',
+           label: 'Others (If any)',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'ImageUpload',
+           label: 'Images Upload',
+           resizable: true,
+           ignoreCase: true,
+       },
+
+       
+       
+      
+   ],
+   
+       $("#benchmark").jqGrid({
+           url: '',
+           datatype: 'local',
+           data: data,
+           mtype: 'GET',
+           colModel: colmodels,
+           loadonce: true,
+           viewrecords: true,
+           pager: '#pager_benchmark',
+           rowNum: 20,
+           scroll: 1,
+   
+           gridComplete: function () {
+               var objRows = $("#benchmark tbody tr");
+               var objHeader = $("#benchmark tbody tr td");
+   
+               if (objRows.length > 1) {
+                   var objFirstRowColumns = $(objRows[1]).children("td");
+                   for (i = 0; i < objFirstRowColumns.length; i++) {
+                       $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                   }
+               }
+   
+           }
+       });
+   //$("#benchmark").jqGrid('filterToolbar', {
+   //    autosearch: true,
+   //    stringResult: false,
+   //    searchOnEnter: false,
+   //    defaultSearch: "cn"
+   //});
+   
+   $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+   $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '5vh' });
+   var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+   if ($TableHeight > 330) {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+   }
+   else {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+   }
+   $("#edit_benchmark").click(function(){
+    var tr=$(this).closest("tr");
+    var productValue=$(tr).children("td").eq(1).text();
+    $("#product22").val(productValue);
+    var skuValue=$(tr).children("td").eq(2).text();
+    $("#sku22").val(skuValue);
+    var markValue=$(tr).children("td").eq(3).text();
+    $("#sku23").val(markValue);
+    var DesiredValue=$(tr).children("td").eq(4).text();
+    $("#desired21").val(DesiredValue);
+    var Desired3Value=$(tr).children("td").eq(5).text();
+    $("#Desired211").val(Desired3Value);
+    var OthersValue=$(tr).children("td").eq(6).text();
+    $("#Others3").val(OthersValue);
+    });
+</script>
+@*expected sample script*@
+<script>
+   data = [
+
+       {
+           "Action": "",
+           "Product": "Product1",
+           "SKU": "SKU001",
+           "BenchmarkProducts": "Same as competition Rs 2 sachet ( H&S & Pantene)",
+           "DesiredProductCharacteristics": "Same as competition Rs 2 sachet ( H&S & Pantene)",
+           "DesiredProductCharacteristics2": "Same as competition Rs 2 sachet ( H&S & Pantene)",
+           "Others": "Same as competition Rs 2 sachet ( H&S & Pantene)",
+           "ImageUpload": "",
+       },
+      
+       
+   
+   ]
+   colmodels = [
+       {
+           name: 'Action',
+           label: 'Action',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                  return `<div class="text-center icon_section align-items-left">
+      <a class="icon_color btn_button" title="Edit" id="edit_expected"><i class="fa fa-edit mr-2" title="Edit"></i></a>
+      <a class="icon_color btn_button" title="Delete" ><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+      </div>`;
+              }
+       },
+       {
+           name: 'Product',
+           label: 'Product',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'SKU',
+           label: 'SKU',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'BenchmarkProducts',
+           label: 'Benchmark Products',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'DesiredProductCharacteristics',
+           label: 'Desired Product Characteristics',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'DesiredProductCharacteristics2',
+           label: 'Desired Product Characteristics',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Others',
+           label: 'Others (If any)',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+	       name: 'ImageUpload',
+           label: 'Images Upload',
+           resizable: true,
+           ignoreCase: true,
+       },
+       
+      
+   ],
+   
+       $("#expected").jqGrid({
+           url: '',
+           datatype: 'local',
+           data: data,
+           mtype: 'GET',
+           colModel: colmodels,
+           loadonce: true,
+           viewrecords: true,
+           pager: '#pager_expected',
+           rowNum: 20,
+           scroll: 1,
+   
+           gridComplete: function () {
+               var objRows = $("#expected tbody tr");
+               var objHeader = $("#expected tbody tr td");
+   
+               if (objRows.length > 1) {
+                   var objFirstRowColumns = $(objRows[1]).children("td");
+                   for (i = 0; i < objFirstRowColumns.length; i++) {
+                       $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                   }
+               }
+   
+           }
+       });
+   //$("#expected").jqGrid('filterToolbar', {
+   //    autosearch: true,
+   //    stringResult: false,
+   //    searchOnEnter: false,
+   //    defaultSearch: "cn"
+   //});
+   
+   $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+   $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '5vh' });
+   var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+   if ($TableHeight > 330) {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+   }
+   else {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+   }
+    $("#edit_expected").click(function(){
+    var tr=$(this).closest("tr");
+    var productValue=$(tr).children("td").eq(1).text();
+    $("#product2").val(productValue);
+    var skuValue=$(tr).children("td").eq(2).text();
+    $("#sku2").val(skuValue);
+    var markValue=$(tr).children("td").eq(3).text();
+    $("#sku123").val(markValue);
+    var DesiredValue=$(tr).children("td").eq(4).text();
+    $("#desired11").val(DesiredValue);
+    var Desired1Value=$(tr).children("td").eq(5).text();
+    $("#Desired12").val(Desired1Value);
+    var OthersValue=$(tr).children("td").eq(6).text();
+    $("#Others1").val(OthersValue);
+    });
+</script>
+
+@*new_moulds sample script*@
+<script>
+   data = [
+       {
+           "Action": "",
+           "Product": "Product1",
+           "SKU": "SKU001",
+           "BenchmarkProducts": "Cylinder based on artwork",
+           "DesiredProductCharacteristics": "Cylinder based on artwork",
+           "DesiredProductCharacteristics2": "Cylinder based on artwork",
+           "Others": "Cylinder based on artwork",
+           "ImageUpload": "",
+       },
+      
+       
+   
+   ]
+   colmodels = [
+        {
+           name: 'Action',
+           label: 'Action',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                  return `<div class="text-center icon_section align-items-left">
+      <a class="icon_color btn_button" title="Edit" id="edit_mark"><i class="fa fa-edit mr-2" title="Edit"></i></a>
+      <a class="icon_color btn_button" title="Delete" ><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+      </div>`;
+              }
+       },
+       
+       {
+           name: 'Product',
+           label: 'Product',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'SKU',
+           label: 'SKU',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'BenchmarkProducts',
+           label: 'Benchmark Products',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'DesiredProductCharacteristics',
+           label: 'Desired Product Characteristics',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'DesiredProductCharacteristics2',
+           label: 'Desired Product Characteristics',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Others',
+           label: 'Others (If any)',
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+	       name: 'ImageUpload',
+           label: 'Images Upload',
+           resizable: true,
+           ignoreCase: true,
+       },
+       
+      
+   ],
+   
+       $("#new_moulds").jqGrid({
+           url: '',
+           datatype: 'local',
+           data: data,
+           mtype: 'GET',
+           colModel: colmodels,
+           loadonce: true,
+           viewrecords: true,
+           pager: '#pager_moulds',
+           rowNum: 20,
+           scroll: 1,
+   
+           gridComplete: function () {
+               var objRows = $("#new_moulds tbody tr");
+               var objHeader = $("#new_moulds tbody tr td");
+   
+               if (objRows.length > 1) {
+                   var objFirstRowColumns = $(objRows[1]).children("td");
+                   for (i = 0; i < objFirstRowColumns.length; i++) {
+                       $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                   }
+               }
+   
+           }
+       });
+   //$("#new_moulds").jqGrid('filterToolbar', {
+   //    autosearch: true,
+   //    stringResult: false,
+   //    searchOnEnter: false,
+   //    defaultSearch: "cn"
+   //});
+   
+   $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+   $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '5vh' });
+   var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+   if ($TableHeight > 330) {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+   }
+   else {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+   }
+   
+   
+   $("#edit_mark").click(function(){
+    var tr=$(this).closest("tr");
+    var productValue=$(tr).children("td").eq(1).text();
+    $("#product1").val(productValue);
+    var skuValue=$(tr).children("td").eq(2).text();
+    $("#sku1").val(skuValue);
+    var markValue=$(tr).children("td").eq(3).text();
+    $("#sku12").val(markValue);
+    var DesiredValue=$(tr).children("td").eq(4).text();
+    $("#desired").val(DesiredValue);
+    var Desired1Value=$(tr).children("td").eq(5).text();
+    $("#Desired1").val(Desired1Value);
+    var OthersValue=$(tr).children("td").eq(6).text();
+    $("#Others").val(OthersValue);
+});
+</script>
+@*business_info sample script*@
+<script>
+   data = [
+       {
+           "Action": "",
+           "Product": "Product1",
+           "SKU": "SKU001",
+           "ProposedNamesofproduct": "Bhringaraja Hairfall Shampoo (TBC)",
+           "Proposedlaunchdate": "12-06-2022",
+           "ProposedSellingPrice": "Rs 3 for 6 ml",
+           "ProposedMRPTP": "Rs 2 for 6 ml",
+           "ExpectedGP": "Rs 2 for 6 ml",
+           "M1": "20,00,000.",
+           "M2": "30,00,000.",
+           "M3": "20,00,000.",
+           "Y1": "2,20.00.000.",
+           "Y2": "2,20,00,000.",
+           "Y3": "3,70,00,000.",
+           "BusinessValue":"",
+           "ProjectCategorization":"",
+           "ComplexitytobeAssigned":"",
+           "Stakeholders":"",
+       },
+      
+       
+   
+   ]
+   colmodels = [
+       {
+           name: 'Action',
+           label: 'Action',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                  return `<div class="text-center icon_section align-items-left">
+      <a class="icon_color btn_button edit" title="Edit" id="edit_info"><i class="fa fa-edit mr-2" title="Edit"></i></a>
+      <a class="icon_color btn_button" title="Delete" ><i class="fa fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+      </div>`;
+              }
+       },
+       {
+           name: 'Product',
+           label: 'Product',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'SKU',
+           label: 'SKU',
+           width:90,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'ProposedNamesofproduct',
+           label: 'Proposed Name&#8217;s of Product',
+           width:150,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Proposedlaunchdate',
+           label: 'Proposed Launch Date',
+           width:130,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'ProposedSellingPrice',
+           label: 'Proposed Selling Price',
+           width:130,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'ProposedMRPTP',
+           label: 'Proposed MRP/TP',
+           width:130,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'ExpectedGP',
+           label: 'Expected GP % ',
+           width:130,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'BusinessValue',
+           label: 'Business Value',
+           width:140,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'M1',
+           label: 'M1',
+           width:140,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'M2',
+           label: 'M2',
+           width:140,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'M3',
+           label: 'M3',
+           width:140,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Y1',
+           label: 'Y1',
+           width:140,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Y2',
+           label: 'Y2',
+           width:140,
+           resizable: true,
+           ignoreCase: true,
+       },
+       {
+           name: 'Y3',
+           label: 'Y3',
+           width:140,
+           resizable: true,
+           ignoreCase: true,
+       },
+       
+       // {
+       //    name: 'ProjectCategorization',
+       //    label: 'Project Categorization',
+       //    width:140,
+       //    resizable: true,
+       //    ignoreCase: true,
+       //},
+       //{
+       //    name: 'ComplexitytobeAssigned',
+       //    label: 'Complexity to be Assigned',
+       //    width:140,
+       //    resizable: true,
+       //    ignoreCase: true,
+       //},
+       //{
+       //    name: 'stakeholders',
+       //    label: 'Stakeholders',
+       //    width:140,
+       //    resizable: true,
+       //    ignoreCase: true,
+       //},
+       
+       
+      
+   ],
+   
+       $("#business_info").jqGrid({
+           url: '',
+           datatype: 'local',
+           data: data,
+           mtype: 'GET',
+           colModel: colmodels,
+           loadonce: true,
+           viewrecords: true,
+           pager: '#pager_businessinfo',
+           rowNum: 20,
+           scroll: 1,
+   
+           gridComplete: function () {
+               var objRows = $("#business_info tbody tr");
+               var objHeader = $("#business_info tbody tr td");
+   
+               if (objRows.length > 1) {
+                   var objFirstRowColumns = $(objRows[1]).children("td");
+                   for (i = 0; i < objFirstRowColumns.length; i++) {
+                       $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                   }
+               }
+   
+           }
+       });
+   //$("#business_info").jqGrid('filterToolbar', {
+   //    autosearch: true,
+   //    stringResult: false,
+   //    searchOnEnter: false,
+   //    defaultSearch: "cn"
+   //});
+   
+   $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+   $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '5vh' });
+   var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+   if ($TableHeight > 330) {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+   }
+   else {
+       $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+       $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+   }
+
+
+   $("#edit_info").click(function(){
+    var tr=$(this).closest("tr");
+    var productValue=$(tr).children("td").eq(1).text();
+    $("#product").val(productValue);
+    var skuValue=$(tr).children("td").eq(2).text();
+    $("#sku").val(skuValue);
+    var ProposedValue=$(tr).children("td").eq(3).text();
+    $("#proposed").val(ProposedValue);
+    var dateValue=$(tr).children("td").eq(4).text();
+    $("#date").val(dateValue);
+    var PriceValue=$(tr).children("td").eq(5).text();
+    $("#price").val(PriceValue);
+    var MRPValue=$(tr).children("td").eq(6).text();
+    $("#mrp_tp").val(MRPValue);
+    var GPValue=$(tr).children("td").eq(7).text();
+    $("#gp").val(GPValue);
+    var bvValue=$(tr).children("td").eq(8).text();
+    $("#bv").val(bvValue);
+    var m1Value=$(tr).children("td").eq(9).text();
+    $("#m1").val(m1Value);
+    var m2Value=$(tr).children("td").eq(10).text();
+    $("#m2").val(m2Value);
+    var m3Value=$(tr).children("td").eq(11).text();
+    $("#m3").val(m3Value);
+    var y1Value=$(tr).children("td").eq(12).text();
+    $("#y1").val(y1Value);
+    var y2Value=$(tr).children("td").eq(13).text();
+    $("#y2").val(y2Value);
+    var y3Value=$(tr).children("td").eq(14).text();
+    $("#y3").val(y3Value);
+});
+   
+</script>

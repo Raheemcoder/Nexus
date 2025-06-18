@@ -1,0 +1,280 @@
+﻿@model Ideation.Models.RID
+@{
+    ViewData["Title"] = "RID Approve";
+    Layout = "/Views/Shared/RIDLayout.cshtml";
+
+    var UserApprovalLevel = Context.Session.GetString("UserApprovalLevel");
+}
+
+<link href="@Url.Content("~/assets_rid/css/rid.css")" rel="stylesheet" />
+
+<style>
+    .select2-dropdown {
+        width: 130px !important;
+    }
+
+    strong {
+        font-weight: bold;
+    }
+
+    #jqgh_Approve_IngredientListGrid_IsChecked {
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+
+<section class="animate__animated1 slideInUp">
+    <div class="-m_pagetitle">
+        <div class="-m_title">
+
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/RID/RIDIndex")" class="RID_PageLink">Cosmetics</a>
+                </span>
+                <label style="font-size:16px;">/ Global Compliance</label>
+            </h4>
+        </div>
+    </div>
+</section>
+
+@Html.HiddenFor(m => m.Approve_DivisionBasedIngredientListJson)
+@Html.HiddenFor(m => m.UserApprovalLevel)
+
+
+@*List of RID jqgrid*@
+<section>
+    <div class="grid_view listgrid_table" id="grid">
+        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12 mb-1">
+                        <section class="icon_description">
+                            @if (UserApprovalLevel.ToLower() == "level1")
+                            {
+                                @Html.HiddenFor(m => m.MostRecentRemark)
+                                <span class="ml-1 mr-5">Remarks <button id="Level2_Remarks" title="Remarks" type="button" style="background:transparent;border:none"><i class="fas fa-list" aria-hidden="true" style="color:blue"></i></button></span>
+                                <span class="ingredient-status-div">
+                                    <i class='roll-back-color fa fa-square'></i><label>Ingredients RollBacked</label>
+                                    <i class='edited-color fa fa-square'></i><label class="pr-1">Ingredients Edited</label>
+                                </span>
+                            }
+                            <div class="status_icons_">
+                                <i class='blue_circle'></i>&nbsp; HGML approval required &nbsp;<i class='green_circle'></i>&nbsp; Allowed &nbsp;<i class='yellow_circle'></i>&nbsp; Restricted &nbsp; <i class='red_circle'></i>&nbsp; Prohibited &nbsp;
+                            </div>
+                        </section>
+                    </div>
+                    @if (UserApprovalLevel != "" && UserApprovalLevel != null)
+                    {
+                        <div class="m-table__main" id="">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="Approve_IngredientListGrid" class="table table-bordered"></table>
+                                <div id="Approve_IngredientListGrid_Pager"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@if (UserApprovalLevel != "" && UserApprovalLevel != null)
+{
+    <section>
+        <div class="float-right mt-2">
+            <div class="text-right">
+                @if (UserApprovalLevel.ToLower() == "level2")
+                {
+                    <button type="button" class="btn btn-success mr-1" id="revertbtn">Roll Back</button>
+                }
+                @if (UserApprovalLevel.ToLower() == "level1")
+                {
+                    <button type="button" class="btn btn-success mr-1" id="saveasdraftbtn">Save As Draft</button>
+                }
+                <button type="button" class="btn btn-success mr-1" id="approvebtn">Submit</button>
+                <button type="button" class="btn btn-danger mr-1" id="cancelbtn">Cancel</button>
+            </div>
+        </div>
+    </section>
+}
+
+@if (UserApprovalLevel == "" || UserApprovalLevel == null)
+{
+    <div class="alert alert-danger alert-dismissable">
+        <div class="d-flex" style="justify-content:center">
+            <bold> Oops, you are not authorized for the approval </bold>
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="Approve_ParticularIngredientDetailsModal" tabindex="100" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog tfo_app aa ingredients_add modal-xl update_form edit_form">
+        <div class="modal-content appt">
+            <div class="modal-body">
+                <div class="modal_head d-flex" style="justify-content:space-between">
+                    <div class="title_head">
+                        <h4>View Ingredient Remarks</h4>
+                    </div>
+                    <div class="modal_close">
+                        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                    </div>
+                </div>
+                <section class="animate__animated1 slideInUp">
+                    <div class="filter_forms">
+
+                        <div class="row">
+                            <div>
+                                <div class="col-width3">
+                                    <label>Ingredient Name : <span><strong id="Approve_ActiveIngredientName"></strong></span></label>
+
+                                </div>
+                                <div class="col-width7">
+                                    <label>Synonyms: <span><strong id="Approve_Synonyms"></strong></span></label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div>
+                                <div class="col-width3">
+                                    <label>CAS Number: <span><strong id="Approve_CAS"></strong></span></label>
+                                </div>
+                                <div class="col-width7">
+                                    <label>Functions: <span><strong id="Approve_Functions"></strong></span></label>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 mb-1">
+                            <section class="icon_description">
+                                <div class="status_icons_">
+                                    <i class='blue_circle'></i>&nbsp; HGML approval required &nbsp;<i class='green_circle'></i>&nbsp; Allowed &nbsp;<i class='yellow_circle'></i>&nbsp; Restricted &nbsp; <i class='red_circle'></i>&nbsp; Prohibited &nbsp;
+                                </div>
+                            </section>
+                        </div>
+                        <div class="">
+                            <div class="m-table__main mt-2" id="">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="Approve_ParticularIngredientDetails" class="table table-bordered"></table>
+                                    <div id="Approve_ParticularIngredientDetails_Pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="Approve_Confirmation_Modal" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Save Confirmation</h4>
+                <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <p>Are you sure you want submit <strong id="Confirm_approve_ingredient"></strong> Ingredients details?</p>
+                </div>
+
+                <div class="">
+                    <div class="text-right">
+                        <div class="float-right">
+                            <button type="button" class="btn btn-add btn-success" id="Approve_ok" style="background-color:green">OK</button>
+                            <button type="button" class="btn btn-add btn-danger" data-bs-dismiss="modal" id="Approve_cancel">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="Remarks_modal" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remarks <sup class="color-red hide" id="remarks-mandatory">*</sup></h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <span>Are you sure, you want to submit</span>
+                            <textarea id="Remarks_text" class="remarksfiled noSpacesField"></textarea>
+                            <span id="Err_Remarks_text" style="display:none;color:red;">Please enter remarks</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="SendtoApproveRevert">Save</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmpopup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Box</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="confirmpopupmesssage">Are you sure you want to save the details </span>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="RollBack_RemarksToShow" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Rollback Remarks</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="row" >
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table border="1" id="Remarks_table" class="table">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="float-right">
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<link href="@Url.Content("~/assets_RID/assets/css/jquery.paginate.css")" rel="stylesheet" />
+<script src="@Url.Content("~/assets_RID/assets/js/jquery.paginate.js")"></script>
+
+<script>
+
+    $('#pagination-demo1').paginate();
+    var ROOT = "@Url.Content("~/")";
+
+</script>
+
+<script src="@Url.Content("~/js/RID/ApproveRID.js")"></script>

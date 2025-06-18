@@ -1,0 +1,989 @@
+﻿@{
+    ViewBag.Title = "SendBacktoDSGStatic";
+    Layout = "~/Views/Shared/CG_Layout.cshtml";
+}
+<script src="~/ckeditor/ckeditor.js"></script>
+<script>
+
+
+    $('.prototype_').hide()
+    $('.prototype_1').hide()
+    $('.prototype_3').hide()
+</script>
+
+<div class="card-box mb-0">
+    <div class="tb_clr marbt">
+        <h3 class="cen_txt">Completed</h3>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr class="mod_th">
+
+
+                    <th scope="col">Project Number</th>
+                    <th scope="col">Product Name</th>
+                    <th scope="col">HGL Approval Number</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Version No.</th>
+                    <th scope="col">Download</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>IN-100001096</td>
+                    <td>Himalaya Dark Spot Clearing Turmeric Face Cream</td>
+                    <td>HDSC-022209</td>
+                    <td>12 April 2022</td>
+                    <td>1</td>
+                    <td><a href="/images/Claims_Grid_Document.pdf" download="Claims Grid Document"><i class="fas fa-download" aria-hidden="true"></i></a></td>
+                </tr>
+            </tbody>
+        </table>
+        <h6 class="pro_det">Project Details</h6>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Project Number <span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <select class="form-control form-control-sm" disabled>
+                    <option>ID-400000003-Himalaya Smart Tea</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Product Name<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm" value="Himalaya Dark Spot Clearing Turmeric Face Cream">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">HGL Approval Number <span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm" value="HDSC-022209">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Product Positioning Statement <span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <textarea class="form-control" disabled></textarea>
+            </div>
+        </div>
+
+        <h6 class="pro_det">Product Description (includes formula, package, product)</h6>
+
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">License Category  <span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm" value="Cosmetic">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Dosage/Product form<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm" value="Gel Cream">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Target organ/disease<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm" value="Skin">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Formula features<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <textarea disabled class="form-control">Contains cold presses Organic turmeric, licorice, Vitamin B3 </textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Anchor HUB<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm" value="RUMEA">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Other markets if any@*<span class="color-red">*</span>*@</label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Shelf life at the time of launch<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <input disabled type="text" class="form-control form-control-sm" value="3 years at the time of launch">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Direction for use<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <textarea disabled class="form-control">Gently massage a generous quantity of the Himalaya Dark Spot Clearing Turmeric Face Cream on your cleansed face and neck untill fully absorbed.Use twice daily after cleansing. </textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Caution<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <textarea disabled class="form-control">Slight burning, irritation is common with products contaning glycolic acid </textarea>
+            </div>
+        </div>
+
+
+        @* <div class="row mb-3">
+        <div class="col-lg-12">
+        <div class="float-right text-right">
+        <button type="button" class="btn-add">Add</button>
+        </div>
+        </div>
+        </div>*@
+        <div class="row mb-3">
+            <label class="col-sm-2 col-form-label">Target Customer<span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                <textarea disabled class="form-control">General population with concern of dark spots</textarea>
+            </div>
+        </div>
+
+        <h6 class="pro_det">On Pack / Label Claims</h6>
+
+        <div class="row product_profile">
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Claims<span class="color-red">*</span></label>
+                    <div class="demo-content">
+                        <textarea disabled name="editor1" cols="30" class="form-control">Clear Skin </textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Feasibility of Achieving Claims<span class="color-red">*</span></label>
+                    <select class="form-control" disabled>
+                        <option>Feasible</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Supporting Technical Statements from R&D</label>
+                    <div class="ckediter_tolbar">
+                        <textarea id="" name="editor4" cols="30" data-sample-short class="form-control" disabled>Clear skin refers to -Free from surface impurities, Oil , blemishes, dark spots</textarea>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Measured By<span class="color-red">*</span></label>
+                    <div class="ckediter_tolbar">
+                        <input disabled type="text" id="" class="form-control" value="Clinical data" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>DSG Remarks / Restrictions</label>
+                    <div class="demo-content">
+                        <textarea disabled name="editor1" cols="30" class="form-control"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Responsible Department<span class="color-red">*</span></label>
+                    <select class="form-control" disabled>
+                        <option>IRA</option>
+
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="float-right text-left">
+                    <button type="button" class="btn-add">Add</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="add_grid_">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main mt-2 mb-4">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="claims_documeent" class="table table-bordered"></table>
+                                <div id="pager_claims_documeent"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <h6 class="pro_det">Claims for Communications Other than Label</h6>
+
+        <div class="row product_profile">
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Claims<span class="color-red">*</span></label>
+                    <div class="demo-content">
+                        <textarea disabled name="editor1" cols="30" class="form-control">XX% of subjects agree product reduces dark spots in X weeks</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Feasibility of Achieving Claims<span class="color-red">*</span></label>
+                    <select class="form-control" disabled>
+                        <option>Feasible</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Supporting Technical Statements from R&D</label>
+                    <div class="ckediter_tolbar">
+                        <textarea disabled id="" name="editor4" cols="30" data-sample-short class="form-control">Evalution of parameters / Sensory attributes like non-sticky feel.</textarea>
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Measured By<span class="color-red">*</span></label>
+                    <div class="ckediter_tolbar">
+                        <input disabled type="text" id="" class="form-control" value="Clinical data" />
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>DSG Remarks / Restrictions</label>
+                    <div class="demo-content">
+                        <textarea disabled name="editor1" cols="30" class="form-control">Subject to regulatory approval in RUMEA along with signed business risk form</textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Responsible Department<span class="color-red">*</span></label>
+                    <select class="form-control" disabled>
+                        <option>IRA</option>
+
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="float-right text-left">
+                    <button type="button" class="btn-add">Add</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="add_grid_">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main mt-2 mb-4">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="claims_documeent1" class="table table-bordered"></table>
+                                <div id="pager_claims_documeent1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @* <h6 class="pro_det">Approvals</h6>
+        <div class="brd_tbl">
+        <table class="table table-bordered approval_table">
+        <thead>
+        <tr class="mod_th">
+        <th scope="col">APPROVALS</th>
+        <th scope="col">Name</th>
+        <th scope="col">SIGNATURE</th>
+        <th scope="col">Date</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+        <td>Natural product Innovations</td>
+        <td>Dr. Prathibha</td>
+        <td></td>
+        <td>07-02-2023</td>
+        </tr>
+        <tr>
+        <td rowspan="2">Clinical Department</td>
+        <td >Dr. Swathi</td>
+        <td></td>
+        <td>07-02-2023</td>
+        </tr>
+        <tr>
+        <td>Dr. Rajesh1</td>
+        <td></td>
+        <td>06-02-2023</td>
+        </tr>
+        <tr>
+        <td rowspan="2">Regulatory Department</td>
+        <td>Mr. Shivaram</td>
+        <td></td>
+        <td>08-02-2023</td>
+        </tr>
+        <tr>
+        <td>Mr. Solomon</td>
+        <td></td>
+        <td>06-02-2023</td>
+        </tr>
+        <tr>
+        <td>Formulation Development</td>
+        <td>Mr. Shakib</td>
+        <td></td>
+        <td>05-02-2023</td>
+        </tr>
+
+        </tbody>
+        </table>
+        </div>*@
+
+
+        <h6 class="pro_det">Supporting Documents</h6>
+
+        <div class="row product_profile">
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>Upload Document<span class="color-red">*</span></label>
+                    <div class="demo-content">
+                        <input type="file" disabled class="form-control" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-4">
+                <div class="form-group">
+                    <label>View Document</label>
+                    <div class="demo-content pt-2 ps-3">
+                        <a href="#" data-bs-toggle="modal" data-bs-target="#fileModal"><i class="fas fa-list"></i></a>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="col-lg-4">
+            <div class="form-group">
+            <label>Feasibility of Achieving Claims<span class="color-red">*</span></label>
+            <select class="form-control" data-singleselect>
+            <option>Select</option>
+            <option>Feasible</option>
+
+            </select>
+            </div>
+            </div>
+            <div class="col-lg-4">
+            <div class="form-group">
+            <label>Supporting Technical Statements from R&D</label>
+            <div class="demo-content">
+            <textarea name="editor1" cols="30" class="form-control"></textarea>
+            </div>
+            </div>
+            </div>
+            <div class="col-lg-4">
+            <div class="form-group">
+            <label>Measured By<span class="color-red">*</span></label>
+            <div class="demo-content">
+            <input type="text" class="form-control" />
+            </div>
+            </div>
+            </div>
+
+
+            <div class="col-lg-4">
+            <div class="form-group">
+            <label>Remarks / Restrictions</label>
+            <div class="demo-content">
+            <textarea name="editor1" cols="30" class="form-control"></textarea>
+            </div>
+            </div>
+            </div>*@
+
+            @* <div class="col-md-12">
+            <div class="float-right text-left">
+            <button type="button" class="btn-add">Add</button>
+            </div>
+            </div>*@
+        </div>
+
+    </div>
+
+    <h6 class="pro_det">Artwork Remarks</h6>
+    <div class="row product_profile">
+        <div class="col-lg-4">
+            <div class="form-group">
+                <label>Artwork Remarks</label>
+                <div class="demo-content">
+                    <textarea disabled name="editor1" cols="30" class="form-control">Ok with the claims details</textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row sticky-bottom">
+    <div class="save_buttons float-right text-right">
+        @*<button type="button" class="btn-add" data-bs-toggle="modal" data-bs-target="#SaveModal" data-title="Save"> Save</button>*@
+
+        @*<button type="button" class="btn-sb">Send To DSG</button>*@
+        @*<button type="button" class="btn-mail"> Send Back to HGML</button>*@
+
+        <button type="button" class="btn-rej" onclick="location.href = './ClaimsGridDocumentStatic';" data-title="Cancel"> Back</button>
+
+    </div>
+</div>
+
+@*save button*@
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want save the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = './ClaimsGridDocumentStatic';">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*Send to CFT*@
+<div class="modal fade hd" id="SendCFTModal" tabindex="-1" aria-labelledby="SendCFTModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">HGML Users</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                @* <form autocomplete="off">
+                <div class="autocomplete" style="width:300px;">
+                <input id="myInput" type="text" name="myCountry" placeholder="Country" class="form-control">
+                </div>
+                <input type="submit">
+                </form>*@
+                <form class="row bdr_clr autocomplete">
+
+                    @* <div class="col-lg-3">
+                    <div class="form-group">
+                    <label> Department<span class="color-red">*</span></label>
+                    <select class="form-control">
+                    <option>Select</option>
+                    <option>IRA</option>
+                    <option>Clinical</option>
+                    <option>F&D</option>
+
+                    </select>
+                    </div>
+                    </div>*@
+                    <div class="col-md-4">
+                        <div class="form-group product_profile multisect_grid">
+                            <label>HGML Users<span class="color-red">*</span></label>
+
+                            <select class="form-control" multiple="multiple" data-multiselect>
+                                <option>Shreyas@himalayawellness.com</option>
+                                <option>Sharan@himalayawellness.com</option>
+                                <option>Aparna@himalayawellness.com</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Remarks</label>
+                            <textarea id="editor" name="editor2" rows="1" cols="30" data-sample-short class="form-control"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <div class="float-left text-left mt-3 pt-3">
+                            <button type="button" class="btn-add">Add</button>
+                        </div>
+                    </div>
+                </form><br />
+                <table class="table table-bordered">
+                    <thead class="">
+                        <tr>
+                            <th class="">HGML Users</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td> <textarea class="form-control form-control-sm closeModal" cols="30" name="SelectedPmdUsersToSendPrototype" readonly="readonly"></textarea> <span class="color-red Error_PopupField" style="display:none" id="Error_SelectPmdUser">Please Add PMD user</span> </td>
+                        </tr>
+                    </tbody>
+                </table>
+                @*<div>
+                <table class="table table-bordered">
+                <thead class="mail_tbl">
+                <tr>
+
+                <th class="bdr_mail">Users</th>
+
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+
+                <td>
+                <textarea cols="30" class="form-control form-control-sm">kiran@himalayawellness.com, sathish@himalayawellness.com, suresh@himalayawellness.com, Shreyas@himalayawellness.com
+                </textarea>
+                </td>
+
+                </tr>
+
+                </tbody>
+
+                </table>
+                </div>*@
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn-add">Save</button>
+                <button type="button" class="btn-rej" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*File View Modal*@
+<div class="modal fade hd" id="fileModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supporting Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+                                        <th scope="col">Document Name</th>
+                                        <th scope="col">Uploaded By</th>
+                                        <th scope="col">Uploaded On</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody class="tb">
+
+                                    <tr>
+                                        <td class="text-center"><a href="/images/Claims.pdf" download="claims" class="btn-icon -history"><i class="fas fa-download" title="download" aria-hidden="true"></i>Claims_Grid.pdf</a></td>
+                                        <td>Shankar</td>
+                                        <td>22-02-2023</td>
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script>
+    CKEDITOR.replace('editor4_features', {
+        height: 50,
+        toolbarGroups: [
+
+            {
+                "name": "paragraph",
+                "groups": ["list", "blocks"]
+            },
+
+
+            //{
+            //    "name": "about",
+            //    "groups": ["about"]
+            //}
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editor5_features', {
+        height: 50,
+        toolbarGroups: [
+
+            {
+                "name": "paragraph",
+                "groups": ["list", "blocks"]
+            },
+
+
+            //{
+            //    "name": "about",
+            //    "groups": ["about"]
+            //}
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editor6_features', {
+        height: 50,
+        toolbarGroups: [
+
+            {
+                "name": "paragraph",
+                "groups": ["list", "blocks"]
+            },
+
+
+            //{
+            //    "name": "about",
+            //    "groups": ["about"]
+            //}
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+    CKEDITOR.replace('editor7_features', {
+        height: 50,
+        toolbarGroups: [
+
+            {
+                "name": "paragraph",
+                "groups": ["list", "blocks"]
+            },
+
+
+            //{
+            //    "name": "about",
+            //    "groups": ["about"]
+            //}
+        ],
+        // Remove the redundant buttons from toolbar groups defined above.
+        removeButtons: 'Underline,Strike,Subscript,Superscript,Anchor,Styles,Specialchar,PasteFromWord'
+    });
+</script>
+<script>
+    data = [
+        {
+            "Action": " ",
+            "Claims": "Clear Skin",
+            "Feasibilityclaims": "Feasible",
+            "R&D": "Clear skin refers to -Free from surface impurities, oil, blemishes, dark spots",
+            "MeasuredBy": "Clinical data",
+            "Remarks": " *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome ",
+            "CFTRemarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots",
+
+        },
+        {
+            "Action": " ",
+            "Claims": "Clinically tested for effectiveness Reduce dark spots* in X weeks(2 weeks) * OR Visibl diminishes the dark spots in X weeks (2 weeks) OR Clinically tested.Visible results in X weeks- (2 weeks) ",
+            "Feasibilityclaims": "Feasible",
+            "R&D": "Reduction in the appearance of spots in x weeks as evaluated by dermatologist, instrumental study, and subjective/selfassessment questionnaires.",
+            "MeasuredBy": "Clinical study data",
+            "Remarks": " *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome ",
+            "CFTRemarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots",
+
+        },
+
+        {
+            "Action": " ",
+            "Claims": "With 2 % Niacinamide + 2 0/0 Glycolic acid",
+            "Feasibilityclaims": "",
+            "R&D": "Form ula contains Niacinamide and 2 % Glycolic acid that are known to help reduce the dark spots for a brighter looking skin.",
+            "MeasuredBy": "Form ulation data",
+            "Remarks": " *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome ",
+            "CFTRemarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots",
+
+        },
+        {
+            "Action": " ",
+            "Claims": "Boosts skin radiance.OR Improves skin radiance.",
+            "Feasibilityclaims": "Feasible",
+            "R&D": "In-vitro evaluation of Licorice extract has shown significant suppression of Melanin production and tyrosinase inhibition activity",
+            "MeasuredBy": "Invitro data",
+            "Remarks": " *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome ",
+            "CFTRemarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots",
+
+        },
+        {
+            "Action": " ",
+            "Claims": "Reveals your natural",
+            "Feasibilityclaims": "Feasible",
+            "R&D": "Parameters as evaluated by under the supervision of dermatologists / subjective",
+            "MeasuredBy": "Clinical data",
+            "Remarks": " *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome ",
+            "CFTRemarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots",
+
+        },
+
+    ]
+    colmodels = [
+        {
+            name: 'Action',
+            label: 'Action',
+            width: 90,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return `<div class="justify-center_">
+                                                <a href="@Url.Content("")" class="btn-icon -edit "><i class="fas fa-edit"></i></a>
+                                                <a href="#" class="btn-icon -delete"><i class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+                                            </div>`;
+            }
+        },
+
+        {
+            name: 'Claims',
+            label: 'Claims',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Feasibilityclaims',
+            label: 'Feasibility of Achieving claims',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'R&D',
+            label: 'Supporting technical statements from R&D',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'MeasuredBy',
+            label: 'Measured By',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Remarks',
+            label: 'DSG Remarks / Restrictions',
+            resizable: true,
+            ignoreCase: true,
+
+        },
+        {
+            name: 'CFTRemarks',
+            label: 'HGML Remarks',
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return `<div class="demo-content">
+            //                        <textarea name="editor1" style="border:0;" class="form-control" spellcheck="false"></textarea>
+            //                    </div>`;
+            //}
+        },
+
+
+
+
+    ],
+
+        $("#claims_documeent").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#pager_claims_documeent',
+            rowNum: 20,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#claims_documeent tbody tr");
+                var objHeader = $("#claims_documeent tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    //$("#worksheet").jqGrid('filterToolbar', {
+    //    autosearch: true,
+    //    stringResult: false,
+    //    searchOnEnter: false,
+    //    defaultSearch: "cn"
+    //});
+
+    $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+    $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '10vh' });
+    var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+    if ($TableHeight > 330) {
+        $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+        $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+    }
+    else {
+        $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+        $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+    }
+
+</script>
+<script>
+    data = [
+        {
+            "Action": " ",
+            "Claims": "XX% of subjects agree product reduces dark spots in x weeks",
+            "Feasibilityclaims": "Feasible",
+            "R&D": "Evalu ation of parameters/ sensory attributes like non—sticky feel, fast absorbing, soft,smooth, overall improvement in skin texture, glow, radiance, healthier looking skin,) by subjective/ self—assessment questionnaires",
+            "MeasuredBy": "Clinical data",
+            "Remarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots refer to  (Blemishes, sunspots, a e- s ots, suntan.) ",
+            "CFTRemarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots",
+        },
+
+        {
+            "Action": " ",
+            "Claims": "Clinically tested to reduce dark spots in (size, color, intensity) in consumers",
+            "Feasibilityclaims": "Feasible",
+            "R&D": "Reduction in the size lappearance, intensity, colour number of spots in x weeks as evaluated by dermatologist/instrumental study.",
+            "MeasuredBy": "Clinical data",
+            "Remarks": "Subjected to clinical study outcome",
+            "CFTRemarks": "Subject to regulatory approval in RUMEA along with signed business risk form X out of 1 0 Subjected to clinical study outcome Spots",
+
+        },
+
+    ]
+    colmodels = [
+        {
+            name: 'Action',
+            label: 'Action',
+            width: 90,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return `<div class="justify-center_">
+                                                    <a href="@Url.Content("")" class="btn-icon -edit "><i class="fas fa-edit"></i></a>
+                                                    <a href="#" class="btn-icon -delete"><i class="fas fa-trash" data-bs-toggle="modal" data-bs-target="#DeleteModal" title="Delete"></i></a>
+                                                </div>`;
+            }
+        },
+
+        {
+            name: 'Claims',
+            label: 'Claims',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Feasibilityclaims',
+            label: 'Feasibility of Achieving claims',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'R&D',
+            label: 'Supporting technical statements from R&D',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'MeasuredBy',
+            label: 'Measured By',
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Remarks',
+            label: 'DSG Remarks / Restrictions',
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return `<div class="demo-content">
+            //                    <textarea name="editor" style="border:0;" class="form-control"></textarea>
+            //                </div>`;
+            //}
+        },
+        {
+            name: 'CFTRemarks',
+            label: 'HGML Remarks',
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return `<div class="demo-content">
+            //                            <textarea name="editor1" style="border:0;" class="form-control"></textarea>
+            //                        </div>`;
+            //}
+        },
+
+
+
+
+    ],
+
+        $("#claims_documeent1").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#pager_claims_documeent1',
+            rowNum: 20,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#claims_documeent1 tbody tr");
+                var objHeader = $("#claims_documeent1 tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    //$("#worksheet").jqGrid('filterToolbar', {
+    //    autosearch: true,
+    //    stringResult: false,
+    //    searchOnEnter: false,
+    //    defaultSearch: "cn"
+    //});
+
+    $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+    $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '10vh' });
+    var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+    if ($TableHeight > 330) {
+        $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+        $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "17px");
+    }
+    else {
+        $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+        $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px")
+    }
+
+</script>
+<script>
+
+    $('[data-multiselect]').multiselect({
+        includeSelectAllOption: true,
+        buttonWidth: '100%',
+        enableCaseInsensitiveFiltering: true,
+        enableFiltering: true
+    });
+
+</script>

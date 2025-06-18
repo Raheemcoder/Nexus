@@ -1,0 +1,496 @@
+﻿* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    height: 100vh;
+    background: linear-gradient(185deg, #2d4ea5 0%, #c1e0ff 100% 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.logoBox {
+    width: 15%;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #002543;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin-top: 20px;
+    margin-right: 7px;
+    padding: 10px;
+    border-radius: 29px;
+    align-self: flex-end;
+}
+
+/* Animated background particles */
+body::before,
+body::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle at 10% 20%, rgba(255, 255, 255, 0.25) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.2) 0%, transparent 50%), radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.15) 0%, transparent 50%);
+    animation: float 8s ease-in-out infinite;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.bg-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.particle {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    animation: floatParticle 6s ease-in-out infinite;
+}
+
+    .particle:nth-child(1) {
+        width: 80px;
+        height: 80px;
+        left: 10%;
+        animation-delay: 0s;
+    }
+
+    .particle:nth-child(2) {
+        width: 60px;
+        height: 60px;
+        left: 20%;
+        animation-delay: 1s;
+    }
+
+    .particle:nth-child(3) {
+        width: 40px;
+        height: 40px;
+        right: 20%;
+        animation-delay: 2s;
+    }
+
+    .particle:nth-child(4) {
+        width: 100px;
+        height: 100px;
+        right: 10%;
+        animation-delay: 3s;
+    }
+
+    .particle:nth-child(5) {
+        width: 30px;
+        height: 30px;
+        left: 50%;
+        animation-delay: 4s;
+    }
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px) scale(1);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: translateY(-10px) scale(1.05);
+        opacity: 1;
+    }
+}
+
+@keyframes floatParticle {
+    0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.7;
+    }
+
+    50% {
+        transform: translateY(-20px) rotate(180deg);
+        opacity: 1;
+    }
+}
+
+/* Logo positioning */
+.logo-top-right {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+}
+
+    .logo-top-right:hover {
+        opacity: 1;
+    }
+
+    .logo-top-right img {
+        width: 100%;
+        filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
+    }
+
+/* Main login container */
+.login_page {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 420px;
+    padding: 20px;
+}
+
+.middle_box {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_bg {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 24px;
+    padding: 48px 40px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+    width: 100%;
+    text-align: center;
+    position: relative;
+    animation: slideUp 0.6s ease-out;
+}
+
+    .form_bg:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 35px 60px -12px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.3);
+    }
+
+    .form_bg > p:first-child {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-bottom: 8px;
+        position: relative;
+    }
+
+    .form_bg > p:nth-child(2) {
+        color: #64748b;
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 40px;
+    }
+
+/* Form styling */
+.form-group {
+    margin-bottom: 1px;
+    text-align: left;
+    transform: translateY(0);
+    transition: transform 0.3s ease;
+}
+
+.form-control {
+    width: 100%;
+    padding: 10px 20px;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    background: #f8fafc;
+    color: #374151;
+    font-family: inherit;
+}
+
+    .form-control:focus {
+        outline: none;
+        border-color: #667eea;
+        background: white;
+        box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        transform: translateY(-1px);
+        animation: focusPulse 0.3s ease-out;
+    }
+
+    .form-control::placeholder {
+        color: #9ca3af;
+    }
+
+/* Validation messages */
+.text-danger {
+    color: #ef4444 !important;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: 4px;
+    display: block;
+}
+
+.validation_login {
+    padding-left: 4px;
+}
+
+/* Sign in button */
+.btn.signin {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+    font-family: inherit;
+}
+
+    .btn.signin::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .btn.signin:hover::before {
+        left: 100%;
+    }
+
+    .btn.signin:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.4);
+    }
+
+    .btn.signin:active {
+        transform: translateY(0);
+    }
+
+    .btn.signin:focus {
+        outline: 2px solid #667eea;
+        outline-offset: 2px;
+    }
+
+/* Alert messages */
+.alert {
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 0;
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.alert-success {
+    background: rgba(34, 197, 94, 0.1);
+    color: #16a34a;
+    border-left: 4px solid #22c55e;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+    border-left: 4px solid #ef4444;
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: #d97706;
+    border-left: 4px solid #f59e0b;
+}
+
+.alert-info {
+    background: rgba(59, 130, 246, 0.1);
+    color: #2563eb;
+    border-left: 4px solid #3b82f6;
+}
+
+#message {
+    margin-top: 20px;
+}
+
+/* Form animations */
+.form-control:focus + div,
+.form-group:focus-within {
+    transform: translateY(-2px);
+}
+
+.form_bg.loading {
+    opacity: 0.8;
+    pointer-events: none;
+}
+
+    .form_bg.loading .btn.signin {
+        background: #94a3b8;
+        cursor: not-allowed;
+    }
+
+.form_bg::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, #667eea, #764ba2, #667eea);
+    border-radius: 26px;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.form_bg:hover::before {
+    opacity: 0.1;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes focusPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(102, 126, 234, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 0 6px rgba(102, 126, 234, 0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 480px) {
+    .login_page {
+        padding: 10px;
+    }
+
+    .form_bg {
+        padding: 32px 24px;
+        border-radius: 16px;
+    }
+
+        .form_bg > p:first-child {
+            font-size: 28px;
+            padding-top: 70px;
+        }
+
+            .form_bg > p:first-child::before {
+                top: 10px;
+                width: 50px;
+                height: 50px;
+                font-size: 20px;
+            }
+
+    .logo-top-right img {
+        height: 40px;
+    }
+}
+
+@media (max-width: 320px) {
+    .form_bg {
+        padding: 24px 20px;
+    }
+
+        .form_bg > p:first-child {
+            font-size: 24px;
+        }
+}
+
+/* Utility and spinner */
+.mt-2 {
+    margin-top: 0.5rem !important;
+}
+
+.mt-3 {
+    margin-top: 1rem !important;
+}
+
+.spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 8px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.loading .spinner {
+    display: inline-block;
+}
+
+.title_name {
+    display: flex;
+    align-items: center;
+    justify-content:center;
+    gap: 10px;
+    margin-bottom:10px;
+}
+
+    .title_name p {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+.title_img {
+    height: 30px;
+    margin-bottom:10px;
+}
+.toggle-password {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #666;
+    z-index: 2;
+    padding-bottom:9.35%;
+}
+
+input[type="password"]::-ms-reveal,
+input[type="password"]::-ms-clear {
+    display: none;
+}
+
+input[type="password"]::-webkit-credentials-auto-fill-button,
+input[type="password"]::-webkit-clear-button {
+    display: none !important;
+}

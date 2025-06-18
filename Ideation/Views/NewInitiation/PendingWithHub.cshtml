@@ -1,0 +1,828 @@
+﻿@model Ideation.Models.NPD;
+@{
+    ViewBag.Title = "PendingWithHub";
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+    var userName = Context.Session.GetString("UserName");
+}
+
+<script src="~/ckeditor/ckeditor.js"></script>
+<div class="card-box mb-0">
+    @using (Html.BeginForm("HGMLReview", "NewInitiation", FormMethod.Post, new { id = "Npd_HGMLReview_Form_Submit" }))
+    {
+        @Html.HiddenFor(model=>model.JsonFormNpdData)
+        @Html.HiddenFor(model=>model.JsonFormNpdHgmlReviewData)
+
+        @Html.HiddenFor(model => model.ProjectId,new{@id="ProjectId"})
+        @Html.HiddenFor(model => model.HgmlData)
+        @Html.HiddenFor(model => model.Status,new{@id="NpdStatus"})
+        @Html.HiddenFor(model=>model.ApprovalStatus)
+        @Html.HiddenFor(model=>model.SendToHubRemarks)
+        @Html.HiddenFor(model=>model.SendToPmdRemarks)
+        @Html.HiddenFor(model=>model.SendBackToInitiatorRemarks)
+        @Html.HiddenFor(model=>model.RejectRemarks)
+
+        <div class="tb_clr marbt">
+            <h3 class="cen_txt">NPD-HUB Review</h3>
+            <table class="table table-bordered">
+                <thead>
+                    <tr class="mod_th">
+                        <th scope="col">Hub</th>
+                        <th scope="col">Division</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">HUB Approve</th>
+                        <th scope="col">Initiated By</th>
+                        <th scope="col">Initiated Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Download</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>India</td>
+                        <td id="NPD_Division">
+                            @Html.DropDownListFor(model => model.Division,Model.DivisionList,"--Select--",new { @class = "form-select-sm", @id="Division", @disabled = "disabled"})
+                        </td>
+                        <td id="NPD_Category">
+                            <select class="form-select-sm addCategoryOption data-singleselect" id="Npd_Category" name="Category" disabled>
+                                <option value="">--Select--</option>
+                                @Html.HiddenFor(model => model.Category, new { @class="form-control form-control-sm", @id="Category"} )
+                            </select>
+                        </td>
+                        <td id="Npd_HubApproveConfirmation">
+                            @Html.DropDownListFor(model => model.HubApproveConfirmation, new List<SelectListItem>()
+                        {
+                        new SelectListItem() { Text= "Yes", Value = "Yes" },
+                        new SelectListItem() { Text= "No", Value = "No" }
+                        }, "--Select--",new {@id="HubApproveConfirmation", @class="form-control"})
+                        </td>
+                        <td id="NPD_InitiatedBy">@userName</td>
+                        <td id="NPD_InitiatedDate"></td>
+                        <td id="NPD_Status">HUB Review</td>
+                        <td class="rd1"><a href="@Url.Content("#")" data-bs-toggle="modal" data-bs-target="#examplerModal"><i class="fa fa-info-circle" aria-hidden="true"></i></a></td>
+                        <td><a href="@Url.Content("~/images/Charcoal Range_Project brief.pdf")" download="Project Brief"><i class="fa fa-download" aria-hidden="true"></i></a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            @*Project Details*@
+
+            <form class="bck_prd">
+                <h6 class="pro_det">Project Details</h6>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Project Name <span class="color-red">*</span></label>
+                    <div class="col-sm-10 pd">
+                        @*<input type="text" readonly class="form-control form-control-sm" value="Project Name 1">*@
+                        @Html.TextBoxFor(model=>model.ProjectName,new { @id="Npd_ProjectName", @class="form-control form-control-sm", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <lable class="col-sm-2 col-form-label">Business Objective <span class="color-red">*</span></lable>
+                    <div class="ckediter_tolbar col-sm-10">
+                        @*<textarea id="editor" name="editor2" cols="30" data-sample-short class="form-control" readonly>Establish Himalaya’s presence
+                    Rs 2 shampoo Sachet segment (opportunity size INR 832 Cr Urban India market)</textarea>*@
+                        @Html.TextAreaFor(model => model.BusinessObjective, new { @name="editor2", @class = "form-control", @id="Npd_BusinessObjective", @cols="30" , @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">HGML Remarks</label>
+                    <div class="col-sm-10 pd">
+                        @*<textarea id="editor" name="editor2" cols="30" readonly data-sample-short="" class="form-control form-control-sm"></textarea>*@
+                        @Html.TextAreaFor(model=>model.ProjectDetailsHGMLRemarks, new { @id="PD_HGML_Remarks", @name="editor2", @cols="30", @class="form-control form-control-sm" })
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">HUSA Remarks</label>
+                    <div class="col-sm-10 pd">
+                        @*<textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>*@
+                        @Html.TextAreaFor(model=>model.ProjectDetailsHubRemarks, new { @id="PD_HUB_Remarks", @name="editor2", @cols="30", @class="form-control form-control-sm" })
+                    </div>
+                </div>
+
+                @*Product Positioning*@
+
+                <h6 class="pro_det">Product Positioning</h6>
+                <div class="row mb-3">
+                    <label class="col-sm-2 col-form-label">Target Consumer <span class="color-red">*</span></label>
+                    <div class="col-sm-10 pd">
+                        @*<input type="text" class="form-control form-control-sm" readonly value="Sachet format users
+                    is the primary driver for sachet usage">*@
+                        @Html.TextBoxFor(model => model.ProductPositioningTargetConsumer, new { @class = "form-control form-control-sm ProductPositioning", @id="PP_TargetConsumer", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="row mb-3">
+                    <lable class="col-sm-2 col-form-label">Competitive Offerings</lable>
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(model => model.ProductPositioningCompetitiveOfferings, new { @name="editor3", @class = "form-control ProductPositioning", @id="PP_CompetitiveOfferings", @cols="30", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="row mb-2">
+                    <lable class="col-sm-2 col-form-label">Unmet Need</lable>
+                    <div class="col-sm-10">
+                        @Html.TextAreaFor(model => model.ProductPositioningUnmetNeed, new { @name="editor3", @class = "form-control ProductPositioning", @id="PP_UnmetNeed", @cols="30",  @readonly = "readonly" })
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="worksheet" class="table table-bordered"></table>
+                                            <div id="pager_worksheet"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mb-3">
+                        <lable class="col-sm-2 col-form-label">HUSA Remarks <span class="color-red">*</span></lable>
+                        <div class="ckediter_tolbar col-sm-10">
+                            @Html.TextAreaFor(model=>model.ProductPositioningHubRemarks, new { @id="PP_HUB_Remarks", @name="editorhusa", @cols="30", @class="form-control" })
+                        </div>
+                    </div>
+                    <div class="row product_profile mb-3">
+                        <div class="row product_profile mb-3">
+                            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+                            <div class="col-sm-10 pd">
+                                <textarea id="editor" name="editor2" readonly cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
+                       @* <div class="row product_profile mb-3">
+                            <label class="col-sm-2 col-form-label">HUSA Remarks</label>
+                            <div class="col-sm-10 pd">
+                                <textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>*@
+                    </div>
+                </div>
+
+                @*Product Profile: Formulation Profile*@
+
+                <h6 class="pro_det">Product Profile: Formulation Profile</h6>
+                <div class="row product_profile">
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="product_profile" class="table table-bordered"></table>
+                                            <div id="pager_product"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row product_profile mb-3">
+                            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+                            <div class="col-sm-10 pd">
+                                <textarea id="editor" name="editor2" readonly cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
+                        <div class="row product_profile mb-3">
+                            <label class="col-sm-2 col-form-label">HUSA Remarks</label>
+                            <div class="col-sm-10 pd">
+                                <textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @*Product Profile: Packaging Profile*@
+
+                <h6 class="pro_det flx-head">Product Profile: Packaging Profile</h6>
+                <div class="col-md-12">
+                    <div class="product_packag product_profile">
+                        <div class="product_title">
+                            <h6>Expected Packaging Material</h6>
+                        </div>
+                        <div class="add_grid_">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="m-table__main mt-2 mb-4">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="expected" class="table table-bordered"></table>
+                                                <div id="pager_expected"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="product_packag product_profile">
+                        <div class="row">
+                            <div class="row product_profile mb-3">
+                                <label class="col-sm-2 col-form-label">HGML Remarks</label>
+                                <div class="col-sm-10 pd">
+                                    @* <textarea id="editor" name="editor2" readonly cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>*@
+                                    @Html.TextAreaFor(model=>model.PackagingProfileHGMLRemarks, new { @id="PPR_HGML_Remarks", @name="editor2", @cols="30", @class="form-control form-control-sm" })
+                                </div>
+                            </div>
+                            <div class="row product_profile mb-3">
+
+                                <label class="col-sm-2 col-form-label">HUSA Remarks</label>
+                                <div class="col-sm-10 pd">
+                                    @*<textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>*@
+                                    @Html.TextAreaFor(model=>model.PackagingProfileHubRemarks, new { @id="PPR_HGML_Remarks", @name="editor2", @cols="30", @class="form-control form-control-sm" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product_profile">
+                    <div class="pro_det business_info">
+                        <h6 class="">Business Information</h6>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="hub_align">
+                                <span class="hub_view" data-bs-toggle="modal" data-bs-target="#exampleModalView">INDIA Business Information</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Product <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="product" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>SKU <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="sku" />
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed Names of product<span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="proposed">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed launch date <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="date" data-datepicker>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed Selling Price <span class="color-red">*</span></label>
+                                <input type="text" class="form-control " id="price">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed TP <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="mrp_tp">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed MRP <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="mrp_tp">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Expected GP % <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="gp">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Business Value <span class="Bus_val">(Y2 Quantity * Proposed Selling Price)</span> <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="gp">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>M1 Quantity <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="m1">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>M2 Quantity <span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="m2">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>M3 Quantity<span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="m3">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Y1 Quantity<span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="y1">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Y2 Quantity<span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="y2">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Y3 Quantity<span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="y3">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>UOM<span class="color-red">*</span></label>
+                                <input type="text" class="form-control" id="y3">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="float-right text-left btn_flt">
+                                <button type="button" class="btn-add">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="business_info" class="table table-bordered"></table>
+                                            <div id="pager_businessinfo"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="row product_profile mb-3 mt-2">
+
+                            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+                            <div class="col-sm-10 pd">
+                                <textarea id="editor" name="editor2" readonly cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>
+                            </div>
+
+                        </div>
+                        <div class="row product_profile mb-3">
+
+                            <label class="col-sm-2 col-form-label">HUSA Remarks</label>
+                            <div class="col-sm-10 pd">
+                                <textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pending_hgmlfields product_profile mt-3">
+                    <h6 class="pro_det">HGML / HUB Data</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>HGML To HUB Remarks</label>
+                                <textarea id="editor" name="editor2" cols="30" readonly data-sample-short class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>HUSA Remarks</label>
+                                <textarea id="editor" name="editor2" cols="30" data-sample-short class="form-control form-control-sm"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row sticky-bottom">
+                    <div class="save_buttons float-right text-right pdd">
+                        <button type="button" class="btn-ap" data-bs-toggle="modal" data-bs-target="#SaveModal" data-title="Save">Save</button>
+                        <button type="button" class="btn-sb" data-bs-toggle="modal" data-bs-target="#SendbackModal" data-title="Send Back">Send To HGML</button>
+                        <button type="button" class="btn-rej" onclick="location.href = './NewInitiation';"> Cancel</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    }
+</div>
+
+@*save button*@
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want save the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = './NewInitiation';">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*sendtohgml modal*@
+<div class="modal fade  hd" id="SendbackModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Send To HGML Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Send To HGML Review?
+                                </label><br />
+                                <label>Remarks</label>
+
+                                <textarea class="form-control" rows="2"></textarea>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = './NewInitiation';">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*Approval pop up*@
+<div class="modal fade hd" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @*<div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>*@
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+
+                                        <th scope="col">Designation</th>
+                                        <th scope="col">Confirmed By</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                    <tr class="filters fil_bck">
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody class="tb">
+
+                                    <tr>
+                                        <td>GM</td>
+                                        <td>Akash A</td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>HGML</td>
+                                        <td>Shreyas K R </td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>PMD</td>
+                                        <td>Dr. Archana</td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>CFT</td>
+                                        <td>Amrish Mahajan</td>
+                                        <td>Approved</td>
+                                        <td></td>
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header" style="background: #fff;border: none;">
+                    @* <h5 class="modal-title">Modal Window</h5>*@
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="apr_hed modal-title"></h6>
+                    <form class="tx_pad">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pd">
+                                    <label class="control-label">
+                                        Remarks
+                                    </label>
+
+                                    <textarea class="form-control" rows="6"></textarea>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+
+
+                                @* <div class="save_buttons float-right text-right">
+
+                                <button type="button" class="btn-ap" onclick="location.href = '/ProjectBrief/ProjectBrief';"> Approve</button>
+
+                                </div>*@
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-sb1 test4" onclick="location.href = './Send';">Send back</button>
+                    <button type="button" class="btn-rej test3 " onclick="location.href = './Reject';">Cancel</button>
+                    <button type="button" class="btn-sb test " onclick="location.href = './Approve';">Approve</button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="exampleModalView" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">INDIA Business Information</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @*<div class="col-md-12">
+                <div class="product_packag product_profile">
+
+                <div class="col-md-12">
+                <div class="row">
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Product <span class="color-red">*</span></label>
+                <input type="text" class="form-control" id="product22" value="Product1" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">SKU <span class="color-red">*</span></label>
+                <input type="text" class="form-control" id="sku22" value="SKU001" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Proposed Names of product</label>
+                <input type="text" class="form-control" id="sku23" value="Bhringaraja Hairfall Shampoo (TBC)" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Proposed launch date</label>
+                <input type="text" class="form-control" id="desired21" value="12-06-2022" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Proposed Selling Price</label>
+                <input type="text" class="form-control" id="Desired211" value="Rs 3 for 6 mll" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Proposed MRP/TP)</label>
+                <input type="text" class="form-control" id="Others3" value="Rs 2 for 6 ml" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Expected GP %</label>
+                <input type="text" class="form-control" value="Rs 2 for 6 ml" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Business Value</label>
+                <input type="text" class="form-control" value="" readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">M1</label>
+                <input type="text" class="form-control" value="20,00,000 ." readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">M2</label>
+                <input type="text" class="form-control" value="30,00,000 ." readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">M3</label>
+                <input type="text" class="form-control" value="20,00,000 ." readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Y1</label>
+                <input type="text" class="form-control" value="2,20.00.000 ." readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Y2</label>
+                <input type="text" class="form-control" value="2,20.00.000 ." readonly>
+                </div>
+                </div>
+                <div class="col-md-3">
+                <div class="form-group">
+                <label class="control-label">Y3</label>
+                <input type="text" class="form-control" value="3,70.00.000 ." readonly>
+                </div>
+                </div>
+
+                </div>
+                </div>
+
+                </div>
+                </div>*@
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="business_info_view" class="table table-bordered"></table>
+                                        <div id="pager_businessinfo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+@*View pop up*@
+<div class="modal fade hd" id="examplerModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            @*<div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>*@
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+
+                                        <th scope="col">From Stage</th>
+                                        <th scope="col">To Stage</th>
+                                        <th scope="col">Remarks</th>
+                                        <th scope="col">Remarks By</th>
+                                        <th scope="col">Date </th>
+                                    </tr>
+                                    <tr class="filters fil_bck">
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody class="tb">
+
+                                    <tr>
+                                        <td>HGML Review</td>
+                                        <td>Sent Back to Initiator</td>
+                                        <td>Please add the benchmark details</td>
+                                        <td>Shreyas K R</td>
+                                        <td>02-11-2022</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>HGML Review</td>
+                                        <td>HUB Review</td>
+                                        <td>Please  review the Project Brief details and confirm</td>
+                                        <td>Shreyas K R</td>
+                                        <td>10-11-2022</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>HGML Approve</td>
+                                        <td>PMD Review</td>
+                                        <td>Please  review the Project Brief details</td>
+                                        <td>Shreyas K R</td>
+                                        <td>20-11-2022</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>PMD Review</td>
+                                        <td>HGML Approve</td>
+                                        <td>Please provide the Business Information details</td>
+                                        <td>Akshatha Vaidya</td>
+                                        <td>01-12-2022</td>
+
+                                    </tr>
+                                    @*  <tr>
+                                    <td>PMD Team</td>
+                                    <td>Shreyas K R </td>
+                                    <td>Send Back To Initiator</td>
+                                    <td>Please add the benchmark samples details and share</td>
+
+                                    </tr>
+                                    <tr>
+                                    <td>HGML Team</td>
+                                    <td>Dr. Archana</td>
+                                    <td>Send Back To Initiator</td>
+                                    <td>Please add the benchmark samples details and share</td>
+
+                                    </tr>
+                                    <tr>
+                                    <td>PMD Team</td>
+                                    <td>Amrish Mahajan</td>
+                                    <td>Send Back To Initiator</td>
+                                    <td>Please add the benchmark samples details and share</td>
+
+                                    </tr>
+                                    *@
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*  <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save changes</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/npd/pendingwithhub.js")" asp-append-version="true"></script>

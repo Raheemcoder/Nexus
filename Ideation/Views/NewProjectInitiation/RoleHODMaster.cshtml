@@ -1,0 +1,112 @@
+﻿@using Newtonsoft.Json;
+@model Ideation.Models.TemplateData
+@{
+    ViewData["Title"] = "Role HOD Master";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+<style>
+    .filter_status button.btn, .prototype_filter button.btn {
+        padding: 4px;
+        line-height: 1;
+        background: #00d546;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 2px;
+        border: 0;
+    }
+
+    .prototype_filter .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 29px;
+    }
+</style>
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> <span>Masters/</span> Role HOD Master</h4>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="d-flex justify-content-between mb-1">
+
+        <div class="prototype_filter">
+            <div class="d-flex">
+                <div class="col-width3">
+                    <div class="form-group flaoting_ ">
+                        <label class="control-label">Template Name </label>
+                        @Html.DropDownListFor(model => model.Description, Model.TemplateList, "Please select Template Name", new { @class = "form-control form-control-sm data-singleselect", @id = "TemplateName" })
+                    </div>
+                </div>
+                <div class="col-width1 mt-4 ml-2">
+                    <button class="btn btn-search" title="search" type="button" id="SearchTMData">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh" title="refresh" type="button" id="refreshbtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="d-flex excel_expand align-items-center">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download"/>
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_button ml-2">
+                    <button type="button" class="btn btn-success">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+    @Html.HiddenFor(model => model.SetTemplateDataList, new { @id = "TemplateDataList" })
+    <div class="animate__animated2 slideInUp">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="rolehod_grid" class="table table-bordered"></table>
+                            <div id="rolehod_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade sv hd" id="confirmationPopUpforSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgforsave">
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewProjectInitiation/RoleHODMaster.js")" asp-append-version="true"></script>
+

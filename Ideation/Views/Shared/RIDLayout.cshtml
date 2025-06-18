@@ -1,0 +1,804 @@
+﻿@{
+
+    @using Microsoft.AspNetCore.Http;
+    @inject IHttpContextAccessor HttpContextAccessor
+    @inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.SessionOptions> SessionOptions
+    var timeout = SessionOptions.Value.IdleTimeout.TotalMinutes;
+    var userName = Context.Session.GetString("UserName");
+    var role = Context.Session.GetString("Role");
+
+    var Email = Context.Session.GetString("EmailId");
+    var loggedUser = Context.Session.GetString("LoggedUserName");
+    var AppshortName = Context.Session.GetString("AppShortName");
+    var divisionId = Convert.ToInt32(Context.Session.GetString("DivisionId"));
+}
+<input type="hidden" value="@role" id="userrole" />
+<!DOCTYPE html>
+<html lang="en" class="skew">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISpace</title>
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/assets_RID/assets/images/leaf.ico")" />
+    <link href="@Url.Content("~/assets_RID/assets/css/layout.min.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/js/popper.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/jqgrid/js/grid.locale-en.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/js/jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/select2/select2.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/js/app.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/assets_RID/assets/js/jquery.fullscreen-min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/Moment/moment.js")"></script>
+    <script src="@Url.Content("~/js/aes.js")" asp-append-version="true"></script>
+
+    <script src="~/js/ridlayout.min.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</head>
+<body class="project_initiation new_layout" id="jquery-script-menu">
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container ">
+            <div class="c-loader__inner">
+            </div>
+            <div class="c-loader__outer">
+            </div>
+            <div class="c-loader__img">
+            </div>
+        </div>
+    </div>
+
+    <header id="topnav" class="header_section">
+
+
+        @*header logo container starts*@
+        <div class="ispace-logo">
+            <a href="@Url.Content("~/Landing/index")"><img src="@Url.Content("~/assets_RID/assets/images/ispace-logo.png")" alt="ispace" height="26px" /></a>
+        </div>
+        @*user info container starts*@
+        <div class="d-flex align-items-center">
+            <div class="Home_tiles">
+                <i class="flaticon-home cursor_pointer"></i>
+                <div class="list_projects animate__fadeInUp">
+                    <ul>
+                        @{
+                            if (AppshortName != null)
+                            {
+                                var AppshortNameList = AppshortName.Split(',');
+
+                                foreach (var item in AppshortNameList)
+                                {
+                                    if (item == "IW")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/ideation.png" />
+                                                    <p>Ideation Workflow</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "PB")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/ProjectBrief.png" />
+                                                    <p>Project Brief</p>
+                                                </div>
+                                            </a>
+                                        </li>
+
+                                    }
+                                    if (item == "PT")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/project-tracker.png" />
+                                                    <p>Project Tracker</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "ET")
+                                    {
+                                        <li>
+
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/effort.png" />
+                                                    <p>Effort Booking</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "MM")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/MasterManagement.png" />
+                                                    <p>Master Management</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "PROT")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/Prototype.png" />
+                                                    <p>Prototype</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "PU")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/project-update.png" />
+                                                    <p>Project Updates</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "CGD")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/claims-grid.png" />
+                                                    <p>Claims Grid Document</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "RR")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/ideation.png" />
+                                                    <p>Risk Register</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "NPDLM")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/NPDLaunchMaster.png" />
+                                                    <p>NPD Launch Master</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "PI")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/ProjectInitiation.png" />
+                                                    <p>Project Initiation</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                    if (item == "RID")
+                                    {
+                                        <li>
+                                            <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                                <div class="tile_projects">
+                                                    <img src="~/assets_RID/assets/images/project_tiles/RID-1.png" />
+                                                    <p>Regulatory Ingredient Database</p>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            }
+                        }
+                    </ul>
+                </div>
+            </div>
+
+            @*header logo container ends*@
+            <div class="main_nav">
+                <div class="project_menu_">
+                    <div class="">
+                        <div class="mobile_menu">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </div>
+                        <div id="navigation" class="menu_section">
+                            <!-- Navigation Menu-->
+                            <ul class="navigation-menu" id="main_menu">
+                                @if (role.ToUpper() == "ADMIN")
+                                {
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/SearchRID")">Regulatory Ingredient Database</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/IngredientsRegulation")">Region-Wise Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/ApproveRID")">Global Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/RIDViewEdit")">Compliance Request</a>
+                                    </li>
+
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="has-submenu ">
+                                                    <a href="@Url.Content("~/RID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                                else if (role.ToUpper() == "IRA")
+                                {
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/IngredientsRegulation")">Region-Wise Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/ApproveRID")">Global Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/RIDViewEdit")">Compliance Request</a>
+                                    </li>
+
+
+                                }
+                                else if (role.ToUpper() == "IRA GLOBAL")
+                                {
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/IngredientsRegulation")">Region-Wise Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/ApproveRID")">Global Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/RIDViewEdit")">Compliance Request</a>
+                                    </li>
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="has-submenu ">
+                                                    <a href="@Url.Content("~/RID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+
+                                }
+                                else if (role.ToUpper() == "IRA INDIA")
+                                {
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/IngredientsRegulation")">Region-Wise Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/ApproveRID")">Global Compliance</a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/RIDViewEdit")">Compliance Request</a>
+                                    </li>
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="has-submenu ">
+                                                    <a href="@Url.Content("~/RID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                                else
+                                {
+                                    <li class="has-submenu ">
+                                        <a href="@Url.Content("~/RID/SearchRID")">Regulatory Ingredient Database</a>
+                                    </li>
+                                }
+                                @*<li class="has-submenu ">
+                                    <a href="#"> Masters <i class="flaticon-down-arrow-1"></i></a>
+                                    <ul class="submenu" id="main_menu1">
+                                    <li><a href="@Url.Content("~/ProjectInitiation/RoleHODMaster")"> Role HOD Master</a></li>
+                                    <li><a href="@Url.Content("~/ProjectInitiation/RoleCostCenterMaster")"> Role Cost Center</a></li>
+                                    </ul>
+                                    </li>
+                                    <li class="has-submenu ">
+                                    <a href="@Url.Content("~/ProjectInitiation/TemplateMasters")">Template Resource Master </a>
+                                    </li>
+                                    <li class="has-submenu ">
+                                    <a href="@Url.Content("~/ProjectInitiation/ProjectResources")">Project Resource Master </a>
+                                    </li>*@
+                                @*<li class="has-submenu ">
+                                    <a href="#">
+                                    Master
+                                    </a>
+                                    </li>*@
+                            </ul>
+                            <!-- End navigation menu -->
+                        </div> <!-- end #navigation -->
+                    </div> <!-- end container -->
+                </div> <!-- end navbar-custom -->
+            </div>
+            <div>
+                <label id="switch" class="switch">
+                    <input type="checkbox" onchange="toggleTheme()" id="slider">
+                    <span class="slider round mg_t12">
+                        <span class="lt">Light Theme</span>
+                        <span class="dt">Dark Theme</span>
+                    </span>
+                </label>
+            </div>
+            <div class="user_info_latest">
+                <label>...</label>
+                <div class="username">
+                    <ul class="list-unstyled topbar-right-menu float-right mb-0">
+                        <li>
+                            <div class="user_details_list">
+                                <p class="mb-0"><i class="flaticon-user-2"></i> @loggedUser </p>
+                                <p class="mb-0"><i class="flaticon-email"></i> <a href="mailto:" @Email>@Email</a></p>
+                                <p class="mb-0"><i class="flaticon-logout" style="font-size: 13px; color: #000;"></i><a href="@Url.Content("~/Login/Logout")">Logout</a></p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            @*<div>
+                <label id="switch" class="switch">
+                <input type="checkbox" onchange="toggleTheme()" id="slider">
+                <span class="slider round mg_t12">
+                <span class="lt">Light Theme</span>
+                <span class="dt">Dark Theme</span>
+                </span>
+                </label>
+                </div>*@
+            @*<div class="user_info">
+                <div class="admin_dropdown">
+                <a class="nav-user">
+                <span class="rounded-circle">S</span>
+                <span class="user_name">tp005</span>
+                </a>
+                <div class=" profile-dropdown ">
+                <a href="javascript:void(0);" class="dropdown-item notify-item" data-toggle="modal" data-target="#changePasswordDialog" onclick="changePassword()">
+                <i class="fas fa-lock"></i> <span>Change Password</span>
+                </a>
+                <a class="dropdown-item notify-item logout" id="logout-button">
+                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+                </a>
+                </div>
+                </div>
+                <div class="clearfix"></div>
+                </div>*@
+            <!-- end container -->
+        </div>
+        <!-- end container -->
+    </header>
+
+    <div class="menu-section">
+        @*<span class="menu_name">Menu's</span>*@
+        <ul>
+            <li><a href=""><i class="fas fa-cog"></i> <span class="menu_item">Claim Grid</span></a></li>
+        </ul>
+    </div>
+    
+    <div id="message" class="m-login__erromsg">
+        @*@if (TempData["Message"] != null)
+        {
+            <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                </button>
+                @Html.Raw(Convert.ToString(TempData["Message"]))
+            </div>
+        }*@
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+                @TempData["Message"].ToString()
+                <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+            </div>
+        }
+    </div>
+     
+    <div class="container-fluid body-content element" id="element">
+        <main role="main" class="">
+
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Himalaya Wellness Company. All rights reserved
+        </div>
+    </footer>
+    @*Confirm modal popup*@
+    <div id="confirmpopup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="confirmpopupmesssage">Are you sure you want confirm</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*New popup*@
+    <div class="modal fade" id="confirmpopup2" tabindex="-1" role="dialog" aria-labelledby="confirmpopupLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xs" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmpopupLabel">Confirm Box</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                        @*                         <span aria-hidden="true">&times;</span>
+                        *@
+                    </button>
+                </div>
+                <div class="modal-body" id="confirmpopupmesssage2">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Alert modal popup*@
+    <div id="alertpopup" class="modal fade layout_popup " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Alert Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="popupmesssage">Are you sure u want Cancel</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right " style="float:right;">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="ReloginPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Session Expiry</h4>
+                    @*<button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>*@
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span>Your Session is about to expire in <span id="timeoutin" style="font-weight: bold;"></span>. Please click <span style="font-weight: bold;">OK</span> to keep alive</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="ReloginPopUpOKbutton" data-bs-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-danger" id="ReloginPopUpCanclebutton" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            var time = ((@timeout * 1000 * 60) - (2 * 1000 * 60));
+            var timeout;
+            var isLogout = false;
+            timeout = setTimeout(function () {
+                //-- show warning dialog
+                OpenInputDialog();
+                var d = Date(Date.now());
+                console.log(d.toString());
+                isLogout = true;
+            }, time);
+            $(document).on('click', function () {
+                if (!isLogout) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        //-- show warning dialog
+                        OpenInputDialog();
+                        isLogout = true;
+                    }, time);
+                }
+            });
+        });
+var myInterval = 0;
+function OpenInputDialog() {
+    $('#ReloginPopUp').modal('show');
+    var seconds = 600;
+    myInterval = setInterval(function () {
+        if (seconds === 0) {
+            clearInterval(myInterval);
+            $('#ReloginPopUpCanclebutton').click();
+        }
+        else {
+            var time = moment().startOf('day')
+                .seconds(seconds)
+                .format('mm:ss');
+            $('#timeoutin').text(time)
+        }
+        seconds = seconds - 1
+    }, 1000);
+};
+$('#ReloginPopUpOKbutton').click(function () {
+    debugger;
+    clearInterval(myInterval);
+    $.ajax({
+        type: 'GET',
+        url: ROOT + "Login/AutoLogin",
+        dataType: 'json',
+        data: {
+
+        },
+        success: function (data) {
+
+
+        }
+    });
+});
+
+
+
+$('#ReloginPopUpCanclebutton').click(function () {
+    window.location = ROOT + "Login/LogOff"
+})
+    </script>
+    <script>
+        //active class
+        function setNavigation() {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "#");
+            path = decodeURIComponent(path);
+            //path = path.split('/')[2];
+
+            $("#main_menu li a, #main_menu1 li a").each(function () {
+                var href = $(this).attr('href');
+                var subURL = $(this).attr('data-subURL');
+                var URLs = '';
+                if (subURL != undefined) {
+                    URLs = subURL.split(';');
+                }
+
+                //href = href.split('/')[2];
+                if (path === href || URLs.indexOf(path) >= 0) {
+                    if ($(this).parents('#main_menu, #main_menu1').length >= 1) {
+                        $(this).parents('li').addClass('active');
+                        //$(this).parents(".has-menu").addClass('active');
+                        //$(this).parents('.has-menu').last().addClass('activeparents');
+                    }
+                    else {
+                        $(this).addClass('activeparents');
+                        $(this).parents('li').addClass('activeparents');
+                    }
+
+
+                }
+            });
+        }
+        setNavigation();
+    </script>
+    <script>
+
+
+
+
+        //const body = document.querySelector('html');
+        //const button = document.querySelector('.btn_dark');
+        //function toggleFullScreen(elem) {
+        //    if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+        //        if (elem.requestFullScreen) {
+        //            elem.requestFullScreen();
+        //        } else if (elem.mozRequestFullScreen) {
+        //            elem.mozRequestFullScreen();
+        //        } else if (elem.webkitRequestFullScreen) {
+        //            elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+        //        } else if (elem.msRequestFullscreen) {
+        //            elem.msRequestFullscreen();
+        //        }
+        //    } else {
+        //        if (document.cancelFullScreen) {
+        //            document.cancelFullScreen();
+        //        } else if (document.mozCancelFullScreen) {
+        //            document.mozCancelFullScreen();
+        //        } else if (document.webkitCancelFullScreen) {
+        //            document.webkitCancelFullScreen();
+        //        } else if (document.msExitFullscreen) {
+        //            document.msExitFullscreen();
+        //        }
+        //    }
+        //}
+
+
+
+        // function to set a given theme/color-scheme
+        function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.documentElement.className = themeName;
+        }
+
+        // function to toggle between light and dark theme
+        function toggleTheme() {
+            if (localStorage.getItem('theme') === 'dark') {
+                setTheme('theme-light');
+            } else {
+                setTheme('dark');
+            }
+        }
+
+        // Immediately invoked function to set the theme on initial load
+        (function () {
+            if (localStorage.getItem('theme') === 'dark') {
+                setTheme('dark');
+                document.getElementById('slider').checked = false;
+            } else {
+                setTheme('theme-light');
+                document.getElementById('slider').checked = true;
+            }
+        })();
+
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 230) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "4px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+        }
+
+    </script>
+    <script>
+        $(".logout").click(function () {
+            $(".theme-light").addClass("switch");
+            $(".dark").addClass("switch");
+            $(".switch_login").addClass("switch1");
+        });
+        $(".tile_projects a").click(function () {
+            $(this).closest("li").addClass("active");
+        });
+        //document.getElementById("logout-button").addEventListener("click", function () {
+        //    // Send a signal to the login page by setting a class on its <html> tag
+        //    window.opener.document.documentElement.classList.add("logout-clicked");
+        //});
+        //document.getElementById("logout-button").addEventListener("click", function () {
+        //    // Redirect to the login page
+        //    window.location.href = "/Account/login"; // Replace with the actual login page URL
+        //});
+        //$(".menutopright").hover(function () {
+        //    $(".main-menu").toggleClass("menu-list");
+        //    $(".menuhamburger a").toggleClass("active");
+        //});
+        //$("#main_menu").click(function(){
+        //    $(this).toggleClass("active");
+        //}
+        $(".menuhamburger a").click(function () {
+            $(this).toggleClass("active");
+            $(".main-menu").toggleClass("menu_left");
+        });
+        //$(".menuhamburger a").click(function () {
+        //    $(".main-menu").toggleClass("menu_left");
+        //});
+
+        $(".navigation-menu li").click(function () {
+            $(this).toggleClass("submenu_open");
+            $(".navigation-menu li").not(this).removeClass("submenu_open");
+        });
+    </script>
+    <script>
+
+        $(function () {
+
+            $(".fullscreen-supported").toggle($(document).fullScreen() != null);
+            $(".fullscreen-not-supported").toggle($(document).fullScreen() == null);
+
+            $(document).on("fullscreenchange", function (e) {
+                console.log("Full screen changed.");
+                $("#jquery-script-menu").toggleClass("fullscreen_btn");
+            });
+
+            $(document).on("fullscreenerror", function (e) {
+
+            });
+
+        });
+
+        $(".mobile_menu").click(function () {
+            $("#navigation").toggleClass("expand_menu");
+            $(".mobile_menu").toggleClass("hambaerger_menu");
+        })
+    </script>
+    <script>
+        var ROOT = "@Url.Content("~/")";
+        function Encrypt(str) {
+            var key = CryptoJS.enc.Utf8.parse('8080808080808080');
+            var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+            var enString = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(str), key,
+                {
+                    keySize: 128 / 8,
+                    iv: iv,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                });
+            return enString;
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            //console.log('hloo');
+            var list = $(".Home_tiles");
+            //console.log($(".navigation-menu > li"), 'sa');
+            var windowWidth = $(window).width();
+            jQuery.each(list, function (index, ele) {
+                var eleOffsetLeft = $(ele).offset().left;
+                var eleOffsetRight = windowWidth - eleOffsetLeft;
+                //console.log(eleOffsetLeft, '-', eleOffsetRight)
+                if (eleOffsetRight < eleOffsetLeft) {
+                    $(ele).addClass('menu-show-left');
+                }
+                else {
+                    $(ele).removeClass('menu-show-left');
+                }
+            });
+            $(window).resize(function () {
+                var list = $(".Home_tiles");
+                var windowWidth = $(window).width();
+                jQuery.each(list, function (index, ele) {
+                    //console.log(ele, "ele")
+                    var eleOffsetLeft = $(ele).offset().left;
+                    var eleOffsetRight = windowWidth - eleOffsetLeft;
+                    //console.log(eleOffsetLeft, '-', eleOffsetRight)
+                    if (eleOffsetRight < eleOffsetLeft) {
+                        $(ele).addClass('menu-show-left');
+                    }
+                    else {
+                        $(ele).removeClass('menu-show-left');
+                    }
+                });
+            })
+        })
+
+
+    </script>
+</body>
+</html>

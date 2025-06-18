@@ -1,0 +1,470 @@
+﻿@model Ideation.Models.ExpensesRequest
+@{
+    ViewData["Title"] = "Expenses Request";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+<style>
+    .travel_fields, .matrialConsumption, .foh_fields {
+        border: 1px solid #e3e3e3;
+        padding: 10px;
+        box-shadow: 0px 0px 8px 0px #d7d7d7;
+    }
+
+        .travel_fields h4, .matrialConsumption h4, .foh_fields h4 {
+            font-size: 17px;
+            background: #f0f0f0;
+            padding: 5px;
+        }
+
+    .position_back {
+        position: absolute;
+        right: 15px;
+    }
+
+    .ui-widget-content a.icon_color {
+        font-size: 12px;
+    }
+
+    .date_icon {
+        position: relative;
+    }
+
+        .date_icon i.fas {
+            position: absolute;
+            right: 8px;
+            top: 23px;
+        }
+
+    .prototype_filter button.multiselect.dropdown-toggle.btn.btn-default {
+        background: transparent;
+    }
+
+    .prototype_filter .btn-group {
+        border-radius: 3px;
+        height: auto;
+    }
+
+    .body-content {
+        height: calc(100vh - 58px);
+    }
+
+    .select2-container .select2-selection--single {
+        height: 23px;
+    }
+
+    .approval_history_table .ui-widget.ui-widget-content {
+        margin: auto;
+    }
+
+    .approval_history_table .ui-jqgrid .ui-jqgrid-bdiv {
+        height: auto !important;
+    }
+
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+
+    .title_color_value {
+        color: #f37d1f;
+    }
+
+    #message_alert {
+        margin-bottom: 0px !important;
+    }
+
+    .small_size {
+        font-size: 7px;
+        display: block;
+    }
+
+    .small_sizeforamount {
+        font-size: 9px;
+        display: block;
+    }
+</style>
+
+@Html.HiddenFor(m => m.ProjectMaster)
+@Html.HiddenFor(m => m.ExpensesRefId)
+@Html.HiddenFor(m => m.Role)
+@Html.HiddenFor(m => m.EmployeeMaster)
+@Html.HiddenFor(m => m.LoginId)
+@Html.HiddenFor(m => m.UserName)
+<a id="hiddenDownloadLink" class="d-none"></a>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+        @TempData["Message"].ToString()
+        <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+    </div>
+}
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> Add Expenses Request</h4>
+        </div>
+        <div class="back_aroow text-right position_back"><a href="@Url.Content("~/NewProjectInitiation/ExpensesRequestList")"><i class="fas fa-arrow-left"></i> Back</a></div>
+    </div>
+</section>
+
+<section>
+    @using (Html.BeginForm("InsertExpensesRequestData", "NewProjectInitiation", FormMethod.Post, new { id = "AddExpensesReq", enctype = "multipart/form-data" }))
+    {
+        <div class="prototype_filter">
+            <div class="d-flex justify-content-between mb-1">
+                <div class="d-flex">
+
+                    <div class="col-width1">
+                        <div class="form-group">
+                            <label class="control-label">Department <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.DepartmentId, new SelectList(Model.DepartmentValue, "DepartmentId", "DepartmentName"), "Select",
+    new { @class = "form-control data-singleselect", @id = "DepartmentId", @data_singleselect = "" })
+                            <span id="E_department" class="hide color-red">please select department</span>
+                        </div>
+                    </div>
+
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">Employee Name <span class="color-red">*</span></label>
+                            <select class="control-label addEmpOption" data-singleselect id="EmployeeName">
+                                <option value="">Select</option>
+                            </select>
+                            <span id="E_EmployeeName" class="hide color-red F_Error">please select employee name</span>
+                        </div>
+                    </div>
+
+                    @*<div class="col-width1 mt-3 pt-1">
+                            <button class="btn btn-search" title="search" id="Btn-Search" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-refresh" title="refresh" id="Btn-Refresh" type="button">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>*@
+
+                </div>
+                <div class="col-width2 mt-3 pt-1">
+                    <div class="text-right">
+                        <button type="button" id="Exp_Save" class="btn btn-success" onclick="ValidateSave()"> Save</button>
+                        <button type="button" id="Exp_Submit" class="btn btn-success" onclick="ValidateSubmit()">Send For Approval</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @Html.HiddenFor(model => model.RequestedData)
+        @Html.HiddenFor(model => model.Remarks)
+        @Html.HiddenFor(model => model.ApprovalFlow)
+
+        <div class="travel_fields Category_fields" id="Category_Fields">
+
+            <div class="form-horizantal prototype_filter">
+
+                <div class="row">
+
+                    <div class="d-flex">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label class="control-label">Category <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.CategoryValue, "value", "CategoryName"), "Select",
+                                new { @class = "form-control data-singleselect", @id = "CategoryId", @data_singleselect = "" })
+                                <span id="E_category" class="hide color-red">please select category</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 SelectNature">
+                            <div class="form-group">
+                                <label class="control-label">Nature of Expenses <span class="color-red">*</span></label>
+                                <select class="control-label addNEOption" data-singleselect id="natureOfExpense">
+                                    <option value="">Select</option>
+                                </select>
+                                <span id="E_natureOfExpense" class="hide color-red F_Error">please select nature of expenses</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Project <span class="text-danger prj_star">*</span></label>
+                                @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.ProjectList, "Value", "Text"), "Select",
+                                new { @class = "form-control data-singleselect", @id = "ProjectId", @data_singleselect = "" })
+                                <span id="E_ProjectId" class="hide color-red">please select project</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row ml-1 mt-2 hide" id="nature-of-exp-fields">
+                        <div class="col-md-2 hide showforTravel hide">
+                            <div class="form-group">
+                                <label class="control-label">Date of Travel </label>
+                                <input type="text" class="form-control data-datepicker-startdate F_Value" readonly id="TravelDate" placeholder="" autocomplete="off">
+                            </div>
+                        </div>
+                        <div class="col-md-2 CommonField">
+                            <div class="form-group">
+                                <label class="control-label">Bill ref. number <span class="color-red">*</span></label>
+                                <input type="text" class="form-control F_Value" id="billRefNo" />
+                                <span id="E_billRefNo" class="hide color-red F_Error">please enter bill ref. number</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 showforTravel hide">
+                            <div class="form-group">
+                                <label class="control-label">Mode of Travel <span class="color-red">*</span></label>
+                                @Html.DropDownListFor(m => m.TransportName, new SelectList(Model.ModeOfTransportValue, "Id", "Name"), "--Select--",
+                                new { @class = "form-control data-singleselect", @id = "TransId", @data_singleselect = "" })
+                                <span id="E_modeoftrans" class="hide color-red F_Error">please select mode of travel</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 showforHotel hide">
+                            <div class="form-group">
+                                <label class="control-label">Place of Stay <span class="color-red">*</span></label>
+                                <input class="form-control F_Value" id="placeOfStay" />
+                                <span id="E_placeOfStay" class="hide color-red F_Error">please enter place of stay</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 showforHotel hide">
+                            <div class="form-group">
+                                <label class="control-label">GST No. <span class="color-red">*</span></label>
+                                <input class="form-control F_Value" id="GSTNo" maxlength="15" />
+                                <span id="E_GSTNo" class="hide color-red F_Error">please enter GST No.</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 showforHotel hide">
+                            <div class="form-group">
+                                <label class="control-label">From Date <span class="color-red">*</span></label>
+                                <input class="form-control F_Value" data-datepicker-startdate1 readonly id="fromDate" placeholder="" autocomplete="off" />
+                                <span id="E_fromDate" class="hide color-red F_Error">please select From Date</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 showforHotel hide">
+                            <div class="form-group">
+                                <label class="control-label">To Date <span class="color-red">*</span></label>
+                                <input class="form-control F_Value" data-datepicker-enddate1 readonly id="toDate" placeholder="" autocomplete="off" />
+                                <span id="E_toDate" class="hide color-red F_Error">please select To Date</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 showforTravel hide">
+                            <div class="form-group">
+                                <label class="control-label">Purpose of Travel <span class="color-red">*</span></label>
+                                <textarea class="form-control F_Value" id="purposeTravel"></textarea>
+                                <span id="E_purposeTravel" class="hide color-red F_Error">please enter purpose of travel</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 showforTravel hide">
+                            <div class="form-group">
+                                <label class="control-label">Travelling From <span class="color-red">*</span></label>
+                                <input type="text" class="form-control F_Value" id="FromLocation" />
+                                <span id="E_FromLocation" class="hide color-red F_Error">please enter travelling from</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 showforTravel hide">
+                            <div class="form-group">
+                                <label class="control-label">Travelling To <span class="color-red">*</span></label>
+                                <input type="text" class="form-control F_Value" id="ToLocation" />
+                                <span id="E_ToLocation" class="hide color-red F_Error">please enter travelling to</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 CommonField">
+                            <div class="form-group">
+                                <label class="control-label">Advance (INR) </label>
+                                <input type="text" class="form-control F_Value" id="Advance" onkeypress="return onlyNumbers(this)" onpaste="return false" />
+                            </div>
+                        </div>
+                        <div class="col-md-2 CommonField">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Actual Expenses (INR) <span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control F_Value" id="actualExp" onkeypress="return onlyNumbers(this)" onpaste="return false" />
+                                <span id="E_actualExp" class="hide color-red F_Error">please enter actual expenses</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 CommonField">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Other Fee (INR) <span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control F_Value" id="otherFee" onkeypress="return onlyNumbers(this)" onpaste="return false" />
+                                <span id="E_otherFee" class="hide color-red F_Error">please enter other fee</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hidepayable">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Net Payable to Initiator (INR)
+                                </label>
+                                <input type="text" class="form-control F_Value" id="Payable" readonly />
+                                <div>
+                                    <span class="font_small ">(Advance - Actual Expenses - Other Fee)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hiderecievable">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Net Receivable From Initiator (INR)
+                                </label>
+                                <input type="text" class="form-control F_Value" readonly id="receivable" />
+                                <div>
+                                    <span class="font_small ">(Advance - Actual Expenses - Other Fee)</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hiderecievable">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    UTR No. <span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control F_Value" id="UTRNo" maxlength="13" onpaste="return false" />
+                                <span id="E_UTRNo" class="hide color-red F_Error">please enter URT No.</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2 hiderecievable">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    UTR Supporting Documents<span class="color-red">*</span>
+                                </label>
+                                <div class="d-flex align-items-center">
+                                    <input type="file" name="files" class="form-control form-control-sm F_Value" onchange="validateUTRFileUpload()" id="UTRUploadDocument" accept=".pdf, .doc, .docx, .xls, .txt, .xlsx, .ppt, .zip, .jpg, .jpeg, .png, .csv">
+                                </div>
+                                <span class="color-red F_Error hide" id="E_UTRUploadDocument">please select UTR supporting document</span>
+                            </div>
+                        </div>
+                        <div class="col-md-4 hiderecievable">
+                            <div class="form-group">
+                                <label class="control-label">Bank details</label>
+                                <textarea class="form-control" id="BankInfo" readonly style="height:80px;">@Model.BankDetails</textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-3 CommonField">
+                            <div class="form-group">
+                                <label class="control-label">Remarks <span class="color-red">*</span></label>
+                                <textarea class="form-control F_Value" id="FieldRemarks"></textarea>
+                                <span id="E_FieldRemarks" class="hide color-red F_Error">please enter remarks</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 CommonField">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Supporting Documents <span class="color-red">*</span>
+                                </label>
+                                <div class="d-flex align-items-center">
+                                    <input type="file" name="files" class="form-control form-control-sm F_Value" onchange="validateFileUpload()" id="UploadDocument" accept=".pdf, .doc, .docx, .xls, .txt, .xlsx, .ppt, .zip, .jpg, .jpeg, .png, .csv">
+                                </div>
+                                <span class="color-red F_Error hide" id="E_UploadDocument">please select supporting document</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1 mt-3 pt-1"><button type="button" id="Exp_Add" class="btn btn-success" onclick="ValidateAdd()"> Add</button></div>
+
+                    </div>
+
+                </div>
+
+                <div class="Grid_validation hide color-red ml-3">Please enter atleast one grid data</div>
+
+                <div class="row">
+                    <div class="mt-2 pr-4 pl-4">
+                        <div class="">
+                            <div class="row">
+                                <div class="m-table__main grid_height">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="ExpensesData_grid" class="table table-bordered"></table>
+                                        <div id="ExpensesData_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    }
+
+    <div id="supporting_doc" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Supporting Documents
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="">
+                        <div class="">
+                            <div class="row">
+                                <div class="m-table__main grid_height mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="SupportingDocument_Grid" class="table table-bordered"></table>
+                                        <div id="SupportingDocument_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="ApproveModal" class="modal fade" role="dialog">
+        <div class="modal-dialog modal-xs upload">
+            <div class="modal-content">
+                <div class="modal-header -bg-green">
+                    <h4 class="modal-title modaltitle" id="ModalLabel"></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="modalmsg"></p>
+                    <div class="form-group">
+                        <label class="control-label">
+                            Remarks
+                        </label><span class="color-red">*</span>
+                        @Html.TextAreaFor(model => model.ActionRemarks, new { @class = "form-control F_Value ApprovalRemarks", @rows = "2", @spellcheck = "false", id = "ApprovalRemarks" })
+                        <span id="E_ApprovalRemarks" class="color-red Error_closeModal" style="display:none">please enter remarks</span>
+                    </div>
+                    <div class="text-right mt-2">
+                        <button type="button" class="btn btn-success" id="ByClick_OK" data-title="Ok"> Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Document_Popup" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Supporting Documents</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2">
+                                        <div class="m-table__responsive sd_documents">
+                                            <table id="Grid_Expense_Document" class="table table-bordered"></table>
+                                            <div id="Grid_Expense_Document_pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/AddExpensesRequest.js")"></script>

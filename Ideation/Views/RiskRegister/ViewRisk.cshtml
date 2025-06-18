@@ -1,0 +1,276 @@
+﻿@{
+    Layout = "~/Views/Shared/_RRLayout.cshtml";
+    ViewBag.Title = "RiskManagement";
+}
+
+
+
+<div class="card-box mb-3 sg pt-2 risk_register view_register" id="card_section">
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="-m_title">
+            <h3>Project Feasibility Score Card</h3>
+        </div>
+        <div class="risk_legend">
+            <ul>
+                <li><span class="low_circle"></span>Low Risk</li>
+                <li><span class="medium_circle"></span>Medium Risk</li>
+                <li><span class="high_circle"></span>High Risk</li>
+            </ul>
+        </div>
+    </div>
+    <div class="row pt-2">
+        <div class="col-md-6">
+            <div class="risk_dropdown">
+                <label class="control-label">
+                    <strong>Project Id:</strong> ID-400000003-Himalaya Smart Tea
+                </label>
+                @*<select class="form-control" readonly disabled>
+                <option>ID-400000003-Himalaya Smart Tea</option>
+                </select>*@
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        USP Positioning
+                    </h4>
+                    <div>
+                        <span class="first_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Claims/Format Novelty vs Market Trend
+                    </label>
+                    <div>
+                        <label>
+                            Low-new &lt; 2yr
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                </div>
+                <hr />
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Efficacy / Aesthetic
+                    </label>
+                    <div>
+                        <label>
+                            Low Risk-superior
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+
+                </div>
+                <hr />
+                <div class="risk_dropdown riskz">
+                    <label class="control-label">
+                        Sustainability
+                    </label>
+                    <div>
+                        <label>
+                            Low- As Per WS 4 (RM Naturality &gt; 96/biodegradability/PM PCR)
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        Design
+                    </h4>
+                    <div>
+                        <span class="load_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Regulatory/PR
+                    </label>
+                    <div>
+                        <label>
+                            Low-No discussion/No noise
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                    @*<select class="form-control" id="design">
+                    <option value="">Select</option>
+                    <option value="low">Low-No discussion/No noise</option>
+                    <option value="medium">Medium-3 to 5 Y implementation date/Noise</option>
+                    <option value="high">High-&lt; 1 y implementation date/Hot List</option>
+                    </select>
+                    <span class="design_bar"></span>*@
+                </div>
+                <hr />
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Cost
+                    </label>
+                    <div>
+                        <label>
+                            Low-Prototype developed with +5% variability
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                    @* <select class="form-control" id="design1">
+                    <option value="">Select</option>
+                    <option value="low">Low-Prototype developed with +5% variability </option>
+                    <option value="medium">Medium-Prototype developed with +20% variability</option>
+                    <option value="high">High-Prototype developed with +50% variability.</option>
+                    </select>
+                    <span class="design_bar1"></span>*@
+                </div>
+                <hr />
+                <div class="risk_dropdown riskz">
+                    <label class="control-label">
+                        Safety/Stability
+                    </label>
+                    <div>
+                        <label>
+                            Low: Use of known chassis and actives
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        Supply
+                    </h4>
+                    <div>
+                        <span class="color_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Cost
+                    </label>
+                    <div>
+                        <label>
+                            Low-Total clarity 5% variability RM/PM/Coversion cost
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                    @*<select class="form-control" id="supply">
+                    <option value="">Select</option>
+                    <option value="low">Low-Total clarity 5% variability RM/PM/Coversion cost</option>
+                    <option value="medium">Medium-Moderate uncertainty 20%variability RM/PM/Coversion cost</option>
+                    <option value="high">High-No information/ +50%variability RM/PM/Coversion cost</option>
+                    </select>
+                    <span class="supply_bar"></span>*@
+                </div>
+                <hr />
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        RM/PM
+                    </label>
+                    <div>
+                        <label>
+                            Low-All available  with AVD
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                    @*<select class="form-control" id="supply1">
+                    <option value="">Select</option>
+                    <option value="low">Low-All available  with AVD</option>
+                    <option value="medium">Medium-All available  no AVD</option>
+                    <option value="high">High-Not available &#64; current price volume quality certification</option>
+                    </select>
+                    <span class="supply_bar1"></span>*@
+                </div>
+                <hr />
+                <div class="risk_dropdown riskz">
+                    <label class="control-label">
+                        Mixing & Filling
+                    </label>
+                    <div>
+                        <label>
+                            Low-All available  with AVD
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                    @* <select class="form-control" id="supply2">
+                    <option value="">Select</option>
+                    <option value="low">Low-All available  with AVD</option>
+                    <option value="medium">Medium-All available  no AVD</option>
+                    <option value="high">High-Not available &#64; current price volume quality certification</option>
+                    </select>
+                    <span class="supply_bar2"></span>*@
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="score_card">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 class="text-center">
+                        Deliver
+                    </h4>
+                    <div>
+                        <span class="delivery_circle"></span>
+                    </div>
+                </div>
+                <div class="risk_dropdown">
+                    <label class="control-label">
+                        Project Timeline
+                    </label>
+                    <div>
+                        <label>
+                            Low-Project timeline as per the Brief
+                        </label>
+                    </div>
+                    <span class="risk_bar risk_bar_green"></span>
+                    @*<select class="form-control" id="deliver">
+                    <option value="">Select</option>
+                    <option value="low">Low-Project timeline as per the Brief</option>
+                    <option value="medium">Medium-Project timeline delayed by 1 Quarter</option>
+                    <option value="high">High-Project timeline delayed by more than 2Quarter</option>
+                    </select>
+                    <span class="deliver_bar"></span>*@
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-md-4">
+            <div id="conslusion" class="conslusion_section">
+                <label class="control-label"><b> Conclusion</b></label>
+                <div>
+                    <span>
+                        Bases on above four drivers e.g. Positioning, Design, supply & Deliver, over all project Risk Score Card is
+                    </span>
+                </div>
+                <span class="conslusion_bar"></span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div id="conslusion" class="conslusion_section">
+                <label class="control-label"><b> Remarks</b></label>
+                <div>
+                    <textarea class="form-control"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="save_buttons float-right text-right">
+            @*<button type="button" class="btn-ap"> Save</button>*@
+            <button type="button" class="btn-rej" onclick="location.href = './RiskRegister';" data-title="Back"> Back</button>
+
+        </div>
+
+    </div>
+</div>
+
+
+
+

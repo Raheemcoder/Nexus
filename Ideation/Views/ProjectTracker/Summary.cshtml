@@ -1,0 +1,303 @@
+﻿@model Ideation.Models.PMUMapping
+@{
+    ViewData["Title"] = "Summary";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+    var userRole = Convert.ToInt32(Context.Session.GetString("RoleId"));
+}
+
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+
+<style>
+    .frozen-bdiv.ui-jqgrid-bdiv {
+        overflow: hidden !important;
+    }
+
+    .ui-jqgrid-bdiv {
+        height: auto !important;
+    }
+
+    .ui-widget.ui-widget-content, .ui-jqgrid .ui-jqgrid-view, .ui-jqgrid .ui-jqgrid-hdiv, .ui-jqgrid .ui-jqgrid-bdiv {
+        width: inherit !important
+    }
+
+    .ui-search-toolbar td.ui-search-clear {
+        display: none;
+    }
+
+    table.ui-pg-table.ui-common-table.ui-paging-pager, table.ui-pg-table.navtable.ui-common-table {
+        display: none;
+    }
+
+    .frozen-div tr.ui-search-toolbar th {
+        border-top: 1px solid #dedede !important
+    }
+
+    .frozen-div tr.ui-jqgrid-labels.jqg-second-row-header {
+        display: none
+    }
+
+    .ui-jqgrid tr.jqgroup td, .ui-jqgrid tr.jqgrow td, .ui-jqgrid .ui-jqgrid-htable th {
+        padding: 3px !important
+    }
+
+    .ui-jqgrid tr.jqgrow td {
+        padding: 3px 13px !important
+    }
+
+    tr.ui-jqgrid-labels.jqg-third-row-header {
+        top: 0px;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+    .task_status {
+        margin-top: 5px;
+        text-align: center;
+    }
+</style>
+
+<input type="hidden" id="userRole" value="@userRole" />
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Summary</h4>
+        </div>
+    </div>
+    @if (Convert.ToString(Context.Session.GetString("projectId")) != "")
+    {
+        var projectName = Context.Session.GetString("projectName");
+        var projectId = Context.Session.GetString("projectId");
+        <input type="hidden" id="selectedProjectName" value="@projectName" />
+        <input type="hidden" id="selectedProjectId" value="@projectId" />
+    }
+    @if (Convert.ToString(Context.Session.GetString("HubId")) != "")
+    {
+        var hubId = Context.Session.GetString("HubId");
+        var hubName = Context.Session.GetString("HubName");
+        <input type="hidden" id="selectedHubId" value="@hubId" />
+        <input type="hidden" id="selectedHubName" value="@hubName" />
+    }
+</section>
+
+<section>
+    <div class="filter_status prototype_filter">
+        <div class="d-flex justify-content-between">
+
+            <div class="width-150">
+                <div class="form-group flaoting_" id="dispVersion">
+                    <label class="control-label form_lable floating_lable">Versions</label>
+                    @Html.DropDownListFor(m => m.Version, new SelectList(Model.ProjectVersionList, "Value", "Text"), new { @class = "form-control dropdown projectDrop dropdown-singleselect", @id = "Version" })
+                </div>
+            </div>
+
+            <div class="">
+                <div class="d-flex align-items-center">
+
+                    @if (userRole == 1 || userRole == 2 || userRole == 6 || userRole == 7)
+                    {
+                        <div class="">
+                            <div class="form-group">
+                                <div>
+                                    <label class="control-label">
+                                        Current Updates
+                                    </label>
+                                    <textarea class="form-control width-300" rows="2" id="update-text"></textarea>
+                                    <span class="text-danger hide">Please enter update</span>
+                                    <span class="text-danger hide update-exists">Update already exists</span>
+                                    <b class="text-success update-saved-success hide">Update saved successfully</b>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    @if (userRole == 3 || userRole == 4)
+                    {
+                        <div>
+                            <div class="form-group">
+                                <div>
+                                    <label class="control-label">
+                                        Current Updates
+                                    </label>
+                                    <textarea class="form-control width-300 to-add-title" rows="2" id="update-text" disabled></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                    <div class="">
+                        <div class="d-flex align-items-center ml-3">
+                            @if (userRole == 1 || userRole == 2 || userRole == 6 || userRole == 7)
+                            {
+                                <div class="mr-2">
+                                    <i class="fas fa-plus-circle text-success issue-tracker-add-icons" title="Add Update" id="btn-add-update" role="button"></i>
+                                </div>
+                                <div class="mr-2">
+                                    <i class="fas fa-history text-primary" role="button" title="Updates History" onclick="GetCurrentUpdates(2)"></i>
+                                </div>
+                            }
+                            @if (userRole == 3 || userRole == 4)
+                            {
+                                <div class="mr-2">
+                                    <i class="fas fa-history text-primary" role="button" title="Updates History" onclick="GetCurrentUpdates(2)"></i>
+                                </div>
+                            }
+                            <div class="cursor" id="DisplayVersionRemarks" style="z-index: 10;" data-toggle="modal" data-target="#versionremarks">
+                                <i class="fas fa-info" title="Version Remarks"></i>
+                            </div>
+                            <div class="images_excel">
+                                <img src="@Url.Content("~/N_assets/images/excel.png")" onclick="GetExcelData()" title="Excel Download" id="ExcelDownload" />
+                            </div>
+                            <div class="">
+                                <div class="expand_initiate table_expand">
+                                    <div>
+                                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div class="mt-3">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex align-items-center legends_path">
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ critical"></span> Critical Path
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="freeze_scroll mt-2">
+    <div class="">
+        <table id="list" class="table table-bordered"></table>
+        <div id="pager"></div>
+    </div>
+</div>
+
+<div id="HistoryModal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    History
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="HistoryGrid" class="table table-bordered"></table>
+                                    <div id="HistoryGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="VersionRemarkspop" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Version Remarks
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="Versionremarksdisplay" class="table table-bordered"></table>
+                                    <div id="Versionremarksdisplaypager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dependentMilestones" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Documents
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="FileUploadjqgrid" class="table table-bordered"></table>
+                                    <div id="FileUploadpager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="UpdatesModal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Current Updates
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="col-md-12 d-flex align-items-center justify-content-between">
+                        <span>Project Name: <b id="project_text"></b></span>
+                        <span>HUB Name: <b id="Hub_text"></b></span>
+                    </div>
+                </div>
+                <div>
+                    <div class="mt-2">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="update-list-grid" class="table table-bordered"></table>
+                                    <div id="update-list-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectTracker/Summary.js")"></script>

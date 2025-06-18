@@ -1,0 +1,520 @@
+﻿.hide {
+    display: none !important;
+}
+
+.list_baseline ul {
+    display: flex;
+    list-style-type: none;
+    justify-content: end;
+    margin-bottom: 0px;
+}
+
+    .list_baseline ul li:not(:first-child) {
+        margin-left: 20px !important;
+        font-size: 10px !important;
+        color: #ff6b00 !important;
+        font-weight: bold !important;
+    }
+
+        .list_baseline ul li b {
+            color: #000;
+            font-weight: normal;
+        }
+
+.project_id, .colordetails {
+    color: #ff6b00 !important;
+    font-weight: bold;
+    margin-bottom: 10px;
+    font-size: 10px;
+}
+
+    .project_id span b {
+        color: #000;
+        font-weight: normal;
+    }
+
+.budget_status .pending {
+    background: transparent;
+    border: 0px;
+    font-size: 11px;
+    padding: 0px;
+    color: orange;
+    box-shadow: none;
+}
+
+.budget_status .approval {
+    background: transparent;
+    border: 0px;
+    font-size: 11px;
+    padding: 0px;
+    color: green;
+    box-shadow: none;
+}
+
+.input_budget input {
+    border: 1px solid #757575 !important;
+    height: 24px;
+    padding: 5px;
+    font-size: 10px;
+}
+
+.merged_list th.ui-state-default.ui-th-column-header.ui-th-ltr {
+    border-bottom: 1px solid #dedede !important;
+}
+
+.merged_list thead tr.jqg-first-row-header th {
+    border: 0 !important;
+}
+
+#list_ApproveBaselineBudget, #list_OverallBaselineBudget {
+    display: none !important;
+}
+
+.m-table__main .ui-jqgrid .ui-jqgrid-htable th .ui-th-div {
+    line-height: 1.5;
+    font-size: 11px !important;
+}
+
+.ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+    border-left: 1px solid #d5d0d0 !important;
+    border-right: 1px solid #d5d0d0 !important;
+}
+
+a.color-blue {
+    color: #0d6efd !important;
+}
+.ui-jqgrid-sdiv a.color-blue {
+    color: black !important;
+}
+
+    a.color-blue:hover {
+        color: #000 !important;
+    }
+
+.status_dropdown .select2-container.select2 {
+    width: 170px !important;
+}
+
+.status_dropdown .ml-3 {
+    margin-left: 20px;
+}
+
+.width_float {
+    float: left;
+    width: 100%;
+}
+
+td.text-right {
+    text-align: right !important;
+}
+.status_dropdown .select2-container.select2 {
+    width: 170px !important;
+}
+
+.status_dropdown span.select2.select2-container.select2-container--default.select2-container--below {
+    width: 170px !important;
+}
+
+.m-table__main .table .jqgfirstrow td {
+    padding: 0px !important;
+}
+
+.color-brown {
+    color: #be5014;
+}
+
+.color-green_ {
+    color: #47d359;
+}
+
+.color-blue {
+    color: #215c98;
+}
+
+.jqgfirstrow {
+    display: contents;
+}
+
+.datepicker .datepicker-days tr:hover td {
+    background: transparent;
+}
+
+    .datepicker .datepicker-days tr:hover td:hover {
+        background: #e5e2e3;
+    }
+
+td.disabled.day {
+    background: transparent !important;
+    color: #9c9c9c !important;
+}
+
+
+.m-table__main .table td a{
+    white-space: nowrap !important;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.tabs_data .fade:not(.show) {
+    opacity: 1;
+}
+
+.tabs_list li a.active, .tabs_list li a:hover {
+    padding: 7px 20px;
+    background: #fd6100;
+    border-radius: 20px 0px;
+    color: #fff !important;
+    float: left;
+    border-radius: 5px 40px 0 0;
+    clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+}
+
+.tabs_list li a {
+    padding: 7px 20px;
+    background: #dedede;
+    border-radius: 20px 0px;
+    color: #000;
+    margin: 0px 0px;
+    float: left;
+    border-radius: 5px 40px 0 0;
+    clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+}
+
+.tabs_list li, .tabs_list li:hover {
+    padding: 0px;
+    margin: 0px;
+    background: transparent;
+}
+
+.list_baseline ul {
+    display: flex;
+    list-style-type: none;
+    justify-content: end;
+    margin-bottom: 0px;
+}
+
+    .list_baseline ul li:not(:first-child) {
+        margin-left: 20px;
+        font-size: 10px;
+        color: #ff6b00;
+        font-weight: bold;
+    }
+        .list_baseline ul li:nth-child(2) {
+            margin-left: 0px;
+        }
+
+        .list_baseline ul li b {
+            color: #000;
+            font-weight: normal;
+        }
+
+td input {
+    border: 1px solid #000 !important;
+}
+
+.tab-content .tab-pane a {
+    padding: 0px !important; 
+    float: right;
+}
+.alert-sucess {
+    background: #3ac9a4 !important;
+    color: #fff !important;
+    border-color: #3ac9a4 !important;
+}
+
+.m-table__main .ui-jqgrid .ui-jqgrid-btable {
+    width: 100% !important;
+    margin-bottom: 0px;
+}
+
+.ui-jqgrid .ui-jqgrid-hrtable, .ui-jqgrid .ui-jqgrid-sdiv {
+    width: 100% !important;
+}
+
+.ui-jqgrid .ui-jqgrid-hrdiv, .ui-jqgrid .ui-jqgrid-ftable {
+    width: 100% !important;
+}
+
+.ui-jqgrid-sdiv td {
+    padding: 0px 4px !important;
+    border: 1px solid #dedede !important;
+    border-top: 0px !important;
+    font-weight: 600 !important;
+}
+
+.ui-jqgrid-sdiv a.color-blue {
+    color: black !important;
+}
+
+.width_float_right {
+    float: right;
+}
+.Project_Id_col a, .Project_Id_col {
+    white-space: nowrap !important;
+    word-break: break-all;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+td input {
+    border: 1px solid #000 !important;
+}
+
+.list_badge .m-table__main .table td:nth-child(1) {
+    padding: 5px 8px !important;
+}
+
+.list_badge .ui-jqgrid .ui-jqgrid-htable th {
+    padding: 4px 17px !important;
+}
+
+.list_badge .jqgfirstrow {
+    display: none
+}
+
+.select2-container.select2-container--default.select2-container--open {
+    z-index: 9999;
+}
+
+.tranfer_Border {
+    border: 1.5px solid #65bfb7;
+    padding: 3px;
+    border-radius: 10px;
+    background: #f1f8ff;
+    float: left;
+    width: 100%;
+}
+
+.form-control.budget_transfer {
+    height: 12px;
+    border: none !important;
+    box-shadow: none;
+    text-align: right;
+}
+
+.tranfer_Border p {
+    font-size: 10px;
+    font-weight: bold;
+}
+
+.tranfer_Border .control-label {
+    margin: 0px;
+}
+
+.tranfer_Border .col-lg-2 {
+    margin: 0px -6px -12px 0px;
+    width: 14%;
+}
+
+.ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+    font-size: 10px !important;
+}
+
+.m-table__main .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+    font-size: 12px !important;
+}
+
+/*#budgetTransfer_grid tr td:last-child {
+    border: 1.5px solid #008eff !important;
+}*/
+
+.ui-jqgrid .ui-jqgrid-hrdiv, .ui-jqgrid .ui-jqgrid-ftable {
+    width: 100% !important;
+}
+
+.ui-jqgrid .ui-jqgrid-hrtable, .ui-jqgrid .ui-jqgrid-sdiv {
+    width: 100% !important;
+}
+
+.ui-jqgrid-sdiv td {
+    padding: 0px 4px !important;
+    border: 1px solid #dedede !important;
+    border-top: 0px !important;
+    font-weight: 600 !important;
+}
+
+.m-table__main .ui-jqgrid .ui-jqgrid-btable {
+    margin: 0px !important;
+}
+
+.m-table__main .ui-jqgrid tr.ui-search-toolbar td > input {
+    height: 22px !important;
+}
+
+.ui-jqgrid .ui-jqgrid-pager .ui-paging-info {
+    font-size: 9px !important;
+}
+
+.tranfer_Border p, label.form-label, .form-group label {
+    font-size: 11px;
+}
+
+.tranfer_Border .control-label {
+    margin: 0px;
+    font-size: 11px;
+}
+
+.ui-jqgrid .ui-jqgrid-pager {
+    min-height: 20px;
+    line-height: 1.4;
+}
+
+    .ui-jqgrid .ui-jqgrid-pager .ui-pager-control, .ui-jqgrid .ui-jqgrid-toppager .ui-pager-control {
+        height: 20px;
+    }
+
+    .ui-jqgrid .ui-jqgrid-pager .ui-pager-table {
+        height: 20px;
+    }
+
+.toTransfer {
+    padding: 0px !important;
+}
+
+    .toTransfer input.form-control {
+        height: 20px;
+        padding: 5px !important;
+    }
+
+.ui-jqgrid tr.jqgroup td, .ui-jqgrid tr.jqgrow td {
+    height: auto !important;
+}
+
+.m-table__main .table td.toTransfer {
+    padding: 0px !important;
+    height: 20px !important;
+    margin: 0px !important;
+}
+
+.sg .btn-info, .sg .btn-info:hover, .sg .btn-info:focus {
+    padding: 6px 15px !important;
+}
+
+.col-width1 {
+    width: 11%;
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+.col-width11 {
+    width: 20%;
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+.col-width2 {
+    width: 26%;
+    float: left;
+    padding-left: 10px;
+}
+
+.select2-container--default .select2-selection--single {
+    height: 24px !important;
+}
+
+.select2-container span.select2-selection__rendered {
+    line-height: 12px !important;
+    font-size: 10px !important;
+}
+
+input.form-control {
+    height: 24px;
+}
+
+.button_last button {
+    font-size: 12px !important;
+    padding: 2px 15px 2px 15px !important;
+}
+
+.m-table__main .ui-jqgrid tr.ui-search-toolbar td > input {
+    height: 18px !important;
+}
+
+.list_badge .ui-jqgrid .ui-jqgrid-htable th {
+    padding: 4px 10px !important;
+}
+
+.ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+    font-size: 10px !important;
+    padding: 5px 5px !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.modal-xl.width_modal {
+    max-width: 1230px !important;
+}
+
+.yeartitle {
+    font-size: 12px;
+}
+
+.list_baseline {
+    /*background: #e8e8e8;*/
+    padding: 5px;
+}
+.info_popup {
+    background: #01686a !important;
+    border: #01686a !important;
+}
+.legacy_color {
+    background-color: #eecfa8 !important;
+}
+
+ .select2-container--default .select2-selection--single .select2-selection__rendered {
+    color: #444;
+    line-height: 22px !important;
+}
+.error-color{
+    color:red;
+}
+.position_buttons {
+    position: absolute;
+    right: 15px;
+    top: -26px;
+}
+
+.btn.btn-info, .btn.btn-danger {
+    line-height: 1 !important;
+    padding: 5px 13px !important;
+    font-size: 12px !important;
+}
+
+.color-blue {
+    color: #0d6efd !important;
+}
+.body-content {
+    max-height: calc(100vh - 58px);
+    background: #fff;
+    overflow: initial !important;
+}
+
+
+.multiselect_List button.multiselect.dropdown-toggle.btn.btn-default {
+        background: transparent;
+        color: #000;
+    }
+
+    .multiselect_List .btn-group {
+        height: 22px;
+    }
+
+.PR_table .table-responsive .table-boardered th {
+    background: #fff1e9 !important;
+    border: 1px solid #dedede !important;
+    padding: 5px !important;
+    font-size: 11px;
+}
+
+.PR_table .table-responsive .table-boardered td {
+    border: 1px solid #dedede !important;
+    padding: 5px !important;
+}
+
+.PR_popup {
+    color: blue;
+    cursor: pointer;
+}

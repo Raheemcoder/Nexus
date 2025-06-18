@@ -1,0 +1,242 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ideation</title>
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="@Url.Content("~/images/leaf.ico")">
+    <script src="https://kit.fontawesome.com/ce2a6a1038.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" integrity="sha512-xX2rYBFJSj86W54Fyv1de80DWBq7zYLn2z0I9bIhQG+rxIF6XVJUpdGnsNHWRa6AvP89vtFupEPDP8eZAtu9qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link href="@Url.Content("~/css/main.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/Style.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/common.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/select2/select2.min.css")" rel="stylesheet" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css" />
+
+    <link href="@Url.Content("~/plugins/jqgrid/css/jquery-ui.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/jqgrid/css/ui.jqgrid.min.css")" rel="stylesheet" />
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/libscripts.bundle.js")"></script>
+    <script src="@Url.Content("~/plugins/select2/select2.min.js")"></script>
+    <script src="@Url.Content("~/plugins/moment/moment.js")"></script>
+
+    <script src="@Url.Content("~/plugins/jqgrid/js/grid.locale-en.min.js")"></script>
+    <script src="@Url.Content("~/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+
+    <script src="@Url.Content("~/js/aes.js")"></script>
+    <script src="@Url.Content("~/js/layout.min.js")"></script>
+
+
+    <script src="@Url.Content("~/js/jqgrid.js")"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        var ROOT = "@Url.Content("~/")";
+    </script>
+    <style>
+        .navbar-fixed-top{
+            background:#f6f6f6;
+        }
+
+        .nav li {
+            padding: 7px 7px !important;
+            margin: 0px 10px;
+            position: relative;
+            background:#f6f6f6 !important;
+        }
+       
+        .has-menu a {
+            color: #511fea !important;
+        }
+
+       /* .nav li:hover, .nav li.active {
+            padding: 7px 15px;
+            background: #511fea;
+            border-radius: 0px 0px;
+        }*/
+
+           /* .nav li:hover a, .nav li.active a {
+                color: #fff;
+            }*/
+           .nav li:hover,  .nav li.active {
+               /* padding: 7px 7px !important;*/
+        border-radius: 0px 0px;
+         border-bottom: 2px solid #511fea !important;
+         }
+    </style>
+</head>
+<body>
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container">
+            <div class="c-loader__inner"></div>
+            <div class="c-loader__outer"></div>
+            <div class="c-loader__img"></div>
+        </div>
+    </div>
+    <div>
+        <div id="wrapper">
+
+            <!-- top navbar -->
+            <nav class="navbar navbar-fixed-top pl-0 pr-0">
+                <div class="container-fluid">
+                    <div class="navbar-brand ps-2">
+                        <a href="@Url.Content("~/NewInitiation/NewInitiation")">
+                            <img src="@Url.Content("~/images/MicrosoftTeams-image (8).png")" class="lg_im2" />
+
+                        </a>
+                    </div>
+
+                    <div class="d-flex flex-grow-1 align-items-center">
+                        <div class="" role="navigation">
+                            <div class="sidebar-nav navbar-collapse">
+                                <ul class="nav" id="main_menu">
+                                    <li class="has-menu">
+                                        <a href="@Url.Content("~/EffortTracker/EffortTracker")" class="waves-effect"><i class="fas fa-history"></i> <span class="hide-menu"> EFFORT TRACKER @*<i class="fas fa-angle-down"></i> *@</span></a>
+                                        @* <ul class="nav nav-second-level" id="main_menu1">
+                                        <li> <a href="@Url.Content("~/User/List")"><i class="fas fa-angle-right"></i> User</a> </li>
+                                        <li>
+                                        <a href="@Url.Content("~/Role/RoleList")"><i class="fas fa-angle-right"></i>  Role</a>
+                                        </li>
+                                        </ul>*@
+                                    </li>
+
+                                    <li class="has-menu">
+                                        <a href="@Url.Content("~/EffortTracker/Apportion")" class="waves-effect"><i class="fas fa-cog"></i> <span class="hide-menu">APPORTION @*<i class="fas fa-angle-down"></i> *@</span></a>
+
+                                    </li>
+                                    @* <li class="has-menu">
+                                    <a href="" class="waves-effect"><i class="fas fa-snowflake-o" data-icon="v"></i> <span class="hide-menu"> Project Brief <i class="fas fa-angle-down"></i> </span></a>
+                                    <ul class="nav nav-second-level" id="main_menu1">
+                                    <li> <a href="@Url.Content("~/NewInitiation/NewInitiation")"<i class="fas fa-angle-right"></i>Project Brief</a> </li>
+                                    <li>
+                                    <a href=""><i class="fas fa-angle-right"></i> New Initiation <i class="fas fa-angle-down angle_down"></i></a>
+                                    <ul class="nav nav-third-level" id="main_menu1">
+                                    <li> <a href="@Url.Content("~/NewInitiation/NewProduction")"><i class="fas fa-angle-right"></i> NPD</a> </li>
+                                    <li> <a href="@Url.Content("~/NewInitiation/Reformulation")"><i class="fas fa-angle-right"></i> Reformulation</a> </li>
+                                    <li> <a href="@Url.Content("~/NewInitiation/PackageIntiatives")"><i class="fas fa-angle-right"></i> Package Initiatives</a> </li>
+                                    </ul>
+                                    </li>
+                                    </ul>
+                                    </li>
+                                    <li class="has-menu">
+                                    <a href="" class="waves-effect"><i class="fas fa-cog"></i> <span class="hide-menu"> Prototype <i class="fas fa-angle-down"></i> </span></a>
+                                    <ul class="nav nav-second-level" id="main_menu1">
+                                    <li> <a href="@Url.Content("~/Prototype/Prototype")"><i class="fas fa-angle-right"></i> Prototype</a> </li>
+
+                                    </ul>
+                                    </li>*@
+
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="flex-grow-1 right_header">
+                            <div class="d-flex justify-content-end align-items-center">
+
+                                <ul class="navbar-nav admin_nav">
+                                    <li class="dropdown admin_dropdown">
+                                        <span class="usr_nmr">Kiran Kumar</span><span>HI0007938</span>
+                                        <a class="dropdown-toggle icon-menu" href="@Url.Content("#")" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                            <img src="@Url.Content("~/images/user.png")" class="usr_img">
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end p-2 shadow ">
+                                            <li><a class="dropdown-item" href="@Url.Content("/Account/Login")"><i class="fas fa-sign-out"></i> <span>Logout</span></a></li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="body-content">
+            @RenderBody()
+
+            <footer class="p-2 ftr_effort_tracker">
+                <p class="text-uppercase m-0 ft_size">&copy; @DateTime.Now.Year - IT Department, Himalaya Wellness Company, All Rights Reserved</p>
+            </footer>
+        </div>
+
+    </div>
+    @*Delete Icon*@
+    <div class="modal fade sv hd" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure You want to delete?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                    <button type="button" class="btn btwar btn-warning" onclick="location.href = '~/NewInitiation/NewInitiation';">Cancel</button>
+
+
+                </div>
+            </div>
+        </div>
+    </div>
+    @* <script src="@Url.Content("~/js/site.js")"></script>*@
+    @*<script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>*@
+
+z
+
+
+    <script>
+        //active class
+        function setNavigation() {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "");
+            path = decodeURIComponent(path);
+            //path = path.split('/')[2];
+
+
+
+
+
+            $("#main_menu li a, #main_menu1 li a").each(function () {
+                var href = $(this).attr('href');
+
+
+
+
+
+                //href = href.split('/')[2];
+                if (path === href) {
+                    if ($(this).parents('#main_menu, #main_menu1').length >= 1) {
+                        //$(this).parents('li').addClass('active');
+                        $(this).parents(".has-menu").addClass('active');
+                        //$(this).parents('.has-menu').last().addClass('activeparents');
+                    }
+                    else {
+                        $(this).addClass('activeparents');
+                        $(this).parents('li').addClass('activeparents');
+                    }
+
+
+
+
+
+
+                }
+            });
+        }
+        setNavigation();
+    </script>
+</body>
+</html>

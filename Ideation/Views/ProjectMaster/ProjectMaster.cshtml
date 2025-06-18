@@ -1,0 +1,312 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewBag.Title = "Project Master";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    .add_grid__ .m-table__main .ui-jqgrid .ui-jqgrid-htable {
+        padding-right: 17px !important;
+    }
+
+    .-deptUser {
+        color: #fff;
+        background: #c7558c;
+    }
+    .legacy_color {
+        background-color: #eecfa8 !important;
+    }
+    span.btn-icon.-Legacydata {
+        width: 15px;
+        height: 15px;
+        background: #eecfa8 !important;
+        float: left;
+        margin-right: 5px;
+        margin-top: 3px;
+    }
+</style>
+<div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+
+    @Html.HiddenFor(model => model.SetProjectMasterHeaderDataList, new { @id = "ProjectMasterHeaderDataList" })
+    @Html.HiddenFor(model => model.Role)
+
+    <div class="row ">
+        <div class="alert_message">
+            <div id="message">
+                @if (TempData["message"] != null)
+                {
+                    <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                        </button>
+                        <span class="alert-text">@Html.Raw(Convert.ToString(TempData["message"]))</span>
+                    </div>
+                }
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="form-group mb-0 ">
+                <label class="control-label">
+                    Project Brief ID
+                </label>
+                @Html.TextBoxFor(m => m.ProjectBriefId, new { @type = "text", @class = "form-control form-control-sm searchValue", @placeholder = "Enter ProjectBriefID", @id = "PMSearchBrief" })
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group mb-0 ">
+                <label class="control-label">
+                    Item Type
+                </label>
+                @Html.DropDownListFor(model => model.Item, Model.ItemList, new { @class = "form-control form-control-sm data-singleselect", @id = "PMSearchItemType" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group mb-0 mt-4">
+                <button type="button" id="SearchPMData" class="btn btn-info c-add-details waves-light waves-effect" title="Search"><i class="fas fa-search" title="Search" aria-hidden="true"></i></button>
+            </div>
+        </div>
+
+        <div class="col-md-5 mt-4">
+            <div class="text-right">
+                <button type="button" class="btn btn-excel" title="Excel Download" id="ExcelDownload"><img src="@Url.Content("~/images/excel.png")"></button>
+                <button type="button" class="btn-add ex_bt excel_btn CreateProject" onclick="location.href = './AddProject';"><i class="fas fa-plus ex_download mr-2 " aria-hidden="true"></i>Create Project</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex mt-3 mb-1">
+        <span style="display:flex;justify-content:center;align-items:center" class="icongap">
+            <label class="btn-icon -view"><i class="fas fa-plus" aria-hidden="true"></i></label>Add
+        </span>
+
+        <span style="display:flex;justify-content:center;align-items:center" class="icongap">
+            <label class="btn-icon -edit"><i class="fas fa-info" aria-hidden="true"></i></label>Info
+        </span>
+
+        <span style="display:flex;justify-content:center;align-items:center" class="icongap">
+            <label class="btn-icon -warning"><i class="fas fa-rotate-right" aria-hidden="true"></i></label>SAP Remarks
+        </span>
+
+        <span style="display:flex;justify-content:center;align-items:center" class="icongap hide-icon">
+            <label class="btn-icon -view"><i class="fas fa-users" aria-hidden="true"></i></label>Link to Project Resource Master
+        </span>
+
+        <span style="display:flex;justify-content:center;align-items:center" class="icongap hide-icon">
+            <label class="btn-icon -deptUser"><i class="fas fa-user-friends" aria-hidden="true"></i></label>Department Budget Planning team
+        </span>
+         <span class="btn-icon -Legacydata"></span>Legacy Project
+    </div>
+
+    <div class="add_grid_">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll pm_grid">
+                            <table id="PMJqgrid" class="table table-bordered"></table>
+                            <div id="pager_PMJqgrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade hd" id="ViewProjectData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">View Project</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row product_profile card_bx">
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Project Name</label>
+                            <div class="demo-content">
+                                <label>
+                                    <strong id="View_Product">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Template</label>
+                            <div class="demo-content">
+                                <label>
+                                    <strong id="View_Template">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Item Type</label>
+                            <div class="demo-content">
+                                <label>
+                                    <strong id="View_Itemtype">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Bucket</label>
+                            <div class="demo-content">
+                                <label>
+                                    <strong id="View_Bucket">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>HUB</label>
+                            <div class="demo-content">
+                                <label>
+                                    <strong id="View_Hub">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Start Date</label>
+                            <div class="ckediter_tolbar">
+                                <label>
+                                    <strong id="View_StartDate">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>End Date</label>
+                            <div class="ckediter_tolbar">
+                                <label>
+                                    <strong id="View_EndDate">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Created Date</label>
+                            <div class="ckediter_tolbar">
+                                <label>
+                                    <strong id="View_CreateDate">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label>Created By</label>
+                            <div class="ckediter_tolbar">
+                                <label>
+                                    <strong id="View_CreatedBy">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12">
+                        <div class="form-group">
+                            <label>SAP Remarks</label>
+                            <div class="ckediter_tolbar">
+                                <label>
+                                    <strong id="View_Remarks">
+                                    </strong>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <div class="save_buttons float-right text-right">
+                            <button type="button" class="btn-rej" id="CloseViewPrjPopup" data-title="Cancel" data-bs-dismiss="modal"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="alertProjectInitiationSearch" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Please select Project Type or Enter Project Brief Id
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="alertExcelEmpty" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                No Data Available for Export
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="alertSAPResponse" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                @ViewBag.ResponseFromSP
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger"  data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    if (("@ViewBag.ResponseFromSP" != "") && ("@ViewBag.ResponseFromSP" != null)) {
+        $("#alertSAPResponse").modal("show");
+    }
+</script>
+
+
+<script src="@Url.Content("~/js/projectmaster/projectinitiation.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/projectmaster/xlsx.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/assets_eppm/js/app.js")" asp-append-version="true"></script>
+<script src="~/js/projectmaster/exceljs.min.js"></script>

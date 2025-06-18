@@ -1,0 +1,423 @@
+﻿@model Ideation.Models.ExpensesRequest
+@{
+    ViewData["Title"] = "Expenses Request";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+    //var stages = Model.Stages;
+}
+
+<link href="~/css/11font-awesome.min.css" rel="stylesheet" />
+
+<style>
+    .date_icon {
+        position: relative;
+    }
+
+        .date_icon i.fas {
+            position: absolute;
+            right: 8px;
+            top: 23px;
+        }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #dedede !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable .ui-search-toolbar th {
+        border: 1px solid #dedede !important;
+        border-bottom: 0px !important;
+        border-right: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable th {
+        border: 1px solid #dedede !important;
+        border-bottom: 0px;
+    }
+
+    .select2-container .select2-selection--single {
+        height: 23px;
+    }
+
+    .approval_history_table .ui-widget.ui-widget-content {
+        margin: auto;
+    }
+
+    .approval_history_table .ui-jqgrid .ui-jqgrid-bdiv {
+        height: auto !important;
+    }
+
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+
+    .title_color_value {
+        color: #f37d1f;
+    }
+
+    #message_alert {
+        margin-bottom: 0px !important;
+    }
+
+    .alert-dismissable .close, .alert-dismissible .close {
+        opacity: 1;
+        color: #000 !important;
+        top: -15px;
+        right: -35px;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td .pr_fields_ {
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
+    .small_size {
+        font-size: 7px;
+        display: block;
+    }
+
+    .small_sizeforamount {
+        font-size: 9px;
+        display: block;
+    }
+
+    .lifecycle_list li.fa-arrow-right {
+        color: black !important;
+    }
+
+    .lifecycle_list li.fas.fa-arrow-right.warning {
+        color: #ff9221 !important;
+    }
+
+    .lifecycle_list li.fas.fa-arrow-right.rejected {
+        color: #f00 !important;
+    }
+
+    .lifecycle_list li.fas.fa-arrow-right.completed {
+        color: #309149 !important;
+    }
+</style>
+
+@*To show response message*@
+@Html.HiddenFor(m => m.Role)
+@Html.HiddenFor(m => m.LoginId)
+
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close aler_dismissal_close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+</section>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> Expenses Request</h4>
+        </div>
+        @*<div class="back_aroow"><a href="@Url.Content("~/ProjectInitiation/PRCreation")"><i class="fas fa-arrow-left"></i> Back</a></div>*@
+        <div class="-m_title-Buttons buttonshow hide">
+            <div class=" button button-add">
+                <a href="@Url.Content("~/NewProjectInitiation/AddExpensesRequest")" class=" ">
+                    <i class="fas fa-plus color-white"></i> <span class="color-white">Expenses Request</span>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+@using (Html.BeginForm("ApproveOrRejectTheExpenses", "NewProjectInitiation", FormMethod.Post, new { id = "AddExpensesReq", enctype = "multipart/form-data" }))
+{
+    @Html.HiddenFor(model => model.Remarks)
+    @Html.HiddenFor(model => model.ApprovalFlow)
+    @Html.HiddenFor(model => model.ExpensesRefId)
+    <section>
+        <div class="prototype_filter">
+            <div class="d-flex justify-content-between mb-1">
+                <div class="d-flex">
+                    <div class="col-width1 date_icon">
+                        <div class="form-group">
+                            <label for="" class="control-label">Start Date</label>
+                            <input type="text" class="form-control" id="StartDate" data-datepicker-startdate1 readonly>
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="col-width1 date_icon">
+                        <div class="form-group">
+                            <label for="" class="control-label">End Date</label>
+                            <input type="text" class="form-control" id="EndDate" data-datepicker-enddate1 readonly>
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">Project Id </label>
+                            @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.ProjectList, "Value", "Text"), "--Select--",
+    new { @class = "form-control data-singleselect", @id = "ProjectId", @data_singleselect = "" })
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group">
+                            <label class="control-label">Department</label>
+                            @Html.DropDownListFor(m => m.DepartmentId, new SelectList(Model.DepartmentValue, "DepartmentId", "DepartmentName"), "--Select--",
+    new { @class = "form-control data-singleselect", @id = "DepartmentId", @data_singleselect = "" })
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group">
+                            <label class="control-label">Category</label>
+                            @Html.DropDownListFor(m => m.CategoryId, new SelectList(Model.CategoryValue, "value", "CategoryName"), "--Select--",
+    new { @class = "form-control data-singleselect", @id = "CategoryId", @data_singleselect = "" })
+                        </div>
+                    </div>
+
+                    <div class="col-width1 mt-3 pt-1">
+                        <button class="btn btn-search" title="Search" type="button" id="btnSearch">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-refresh" title="Refresh" type="button" id="btnRefresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <div class="d-flex excel_expand align-items-center">
+                        <div class="images_excel ">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download">
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand">
+                                <div>
+                                    <div onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="legends_list">
+                <ul class="d-flex ">
+                    <li><i class="fas fa-pen text-primary"></i> Edit</li>
+                    <li><i class="fas fa-eye text-info"></i> View</li>
+                    <li><i class="fas fa-trash text-danger"></i> Delete</li>
+                    <li><i class="fas fa-history text-warning"></i> History</li>
+                    <li><i class="fas fa-file text-success"></i> Supporting Document</li>
+                    <li><i class="fas fa-thumbs-up text-success"></i> Approve</li>
+                    @*  <li><i class="fas fa-thumbs-down text-danger"></i> Reject</li>*@
+                    <li><i class="fas fa-repeat text-primary"></i> Roll Back to Initiator</li>
+                    <li><i class="fas fa-close text-danger"></i>Cancel</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+}
+
+<section>
+    <div class=" mt-1">
+        <div class="">
+            <div class="">
+                <div class="col-md-12 p-0">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="ExpensesRequest_Grid" class="table table-bordered"></table>
+                            <div id="ExpensesRequest_Pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="ApproveModal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xs upload">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title modaltitle" id="ModalLabel"></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="modalmsg"></p>
+                <div class="form-group">
+                    <label class="control-label">
+                        Remarks
+                    </label><span class="color-red">*</span>
+                    @Html.TextAreaFor(m => m.Remarks, new { @class = "form-control F_Value ApprovalRemarks", @rows = "2", @spellcheck = "false", id = "ApprovalRemarks" })
+                    <span id="E_ApprovalRemarks" class="color-red Error_closeModal" style="display:none">Please enter the remarks</span>
+                </div>
+                <div class="text-right mt-2">
+                    <button type="button" class="btn btn-success" id="ByClick_OK" data-title="Ok"> Ok</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="Document_Popup" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Documents</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive sd_documents">
+                                        <table id="Grid_Expense_Document" class="table table-bordered"></table>
+                                        <div id="Grid_Expense_Document_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ShowExpensesHistory" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Approval History
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="control-label"><b>Project Id :</b></label>
+                        <span id="ProjectNameForHistory"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label"><b>Department:</b></label>
+                        <span id="DeptNameForHistory"></span>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="control-label"><b>Category:</b></label>
+                        <span id="CategoryNameForHistory">Travel</span>
+                    </div>
+                    <div class="col-lg-2">
+                        <div class="images_excel float-right text-right">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="DownloadHistory" title="Excel Download" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="lifecycle_list">
+                    <ul id="AddLi"></ul>
+                </div>
+                <div class=" mt-1">
+                    <div class="">
+                        <div class="">
+                            <div class="col-md-12 p-0">
+                                <div class="m-table__main grid_height">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="ExpensesHistory_Grid" class="table table-bordered"></table>
+                                        <div id="ExpensesHistory_Grid_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ViewRequestDetails" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title">
+                    Expenses Request Details
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body ">
+         
+                <div class="row">
+                    <div class="col-md-5 mb-2">
+                        <label class="control-label"><b>Project Id :</b></label> <span class="title_color_value" id="ProjectIdForPopup"></span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label class="control-label"><b>Department :</b></label> <span class="title_color_value" id="DepartmentNameForPopup"></span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label class="control-label"><b>Category :</b></label> <span class="title_color_value" id="CategoryForPopup"></span>
+                    </div>
+                    <div class="col-md-5 mb-2">
+                        <label class="control-label"><b>Employee :</b></label> <span class="title_color_value" id="EmployeeForPopup"></span>
+                    </div>
+                    <div class="col-md-3 mb-2">
+                        <label class="control-label"><b>Expense Date :</b></label> <span class="title_color_value" id="DateOfClaim"></span>
+                    </div>
+                    <div class="excel_expand col-md-3 mb-2">
+                        <div class="images_excel">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="ViewExcelDownload" title="Excel Download">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive sd_documents">
+                                        <table id="JqgridForApprovalView" class="table table-bordered"></table>
+                                        <div id="JqgridForApprovalView_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="confirmationPopUpforDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Delete Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgfordelete">
+                    Are you sure you want to delete the Expense Request?
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmdelete">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/ExpensesRequestList.js")"></script>

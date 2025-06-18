@@ -1,0 +1,494 @@
+﻿@model Ideation.Models.RDMS
+@{
+    ViewData["Title"] = "License Management List";
+    Layout = "~/Views/Shared/RDMSLayout.cshtml";
+    var activeFlag = true;
+    var licStartDate = Model.DropDownMastersDataList.Where(item => item.Type.ToLower() == "licensestartdate").ToList()[0].Name;
+    var licEndDate = Model.DropDownMastersDataList.Where(item => item.Type.ToLower() == "licenseenddate").ToList()[0].Name;
+    var loginId = Context.Session.GetString("UserName");
+    var role = Context.Session.GetString("Role")?.ToLower();
+}
+
+<link href="~/css/11font-awesome.min.css" rel="stylesheet" />
+
+@*To show saved response message*@
+@if (TempData["Message"] != null)
+{
+    <div id="message" class="m-login__erromsg">
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    </div>
+}
+
+@*To show deleted response message*@
+<section>
+    <div id="response-message-div" class="m-login__erromsg hide">
+
+    </div>
+</section>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> License List</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <input type="hidden" value="@licStartDate" id="lic-start-date">
+    <input type="hidden" value="@licEndDate" id="lic-end-date">
+    <input type="hidden" value="@loginId" id="login-id">
+    <input type="hidden" value="@role" id="role">
+</section>
+
+<section>
+    <div>
+        <div>
+
+            @Html.HiddenFor(m => m.AutosuggestDropdown)
+
+            <div class="project_modules d-flex justify-content-between">
+                @*<ul class="nav nav-tabs license-type-tab">
+                        @for (int i = 0; i < Model.DropDownMastersDataList?.Where(item => item.Type.ToLower() == "licensetypeall").Count(); i++)
+                        {
+                            var obj = Model.DropDownMastersDataList.Where(item => item.Type.ToLower() == "licensetypeall").ToList()[i];
+                            <li>
+                                <a data-tab-id="@obj.Id"
+                                   class="@(activeFlag ? "active" : "")">
+                                    @obj.Name<span>@obj.Count</span>
+                                </a>
+                            </li>
+                            if (activeFlag)
+                            {
+                                activeFlag = false;
+                            }
+                        }
+                        @for (int i = 0; i < Model.DropDownMastersDataList?.Where(item => item.Type.ToLower() == "licensetype").Count(); i++)
+                        {
+                            var obj = Model.DropDownMastersDataList.Where(item => item.Type.ToLower() == "licensetype").ToList()[i];
+                            <li>
+                                <a data-tab-id="@obj.Id"
+                                   class="@(activeFlag ? "active" : "")">
+                                    @obj.Name<span>@obj.Count</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>*@
+            </div>
+
+            <div>
+                <div class="d-flex justify-content-between mb-1 mt-2">
+                    <div class="d-flex">
+                        <div class="col-width1">
+                            <div class="form-group">
+                                <label class="control-label"> Document Category</label>
+                                @Html.DropDownListFor(
+                                    m => m.Category,
+                                    new SelectList(Model.DropDownMastersDataList?.Where(i => i.Type.ToLower() == "doccategory"), "Id", "Name"),
+                                    new { @class = "form-control multi-select-dd", @id = "DocCategory", @multiple = "multiple", @data_multiselect = "", }
+                                )
+                            </div>
+                        </div>
+                        <div class="col-width1">
+                            <div class="form-group">
+                                <label class="control-label">Document Type</label>
+                                <select class="form-control multi-select-dd" multiple="multiple" id="LicenceType">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-width2">
+                            <div class="form-group">
+                                <label class="control-label">Plant</label>
+                                @Html.DropDownList(
+                                    "PlantDropDown",
+                                    new SelectList(Model.DropDownMastersDataList?.Where(m => m.Type == "ManufacturingPlant"), "Id", "Name"),
+                                    new { @class = "form-control multi-select-dd", @data_multiselect = "", @multiple = "multiple", @id = "plant" }
+                                )
+                            </div>
+                        </div>
+                        <div class="col-width1">
+                            <div class="form-group">
+                                <label class="control-label">Status</label>
+                                @Html.DropDownList(
+                                    "StatusDropDown",
+                                    new SelectList(Model.DropDownMastersDataList?.Where(m => m.Type == "RDMS_Status"), "Id", "Name"),
+                                    new { @class = "form-control multi-select-dd", @data_multiselect = "", @multiple = "multiple", @id = "status" }
+                                )
+                            </div>
+                        </div>
+                        <div class="col-width1 date_icon">
+                            <div class="form-group">
+                                <label class="control-label">Valid From</label>
+                                <input type="text" class="form-control date_text_freezed" id="fromdate" readonly>
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="col-width1 date_icon">
+                            <div class="form-group">
+                                <label class="control-label">Valid To</label>
+                                <input type="text" class="form-control date_text_freezed" id="todate" readonly>
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="col-width1 mt-3 pt-2 prototype_filter ml-2">
+                            <button class="btn btn-search" title="Search" id="search_btn" type="button" onclick="GetSearchedData(1)">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-refresh ml-1" title="Refresh" id="refresh_btn" type="button" onclick="GetSearchedData(2)">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="d-flex excel_expand align-items-center">
+                        <span class="remarks-color" role="button">
+                            <i class="fas fa-info" title="Product Group Material Mapping" onclick="GetProductGroupMaterialDetails()"></i>
+                        </span>
+                        <div class="images_excel ">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand">
+                                <div>
+                                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        @if (@role != "view role")
+                        {
+                            <div class="ml-2 ">
+                                <a href="@Url.Content("~/RDMS/AddLicenseManagement")" class="btn btn-success">Add</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <div class="d-flex justify-content-between mb-1 align-items-center">
+                    <div class="col-width2 d-flex">
+                        <input type="text" class="form-control mr-2" placeholder="Search" id="global-search">
+                        <label class="mr-2 mt-1"> Total:</label><span class="mt-1" id="RecordsCount"></span>
+                    </div>
+                    <div class="legends_list">
+                        <ul class="d-flex ">
+                            <li>
+                                <div class="pending-overdue">
+                                    <label class="mb-0"><span></span> Pending for renewal (0 - 30 days)</label>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="pending-normal">
+                                    <label class="mb-0"><span></span> Pending for renewal (31 - 90 days)</label>
+                                </div>
+                            </li>
+                            <li class="remarks-color"><i class="fas fa-info"></i> Remarks</li>
+                            <li><i class="fas fa-pen text-info"></i> Edit</li>
+                            <li><i class="fas fa-file text-success"></i>License Document</li>
+                            <li><i class="fas fa-file-signature text-primary"></i>Declaration Document</li>
+                            <li><i class="fas fa-history text-warning"></i> History</li>
+                            <li><i class="fas fa-refresh text-primary"></i> Renew License</li>
+                            <li><i class="fas fa-trash text-danger"></i> Delete</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="license-list-header">
+            </div>
+
+            <div class="tab-card license-list-cards">
+            </div>
+
+        </div>
+    </div>
+</section>
+
+<div id="history-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    History - <span class="HeaderId"></span>
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2 d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="col-width2">
+                            <b>Plant: </b>
+                            <span id="his-plant" class="colordetails"></span>
+                        </span>
+                        <span class="col-width2">
+                            <b>Document Category: </b>
+                            <span id="his-doccat" class="colordetails"></span>
+                        </span>
+                        <span class="col-width1">
+                            <b>Document Type: </b>
+                            <span id="his-lictype" class="colordetails"></span>
+                        </span>
+                        <span class="col-width1">
+                            <b>Document No.: </b>
+                            <span id="his-docno" class="colordetails"></span>
+                        </span>
+                    </div>
+                    <div class="images_excel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="his-excel-download" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="history-grid" class="table table-bordered"></table>
+                                    <div id="history-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="product-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title">
+                    Products - <span class="HeaderId"></span>
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2 d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="col-width2">
+                            <b>Plant: </b>
+                            <span id="prd-plant" class="colordetails"></span>
+                        </span>
+                        <span class="col-width2">
+                            <b>Document Category: </b>
+                            <span id="prd-doccat" class="colordetails"></span>
+                        </span>
+                        <span class="col-width1">
+                            <b>Document Type: </b>
+                            <span id="prd-lictype" class="colordetails"></span>
+                        </span>
+                        <span class="col-width1">
+                            <b>Document No: </b>
+                            <span id="prd-docno" class="colordetails"></span>
+                        </span>
+                    </div>
+                    <div class="images_excel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="prd-excel-download" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="product-grid" class="table table-bordered"></table>
+                                    <div id="product-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="remarks-popup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Remarks - <span class="HeaderId"></span>
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-2 d-flex justify-content-between align-items-center">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="col-width2">
+                            <b>Plant: </b>
+                            <span id="rem-plant" class="colordetails"></span>
+                        </span>
+                        <span class="col-width2">
+                            <b>Document Category: </b>
+                            <span id="rem-doccat" class="colordetails"></span>
+                        </span>
+                        <span class="col-width1">
+                            <b>Document Type: </b>
+                            <span id="rem-lictype" class="colordetails"></span>
+                        </span>
+                        <span class="col-width1">
+                            <b>Document No: </b>
+                            <span id="rem-docno" class="colordetails"></span>
+                        </span>
+                    </div>
+                    <div class="images_excel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="rem-excel-download" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="remarks-grid" class="table table-bordered"></table>
+                                    <div id="remarks-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="declaration-popup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Declaration Document  - <span class="HeaderId"></span>
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="declaration-grid" class="table table-bordered"></table>
+                                    <div id="declaration-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="prd-grp-mat-popup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Product Group Material Mapping
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center mb-1 mt-2">
+                    <div class="d-flex">
+                        <div class="col-width1">
+                            <div class="form-group">
+                                <label class="control-label"> Product Group</label>
+                                @Html.DropDownListFor(m => m.ProductGroup, new SelectList(Model.DropDownMastersDataList?.Where(i => i.Type == "PopupProductGroup"), "Id", "Name"),
+                                new { @class = "form-control multi-select-dd", @id = "PopupPrdGroup", @multiple = "multiple", @data_multiselect = "", })
+                            </div>
+                        </div>
+                        <div class="col-width2">
+                            <div class="form-group">
+                                <label class="control-label">Material</label>
+                                @Html.DropDownList(
+                                    "StatusDropDown",
+                                    new SelectList(Model.DropDownMastersDataList?.Where(m => m.Type == "PopupMaterial"), "Id", "Name"),
+                                    new { @class = "form-control multi-select-dd", @data_multiselect = "", @multiple = "multiple", @id = "PopupMaterial" }
+                                )
+                            </div>
+                        </div>
+                        <div class="col-width2">
+                            <div class="form-group">
+                                <label class="control-label">Plant</label>
+                                @Html.DropDownList(
+                                    "PlantDropDown",
+                                    new SelectList(Model.DropDownMastersDataList?.Where(m => m.Type == "ManufacturingPlant"), "Id", "Name"),
+                                    new { @class = "form-control multi-select-dd", @data_multiselect = "", @multiple = "multiple", @id = "PopupPlant" }
+                                )
+                            </div>
+                        </div>
+                        <div class="col-width1">
+                            <div class="form-group">
+                                <label class="control-label">Document Type</label>
+                                <select class="form-control multi-select-dd" multiple="multiple" id="PopupLicenceType">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-width1 date_icon">
+                            <div class="form-group">
+                                <label class="control-label">Valid From</label>
+                                <input type="text" class="form-control date_text_freezed" id="popup-fromdate" readonly>
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="col-width1 date_icon">
+                            <div class="form-group">
+                                <label class="control-label">Valid To</label>
+                                <input type="text" class="form-control date_text_freezed" id="popup-todate" readonly>
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+                        <div class="mt-3 pt-2 prototype_filter ml-2">
+                            <button class="btn btn-search" title="Search" id="popup_search_btn" type="button" onclick="GetProductGroupMaterialDetails(1)">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-refresh ml-1" title="Refresh" id="popup_refresh_btn" type="button" onclick="GetProductGroupMaterialDetails(2)">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="images_excel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="prd-grp-mat-excel-download" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="prd-grp-mat-grid" class="table table-bordered"></table>
+                                    <div id="prd-grp-mat-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/RDMS/LicenseManagementList.js")" asp-append-version="true"></script>

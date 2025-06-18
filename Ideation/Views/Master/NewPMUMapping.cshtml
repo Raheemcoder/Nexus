@@ -1,0 +1,114 @@
+﻿@model Ideation.Models.PMUMapping
+@{
+    ViewBag.Title = "PMUMapping";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+}
+
+<link href="~/assets/plugins/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+<div class="card-box">
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title">
+            <h4 class="-m-3 mb-2">New PMU Mappings</h4>
+        </div>
+    </div>
+    <div id="message" class="m-login__erromsg">
+        @if (TempData["MessagePMU"] != null)
+        {
+            <div class="alert @Convert.ToString(TempData["MessageClassPMU"]) alert-dismissible" role="alert" id="message_alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                </button>
+                @Convert.ToString(TempData["MessagePMU"])
+            </div>
+        }
+    </div>
+
+</div>
+
+
+
+
+<div class="m-form -filter-form" id="milestonedropdown">
+    <div class="m-form__container">
+        <div class="m-form__List">
+            <div class="row">
+                    <div class="col-md-3 Mistonelistdiv project_list">
+                    <label class="control-label">Milestone List</label>
+                    <select class="form-control projectDrop custmscroll" multiple="multiple" data-multiselect id="multipleSelect">
+                        @if (ViewBag.MilestoneList != null)
+                        {
+                            foreach (var item in ViewBag.MilestoneList)
+                            {
+                                <option id="@item.Value" name="MilestoneList" value="@item.Value">@item.Text</option>
+                            }
+                        }
+                    </select>
+                    <span class="text-danger projectName_error"></span>
+                </div>
+
+                <div class="col-md-2 Mistonelistdiv mt-25">
+                    <button type="button" class="btn-add" id="btnAdd">Add</button>
+                </div>
+                <div class="col align-self-end Mistonelistdiv refresh-approve">
+                        <div class="float-right save_approve refresh_approve">
+                        <button type="button" id="btnRefresh" class="btn btn-warning btn_refresh "><i class="fas fa-sync" aria-hidden="true"></i></button>
+                        <button type="button" style="display:none" id="ApproveModal" class="btn-add approve_btn" data-toggle="modal" data-target="#myModal">Approve</button>
+                        <button type="button" id="SaveModel" class="btn-add mt-0">Submit</button>
+                        @*<button type="button" class="btn btn-xs btn-info c-btn save_btn">Save</button>*@
+
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="m-table__main">
+            <div class="m-table__responsive -virtual-scroll">
+                <table id="jqgrid" class="table table-bordered"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+        <!--<div class="float-right save_approve mt-4 mb-0">
+            <button type="button" hidden class="btn btn-xs  btn-success c-btn approve_btn">Approve</button>
+            <button type="button" id="SaveModel1" class="btn btn-xs btn-success c-btn submit_btn">Submit</button>-->
+            @*<button type="button" class="btn btn-xs btn-info c-btn save_btn">Save</button>*@
+        <!--</div>-->
+        <div class="form-group row col-md-9 checkboxpmu pb-0 mb-0">
+            @Html.CheckBoxFor(m => m.AccepptVersionCreation, new { @class = "displaycheck" })
+            <b> Do you want to create the new version for this changes</b>
+        </div>
+    </div>
+</div>
+</div>
+<input type="hidden" id="LoggedinUser" value="Context.Session.GetString("UserName").ToString()" />
+@if (Context.Session.GetString("projectName") != null)
+{
+    var projectName = Context.Session.GetString("projectName");
+    var projectId = Context.Session.GetString("projectId");
+    <input type="hidden" id="selectedProjectName" value="@projectName" />
+    <input type="hidden" id="selectedProjectId" value="@projectId" />
+}
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content confirmationpop">
+
+            <div class="modal-body text-center confirmationpop">
+                <h4>Are you sure you want to Approve the Project?</h4>
+                <button type="button" id="OkApproval" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+@*<script src="~/assets/plugins/jqGrid/js/moment.js"></script>
+*@<script src="@Url.Content("~/js/Master/NewPMUMapping.js")" asp-append-version="true"></script>
+@*@System.Web.Optimization.Scripts.Render("~/bundles/NewPMUMappingJs")*@

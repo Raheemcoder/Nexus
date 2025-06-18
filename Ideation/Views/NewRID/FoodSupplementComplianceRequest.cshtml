@@ -1,0 +1,735 @@
+﻿@model RID
+@{
+    ViewData["Title"] = "Compliance Request";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var ingtypelist = Model.IngredientTypeList;
+    var firsingredientId = ingtypelist.FirstOrDefault().IngredientTypeId;
+    var division = @Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.DivisionName;
+    var firstingredientTypeName = ingtypelist.FirstOrDefault().IngredientTypeName;
+}
+<style>
+    .blue_circle {
+        width: 9px;
+        height: 9px;
+        background: #5f5fe2;
+        border-radius: 50%;
+        display: inline-block;
+    }
+
+    .tabs_excel {
+        position: absolute;
+        right: 14px;
+        top: 47px;
+    }
+</style>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+            <span>
+        <a href="@Url.Content("~/Landing/Index")">Home / </a>
+        <a href="@Url.Content("~/NewRID/RIDIndex")">@division / </a>
+    </span>
+            CR</h4>
+        </div>
+    </div>
+</section>
+<section>
+    <section>
+        <div class="project_modules ">
+            <input type="text" id="searchingredienttype" hidden />
+            <input type="text" id="firstingredient" hidden value="@firsingredientId" />
+            <input type="hidden" id="firstingredienttypename" value="@firstingredientTypeName"/>
+            <ul class="nav nav-tabs ingredienttype_content">
+                @foreach (var item in ingtypelist)
+                {
+                    <li><a data-toggle="tab" onclick="getcompliancelist(this)" data-value="@item.IngredientTypeId" id="selectedingredient_@item.IngredientTypeId" data-ingredienttypename="@item.IngredientTypeName">@item.IngredientTypeName</a></li>
+                }
+            </ul>
+            <div class="d-flex excel_expand align-items-end tabs_excel">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode" title="Enter Full Screen Mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <div class="filter_status prototype_filter ">
+
+                    <div class="d-flex">
+
+                        <div class="col-width1 ">
+                            <div class="form-group date_icon">
+                                <label class="control-label">Start Date</label>
+                                <input type="text" class="form-control ImpactDates_text_freezed" id="Search_Start_Date" autocomplete="off" data-datepicker-startdate readonly>
+                                <span style="display:none" id="Err_Search_Start_Date" class="Err_Date color-red">Please Select a Valid Date</span>
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-width1 ">
+                            <div class="form-group date_icon">
+                                <label class="control-label">End Date</label>
+                                <input type="text" class="form-control ImpactDates_text_freezed" id="Search_End_Date" autocomplete="off" data-datepicker-enddate readonly>
+                                <span style="display:none" id="Err_Search_End_Date" class="Err_Date color-red">Please Select a Valid Date</span>
+                                <i class="fas fa-calendar"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-width2">
+                            <div class="form-group">
+                                <label class="control-label">Status</label>
+                                @Html.DropDownListFor(model => model.StatusId, new SelectList(Model.StatusDetails, "Value", "Text", ""), new { @class = "form-control singleselect", @data_singleselect = "" })
+
+
+                            </div>
+                        </div>
+                        <div class="col-width1 mt-3 pt-1">
+                            <button class="btn btn-search" title="Search" type="button" id="search_ingredient">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-refresh" title="Refresh" type="button" id="refresh_data">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+    @*List of RID jqgrid*@
+    <section>
+        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand mt-3">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height rid_heigt">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="compliancerequestgrid" class="table table-bordered"></table>
+                                <div id="pager_expecte"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</section>
+<div id="IngredientModal1" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Ingredient Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <div class="filter_forms">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <span> Ingredient : <label class="control-label">Yashti</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Synonyms : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Botanical Name : <label class="control-label">Glycyrrhiza glabra</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> CAS Number : <label class="control-label">39236-46-9</label></span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span> E Number : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Part Used : <label class="control-label">Root</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Solvents used : <label class="control-label">Aqueous</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Markers/Phyto-constituents F : <label class="control-label">Preservative</label></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-1 mt-2">
+                        <section class="icon_description">
+                            <div class="status_icons_">
+                                <i class="blue_circle"></i>&nbsp; Higher Management/HUB Decision Required &nbsp;<i class="green_circle"></i>&nbsp; Allowed &nbsp;<i class="yellow_circle"></i>&nbsp; Allowed With Restrictions &nbsp; <i class="red_circle"></i>&nbsp; Prohibited &nbsp;
+                            </div>
+                        </section>
+                    </div>
+                    <div class="m-table__main mt-2" id="">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="list" class="table table-bordered"></table>
+                            <div id="pager_expected1"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="TulasiIngredientModal1" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Ingredient Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+
+
+
+                <div class="filter_forms">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <span> Ingredient : <label class="control-label">Tulasi</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Synonyms : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Botanical Name : <label class="control-label">Ocimum sanctum</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> CAS Number : <label class="control-label">122-99-6</label></span>
+                        </div>
+
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span> E Number : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Part Used : <label class="control-label">Aerial parts</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Solvents used : <label class="control-label">Aqueous</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Markers/Phyto-constituents F : <label class="control-label">Preservative</label></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-1 mt-2">
+                        <section class="icon_description">
+                            <div class="status_icons_">
+                                <i class="blue_circle"></i>&nbsp; Higher Management/HUB Decision Required &nbsp;<i class="green_circle"></i>&nbsp; Allowed &nbsp;<i class="yellow_circle"></i>&nbsp; Allowed With Restrictions &nbsp; <i class="red_circle"></i>&nbsp; Prohibited &nbsp;
+                            </div>
+                        </section>
+                    </div>
+                    <div class="m-table__main mt-2" id="">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="list_Tu" class="table table-bordered"></table>
+                            <div id="pager_expected_Tu"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ELMIngredientModal1" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Ingredient Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="filter_forms">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <span> Ingredient : <label class="control-label">Elderberry</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Synonyms : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Botanical Name : <label class="control-label">Sambacus nigra</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> CAS Number : <label class="control-label">52-51-7 </label></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span> E Number : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Part Used : <label class="control-label">Fruit</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Solvents used : <label class="control-label">Juice Powder</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Markers/Phyto-constituents F : <label class="control-label">Anthocyanins</label></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-1 mt-2">
+                        <section class="icon_description">
+                            <div class="status_icons_">
+                                <i class="blue_circle"></i>&nbsp; Higher Management/HUB Decision Required &nbsp;<i class="green_circle"></i>&nbsp; Allowed &nbsp;<i class="yellow_circle"></i>&nbsp; Allowed With Restrictions &nbsp; <i class="red_circle"></i>&nbsp; Prohibited &nbsp;
+                            </div>
+                        </section>
+                    </div>
+                    <div class="m-table__main mt-2" id="">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="list_ELM" class="table table-bordered"></table>
+                            <div id="pager_expected_ELM"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="HAIngredientModal1" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Ingredient Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="filter_forms">
+                    <div class="row mb-3">
+                        <div class="col-md-3">
+                            <span> Ingredient : <label class="control-label">Haridra</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Synonyms : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Botanical Name : <label class="control-label">Sambacus nigra</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> CAS Number : <label class="control-label">919803-06-8</label></span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span> E Number : <label class="control-label"></label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Part Used : <label class="control-label">Rhizome</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Solvents used : <label class="control-label">Aqueous</label></span>
+                        </div>
+                        <div class="col-md-3">
+                            <span> Markers/Phyto-constituents F : <label class="control-label">Polysaccharides</label></span>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 mb-1 mt-2">
+                        <section class="icon_description">
+                            <div class="status_icons_">
+                                <i class="blue_circle"></i>&nbsp; Higher Management/HUB Decision Required &nbsp;<i class="green_circle"></i>&nbsp; Allowed &nbsp;<i class="yellow_circle"></i>&nbsp; Allowed With Restrictions &nbsp; <i class="red_circle"></i>&nbsp; Prohibited &nbsp;
+                            </div>
+                        </section>
+                    </div>
+                    <div class="m-table__main mt-2" id="">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="list_HA" class="table table-bordered"></table>
+                            <div id="pager_expected_HA"></div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="ComplainceRemarks2" class="_modal modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complaince Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="preview">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>EUROPE</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    <td>
+                                        <p> <b>In Italy,</b> use of Glycyrrhiza glabra should consists of the label warning if glycyrrhizic acid with the daily dose of at least 200 mg: "Do not use for prolonged periods without seeking medical advice”.</p>
+                                        <p><b>In France,</b> the recommended daily portion of Glycyrrhiza glabra should not lead to an ingestion of glycyrrhizic acid greater than 100 mg. The labeling must carry a warning with the following content: "Do not use for more than 6 weeks without medical advice." Labeling must include a warning against use in children.</p>
+                                        <p><b>In Belgium,</b> the recommended daily amount of Glycyrrhiza glabra should not lead to an intake of glycyrrhizic acid higher than 100 mg. The analysis results must be available for each lot of products. The label should bear the following warning: Do not use for more than 6 weeks without medical advice.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="float-right ">
+                            @*<button type="button" class="btn btn-success mr-1">Save</button>*@
+                            <button type="button" class="btn btn-cancel mr-1" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ComplainceRemarks_EU" class="_modal modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complaince Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="preview">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>EUROPE</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    @*<th>EUROPE</th>*@
+                                    <td>
+                                        <p><b>In Belgium,</b> the recommended daily amount should not lead to an intake of estragole higher than 0.05 mg/kg body weight for children under 12 years of age. The label should bear the following warning: Do not use for a long time without expert advice.</p>
+                                        <p><b>In Italy,</b>Additional warning is required on the labels: Do not administer under the age of 12. Do not use for prolonged periods without seeking medical advice.</p>
+                                    </td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="float-right ">
+                            @*<button type="button" class="btn btn-success mr-1">Save</button>*@
+                            <button type="button" class="btn btn-cancel mr-1" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ComplainceRemarks_Met" class="_modal modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complaince Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="preview">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>METAP</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    @*<th>METAP</th>*@
+                                    <td>
+                                        <p> <b>In Russia,</b> All Parts of Ocimum sanctum is banned in food supplements.</p>
+                                        <p><b>In Uzbek,</b>Ocimum sanctum is present in the Negative list of Herbs. </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="float-right ">
+                            @*<button type="button" class="btn btn-success mr-1">Save</button>*@
+                            <button type="button" class="btn btn-cancel mr-1" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="TMComplainceRemarks_Met" class="_modal modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complaince Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="preview">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>METAP</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    @*<th>METAP</th>*@
+                                    <td>
+                                        <p> <b>METAP:</b> Ocimum sanctum is present in the Negative list of Herbs. </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="float-right ">
+                            @*<button type="button" class="btn btn-success mr-1">Save</button>*@
+                            <button type="button" class="btn btn-cancel mr-1" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="EComplainceRemarks_Met" class="_modal modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complaince Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="preview">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>METAP</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    @*<th>METAP</th>*@
+                                    <td>
+                                        <p> <b>In Uzbek,</b>Sambacus nigra is present in the Negative list of Herbs</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="float-right ">
+                            @*<button type="button" class="btn btn-success mr-1">Save</button>*@
+                            <button type="button" class="btn btn-cancel mr-1" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="EMedComplainceRemarks_Met" class="_modal modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complaince Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="preview">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>METAP</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    @*<th>METAP</th>*@
+                                    <td>
+                                        <p> <b>In Uzbek:</b>Sambacus nigra is present in the Negative list of Herbs.</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="float-right ">
+                            @*<button type="button" class="btn btn-success mr-1">Save</button>*@
+                            <button type="button" class="btn btn-cancel mr-1" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="HComplainceRemarks_EU" class="_modal modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Complaince Remarks</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="preview">
+                        <div class="table-responsive">
+                            <table class="table table-boardered">
+                                <thead>
+                                    <tr>
+                                        <th>EUROPE</th>
+                                    </tr>
+                                </thead>
+                                <tr>
+                                    @*<th>EUROPE</th>*@
+                                    <td>
+                                        <p> <b>BELFRIT:</b>Rhizome, Essential Oil: OK, but when the essential oil is used the amount of 1,8 cineole and camphor must be determined</p>
+                                        <p><b>Belgium:</b>Rhizome. The labelling must include the following warning: Consult your doctor or pharmacist if you are taking anticoagulants at the same time</p>
+                                        <p><b> Estonia, France, Poland, Lithuania (prohibited list): </b>Not mentioned. </p>
+                                        <p><b>Italy, </b>Rhizome, essential oil. IMPORTANT WARNING In the event of impaired liver function, biliary function or gallstones of the biliary tract, the use of the product is not recommended. Do not use during pregnancy and lactation. Do not use for prolonged periods without consulting your doctor. If you are taking any medications, you should seek the advice of your doctor. </p>
+                                        <p>
+                                            <b>Germany: </b> Rhizome. Is known to be used in food supplements. List B (Substances for which restricted use in foods is recommended).
+                                            WHO monograph therapeutic daily dose is 3-9g (crude plant material); powdered plant material 1,5g - 3g daily (dose can vary based on indication and preparation).
+                                        </p>
+                                        <p><b>UK: </b>Root.  Recorded use in medicine, food, aromatherapy, cosmetics. </p>
+                                        <p><b> Novel Food Catalogue:</b> </p>
+                                        <p>
+                                            Tetrahydrocurcuminoids is a novel food under Food supplements. Can be used Maximum upto 140mg/day. The designation of the novel food on the labelling of the foodstuffs containing it shall be ‘tetrahydrocurcuminoids’.
+                                            The labelling of food supplements containing tetrahydrocurcuminoids shall bear a statement that
+                                        </p>
+                                        <p>a)  they should be consumed by adults only, excluding pregnant and lactating women;</p>
+
+                                        <p>b)  they should not be consumed if other food supplements containing curcumin and/or curcuminoids are consumed on the same day.  </p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="float-right ">
+                            @*<button type="button" class="btn btn-success mr-1">Save</button>*@
+                            <button type="button" class="btn btn-cancel mr-1" data-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="docmod" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">View Files</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="m-table__main grid_height">
+                    <div class="m-table__responsive -virtual-scroll">
+                        <table id="doc_grid" class="table table-bordered"></table>
+                        <div id="doc_pager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="DeleteModal" class="modal fade show" data-bs-backdrop="static" data-bs-keyboard="false" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Box</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>×</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="">Are you sure you want to delete</span>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn-success mr-1" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewRID/FoodSupplementComplianceRequest.js")"></script>
+@*<script src="@Url.Content("~/js/NewRID/FoodSupplementComplianceRequest.min.js")" asp-append-version="true"></script>*@

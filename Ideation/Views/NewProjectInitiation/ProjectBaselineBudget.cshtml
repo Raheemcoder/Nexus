@@ -1,0 +1,450 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewData["Title"] = "Budget Request";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+
+<link rel="stylesheet" href="@Url.Content("~/css/PIStyles.css")" />
+<style>
+    .fas fa-upload{
+        font-size:16px;
+    }
+</style>
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Budget Request</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+
+    <div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong id="alertText"></strong>
+    </div>
+
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.Role)
+
+<div class="card-box card_height sg test123">
+    <div class="d-flex align-items-center justify-content-between mb-1">
+        <div class="list_baseline p-0">
+            <ul class="pl-0">
+
+                <li class="ml-0">
+                    <b>Project Id:</b> <span class="projectid colordetails"></span>
+                </li>
+
+                <li>
+                    <b> Start Date:</b> <span class="startDate colordetails"></span>
+                </li>
+                <li>
+                    <b> End Date:</b> <span class="endDate colordetails"></span>
+                </li>
+                <li>
+                    <b> Requested Baseline Budget (INR):</b> <span class="RequestedBaselineBudget colordetails"></span>
+                </li>
+                <li>
+                    <b> Approved Baseline Budget (INR):</b> <span class="ApprovedBaselineBudget colordetails"></span>
+                </li>
+                <li>
+                    <b> Requested Additional Budget (INR):</b> <span class="RequestedAdditionalBudget colordetails"></span>
+                </li>
+                <li>
+                    <b> Approved  Additional Budget (INR):</b> <span class="ApprovedAdditionalBudget colordetails"></span>
+                </li>
+                <li>
+                    <b> Total Budget (INR):</b> <span class="TotalBudget colordetails"></span>
+                </li>
+            </ul>
+        </div>
+        <div class="text-right">
+            <a href="@Url.Content("~/NewProjectInitiation/BudgetRequestList")">
+                <i class="fas fa-arrow-left"></i> Back
+            </a>
+        </div>
+    </div>
+    <input class="input-validation-error" id="BudgetType" name="BudgetType" type="hidden" />
+    <ul class="nav nav-tabs tabs_list">
+        <li><a data-toggle="tab" class="BaselineBudget active">Baseline Budget Request</a></li>
+        <li><a data-toggle="tab" class="AdditionalBudget">Additional Budget Request</a></li>
+
+    </ul>
+    <div class="BasleineShow">
+        <div class="">
+            <div class="position-relative">
+                <div class="text-right position_buttons">
+                    <a href="#" onclick="ViewDocumentsDataModal()" title="Upload Documents"><i class="fas fa-upload"></i></a>
+
+                    <a title="Approval Info" class="btn-icon -history approvalHistory " data-toggle="modal">
+                        <i class="fas fa-history color-info"></i>
+                    </a>
+                    <button type="button" id="SaveDetails" class="btn btn-success hideforAdmin">
+                        Save
+                    </button>
+                    <button type="button" id="SubmitDetails" class="btn btn-success hideforAdmin">
+                        Save &amp; Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll ">
+                            <table id="ProjectBasedOnCategory" class="table table-bordered"></table>
+                            <div id="ProjectBasedOnCategory_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="AdditionalShow">
+        <div class="modal-body">
+            <div class="">
+                <div class="position_buttons">
+                    <div class="text-right ">
+                        <a href="#" onclick="ViewDocumentsDataModal()" title="Upload Documents"><i class="fas fa-upload"></i></a>
+
+                        <a title="Approval Info" class="btn-icon -history approvalHistory" data-toggle="modal">
+                            <i class="fas fa-history color-info "></i>
+                        </a>
+                        <button type="button" id="SaveAdditionalRequest" class="btn btn-success hideforAdmin">
+                            Save &amp; Confirm
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <form>
+                    <div class="row hideforAdmin">
+                        <div class="col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="control-label">Department</label><span class="color-red">*</span>
+                                <select class="form-control DepartmentValue" data-singleselect id="ADD_Department">
+                                    <option value="">--select--</option>
+                                </select>
+                                <span class="Error_Department color-red" style="display:none"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-0 ">
+                                <label class="control-label">Year</label><span class="color-red">*</span>
+                                <input type="text" class="form-control Add_year" readonly />
+                                <span class="Error_Year color-red" style="display:none"> Please select year</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="control-label">Category</label><span class="color-red">*</span>
+                                <select class="form-control CategoryValue" data-singleselect id="ADD_Category">
+                                    <option value="">--select--</option>
+                                </select>
+                                <span class="Error_Category color-red" style="display:none"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group mb-0">
+                                <label class="control-label">Requested Budget</label><span class="color-red">*</span>
+                                @Html.TextBoxFor(model => model.ReqBudget, new { @class = "form-control clearThisData requestedBudget", @rows = "1", @onkeypress = "return onlyNumbers(this);", @spellcheck = "false" })
+                                <span class="Error_ReqBudget color-red" style="display:none">Please enter requested budget</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group mb-0">
+                                <label class="control-label">Remarks</label><span class="color-red">*</span>
+                                @Html.TextAreaFor(model => model.ApprovalRemarks, new { @class = "form-control clearThisData AdditionalRemarks", @rows = "1", @spellcheck = "false" })
+                                <span class="Error_Remarks color-red" style="display:none">Please enter remarks</span>
+                            </div>
+                        </div>
+                        <div class="col-md-1 mt-3">
+                            <button type="button" id="AddAdditionalRequest" class="btn btn-info">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="m-table__main mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="AdditionalGrid" class="table table-bordered"></table>
+                                    <div id="AdditionalGrid_Pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</section>
+
+<div class="modal fade budget_popup" id="historypopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Approval Info</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span> <b>Project Id:</b> <span class="project_id pr-3"></span></span>
+                            <span class="pr-3">
+                                <b>Approved Baseline Budget (INR):</b> <span class="ApprovedBaselineBudgetForPopup colordetails"></span>
+                            </span>
+                            <span class="pr-3">
+                                <b>Approved Additional Budget (INR):</b> <span class="ApprovedAdditionalBudgetForPopup colordetails"></span>
+                            </span>
+                            <span class="pr-3">
+                                <b>Total Budget (INR):</b> <span class="TotalBudgetForPopup colordetails"></span>
+                            </span>
+                        </div>
+                        <div class="images_excel ">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="HistoryExcelDownload" title="Excel Download" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-1">
+                    <div class="list_baseline">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="history_grid" class="table table-bordered"></table>
+                                        <div id="history_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade budget_popup" id="approvalhistorypopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">History Info</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span> <b>Project Id:</b> <span class="project_id pr-4"></span></span>
+                            <span class="pr-4">
+                                <b>Requested Year:</b> <span class="RequestedYearForHistory colordetails"></span>
+                            </span>
+                            <span class="pr-4">
+                                <b>Department:</b> <span class="RequestedDepartmentForHistory colordetails"></span>
+                            </span>
+                            <span class="pr-4"> <b>Category:</b> <span class="category pr-4 colordetails"></span></span>
+                            <span class="pr-4">
+                                <b>Budget Type:</b> <span class="BudgetTypeForHistory colordetails"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="list_baseline">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="history_gridforapprovalinfo" class="table table-bordered"></table>
+                                        <div id="history_pagerforapprovalinfo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="SavePopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Save Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Save the Details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveOk" class="btn btn-success" data-bs-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="SubmitPopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Submit Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to save the details and send for approval?
+                                </label><br />
+                                <label class="hideforadditinal">Remarks</label><span class="color-red hideforadditinal">*</span>
+                                @Html.TextAreaFor(model => model.ApprovalRemarks, new { @class = "form-control hideforadditinal ApprovalRemarks", @rows = "2", @spellcheck = "false", id = "" })
+                                <span id="Error_ApprovalRemarks" class="color-red" style="display:none">Please enter the Remarks</span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SubmitOK" class="btn btn-success">Save</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="DeletetePopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="deleteResource" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-cancel" id="cancelDeleteResource" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ViewFileModal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title filedetails">
+                </h4>
+                <button type="button" class="close" id="closebtn" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="d-flex  mb-3 hide_fileupload" >
+                                <div class="col-md-4">
+                                    <label>Department <span class="text-danger">*</span></label>
+                                    @Html.DropDownListFor(model => model.DepartmentName, Model.DepartmentList, "--Select--", new { @class = "form-control form-control-sm data-singleselect mandatory", @id = "DepartmentForFile" })
+                                    <span class="text-danger validation" id="Err_DepartmentForFile" style="display:none">Please select Department</span>
+                                </div>
+                                <div class="col-md-5">
+                                    <label>Upload File <span class="text-danger">*</span></label>
+                                    <input type="file" id="FileUpload" class="form-control form-control-sm mandatory" />
+                                    <span class="text-danger validation" id="Err_FileUpload" style="display:none">Please select File</span>
+                                </div>
+                                <div class="col-md-2 mt-4">
+                                    <button type="button" id="UploadFileData" class="btn btn-success" style="">
+                                        Upload
+                                    </button>
+                                </div>
+                                
+                            </div>
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="projectbudgetviewfiles" class="table table-bordered"></table>
+                                    <div id="pager_expected2"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade sv hd" id="confirmationPopUpforSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">File Upload Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgforsave">
+                    Are you sure you want to upload the document?
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="confirmpopup1" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Box</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="confirmpopupmesssage">Are you sure you want to delete the document</span>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" id="ConfirmDeletebutton" data-bs-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewProjectInitiation/NewProjectBaselineBudget.js")" asp-append-version="true"></script>

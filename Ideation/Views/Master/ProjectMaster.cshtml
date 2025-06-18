@@ -1,0 +1,158 @@
+﻿@model Ideation.Models.ProjectMaster
+@{
+    ViewBag.Title = "ProjectMaster";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+}
+@if (TempData["Message"] != null)
+{
+    <div id="message" class="alert @TempData["MessageStyle"].ToString() alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+        </button>
+        @TempData["Message"].ToString()
+    </div>
+}
+
+@*<div class="row">
+        <div class="col-md-7">
+            <div class="page-title">
+                <h4 class="-mb-3">Project Master</h4>
+            </div>
+
+        </div>
+    </div>*@
+@*<div id="preloader">
+        <div id="status">&nbsp;</div>
+    </div>*@
+@*<asp:UpdateProgress ID="prgLoadingStatus" runat="server" DynamicLayout="true">
+        <ProgressTemplate>
+
+            <div id="overlay">
+
+                <div id="modalprogress">
+                    <div id="theprogress">
+                        <asp:Image ID="imgWaitIcon" runat="server" ImageAlign="AbsMiddle" ImageUrl="/images/wait.gif" />
+                        Please wait...
+                    </div>
+                </div>
+            </div>
+        </ProgressTemplate>
+    </asp:UpdateProgress>*@
+<div class="card-box">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title">
+                <h4 class="-mb-3">Project Master</h4>
+            </div>
+
+            <div class="m-table__main">
+                <div class="m-table__responsive -virtual-scroll m-table__responsivemaster">
+                    <div>
+                        <table id="jqgrid" class="table table-bordered"></table>
+                        <div id="pager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script>
+        $("#message_alert").fadeIn(1000);
+    </script>*@
+@*<div>@TempData["Message"]</div>
+    <div>@TempData["MessageStyle"]</div>*@
+
+<div id="addModal" class="modal fade m-modal -table-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="m-modal__header--center">
+                    <h5 class="modal-title">Project Master</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <form class="m-form__form">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-10 col-xl-8 -auto-margin">
+                                        <div class="form-group row">
+                                            <label class="control-label col-md-3">Project Name*</label>
+                                            <div class="col-md-9">
+                                                <input type="text" class="form-control">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="control-label col-md-3">Status*</label>
+                                            <div class="col-md-9">
+                                                <div class="radio-list m-radio__list">
+                                                    <div class="radio-inline p-0">
+                                                        <div class="radio radio-info">
+                                                            <input type="radio" name="statusgroup" id="radio1" checked>
+                                                            <label for="radio1">Planning</label>
+                                                        </div>
+                                                        <div class="radio radio-info">
+                                                            <input type="radio" name="statusgroup" id="radio2">
+                                                            <label for="radio2">InProgress</label>
+                                                        </div>
+                                                        <div class="radio radio-info">
+                                                            <input type="radio" name="statusgroup" id="radio2">
+                                                            <label for="radio2">Completed</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12 col-lg-10 col-xl-8 -auto-margin m-form__page--buttons">
+                                        <button type="button" class="btn btn-xs btn-warning c-btn -cancel" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-xs btn-info c-btn -sudmit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="ProjectStatuschange" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6 id="Deletelement" style="font:bold;font-size: inherit;font-family: 'Open Sans';">
+                    For the selected project gantt chart is created and is in progress. Still do you want to continue ?
+                </h6>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="btnAccept" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                <button type="button" id="btnCancel" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src='@Url.Content(String.Concat("~/js/Master/ProjectMasterList.js?v=",System.Configuration.ConfigurationManager.AppSettings["VersionNumber"]))'></script>*@
+@*<script src='@Url.Content(String.Concat("~/js/Master/UpdateProjectMaster.js?v=",System.Configuration.ConfigurationManager.AppSettings["VersionNumber"]))'></script>*@
+@*<script src="~/js/Master/ProjectMasterList.js"></script>
+<script src="~/js/Master/UpdateProjectMaster.js"></script>*@
+<script src="@Url.Content("~/js/Master/ProjectMasterList.min.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/Master/UpdateProjectMaster.min.js")" asp-append-version="true"></script>
+

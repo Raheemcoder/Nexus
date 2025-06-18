@@ -1,0 +1,59 @@
+﻿@model Ideation.Models.User
+@{
+    ViewBag.Title = "UserMaster";
+    Layout = "~/Views/Shared/_MMLayout.cshtml";
+}
+<div id="message" class="m-login__erromsg">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible" role="alert" id="message_alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+            </button>
+            @TempData["Message"].ToString()
+        </div>
+    }
+</div>
+<div class="card-box">
+    <div class="row d-flex align-items-center">
+        <div class="col-md-7">
+            <div class="page-title left_title">
+                <h4 class="-mb-3">User Master</h4>
+            </div>
+
+        </div>
+        <div class="col-md-5 page-add__button mb-3">
+            <a href="@Url.Content("~/MasterManagement/MMAddUser")" class="btn btn-xs btn-info c-btn">Add New User</a>
+        </div>
+    </div>
+
+    <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex mt-3 ml-2">
+            <span class="details_icons"><label class="btn-icon -edit"><i class="fas fa-pen" aria-hidden="true"></i></label> Edit</span>
+        </div>
+    
+    <div class="row">
+        <div class="col-md-12 text-right">
+            <button type="button" class="btn-add mt-1 px-4 mb-2" id="UserMasterExport">Export To Excel</button>
+        </div>
+    </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-table__main mmproject">
+                <div class="m-table__responsive -virtual-scroll m-table__responsivemaster">
+                    <table id="jqgrid" class="table table-bordered"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="@Url.Content("~/js/MasterManagement/MMUserMaster.js")" asp-append-version="true"></script>
+*@
+<script src="@Url.Content("~/js/MasterManagement/MMUserMaster.min.js")" asp-append-version="true"></script>
+
+
+
+

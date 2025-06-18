@@ -1,0 +1,202 @@
+﻿@model EmbedConfig
+@{
+    ViewData["Title"] = "Gantt Chart";
+    Layout = "~/Views/Shared/ProjectTrackerLayout.cshtml";
+    var hubData = Context.Session.GetString("HubList");
+    var projectId = @Context.Session.GetString("projectId");
+    var hubId = @Context.Session.GetString("HubId");
+}
+@inject IHttpContextAccessor HttpContextAccessor
+@using Newtonsoft.Json;
+
+<style>
+    #reportContainer {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        padding-top: 10px;
+        background: #ffffff;
+    }
+
+        #reportContainer iframe {
+            min-height: 88vh !important;
+            width: 100%;
+            max-width: 2000px;
+        }
+</style>
+
+<script src="https://npmcdn.com/es6-promise@3.2.1"></script>
+<script src="@Url.Content("~/js/powerbi.min.js")"></script>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Gantt Chart</h4>
+        </div>
+    </div>
+
+    <input type="hidden" id="selectedProjectId" value='@projectId' />
+    <input type="hidden" id="selectedHubId" value="@hubId" />
+    <input type="hidden" id="HubData" value="@hubData" />
+
+    <div id="reportContainer">
+    </div>
+</section>
+
+@section scripts {
+    <script>
+        var gannChartProjectList = [];
+        var projectCode = [];
+
+        // Read embed application token from Model
+        var accessToken = "@Model.EmbedToken.Token";
+        // Read embed URL from Model
+        var embedUrl = "@Html.Raw(Model.EmbedUrl)";
+        // Read report Id from Model
+        var embedReportId = "@Model.Id";
+
+
+        var isFromPu = "@Model.isFromPu";
+        var ProjectCode1 = "@Model.ProjectCode";
+        var projectId1 = "@Model.ProjectId";
+        var projectName1 = "@Model.ProjectName";
+        var Hub = "@Model.Hub";
+
+        // Embed configuration used to describe the what and how to embed.
+        // This object is used when calling powerbi.embed.
+        // This also includes settings and options such as filters.
+        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+
+        $(document).ready(function ()
+        {
+            // Get models. models contains enums that can be used.
+            var models = window['powerbi-client'].models;
+
+            if ($('#selectedHubId').val() != null && $('#selectedHubId').val() != undefined && $('#selectedHubId').val() != "" &&
+                $('#selectedProjectId').val() != null && $('#selectedProjectId').val() != undefined && $('#selectedProjectId').val() != "") {
+                var hubId = $('#selectedHubId').val();
+                $("div.id_hub select").select2().val(hubId).trigger("change");
+                GetHubList($('#selectedProjectId').val());
+
+                var getHubsList = JSON.parse($("#HubData").val());
+                var hubFilteredList = getHubsList.filter(function (o) {
+                    return o.HubId === parseInt(hubId)
+                });
+                var hubName = hubFilteredList[0].HubName;
+
+                // PT
+                if (isFromPu != "Yes") {
+                    var reportContainer = $('#reportContainer')[0];
+                    $('#ProjectId').val($('#selectedProjectId').val());
+                    $('[data-singleselect]').select2();
+                    gannChartProjectList = JSON.parse($('#gannchartprojectjsondata').val())
+                    projectCode = gannChartProjectList.filter(function (o) { return o.ProjectId === parseInt($('#selectedProjectId').val()) });
+                    config = {
+                        type: 'report',
+                        tokenType: models.TokenType.Embed,
+                        accessToken: accessToken,
+                        embedUrl: embedUrl,
+                        id: embedReportId,
+                        permissions: models.Permissions.All,
+                        settings: {
+                            filterPaneEnabled: false,
+                            navContentPaneEnabled: true
+                        },
+                        filters: [
+                            {
+                                $schema: "http://powerbi.com/product/schema#basic", target: { table: "VW_GanttChartDisplay", column: "ProjectCode" },
+                                operator: "IN", values: [projectCode[0].ProjectCode.toString()],
+                            },
+                            {
+                                $schema: "http://powerbi.com/product/schema#basic", target: { table: "VW_GanttChartDisplay", column: "Hub" },
+                                operator: "IN", values: [hubName],
+                            }
+                        ]
+                    };
+                    powerbi.embed(reportContainer, config);
+                }
+                // PU
+                else if (isFromPu == "Yes") {
+                    var reportContainer = $('#reportContainer')[0];
+                    $('#ProjectName').val(ProjectCode1 + '-' + decodeURIComponent(projectName1));
+                    $('[data-singleselect]').select2();
+                    projectCode = ProjectCode1;
+                    config = {
+                        type: 'report',
+                        tokenType: models.TokenType.Embed,
+                        accessToken: accessToken,
+                        embedUrl: embedUrl,
+                        id: embedReportId,
+                        permissions: models.Permissions.All,
+                        settings: {
+                            filterPaneEnabled: false,
+                            navContentPaneEnabled: true
+                        },
+                        filters: [
+                            {
+                                $schema: "http://powerbi.com/product/schema#basic", target: { table: "VW_GanttChartDisplay", column: "ProjectCode" },
+                                operator: "IN", values: [projectCode.toString()],
+                            },
+                            {
+                                $schema: "http://powerbi.com/product/schema#basic", target: { table: "VW_GanttChartDisplay", column: "Hub" },
+                                operator: "IN", values: [hubName],
+                            }
+                        ]
+                    };
+                    powerbi.embed(reportContainer, config);
+                }
+            }
+            else {
+                $('.projectName_error').text('Please select the Project');
+                $('.hubName_error').text('Please select HUB');
+            }
+        });
+
+        $(document).on('change', '#ProjectId', function () {
+
+            if ($('#ProjectId').val() !== null && $('#ProjectId').val() !== '' && typeof ($('#ProjectId').val()) !== "undefined" && $('#ProjectId').val() !== '0') {
+
+                $('.projectName_error').text('');
+                $('#selectedProjectId').val($('#ProjectId').val());
+                GetHubList($('#ProjectId').val());
+                if ($('#Hub').val() === null || $('#Hub').val() === '' || typeof ($('#Hub').val()) === "undefined" || $('#Hub').val() === '0') {
+                    $('.hubName_error').text('Please select HUB');
+                }
+                else {
+                    var ProjectCode = "";
+                    if (projectCode.length != 0) {
+                        ProjectCode = projectCode[0].ProjectCode;
+                    }
+                    window.location.href = ROOT + 'GanttChart/Index?q=' + Encrypt("projectId=" + $('#selectedProjectId').val() + "&projectCode=" + ProjectCode + "&isFromPu=No" + "&Hub=" + $("#Hub").val());
+                }
+            }
+            else {
+                $('.projectName_error').text('Please select the Project');
+            }
+        });
+
+        $(document).on('change', '#Hub', function () {
+
+            if ($('#Hub').val() !== null && $('#Hub').val() !== '' && typeof ($('#Hub').val()) !== "undefined" && $('#Hub').val() !== '0') {
+
+                $('.hubName_error').text('');
+
+                if ($('#ProjectId').val() === null || $('#ProjectId').val() === '' || typeof ($('#ProjectId').val()) === "undefined" || $('#ProjectId').val() === '0') {
+                    $('.projectName_error').text('Please select the Project');
+                }
+                else
+                {
+                    var ProjectCode = "";
+                    if (projectCode.length != 0) {
+                        ProjectCode = projectCode[0].ProjectCode;
+                    }
+                    window.location.href = ROOT + 'GanttChart/Index?q=' + Encrypt("projectId=" + $('#selectedProjectId').val() + "&projectCode=" + ProjectCode + "&isFromPu=No" + "&Hub=" + $("#Hub").val());
+                }
+            }
+            else {
+                $('.hubName_error').text('Please select HUB');
+            }
+        });
+
+    </script>
+}

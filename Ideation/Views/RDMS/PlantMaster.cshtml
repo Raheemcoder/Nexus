@@ -1,0 +1,236 @@
+﻿@model Ideation.Models.PlantMaster
+@{
+    ViewData["Title"] = "Plant Master";
+    Layout = "/Views/Shared/RDMSLayout.cshtml";
+    var statusList = @Newtonsoft.Json.JsonConvert.SerializeObject(Model.StatusList);
+    var role = Context.Session.GetString("Role")?.ToString();
+
+}
+
+<style>
+    .multiselect_List button.multiselect.dropdown-toggle.btn.btn-default {
+        background: transparent;
+        color: #000;
+    }
+
+    button.multiselect.dropdown-toggle.btn.btn-default {
+        text-align: left;
+        line-height: 7px;
+        width: 100%;
+    }
+
+    .filter_status .btn-group {
+        background: #fff !important;
+        width: 100% !important;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        height: 22px;
+        text-align: left;
+    }
+
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+</style>
+<input type="hidden" id="StatusList" value="@statusList" />
+<input type="hidden" id="role" value="@role" />
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> Manufacturing Location Master</h4>
+        </div>
+    </div>
+</section>
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close aler_dismissal_close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+</section>
+
+<section>
+    <div class="filter_status prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex">
+                <div class="col-width1 mr-1">
+                    <div class="form-group multiselect_List">
+                        <label class="control-label">Plant Code</label>
+                        @Html.DropDownListFor(m => m.PlantCode, new SelectList(Model.PlantList, "Value", "Text"), "--Select--", new { @class = "form-control data-singleselect", @data_singleselect = "" })
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Status</label>
+                        @Html.DropDownListFor(m => m.Status, new SelectList(Model.StatusList, "Value", "Text"),
+                        new { @class = "form-control data-singleselect", @id = "StatusId", @data_singleselect = "" })
+                    </div>
+                </div>
+                <div class="col-width1 mt-3 ml-2">
+                    <button class="btn btn-search" title="Search" type="button" id="btnSearch">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh" title="Refresh" type="button" id="btnrefresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+            </div>
+            <div class="d-flex excel_expand align-items-center mb-3">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="legends_list action_icons mb-2">
+                    <ul class="d-flex">
+                        <li class="edit-color hidelegend"><i class="fas fa-pen"></i> Edit</li>
+                        <li class="view-color hidelegend"><i class="fas fa-save"></i> Save</li>
+                        <li class="hidelegend"><i class="fas fa-times-circle color-history"></i> Close</li>
+                        <li class="remarks-color"><i class="fas fa-info"></i> Info</li>
+                    </ul>
+                </div>
+            </div>
+    </div>
+
+</section>
+
+<section>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="PlantMaster_grid" class="table table-bordered"></table>
+                            <div id="PlantMaster_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade hd" id="ViewProjectData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <section>
+                <div id="response-message-div" class="m-login__erromsg p-2 mb-0 hide">
+                </div>
+            </section>
+            <div class="modal-header">
+                <h6 class="modal-title PlantId_text" id="exampleModalLabel"></h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row product_profile card_bx popup_col">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Plant Email Id</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_EmailId">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Plant Type</label>
+                                    <div class="demo-content">
+                                        <label>
+                                            <strong id="View_Planttype">
+                                            </strong>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>*@
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Phone Number</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_PhoneNumm">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Address</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_Address">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        @*<div class="col-md-2">
+                                <div class="form-group">
+                                    <label>City</label>
+                                    <div class="ckediter_tolbar">
+                                        <label>
+                                            <strong id="View_City">
+                                            </strong>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>State</label>
+                                    <div class="ckediter_tolbar">
+                                        <label>
+                                            <strong id="View_State">
+                                            </strong>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label>Status</label>
+                                    <div class="ckediter_tolbar">
+                                        <label>
+                                            <strong id="View_Status">
+                                            </strong>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"> Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*<script src="@Url.Content("~/js/RDMS/PlantMaster.js")" asp-append-version="true"></script>*@
+<script src="@Url.Content("~/js/RDMS/PlantMaster.min.js")" asp-append-version="true"></script>

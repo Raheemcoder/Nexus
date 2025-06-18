@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "Department Budget Users";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+
+}
+<style>
+    .add_grid__ .m-table__main .ui-jqgrid .ui-jqgrid-htable {
+        padding-right: 17px !important;
+    }
+
+    .ui-jqgrid-hdiv table th {
+        padding: 1px 10px !important;
+    }
+
+    .add_grid__ .ui-jqgrid-bdiv table td {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+
+    input.form-control.tags.ui-autocomplete-input {
+        height: 29px;
+    }
+</style>
+<div class="card-box mb-1 card_height pb-3 pt-2 sg">
+
+    <div class="row ">
+        @*<div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">
+                        Template Name
+                    </label>
+                    @Html.DropDownListFor(model => model.Description, Model.TemplateList, "Select TemplateName", new { @class = "form-control form-control-sm data-singleselect", @id = "TemplateName" })
+                </div>
+            </div>*@
+        @*<div class="col-md-3">
+                <div class="form-group mb-0 mt-4">
+                    <button type="button" id="SearchTMData" class="btn btn-info c-add-details waves-light waves-effect" title="Search"><i class="fas fa-search" title="Search" aria-hidden="true"></i></button>
+                </div>
+            </div>*@
+        <div class="col-md-12 mt-4">
+            <div class="text-right">
+                @*<button type="button" class="btn btn-excel" id="ExcelDownload" title="Excel Download"><img src="@Url.Content("~/images/excel.png")"></button>*@
+                <button type="button" class="btn-add ex_bt excel_btn" id="saveButton">@*<i class="fas fa-plus ex_download mr-2 " aria-hidden="true"></i>*@Save</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="add_grid__">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="BudgetUsergrid" class="table table-bordered"></table>
+                            <div id="pager_BudgetUsergrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        var data = [
+            {
+                "Role": "DISCOVERY SCIENC GR",
+                "HODName": ""
+            }, {
+                "Role": "F&D PHARMA",
+                "HODName": ""
+            }, {
+                "Role": "MICROBIOLGY &TOXICGY",
+                "HODName": ""
+            }, {
+                "Role": "PD CPD	",
+                "HODName": ""
+            }, {
+                "Role": "PD PHARMA	",
+                "HODName": ""
+            }, {
+                "Role": "R & D",
+                "HODName": ""
+            }, {
+                "Role": "R&D (ANALYTICAL-CPD)	",
+                "HODName": ""
+            }, {
+                "Role": "R&D (ANALYTICAL-PH)",
+                "HODName": ""
+            }, {
+                "Role": "R&D (PMT)",
+                "HODName": ""
+            }, {
+                "Role": "R&D(CELL & M.BIOLOGY)",
+                "HODName": ""
+            }, {
+                "Role": "R&D-(ANIMAL HEALTH)",
+                "HODName": ""
+            }, {
+                "Role": "R&D-PHYTCEMISTRYFOOD",
+                "HODName": ""
+            }, {
+                "Role": "R&D-PHYTOCEMISTRY-PH",
+                "HODName": ""
+            }, {
+                "Role": "R&D-CSO",
+                "HODName": ""
+            }
+        ];
+
+        var colmodels = [
+            {
+                name: 'Role',
+                label: 'Role Name',
+                resizable: true,
+                ignoreCase: true,
+                width: 70,
+                formatter: 'text' 
+            },
+            {
+                name: 'HODName',
+                label: 'HOD Name',
+                resizable: true,
+                ignoreCase: true,
+                width: 160,
+                formatter: function (cellvalue, options, rowobject) {
+                  
+                        return '<div class="demo-content">' +
+                            '<input class="form-control tags autocomplete-tags" placeholder="Enter HOD Name">' +
+                            '</div>';
+                  
+                }
+            }
+        ];
+
+        $("#BudgetUsergrid").jqGrid({
+            data: data,
+            datatype: 'local',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#pager_BudgetUsergrid',
+            rowNum: 30,
+            scroll: 1,
+            gridComplete: function () {
+                var objRows = $("#BudgetUsergrid tbody tr");
+                var objHeader = $("#BudgetUsergrid tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (var i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+            }
+        });
+
+        $("#BudgetUsergrid").jqGrid('filterToolbar', {
+            autosearch: true,
+            stringResult: false,
+            searchOnEnter: false,
+            defaultSearch: "cn"
+        });
+
+        $('.ui-jqgrid-bdiv').css({ 'max-height': '50vh' });
+        $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '10vh' });
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 330) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px");
+        } else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hbox").css("padding-right", "0px");
+        }
+    });
+</script>

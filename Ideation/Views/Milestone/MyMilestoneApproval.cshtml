@@ -1,0 +1,222 @@
+﻿@model Ideation.Models.MyMilestone
+@{
+    ViewBag.Title = "My Milestone";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+
+    var hubData = Context.Session.GetString("HubList");
+    //var getHubList = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Ideation.Models.HubListData>>(hubData);
+    var roleId = Context.Session.GetString("RoleId");
+}
+
+<section>
+    @Html.HiddenFor(m => m.JsonData)
+    <input type="hidden" value="@hubData" id="getHubList" />
+    <input type="hidden" value="@roleId" id="RoleId" />
+    <div class="card-box">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="m-form -filter-form mb-0" style="width:40%">
+                    <div class="m-form__container">
+                        <div class="m-form__List">
+                            <div class="">
+
+                                <div class="">
+                                    <div id="message" class="m-login__erromsg">
+                                        @if (TempData["ARMMessage"] != null)
+                                        {
+                                            <div class="alert @Convert.ToString(TempData["ARMMessageClass"]) alert-dismissible" role="alert" id="message_alert">
+                                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                    <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                                                </button>
+                                                @Convert.ToString(TempData["ARMMessage"])
+                                            </div>
+                                         }
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="page-title d-flex">
+                    <h4>
+                        Date Extension Requests - <span class="project-hub-name"></span>
+                    </h4>
+                    <div><a class="color-blue" href="@Url.Content("~/Milestone/ApproveUserRequestMaster")"><i class="fas fa-angle-left"></i> Back</a></div>
+                </div>
+            </div>
+        </div>
+        <div class="kanban_board">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-12">
+                        <input type="text" id="global-search" class="global-search search_filter form_search mt-0" placeholder="Search...">
+                    </div>
+                </div>
+            </div>
+            <div class="first_open board_list Kanban_board_list">
+                <h4>Pending For Approval <span class="count_num pending-count"></span></h4>
+                <div class="height_scroll open_list_progress pending-cards">
+                </div>
+            </div>
+            <div class="fourth_open board_list Kanban_board_list">
+                <h4>Approved <span class="count_num approved-count"></span></h4>
+                <div class="height_scroll Completed approved-cards">
+                </div>
+            </div>
+            <div class="third_open board_list Kanban_board_list">
+                <h4>Rejected <span class="count_num rejected-count"></span></h4>
+                <div class="height_scroll overdue_list rejected-cards">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="remarks-popup" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Remarks</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="m-table__main">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="remarks" class="table table-bordered"></table>
+                            <div id="remarks_pager"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 col-lg-12 p-0">
+                        <div class="save_buttons float-right text-right mt-3">
+                            <button type="button" data-dismiss="modal" class="btn-cnl"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dependentMilestonesAlert" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Dependent Task Details</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <b>On Approving the Proposed end date, the dependent task date(s) will be updated. Are you sure you want to proceed ?</b>
+                            <p> </p>
+                            <div class="row">
+                                <div class="">
+                                    <input type="hidden" id="ApprovalRowId" value="" />
+                                    <div class="m-table__main">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="dependentjqgrid" class="table table-bordered"></table>
+                                            <div id="pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mt-2">
+                                    <textarea id="ApprovalRemarks" class="form-control" placeholder="Remarks"></textarea>
+                                    @*<span class="text-danger Error_Approve_Remarks" style="display:none">Please enter Remarks</span>*@
+                                </div>
+                                <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                    <div class="save_buttons float-right text-right">
+                                        <button type="submit" class="btn-add" id="btnok"> Yes</button>
+                                        <button type="button" data-dismiss="modal" class="btn-cnl"> No</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="RejectionConfirmation" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Reject Confirmation</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label pt-0">Are you sure, Do you want to Reject?</label>
+                                <textarea id="RejectRemarks" class="form-control" placeholder="Remarks*"></textarea>
+                                <span class="text-danger Error_Reject_Remarks" style="display:none">Please enter Remarks</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn-add" id="rejectok" data-dismiss="modal"> OK</button>
+                            <button type="button" data-dismiss="modal" class="btn-cnl"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ApproveConfirmation" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Approve Confirmation</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label pt-0">Are you sure, Do you want to Approve?</label>
+                                <textarea id="ApproveRemarksNoDependency" class="form-control" placeholder="Remarks"></textarea>
+                                @*<span class="text-danger Error_Approve_Remarks_No_Dependency" style="display:none">Please enter Remarks</span>*@
+                            </div>
+                        </div>
+                        <div class="col-md-12 text-right">
+                            <button type="submit" class="btn-add" id="btnokNoDependency"> OK</button>
+                            <button type="button" data-dismiss="modal" class="btn-cnl"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/MyMilestone/MyMilestoneApproval.min.js")" asp-append-version="true"></script>
+@*<script src="~/js/MyMilestone/MyMilestoneApproval.js"></script>*@

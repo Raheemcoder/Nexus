@@ -1,0 +1,2793 @@
+﻿@model Ideation.Models.Reformulation
+
+@{
+    ViewBag.Title = "EditReformulation";
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+    var userName = Context.Session.GetString("UserName");
+    var hub = Context.Session.GetString("Hub");
+
+}
+
+<link href="https://www.codehim.com/demo/bootstrap-multiselect-dropdown/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
+
+<script src="@Url.Content("https://www.codehim.com/demo/bootstrap-multiselect-dropdown/dist/js/bootstrap-multiselect.js")" asp-append-version="true"></script>
+<script src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/jquery.validate.min.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/jquery.validate.unobtrusive.min.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/ckeditor/ckeditor.js")" asp-append-version="true"></script>
+
+
+@*<script>
+        filterClearBtn: '<span class="input-group-btn"><button class="btn btn-default multiselect-clear-filter" type="button"><i class="fa fa-edit"></i></button></span>'
+
+    </script>*@
+
+<style>
+    .btn-group > .btn {
+        border-radius: 5px;
+        border-color: #c6c6c6;
+        height: 36px;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    .multiselect-container.dropdown-menu {
+        top: auto !important;
+        bottom: 36px;
+        max-height: 190px !important;
+    }
+
+    #removeImage {
+        cursor: pointer;
+    }
+</style>
+
+<div class="card-box mb-0">
+    @using (Html.BeginForm("EditReformulation", "NewInitiation", FormMethod.Post, new { id = "ReformulationEdit", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.ProjectId)
+        @Html.HiddenFor(model => model.ProjectHeaders)
+        @Html.HiddenFor(model => model.reformulationProductDescription)
+        @Html.HiddenFor(model => model.reformulationProjectDetails)
+        @Html.HiddenFor(model => model.reformulationAdditionalFormulationRequirements)
+        @Html.HiddenFor(model => model.reformulationBusinessInformation)
+        @Html.HiddenFor(model => model.reformulationPackagingProfile)
+        @Html.HiddenFor(model => model.InitiatorRemarks)
+        @Html.HiddenFor(model => model.SendBackToInitiatorRemarks)
+        @Html.HiddenFor(model => model.JsonFormReformulationHgmlReviewData)
+        @Html.HiddenFor(model => model.JsonFormReformulationHgmlToHubData)
+        @Html.HiddenFor(model => model.JsonFormReformulationHubReviewData)
+        @Html.HiddenFor(model => model.JsonFormReformulationPmdReviewData)
+        @Html.HiddenFor(model => model.JsonFormReformulationHubBusinessData)
+        @Html.HiddenFor(model => model.JsonFormReformulationApprovalStagesData)
+        @Html.HiddenFor(model => model.PreviousStage)
+        @Html.HiddenFor(model => model.HgmlData)
+        @Html.HiddenFor(model => model.PmdData)
+        @Html.HiddenFor(model => model.StatusList, new { @id = "StatusList" })
+        @Html.HiddenFor(model => model.StatusValue, new { @id = "ReformulationStatus" })
+        @Html.HiddenFor(model => model.ApprovalStatus)
+        @Html.HiddenFor(model => model.SendToHubRemarks)
+        @Html.HiddenFor(model => model.SendToHgmlRemarks)
+        @Html.HiddenFor(model => model.SendToPmdRemarks)
+        @Html.HiddenFor(model => model.Status, new { @id = "Status" })
+        @Html.HiddenFor(model => model.StatusId, new { @id = "StatusId" })
+        @Html.HiddenFor(model => model.statusName, new { @id = "ReformulationStatusName" })
+        @Html.HiddenFor(model => model.UserName, new { @value = userName, @id = "UserName" })
+        @Html.HiddenFor(model => model.ReformulationJSON)
+        @Html.HiddenFor(model => model.HUBName)
+        @Html.HiddenFor(model => model.HubApprove)
+        @Html.HiddenFor(model => model.HgmlDataSendToHubConfirmation)
+        @Html.HiddenFor(model => model.BenchMarkSampleImage)
+        @Html.HiddenFor(model => model.ViewStatus)
+        @Html.HiddenFor(model => model.Role)
+        @Html.HiddenFor(model => model.RejectRemarks, new { @id = "RejectRemarks" })
+        @Html.HiddenFor(model => model.ReceivedDate, new { @id = "ReceivedDate" })
+        @Html.HiddenFor(model => model.TargetCostGridData, new { @id = "TargetCostGridData" })
+        @Html.HiddenFor(model => model.SustainabilityData)
+        @Html.HiddenFor(model => model.DeletedPackagingRemarks, new { @id = "DeletedPackagingRemarks" })
+        @Html.HiddenFor(model => model.SavedPackagingRemarks, new { @id = "SavedPackagingRemarks" })
+        @Html.HiddenFor(model => model.ManagerId)
+
+        @Html.HiddenFor(model => model.SupportingDocumentData)
+        @Html.HiddenFor(model => model.DeletedSupportingdocument)
+
+        @Html.HiddenFor(model => model.BenchMarkImagesData)
+        @Html.HiddenFor(model => model.DeletedBenchMarkImages)
+
+        @Html.HiddenFor(model => model.PMdDueDate)
+        @Html.HiddenFor(model => model.HubData)
+
+        <div class="tb_clr marbt">
+            <h3 class="cen_txt" id="statusHeader"></h3>
+            <table class="table table-bordered headerTable" id="Reformulation_Table">
+                <thead>
+                    <tr class="mod_th">
+
+                        <th scope="col">Hub</th>
+                        <th scope="col">Division<span class="color-red">*</span></th>
+                        <th scope="col">Category<span class="color-red">*</span>    </th>
+                        <th scope="col" class="hubReviewStatus">Hub Approve<span class="color-red">*</span><span id="Error_Reformulation_Hub" class="color-red" style="display:none"><br />Please select</span></th>
+                        <th scope="col">Initiated By</th>
+                        <th scope="col">Initiated Date</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Download</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="header_table_font" id="Hub">@hub</td>
+                        <td class="header_table_font" id="Reformulation_Division">
+                            @Html.DropDownListFor(model => model.Division, Model.DivisionList, "--Select--", new { @class = "form-select-sm ViewMode", @id = "Division" })
+                            @Html.ValidationMessageFor(model => model.Division, "", new { @class = "text-danger", @id = "NoDivision" })
+                            <span id="Error_Reformulation_Division" class="color-red removeError" style="display:none">Please select Division</span>
+                        </td>
+                        <td class="header_table_font" id="Reformulation_Category">
+                            <select class="form-select-sm addCategoryOption data-singleselect ViewMode" id="Category_Reformulation" name="Category">
+                                <option value="">--Select--</option>
+                                @Html.HiddenFor(model => model.Category, new { @class = "form-control form-control-sm", @id = "Category" })
+                            </select>
+                            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger", @id = "NoCategory" })
+                            <span id="Error_Reformulation_Category" class="color-red removeError" style="display:none">Please select Category</span>
+                        </td>
+                        <td id="Reformulation_HUB_Approve" class="hubReviewStatus ViewMode header_table_font" style="display:none">
+                            <select class="form-select-sm data-singleselect" id="HubApproveSelect">
+                                <option value="">--Select--</option>
+                                <option value="Yes">Yes</option>
+                                <option value="No">No</option>
+                            </select>
+                        </td>
+                        <td class="header_table_font" id="Reformulation_InitiatedBy"></td>
+                        <td class="header_table_font" id="Reformulation_InitiatedDate"></td>
+                        <td class="header_table_font" id="Reformulation_Status"></td>
+                        <td class="rd1"><a href="@Url.Content("#")" data-bs-toggle="modal" data-bs-target="#remarks_Modal"><i class="fa fa-info-circle" aria-hidden="true" title="Remarks"></i></a></td>
+                        <td><a><i class="fa fa-download downloadReformulationPdf" aria-hidden="true" title="Download"></i></a></td>
+
+                    </tr>
+
+
+                </tbody>
+            </table>
+        </div>
+        <h6 class="pro_det projectName">Project Details</h6>
+        <div class="row mb-3 projectName">
+            <label class="col-sm-2 col-form-label">Project Name <span class="color-red">*</span></label>
+            <div class="col-sm-10 pd">
+                @Html.TextBoxFor(model => model.ProjectName, new { @id = "ProjectName", @class = "form-control form-control-sm NoEdit ViewMode" })
+                <span style="color:red; display:none" id="Error-ProjectName" class="removeError">Please enter Project Name</span>
+            </div>
+        </div>
+
+        <h6 class="pro_det">Product Description</h6>
+        <span style="color:red;display:none" id="Err-ProductDescription">Please enter atleast one data for Product Description</span>
+        <div class="col-md-12">
+            <div class="product_packag product_profile">
+                <div class="col-md-12 prodPackData">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Existing Brand Name  <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.ExistingBrandName, new { @class = "form-control ProductDescription ProductDesctipitonEmpty NoEdit ViewMode", @id = "ProductDescriptionExistingName" })
+                                <span class="Err-ProductDescription removeError" style="color:red;display:none">Please enter Existing name</span>
+                                <span id="nameAlreadyExists_Err" style="color:red;display:none" class="removeError">Product already exists. Please add another product</span>
+                            </div>
+                        </div><div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">New Brand Name (if applicable) </label>
+                                @Html.TextBoxFor(model => model.NewBrandName, new { @id = "ProductDescriptionNewBrandName", @class = "form-control ProductDesctipitonEmpty NoEdit ViewMode" })
+                            </div>
+                        </div>
+                        <div class="col-md-3 sku-field">
+                            <div class="form-group">
+                                <label class="control-label">SKU <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.SkuProjectDetails, new { @id = "SKUDetails", @class = "form-control ProductDesctipitonEmpty NoEdit ViewMode" })
+                                <div>
+                                    <span id="Err-ProductDescription-sku" style="color:red;display:none" class="removeError">Please enter SKU</span>
+                                </div>
+                                <div>
+                                    <span style="font-size:10px">(Please enter the SKU values with comma separated (Ex: 50ml , 100 ml))</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="float-left text-left mt-3 pt-3">
+                                <button type="button" id="ProductDescriptionAdd" class="btn-add">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="prd_desc" class="table table-bordered"></table>
+                                        <div id="pager_moulds"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* <div class="row mb-3 sku-field">
+                    <lable class="col-sm-2 col-form-label">SKU/s <span class="color-red">*</span></lable>
+                    <div class="col-sm-10 ckediter_tolbar">
+                    @Html.TextAreaFor(model=>model.SkuProjectDetails, new{ @id="editornf",@class="NoEdit ViewMode"})
+                    <span id="Err-ProductDescription-sku" style="color:red;display:none">Please enter SKU</span>
+                    </div>
+                    </div>*@
+            </div>
+        </div>
+
+        <div class="add_grid_" id="productDetailsHubRemarksGrid" style="display:none">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main mt-2 mb-4">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="worksheet1" class="table table-bordered"></table>
+                                <div id="pager_worksheet1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mb-3 HgmlRemarks">
+            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.HgmlProductDetailsRemarks, new { @id = "PD_HGML_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm HubNoEdit hgmlremarks ViewMode" })
+            </div>
+        </div>
+        <div class="row mb-3 PmdRemarks">
+            <label class="col-sm-2 col-form-label">Fine Screening Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.PMDProductDetailsRemarks, new { @id = "PD_PMD_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm PmdNoEdit ViewMode" })
+            </div>
+        </div>
+        <div class="row mb-3 HubReview">
+            <label class="col-sm-2 col-form-label">@hub Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.HUBProductDetailsRemarks, new { @id = "PD_HUB_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm hubremarks ViewMode" })
+            </div>
+        </div>
+
+
+
+        <h6 class="pro_det">Project Details</h6>
+
+        <div class="row mb-3">
+            <lable class="col-sm-2 col-form-label">Business Rational (Reason for Proposed change) <span class="color-red">*</span></lable>
+            <div class="pd col-sm-10">
+                @Html.TextAreaFor(model => model.BusinessRational, new { @class = "form-control NoEdit ViewMode", id = "ProjectDetailsBusinessRational" })
+                <span id="Err-ProjectDetails-BusinessRational" style="color:red;display:none" class="removeError">Please enter Business Rational</span>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <lable class="col-sm-2 col-form-label">Benchmark samples – Formulation</lable>
+            <div class="pd col-sm-10">
+                @Html.TextBoxFor(model => model.BenchMarkSampleFormulation, new { @class = "form-control form-control-sm NoEdit ViewMode", @id = "ProjectDetailsBenchmarkSampleFormulation" })
+            </div>
+        </div>
+        <div class="row mb-3 benchmarksampleimage">
+            <lable class="col-sm-2 col-form-label">Benchmark samples Image </lable>
+            <div class="pd col-sm-5 HideforAllView">
+                <div class="input-group">
+                    <input type="file" class="form-control form-control-sm NoEdit imageHideForView" id="ProjectDetailsBenchMarkSampleImage" accept="image/*" onchange="return fileBenchValidation()" multiple />
+                    @* <span class="input-group-append">
+                        <label class="btn-icon -delete" id="delete_icon_Benchmark_Samples_Image" title="Delete" onclick="onDeleteImage()"><i class="fas fa-trash" aria-hidden="true"></i></label>
+                        @*<button class="btn btn-outline-secondary delete-icon" type="button" id="removeImage"><i class="fas fa-trash"></i></button>
+                        </span>*@
+                </div>
+                @*<input type="file" class="form-control form-control-sm NoEdit imageHideForView" id="ProjectDetailsBenchMarkSampleImage" accept="image/*" onchange="return fileValidation()" />*@
+
+                <span id="Err_InvalidBenchmarkImage" style="color:red;display:none" class="removeError">The image must be a file of type: jpg, jpeg, png, gif, jfif, tiff, bmp, svg</span>
+                <span style="display:none" id="ProjectDetailsBenchMarkSampleImageText"></span>
+                @*<a class="nav-link" style="display:inline-block;" id="ProjectDetailsBenchMarkSampleImageDownload"><span id="ImageName"></span></a><br>*@
+                @*<a id="removeImage" style="display:none;font-size:13px;color:blue;">Remove Image</a>*@
+                <span style="color:red; display:none" class="ShowmsgWhenAdd removeError">Please select Benchmark samples Image</span>
+            </div>
+            @*            <iframe id="my_iframe" style="display:none;"></iframe>*@
+            @*                <a id="ViewImage" target="_blank" rel="noopener noreferrer" href="~/ImageUpload/@Model.ImageUrl"></a>*@
+
+            <div class="col-md-1 onlyforinit" style="display:none">
+                <div class="float-left text-left">
+                    @*<i style="font-size:20px;color:blue" id="Add_SupportingDocuments" title="Add" class="fa Add_SupportingDocuments">&#xf067;</i>*@
+                    <button type="button" id="Add_BenchMarkImages" class="btn-add Add_BenchMarkImages">Add</button>
+                </div>
+            </div>
+            <div class="col-md mt-1">
+                <div class="float-left text-left">
+                    <a class="btn-icon -info imagesinfo ViewData" id="ViewData1" title="Images"><img src="../images/multiimages.png"></a>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row mb-3">
+            <lable class="col-sm-2 col-form-label">Desired Indications </lable>
+            <div class="pd col-sm-10">
+                @Html.TextBoxFor(model => model.DesiredIndication, new { @class = "form-control form-control-sm NoEdit ViewMode", @id = "ProjectDetailsDesiredIndications" })
+            </div>
+        </div>
+        <div class="row mb-3">
+            <lable class="col-sm-2 col-form-label">Desired Dosage Form </lable>
+            <div class="pd col-sm-10">
+                @Html.TextBoxFor(model => model.DesiredDosageForm, new { @class = "form-control form-control-sm NoEdit ViewMode", @id = "ProjectDetailsDesiredDosageForm" })
+            </div>
+        </div>
+
+        <div class="add_grid_" id="projectDetailsHubRemarksGrid" style="display:none">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main mt-2 mb-4">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="worksheet2" class="table table-bordered"></table>
+                                <div id="pager_worksheet2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row product_profile mb-3 HgmlRemarks">
+
+            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.HgmlProjectDetailsRemarks, new { @id = "ProjDetails_HGML_Remarks", @name = "editor2", @cols = "30" /*data-sample-short="" */, @class = "HubNoEdit form-control form-control-sm HUBReview hgmlremarks ViewMode" })
+            </div>
+
+        </div>
+        <div class="row mb-3 PmdRemarks">
+            <label class="col-sm-2 col-form-label">Fine Screening Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.PMDProjectDetailsRemarks, new { @id = "ProjDetails_PMD_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm PmdNoEdit ViewMode" })
+            </div>
+        </div>
+        <div class="row product_profile mb-3 HubReview">
+
+            <label class="col-sm-2 col-form-label">@hub Remarks</label>
+            <div class="col-sm-10 pd">
+                @*                <textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>*@
+                @Html.TextAreaFor(model => model.HUBProjectDetailsRemarks, new { @id = "ProjDetails_HUB_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm hubremarks ViewMode" })
+            </div>
+
+        </div>
+
+
+
+        <h6 class="pro_det">Additional Formulation Requirements</h6>
+        <div class="row">
+            <div class="demo-content pd mb-3">
+                @Html.TextAreaFor(model => model.AdditionalRequirments, new
+                {
+                    @placeholder = "*Any addition, removal, change in ingredients in an existing formulation will require stability and clinical studies",
+            @class = "form-control NoEdit",
+                    @id = "AdditionalRequirementsTextBox",
+                    @spellcheck = "false"
+                })
+            </div>
+            <div class="col-lg-3">
+                <label>Shelf life</label>
+                <div class="demo-content pd">
+                    @Html.TextBoxFor(model => model.ShelfLife, new { @class = "form-control form-control-sm NoEdit ViewMode", @id = "AdditionalRequirmentsShelfLife" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <label>Free from</label>
+                <div class="demo-content pd">
+                    @Html.TextBoxFor(model => model.FreeFrom, new { @class = "form-control form-control-sm NoEdit ViewMode", @id = "AdditionalRequirmentsOthers" })
+                </div>
+            </div>
+            <div class="col-lg-3">
+                <label>Others</label>
+                <div class="demo-content pd">
+                    @Html.TextBoxFor(model => model.OthersAdditional, new { @class = "form-control form-control-sm NoEdit ViewMode", @id = "AdditionalRequirmentsFreeFrom" })
+                </div>
+            </div>
+
+        </div>
+
+        <br />
+        <div class="add_grid_" id="formulationDetailsHubRemarksGrid" style="display:none">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main mt-2 mb-4">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="worksheet3" class="table table-bordered"></table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row product_profile mb-3 HgmlRemarks">
+
+            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.HgmlAdditionalFormulationRemarks, new { @id = "FP_HGML_Remarks", @name = "editor2", @cols = "30" /*data-sample-short="" */, @class = "HubNoEdit form-control form-control-sm hgmlremarks ViewMode" })
+            </div>
+
+        </div>
+
+        <div class="row mb-3 PmdRemarks">
+            <label class="col-sm-2 col-form-label">Fine Screening Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.PMDAdditionalFormulationRemarks, new { @id = "FP_PMD_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm PmdNoEdit ViewMode" })
+            </div>
+        </div>
+
+        <div class="row product_profile mb-3 HubReview">
+
+            <label class="col-sm-2 col-form-label">@hub Remarks</label>
+            <div class="col-sm-10 pd">
+                @*                    <textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>*@
+                @Html.TextAreaFor(model => model.HUBAdditionalFormulationRemarks, new { @id = "FP_HUB_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm hubremarks ViewMode" })
+            </div>
+
+        </div>
+
+
+
+        <h6 class="pro_det">Business Information</h6>
+        <span id="err-business_info" style="color:red; display:none" class="removeError">Please enter atleast one data for Business Information</span>
+        <span class="Err-BIcombination removeError" style="color:red;display:none">Selected Product and SKU combination already exists</span>
+        @* @if (Model.StatusId == "2" || Model.StatusId == "4" || Model.StatusId == "5" || Model.StatusId == "6" || Model.StatusId == "7")*@
+        @if (Model.StatusId != "3")
+        {
+            <div class="row">
+                <div class="col-auto mt-1">
+                    <label>Total Business Value (USD)</label>
+                </div>
+                <div class="col-auto">
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.TotalBusinessValue, new { @class = "form-control TotalBusinessValue", @id = "BI_TotalBusinessValue", @readonly = "readonly" })
+                    </div>
+                </div>
+                <div class="col-auto">
+                    <div class="btn-icon -edit mt-2" id="TotalBusinessValue" data-bs-toggle="modal" data-bs-target="#Business_Value">
+                        <i class="fas fa-info-circle TotalBusinessValue_Icon" aria-hidden="true" title="Total Business Value"></i>
+                    </div>
+                </div>
+            </div>
+        }
+
+        <br />
+        <div class="col-md-12 NotInReformulation row ">
+            <div class="init_businessInfo hub_align">
+                <span onclick="onClickInitiatorBusinessInformation()" class="hub_view" id="Initiator_BusinessInformation_Link" data-bs-toggle="modal">Business Information</span>
+            </div>
+            <div class="row ">
+                <div class="col-md-12" id="HubBusinessInfoLinks" style="display:none">
+                    <div class="hub_align">
+                        @*<span class="hub_view" data-bs-toggle="modal" id="husaBi" onclick="HusaBI('ReformulationHusaBusinessInformation','HUSA')" data-bs-target="#HusaBI">HUSA Business Information</span>
+                            <span class="hub_view" data-bs-toggle="modal" id="apacBi" onclick="ApacBI('ReformulationApacBusinessInformation','APAC')" data-bs-target="#ApacBI">APAC Business Information</span>
+                            <span class="hub_view" data-bs-toggle="modal" id="euBi" onclick="EuBI('ReformulationEuBusinessInformation','EU')" data-bs-target="#EuBI">EU Business Information</span>
+                            <span class="hub_view" data-bs-toggle="modal" id="rumeaBi" onclick="RumeaBI('ReformulationRumeaBusinessInformation','RUMEA')" data-bs-target="#RumeaBI">RUMEA Business Information</span>
+                            <span class="hub_view" data-bs-toggle="modal" id="indiaBi" onclick="IndiaBI('ReformulationIndiaBusinessInformation','INDIA')" data-bs-target="#IndiaBI">INDIA Business Information</span>*@
+                    </div>
+
+                </div>
+            </div>
+            <div>
+            </div>
+            <div class="col-sm-12 ">
+
+                <div class="HideClass BusinessInfo">
+
+                    <div class="row ">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Product <span class="color-red">*</span></label>
+                                @*                                @Html.TextBoxFor(model=>model.ProductBusinessInfo ,new{@class="form-control BusinessInformationManditoryField " ,@id="BusinessInformationProductName"})*@
+                                @Html.DropDownListFor(model => model.ProductBusinessInfo, new List<SelectListItem>(), "--Select--", new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationProductName" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Product</span>
+                                <span class="Error_BI_Product removeError" style="color:red;display:none"></span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>SKU <span class="color-red">*</span></label>
+                                @*@Html.TextBoxFor(model=>model.SkuBusinessInfo,new{@class="form-control BusinessInformationManditoryField " ,@id="BusinessInformationSKU"})
+                                    <span class="Err-BusinessInformation" style="color:red;display:none">Please enter SKU</span>*@
+
+                                @Html.DropDownListFor(model => model.SkuBusinessInfo, new List<SelectListItem>(), "--Select--", new { @class = "form-control BusinessInformationManditoryField ProductOption", @id = "BusinessInformationSKU" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please select SKU</span>
+                                <span class="Error_BI_Product removeError" style="color:red;display:none"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3 Forhub" style="display:none">
+                            <div class="form-group">
+                                <label>Proposed Name's of product <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.BusinessInformationProposedNamesOfProduct, new { @class = "form-control", @id = "BusinessInformationProposedNamesOfProduct" })
+
+                                <span style="color:red; display:none" id="Error_BI_ProposedNamesOfProduct" class="Error_BusinessInformation removeError">Please enter Proposed Name's of product </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed launch date <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.ProposedLaunchDate, new { @class = "form-control BusinessInformationManditoryField data-datepicker", @id = "BusinessInformationLaunchDate" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please select Proposed launch date</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed Selling Price <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.ProposedSellingPrice, new { @class = "form-control BusinessInformationManditoryField ", @id = "BusinessInformationSellingPrice", @onkeypress = "return onlyNumbers(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Proposed SP</span>
+                                <span id="Err-Zero-SP" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                <span id="Err-NAN-SP" class="removeError" style="color:red;display:none">Please enter Proposed SP in digits</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Expected COP <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.ProposedTP, new { @class = "form-control BusinessInformationManditoryField ", @id = "BusinessInformationProposedTP", @onkeypress = "return onlyNumbers(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Expected COP</span>
+                                <span id="Err-Zero-TP" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                <span id="Err-NAN-TP" class="removeError" style="color:red;display:none">Please enter Expected COP in digits</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Proposed MRP <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.ProposedMRP, new { @class = "form-control BusinessInformationManditoryField ", @id = "BusinessInformationProposedMRP", @onkeypress = "return onlyNumbers(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Proposed MRP</span>
+                                <span id="Err-Zero-MRP" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                <span id="Err-NAN-MRP" class="removeError" style="color:red;display:none">Please enter MRP Quantity in digits</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Currency <span class="color-red">*</span></label>
+                                @Html.DropDownListFor(model => model.Currency, Model.CurrencyList, "--Select--", new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationCurrency" })
+                                <span id="ErrorInBusinessInfo_Currency" class="ToRemoveValue removeError" style="color:red" hidden>Please select currency</span>
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please select Currency</span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Expected GP % <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.ExpectedGP, new { @class = "form-control BusinessInformationManditoryField ", @id = "BusinessInformationExpectedGP", @onkeypress = "return onlyNumbers(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Expected GP %</span>
+                                <span id="Err-NAN-GP" class="removeError" style="color:red;display:none">Please enter Expected GP% Quantity in digits</span>
+                                <span id="Error_Range_ExpectedGP" class="removeError" style="color:red;display:none">Please enter Expected GP% between 1 and 100</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">M1 Quantity<span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.m1, new { @class = "form-control form-control-sm BusinessInformationManditoryField ", @id = "BusinessInformationM1", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M1 Quantity</span>
+                                <span id="Err-NAN-M1" class="removeError" style="color:red;display:none">Please enter M1 Quantity in digits</span>
+                                <span id="Err-Zero-M1" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">M2 Quantity<span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.m2, new { @class = "form-control form-control-sm BusinessInformationManditoryField ", @id = "BusinessInformationM2", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M2 Quantity</span>
+                                <span id="Err-Zero-M2" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                <span id="Err-NAN-M2" class="removeError" style="color:red;display:none">Please enter M2 Quantity in digits</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">M3 Quantity<span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.m3, new { @class = "form-control form-control-sm BusinessInformationManditoryField ", @id = "BusinessInformationM3", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M3 Quantity</span>
+                                <span id="Err-Zero-M3" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                <span id="Err-NAN-M3" class="removeError" style="color:red;display:none">Please enter M3 Quantity in digits</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">M4 Quantity@*<span class="color-red">*</span>*@</label> @*BusinessInformationManditoryField*@
+                                @Html.TextBoxFor(model => model.m4, new { @class = "form-control form-control-sm  ", @id = "BusinessInformationM4", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                @*  <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M4 Quantity</span>
+                                    <span id="Err-Zero-M4" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                    <span id="Err-NAN-M4" class="removeError" style="color:red;display:none">Please enter M4 Quantity in digits</span>*@
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">M5 Quantity@*<span class="color-red">*</span>*@</label> @*BusinessInformationManditoryField*@
+                                @Html.TextBoxFor(model => model.m5, new { @class = "form-control form-control-sm  ", @id = "BusinessInformationM5", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                @* <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M5 Quantity</span>
+                                    <span id="Err-Zero-M5" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                    <span id="Err-NAN-M5" class="removeError" style="color:red;display:none">Please enter M5 Quantity in digits</span>*@
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">M6 Quantity@*<span class="color-red">*</span>*@</label> @*BusinessInformationManditoryField*@
+                                @Html.TextBoxFor(model => model.m6, new { @class = "form-control form-control-sm  ", @id = "BusinessInformationM6", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                @*     <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter M6 Quantity</span>
+                                    <span id="Err-Zero-M6" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                    <span id="Err-NAN-M6" class="removeError" style="color:red;display:none">Please enter M6 Quantity in digits</span>*@
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Y1 Quantity<span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.y1, new { @class = "form-control form-control-sm BusinessInformationManditoryField ", @id = "BusinessInformationY1", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Y1 Quantity</span>
+                                <span id="Err-Zero-Y1 class=" removeError"" style="color:red;display:none">Please enter non zero number</span>
+                                <span id="Err-NAN-Y1" class="removeError" style="color:red;display:none">Please enter Y1 Quantity in digits </span>
+                                <span id="Y1Less" class="removeError" style="color:red;display:none">Please enter Y1 Quantity greater than or equal to M1+M2+M3+M4+M5+M6 quantity </span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">Y2 Quantity<span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.y2, new { @class = "form-control form-control-sm BusinessInformationManditoryField ", @id = "BusinessInformationY2", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Y2 Quantity</span>
+                                <span id="Err-Zero-Y2" class="removeError" style="color:red;display:none">Please enter non zero number</span>
+                                <span id="Err-NAN-Y2" class="removeError" style="color:red;display:none">Please enter Y2 Quantity in digits </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">Y3 Quantity<span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.y3, new { @class = "form-control form-control-sm BusinessInformationManditoryField ", @id = "BusinessInformationY3", @onkeypress = "return onlyNumbersNotdecimals(this);" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter Y3 Quantity</span>
+                                <span id="Err-Zero-Y3" class="removeError" style="color:red;display:none">Enter non zero number </span>
+                                <span id="Err-NAN-Y3" class="removeError" style="color:red;display:none">Enter Y3 Quantity in digits </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Business Value <span class="Bus_val">(Y2 Quantity * Proposed Selling Price)</span></label>
+                                @Html.TextBoxFor(model => model.BusinessValue, new { @class = "form-control BusinessInformationManditoryField", @id = "BusinessInformationBusinessValue", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="col-lg-3 HideForhub ">
+                            <label class="mt-3">Revision in packaging format required</label>
+                            <div class="">
+                                <label class="radio-inline">
+                                    <input data-val="true"
+                                           type="radio" name="survey" id="Radio1" value="Yes">
+                                    Yes &nbsp;
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" name="survey" id="Radio2" checked="checked" value="No">
+                                    No
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="m1m2">UOM <span class="color-red">*</span></label>
+                                @Html.TextBoxFor(model => model.Uom, new { @class = "form-control form-control-sm BusinessInformationManditoryField ", @id = "BusinessInformationUOM", @onkeypress = "return onlyAlphabets();" })
+                                <span class="Err-BusinessInformation removeError" style="color:red;display:none">Please enter UOM</span>
+                                <span class="UomErr removeError" style="color:red;display:none">Please enter only alphabets for UOM</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="float-right text-left ">
+                                <button type="button" id="BusinessInformationAdd" class="btn btn-add">Add</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="business_info" class="table table-bordered"></table>
+                                        <div id="pager_businessinfo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="add_grid_ mt-4" id="businessinfoHubRemarksGrid" style="display:none">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="worksheet4" class="table table-bordered"></table>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br />
+
+        <div class="row product_profile mb-3 HgmlRemarks">
+
+            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.HgmlBusinessInformationRemarks, new { @id = "BI_HGML_Remarks", @name = "editor2", @cols = "30" /*data-sample-short=""*/ , @class = "HubNoEdit form-control form-control-sm hgmlremarks ViewMode" })
+            </div>
+
+        </div>
+        <div class="row mb-3 PmdRemarks">
+            <label class="col-sm-2 col-form-label">Fine Screening Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.PMDBusinessInformationRemarks, new { @id = "BI_PMD_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm PmdNoEdit ViewMode" })
+            </div>
+        </div>
+
+
+        <div class="row product_profile mb-3 HubReview">
+
+            <label class="col-sm-2 col-form-label">@hub Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.HUBBusinessInformationRemarks, new { @id = "BI_HUB_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm hubremarks ViewMode" })
+            </div>
+
+        </div>
+
+        @*<h6 class="pro_det PackgagingProfileHeader" style="display:none;">Product Profile: Packaging Profile</h6>*@
+
+
+
+        <div id="PackagingProfile" style="display:none">
+
+            <div id="PackagingProfile" style="">
+                <h6 class="pro_det">Product Profile: Packaging Profile</h6>
+                <span id="Err-PackagingProfile" style="color:red;display:none" class="removeError">Enter atleast one packaging profile data</span>
+                <span id="Err-PackagingProfileBI" style="color:red;display:none" class="removeError">Enter packaging profile data before Business Information</span>
+                <span class="Err-PPcombination removeError" style="color:red;display:none">Selected Product and SKU combination already exists</span>
+                <span id="Error_PPR_Product_Sku" class="color-red Error_PackagingProfile"></span>
+                <div class="col-md-12" id="PackagingProfileForm">
+                    <div class="product_packag product_profile HideClass">
+
+                        <div class="product_title">
+                            <h6>Expected Packaging Material</h6>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Product <span class="color-red">*</span></label>
+                                        @*@Html.TextBoxFor(model=>model.ProductPackaging ,new{@class="form-control PackagingProfileEmpty  ManditoryFieldPackagingProfile" ,@id="PackagingProfileProduct"})*@
+                                        @Html.DropDownListFor(model => model.ProductPackaging, new List<SelectListItem>(), "--Select--", new { @class = "form-control ManditoryFieldPackagingProfile PackagingProfileEmpty ", @id = "PackagingProfileProduct" })
+                                        <span class="Error_PP_Product removeError" style="color:red;display:none"></span>
+                                        <span class="Err-PackagingProfileProduct removeError" style="color:red;display:none">Please Select Product</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">SKU <span class="color-red">*</span></label>
+                                        <select class="form-control multiselectDropdown ddlmulti example-dropUp PackagingProfileEmpty ManditoryFieldPackagingProfile" multiple="multiple" id="PackagingProfileSKU">
+                                        </select>
+                                        @*                                    @Html.TextBoxFor(model=>model.SkuPackaging,new{@class="form-control PackagingProfileEmpty  ManditoryFieldPackagingProfile" ,@id="PackagingProfileSKU"})
+                                        *@                                    <span class="Err-PackagingProfileSKU removeError" style="color:red;display:none">Please Select SKU</span>
+                                        <span class="Err-PPNoMoreSKU removeError" style="color:red;display:none">All the available SKU's are already added for the selected Product</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label PackagingProfileEmpty ">Mold</label>
+
+                                        @Html.DropDownListFor(model => model.Mould, new List<SelectListItem>()
+                                    {
+                                    new SelectListItem() { Text= "New", Value = "New" },
+                                    new SelectListItem() { Text= "off-shelf", Value = "off-shelf" }
+                                    }, "--Select--", new { @id = "PackagingProfileMould", @class = "form-control PackagingProfile Toremove" })
+
+                                    </div>
+                                </div>
+                                @*<div class="col-md-3">
+                                    <div class="form-group">
+                                    <label class="control-label">Primary Packaging <span class="color-red">*</span></label>
+                                    @Html.TextBoxFor(model=>model.PrimaryPackaging,new{@class="form-control PackagingProfileEmpty  ManditoryFieldPackagingProfile" ,@id="PackagingProfilePrimaryPackaging"})
+                                    <span class="Err-PackagingProfilePrimaryPackaging removeError" style="color:red;display:none">Please Enter Primary Packaging</span>
+                                    </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    <div class="form-group">
+                                    <label class="control-label">Secondary Packaging</label>
+                                    @Html.TextBoxFor(model=>model.SecondaryPackaging,new{@class="form-control PackagingProfileEmpty " ,@id="PackagingProfileSecondaryPackaging"})
+                                    </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    <div class="form-group">
+                                    <label class="control-label">Tertiary Packaging</label>
+                                    @Html.TextBoxFor(model=>model.TertiaryPackaging,new{@class="form-control PackagingProfileEmpty " ,@id="PackagingProfileTertiaryPackaging"})
+                                    </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    <div class="form-group">
+                                    <label class="control-label">Benchmark Products</label>
+                                    @Html.TextBoxFor(model=>model.BenchMarkProducts,new{@class="form-control PackagingProfileEmpty " ,@id="PackagingProfileBenchMarkProduct"})
+                                    </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                    <div class="form-group">
+                                    <label class="control-label">Desired Packaging Characteristics</label>
+                                    @Html.TextBoxFor(model=>model.DesiredPackagingCharacters,new{@class="form-control PackagingProfileEmpty " ,@id="PackagingProfileDesiredPackagingCharacters"})
+                                    </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                    <div class="form-group">
+                                    <label class="control-label">Others (If any)</label>
+                                    @Html.TextBoxFor(model=>model.Others,new{@class="form-control PackagingProfileEmpty " ,@id="PackagingProfileOthers"})
+                                    </div>
+                                    </div>*@
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Primary Packaging <span class="color-red">*</span></label>
+                                        <div class="ckediter_tolbar feature_benefits">
+                                            @Html.TextAreaFor(model => model.PrimaryPackaging, new { @class = "form-control  PackagingProfile", @id = "PackagingProfilePrimaryPackaging" })
+                                            <span class="Err-PackagingProfilePrimaryPackaging removeError" style="color:red;display:none">Please Enter Primary Packaging</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">SecondaryPackaging</label>
+                                        <div class="ckediter_tolbar feature_benefits">
+                                            @Html.TextAreaFor(model => model.SecondaryPackaging, new { @id = "PackagingProfileSecondaryPackaging", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Tertiary Packaging</label>
+                                        <div class="ckediter_tolbar feature_benefits">
+                                            @Html.TextAreaFor(model => model.TertiaryPackaging, new { @id = "PackagingProfileTertiaryPackaging", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">BenchMark Products </label>
+                                        <div class="ckediter_tolbar feature_benefits">
+                                            @Html.TextAreaFor(model => model.BenchMarkProducts, new { @id = "PackagingProfileBenchMarkProduct", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Desired Packaging Characters</label>
+                                        <div class="ckediter_tolbar feature_benefits">
+                                            @Html.TextAreaFor(model => model.DesiredPackagingCharacters, new { @id = "PackagingProfileDesiredPackagingCharacters", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="control-label">Others (If any)</label>
+                                        <div class="ckediter_tolbar feature_benefits">
+                                            @Html.TextAreaFor(model => model.Others, new { @id = "PackagingProfileOthers", @class = "form-control PackagingProfile Toremove", @name = "editorsk1", @cols = "30" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-3 imageHideForView">
+                                    <div class="form-group">
+                                        <label class="control-label">Images Upload</label>
+                                        <input type="file" name="files" class="form-control PackagingProfileEmpty" onchange="validateFileUpload()" id="image_upload" accept="image/gif, image/jpeg, image/png" multiple>
+                                        @* <input type="file" class="form-control PackagingProfileEmpty" id="image_upload" onchange="return fileValidation()" />
+                                        *@
+                                        <span id="Err_InvalidPackagingImage" style="color:red;display:none">The image must be a file of type: jpg, jpeg, png, gif, jfif, tiff, bmp, svg</span>
+                                        @* <span id="Display_image_upload" class="PackagingProfileEmptyImage"></span>*@
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="float-left text-left mt-3 pt-3">
+                                        <button type="button" id="PackagingProfileAdd" class="btn-add">Add</button>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 ">
+                                    <div class="form-group">
+                                        <span id="Display_image_upload" class="PackagingProfileEmptyImage DisplayImage_Pack"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+
+        <div id="PackagingProfileGrid" style="display:none">
+            <h6 class="pro_det PackagingProfileHeadingName" style="display:none">Product Profile: Packaging Profile</h6>
+            <div class="tb_clr marbt">
+                <div class="formulation_table" id="Packaging_Profile_Table"></div>
+            </div>
+            <div class="col-md-12">
+                <div class="product_packag product_profile">
+
+                    <div class="add_grid_" style="display:none">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="expected" class="table table-bordered"></table>
+                                            <div id="pager_expected"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add_grid_ worksheet5 PackagingProfile_HubRemarks">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="worksheet5" class="table table-bordered"></table>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row product_profile mb-3 HgmlRemarks packProfileRemarks">
+
+            <label class="col-sm-2 col-form-label">HGML Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.HgmlPackagingProfileRemarks, new { @id = "PPR_HGML_Remarks", @name = "editor2", @cols = "30" /*data-sample-short=""*/ , @class = " HubNoEdit form-control form-control-sm hgmlremarks ViewMode" })
+
+            </div>
+        </div>
+
+        <div class="row mb-3 PmdRemarks packProfileRemarks">
+            <label class="col-sm-2 col-form-label">Fine Screening Remarks</label>
+            <div class="col-sm-10 pd">
+                @Html.TextAreaFor(model => model.PMDPackagingProfileRemarks, new { @id = "PPR_PMD_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm PmdNoEdit ViewMode" })
+            </div>
+        </div>
+
+        <div class="row product_profile mb-3 HubReview packProfileRemarks">
+            <label class="col-sm-2 col-form-label">@hub Remarks</label>
+            <div class="col-sm-10 pd">
+                @*                    <textarea id="editor" name="editor2" cols="30" data-sample-short="" class="form-control form-control-sm"></textarea>*@
+                @Html.TextAreaFor(model => model.HUBPackagingProfileRemarks, new { @id = "PPR_HUB_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm hubremarks ViewMode" })
+            </div>
+
+        </div>
+        @*   <div class="pending_hgmlfields product_profile mt-3 hubstatus" id="HubReviewStatus" style="display:none">
+            <h6 class="">HUB Status</h6>
+            @*HUB Status*@
+        @* <div class="row align-items-center hubstatus">
+
+            </div>
+            </div>*@
+
+
+
+        @*Sustainability*@
+
+
+        <h6 class="pro_det">Sustainability</h6>
+        <span style="color:red;display:none" id="Error_Sustainability" class="Error_EmptyGrid">Please enter atleast one data for Sustainability</span>
+        <div class="col-md-12">
+            <div class="product_packag product_profile">
+                <div class="col-md-12 NotInRefHgmlReview NotInRefHubReview NotInRefHgmlApprove NotInRefPmdReview NotInRefApproved NotInRefViewPage">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Product <span class="color-red">*</span></label>
+                                @Html.DropDownListFor(model => model.SustainabilityProduct, new List<SelectListItem>(), "--Select--", new { @class = "form-control Sustainability", @id = "SUS_Product" })
+                                <span style="color:red; display:none" id="Error_SUS_Product" class="Error_Sustainability"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">What sustainability goals are targeted? <span class="color-red">*</span></label>
+                                @Html.TextAreaFor(model => model.TargetedGoals, new { @class = "form-control Sustainability", @id = "SUS_TargetedGoals" })
+                                <span style="color:red; display:none" id="Error_SUS_TargetedGoals" class="Error_Sustainability">Please enter what sustainability goals are targeted? </span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Reusable</label>
+                                @Html.TextBoxFor(model => model.Reusable, new { @class = "form-control Sustainability", @id = "SUS_Reusable" })
+                                @*<span style="color:red; display:none" id="Error_SUS_Reusable" class="Error_Sustainability">Please enter Reusable</span>*@
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Recycle</label>
+                                @Html.TextBoxFor(model => model.Recycle, new { @class = "form-control Sustainability", @id = "SUS_Recycle" })
+                                @*<span style="color:red; display:none" id="Error_SUS_Recycle" class="Error_Sustainability">Please enter Recycle</span>*@
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Reducing</label>
+                                @Html.TextBoxFor(model => model.Reducing, new { @class = "form-control Sustainability", @id = "SUS_Reducing" })
+                                @*<span style="color:red; display:none" id="Error_SUS_Reducing" class="Error_Sustainability">Please enter Reducing</span>*@
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Recovering</label>
+                                @Html.TextBoxFor(model => model.Recovering, new { @class = "form-control Sustainability", @id = "SUS_Recovering" })
+                                @*<span style="color:red; display:none" id="Error_SUS_Recovering" class="Error_Sustainability">Please enter Recovering</span>*@
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="text-left mt-4 pt-1">
+                                <button type="button" id="Add_Sustainability" class="btn-add">Add</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <span id="Error_SUS_Product_Sku" class="color-red Error_Sustainability"></span>
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Table_Sustainability" class="table table-bordered"></table>
+                                        <div id="pager_Table_Sustainability"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_grid_ NotInRefDraft NotInRefHgmlReview NotInRefHubReview Sustainability_HubRemarks">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Sustainability_Remarks" class="table table-bordered"></table>
+                                        <div id="pager_Sustainability_Remarks"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mb-3 NotInRefDraft">
+                    <label class="col-sm-2 col-form-label">HGML Remarks</label>
+                    <div class="col-sm-10 pd">
+                        @Html.TextAreaFor(model => model.SustainabilityHGMLRemarks, new { @id = "SUS_HGML_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm" })
+                    </div>
+                </div>
+                <div class="row mb-3 NotInRefDraft NotInRefHgmlReview NotInRefHgmlApprove NotInRefPmdReview NotInRefApproved SUS_HUB_Remarks">
+                    <label class="col-sm-2 col-form-label">@hub Remarks</label>
+                    <div class="col-sm-10 pd">
+                        @Html.TextAreaFor(model => model.SustainabilityHubRemarks, new { @id = "SUS_HUB_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm" })
+                    </div>
+                </div>
+                <div class="row mb-3 NotInRefDraft NotInRefHgmlReview NotInRefHubReview NotInRefHgmlApprove forUnderExp">
+                    <label class="col-sm-2 col-form-label">Fine Screening Remarks</label>
+                    <div class="col-sm-10 pd">
+                        @Html.TextAreaFor(model => model.SustainabilityPmdRemarks, new { @id = "SUS_PMD_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm" })
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        @*supporting documents*@
+        @if (Model.StatusId == "2" || Model.StatusId == "13" || Model.StatusId == "4" || Model.StatusId == "14" || Model.StatusId == "5" || Model.StatusId == "16" || Model.StatusId == "6" || Model.StatusId == "12" || Model.StatusId == "7" || Model.ViewStatus == "View")
+        {
+            <div class="product_profile">
+                <h6 class="pro_det mt-1">Supporting Documents</h6>
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Supporting_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        @if ((Model.StatusId == "3" || Model.StatusId == "9" || Model.StatusId == "8" || Model.StatusId == "1" || Model.StatusId == "11") && Model.ViewStatus != "View")
+        {
+            <div class="product_profile">
+                <h6 class="pro_det mt-1">Supporting Documents</h6>
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-3">
+                        <label>Supporting Documents</label>
+                        <div class="demo-content SupprotingDoc">
+                            <input type="file" class="form-control file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv" id="Supportingdocuments" name="AttachSpecFile" onchange="return documentFileValidation()" />
+                            <span id="Err_SupportingDocuments" style="color:red;display:none">The file must be of type: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx ,.csv</span>
+                            <span id="ErrorMsg_Document" style="color:red;display:none">Please select supporting document</span>
+                            <span id="GetDocName"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-1 mt-4 pt-1 SupprotingDoc">
+                        <div class="float-left text-left">
+                            @*<i style="font-size:20px;color:blue" id="Add_SupportingDocuments" title="Add" class="fa Add_SupportingDocuments">&#xf067;</i>*@
+                            <button type="button" id="Add_SupportingDocuments" class="btn-add Add_SupportingDocuments">Add</button>
+                        </div>
+                    </div>
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                            <div id="pager_Grid_Supporting_Document"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+        @if (Model.StatusId != "9")
+        {
+            <div class="row InitiatorRemarks" style="padding-top: 10px;display:none" id="">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Initiator Remarks</label>
+                        @Html.TextAreaFor(model => model.InitiatorRemarks, new { @id = "editor", @name = "editor2", @class = "form-control form-control-sm ViewMode" })
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="pending_hgmlfields product_profile mt-3 NotInHgmlApprove NotInPmdReview NotInApproved">
+                <h6 class="pro_det">Initiator Remarks</h6>
+                <div class="row mb-3 ">
+                    <label class="col-sm-2 col-form-label">Initiator Remarks</label>
+                    <div class="col-sm-10 pd">
+                        @Html.TextAreaFor(model => model.InitiatorRemarks, new { @id = "editor", @name = "editor2", @class = "form-control form-control-sm ViewMode", disabled = "disabled" })
+                    </div>
+                </div>
+            </div>
+        }
+
+        <div class="pending_hgmlfields product_profile mt-3 hubstatus">
+            <h6 class="pro_det">HUB Status</h6>
+            <div class="row align-items-center" id="HubReviewStatus">
+            </div>
+
+
+            <div class="add_grid_ hgmldatagrid hideHgmlGrid mt-3 hubmarkets" style="display:none">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="m-table__main mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="HUB_ParticipatingMarkets" class="table table-bordered"></table>
+                                    <div id="pager_HGML"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <h6 class="pro_det pmdhgmldataheader ViewModeField" style="display:none">HGML Data</h6>
+        <div class="pending_hgmlfields product_profile mt-3" id="HgmlData_ApprovePage" style="display:none">
+            <h6 class="pro_det">HGML Data</h6>
+            <span id="err-hgml_data" style="color:red; display:none" class="removeError">Please enter atleast one data for HGML Data</span>
+            <span style="color:red;display:none" id="Error_HgmlData" class="Error_EmptyGrid removeError">Please enter atleast one data for HGML Data</span>
+            <div class="row">
+                @*  <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Product Name<span class="color-red">*</span></label>
+                    @Html.TextBoxFor(model=>model.HgmlDataProductName,new { @id="HgmlData_ProductNameApprovePage", @class="form-control HGMLData" })
+                    <span id="Error_HgmlDataProductName" class="color-red Error_HgmlData" style="display:none">Please select Product Name</span>
+                    </div>
+                    </div>*@
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Product <span class="color-red">*</span></label>
+                        @*                                @Html.TextBoxFor(model=>model.ProductBusinessInfo ,new{@class="form-control HGMLData" ,@id="HgmlData_ProductNameApprovePage"})*@
+                        @Html.DropDownListFor(model => model.HgmlDataProductName, new List<SelectListItem>(), "--Select--", new { @class = "form-control HGMLData ViewMode", @id = "HgmlData_ProductNameApprovePage" })
+                        <span id="Error_HgmlDataProductNameApprovePage" class="removeError" style="color:red;display:none">Please select Product</span>
+                        <span class="Error_HgmlApprove_Product removeError" style="color:red;display:none"></span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Participating Markets <span class="color-red">*</span></label>
+                        @Html.TextBoxFor(model => model.HgmlDataParticipatingMarkets, new { @id = "HgmlData_ParticipatingMarketsApprovePage", @class = "form-control ViewMode" })
+                        <span id="Error_HgmlDataParticipatingMarkets" class="color-red Error_HgmlData" style="display:none">Please enter Participating Markets</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group product_profile">
+                        <label>Project Priority<span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.HgmlDataProjectPriority, Model.ProjectPriorityList, "--Select--", new { @id = "HgmlData_ProjectPriorityApprovePage", @class = "form-control HGMLData" })
+
+                        <span id="Error_HgmlDataProjectPriority" class="color-red Error_HgmlData" style="display:none">Please select Project Priority</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Project Categorization <span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.PmdProjectCategorization, Model.ProjectCategorizationList, "--Select--", new { @id = "PmdProjectCategorizationApprovePage", @class = "form-control HGMLData" })
+                        <span id="Error_ProjectCategory" class="color-red Error_HgmlData Error_HgmlDataProjectCategory" style="display:none">Please select Project Categorization</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        @Html.TextBoxFor(model => model.HgmlDataRemarks, new { @id = "HgmlData_RemarksApprovePage", @class = "form-control HGMLData ViewMode" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div>
+                        <button type="button" onclick="AddHgmlDataApprove()" class="btn-add mt-4 pt-1 pb-1">Add</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="initiator_remarks_hgml">
+            <div class="pending_hgmlfields product_profile mt-3 NotInHgmlApprove NotInPmdReview NotInApproved">
+                <h6 class="pro_det">Initiator Remarks</h6>
+                <div class="row mb-3 NotInNpd">
+                    <label class="col-sm-2 col-form-label">Initiator Remarks</label>
+                    <div class="col-sm-10 pd">
+                        @Html.TextAreaFor(model => model.InitiatorRemarks, new { @id = "Initiator_Remarks", @name = "editor2", @cols = "30", @class = "form-control form-control-sm" })
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pending_hgmlfields product_profile mt-3 approveHgmlData" style="display:none" id="Hgml_Data-Field">
+            <h6 class="pro_det hideforBrief">HGML Data</h6>
+
+            <div class="row ">
+                <div class="col-3 SentToHubYesOrNo">
+                    <div class="form-group product_profile">
+                        <label>Do you want sent to hub<span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.HgmlDataSendToHubConfirmation, new List<SelectListItem>()
+                    {
+                    new SelectListItem() { Text= "Yes", Value = "Yes" },
+                    new SelectListItem() { Text= "No", Value = "No" }
+                    }, "--Select--", new { @id = "HgmlDataSendToHubConfirmation", @class = "form-control HgmlDataSendToHubConfirmation" })
+
+                    </div>
+                </div>
+                <span id="Error_DoYouWantSentToHUB" class="color-red" style="display:none">Please select Yes/No</span>
+
+                @*HGML Data - Send to Hub - Yes*@
+
+                <div id="HgmlData_SendToHub_Yes" class="col-md-9">
+
+                    <span style="color:red;display:none" id="Error_HgmlData" class="Error_EmptyGrid removeError">Please enter atleast one data for HGML Data</span>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group product_profile">
+                                <label>HUB<span class="color-red">*</span></label>
+                                @* @Html.ListBoxFor(model => model.HgmlDataHub, Model.HgmlDataHubList ?? new List<SelectListItem>(),
+                                    new { @class = "form-control multiselectDropdown ddlmulti example-dropUp", @multiple = "multiple",
+                                    @id="HgmlData_HubDropdown" })*@
+                                @Html.ListBoxFor(model => model.HgmlDataHub, Model.HgmlDataHubList ?? new List<SelectListItem>(),
+                            new
+                                 {
+                                     @class = "form-control multiselectDropdown ddlmulti example-dropUp HgmlData_HubDropdown",
+                                     @multiple = "multiple",
+                            @id = "HgmlData_HubDropdown"
+                                 })
+                                <span id="Error_HgmlDataHub" class="color-red Error_HgmlData" style="display:none"><br />Please select Hub</span>
+
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group product_profile hub_user-dropdown hub_usrsdropdown">
+                                <label>HUB Users<span class="color-red">*</span></label>
+                                <select class="form-control multiselectDropdown1 ddlmulti example-dropUp2 HgmlData_HubUsersDropdown" multiple="multiple" id="HgmlData_HubUsersDropdown">
+                                </select>
+                                <span id="Error_HgmlDataHubUsers" class="color-red Error_HgmlData" style="display:none">Please select HUB Users</span>
+                                <span id="Error_HgmlDataHubUsersSelected" class="color-red" style="display:none">Please Select Users For All Selected Hubs</span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>HGML To HUB Remarks</label>
+                                @Html.TextAreaFor(model => model.HgmlDataHgmlToHubRemarks, new
+                                {
+                                    @id = "HgmlDataHgmlToHubRemarks",
+                            @name = "editor2",
+                                    @cols = "30",
+                                    @class = "form-control form-control-sm HgmlDataHgmlToHubRemarks"
+                                })
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        @*HGML Data - Send to Hub - No*@
+        <div class="pending_hgmlfields product_profile mt-3" id="HgmlData_SendToHub_No">
+            <h6 class="pro_det">HGML Data</h6>
+            <span style="color:red;display:none" id="Error_HgmlData" class="Error_EmptyGrid">Please enter atleast one data for HGML Data</span>
+            <div class="row NotInRefViewPage">
+                @* <div class="col-md-3">
+                    <div class="form-group">
+                    <label>Product Name<span class="color-red">*</span></label>
+                    @Html.TextBoxFor(model=>model.HgmlDataProductName,new { @id="HgmlData_ProductName", @class="form-control HGMLData" })
+                    <span id="Error_HgmlDataProductName" class="color-red Error_HgmlData" style="display:none">Please select Product Name</span>
+                    </div>
+                    </div>*@
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Product <span class="color-red">*</span></label>
+                        @*                                @Html.TextBoxFor(model=>model.ProductBusinessInfo ,new{@class="form-control BusinessInformationManditoryField " ,@id="BusinessInformationProductName"})*@
+                        @Html.DropDownListFor(model => model.HgmlDataProductName, new List<SelectListItem>(), "--Select--", new { @class = "form-control HGMLData", @id = "HgmlData_ProductName" })
+                        <span class="Error_HgmlDataProductName removeError" style="color:red;display:none">Please select Product</span>
+                        <span class="Error_Hgml_Product removeError" style="color:red;display:none"></span>
+                    </div>
+                </div>
+
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Participating Markets <span class="color-red">*</span></label>
+                        @Html.TextBoxFor(model => model.HgmlDataParticipatingMarkets, new { @id = "HgmlData_ParticipatingMarkets", @class = "form-control HGMLData" })
+                        <span id="" class="color-red Error_HgmlData Error_HgmlDataParticipatingMarkets" style="display:none">Please enter Participating Markets</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group product_profile">
+                        <label>Project Priority<span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.HgmlDataProjectPriority, Model.ProjectPriorityList, "--Select--", new { @id = "HgmlData_ProjectPriority", @class = "form-control HGMLData" })
+                        <span id="" class="color-red Error_HgmlData Error_HgmlDataProjectPriority" style="display:none">Please select Project Priority</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Project Categorization <span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.PmdProjectCategorization, Model.ProjectCategorizationList, "--Select--", new { @id = "PmdProjectCategorization", @class = "form-control HGMLData" })
+                        <span id="Error_ProjectCategory" class="color-red Error_HgmlData Error_ProjectCategory" style="display:none">Please select Project Categorization</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        @Html.TextBoxFor(model => model.HgmlDataRemarks, new { @id = "HgmlData_Remarks", @class = "form-control HGMLData" })
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div>
+                        <button type="button" onclick="AddHgmlData()" class="btn-add pt-1 mt-4">Add</button>
+                    </div>
+                </div>
+            </div>
+            @*<div class="add_grid_">
+                <div class="row">
+                <div class="col-md-12">
+                <div class="">
+                <div class="m-table__main mt-2">
+                <div class="m-table__responsive -virtual-scroll">
+                <table id="HGML_Data" class="table table-bordered"></table>
+                <div id="pager_HGML"></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>*@
+        </div>
+        <div class="add_grid_ hgmldatagrid hideHgmlGrid" style="display:none">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main mt-2">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="HGML_Data" class="table table-bordered"></table>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pending_hgmlfields product_profile mt-3 hubHidden HgmlOrHubDataSection">
+            <h6 class="pro_det">HGML / HUB Data </h6>
+            <div class="row product_profile mb-3">
+                <div class="col-sm-3 pd">
+                    <label class="col-form-label">HGML To HUB Remarks</label>
+                    <div class="form-group">
+
+                        @Html.TextBoxFor(model => model.HgmlToHubRemarks, new { @id = "HgmlToHubRemarks", @class = "form-control HgmlToHubRemarks", @disabled = "disabled" })
+                    </div>
+                </div>
+
+                <div class="col-md-3 pt-1">
+                    <div class="form-group">
+                        <label>Participating Markets <span class="color-red">*</span></label>
+                        @Html.TextBoxFor(model => model.HgmlDataHUBParticipatingMarkets, new { @id = "HgmlData_HUBParticipatingMarkets", @class = "form-control HGMLData ViewMode" })
+                        <span id="Error_HgmlDataParticipatingMarketsApprovePage" class="color-red Error_HgmlData" style="display:none">Please enter Participating Markets</span>
+                    </div>
+                </div>
+
+                <div class="col-sm-3 pd">
+                    <label class="col-form-label">@hub Remarks</label>
+                    <div class="form-group">
+                        @Html.TextBoxFor(model => model.HgmlOrHubDataHubRemarks, new { @id = "HgmlData_Remarks", @class = "form-control HgmlOrHubDataHubRemarks ViewMode" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="pending_hgmlfields product_profile mt-3 pmddata pmdDataSection" style="display:none">
+            <h6 class="pro_det">Fine Screening Data</h6>
+            <span style="color:red;display:none" id="Err-PmdData" class="removeError">Please enter atleast one data for Fine Screening Data</span>
+            <div class="row pmddataform pmdDataFields">
+                @* <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="control-label">Product Name <span class="color-red">*</span></label>
+                    @* <input type="text" class="form-control">
+                    @Html.TextBoxFor(model=>model.PmdProductName,new { @id="PmdProductName", @class="form-control PMDdata" })
+                    <span id="Error_ProductName" class="color-red Error_HgmlData" style="display:none">Please enter Product Name</span>
+                    </div>
+                    </div>*@
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Product <span class="color-red">*</span></label>
+                        @*                                @Html.TextBoxFor(model=>model.ProductBusinessInfo ,new{@class="form-control BusinessInformationManditoryField " ,@id="BusinessInformationProductName"})*@
+                        @Html.DropDownListFor(model => model.PmdProductName, new List<SelectListItem>(), "--Select--", new { @class = "form-control PMDdata", @id = "PmdProductName" })
+                        <span class="Error_ProductName Error_HgmlData removeError" style="color:red;display:none">Please select Product</span>
+                        <span class="Error_PMD_Product removeError" style="color:red;display:none"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Complexity to be Assigned <span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.PmdComplexity, Model.ComplexityToBeAssignedList, "--Select--", new { @id = "PmdComplexity", @class = "form-control PMDdata" })
+                        <span id="Error_PmdComplexity" class="color-red Error_HgmlData" style="display:none">Please select Project Complexity</span>
+                        @*<select class="form-control" data-singleselect>
+                            <option>Select</option>
+                            <option>High</option>
+                            <option>Medium</option>
+                            <option>Low</option>
+                            </select>*@
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>R&D Name <span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.PmdRD, Model.RAndDNameList, "--Select--", new { @id = "PmdRD", @class = "form-control PMDdata" })
+                        <span id="Error_PmdRd" class="color-red Error_HgmlData" style="display:none">Please select R&D</span>
+                        @* <select class="form-control" data-singleselect>
+                            <option>Select</option>
+                            <option>India</option>
+                            <option>HGRC</option>
+                            </select>*@
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Remarks <span class="color-red">*</span></label>
+                        @* <input type="text" class="form-control">*@
+                        @Html.TextBoxFor(model => model.PmdDataRemarks, new { @id = "PmdDataRemarks", @class = "form-control PMDdata" })
+                        <span id="Error_PmdDataRemarks" class="color-red Error_HgmlData" style="display:none">Please enter Remarks</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Project lead <span class="color-red">*</span></label>
+                        @Html.TextBoxFor(model => model.PmdProjectLead, new { @id = "PmdProjectLead", @class = "form-control PMDdata" })
+                        <span id="Error_Lead" class="color-red Error_HgmlData" style="display:none; color:red">Please enter Project Lead</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Target 1st Prototype submission date</label>
+                        @*  <input type="text" class="form-control" data-datepicker-monthyear>*@
+                        @Html.TextBoxFor(model => model.PrototypeSubmissionDate, new { @id = "PrototypeSubmissionDate", @class = "form-control data-datepicker-monthyear PMDdata" })
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Target TTD completion date </label>
+                        @*<input type="text" class="form-control" data-datepicker-monthyear>*@
+                        @Html.TextBoxFor(model => model.TTDCompletionDate, new { @id = "TTDCompletionDate", @class = "form-control data-datepicker-monthyear PMDdata" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Target production date </label>
+                        @* <input type="text" class="form-control" data-datepicker-monthyear>*@
+                        @Html.TextBoxFor(model => model.ProductionDate, new { @id = "ProductionDate", @class = "form-control data-datepicker-monthyear PMDdata" })
+                    </div>
+                </div>
+                @*   <div class="col-md-3">
+                    <div class="form-group">
+                    <label class="control-label">Target Cost </label>
+
+                    @Html.TextBoxFor(model=>model.TargetCost,new { @id="TargetCost", @class="form-control PMDdata", @onkeypress="return onlyNumbers();"})
+                    <span id="Error_PmdTargetCost" class="color-red Error_HgmlData" style="display:none">Please enter Target Cost</span>
+                    <span id="Error_PmdInvalidTargetCost" class="color-red Error_HgmlData" style="display:none">Target cost must contain only numbers</span>
+                    </div>
+                    </div>*@
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Major Risk if any </label>
+                        @* <input type="text" class="form-control" >*@
+                        @Html.TextBoxFor(model => model.MajorRisk, new { @id = "MajorRisk", @class = "form-control PMDdata" })
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="float-left text-left mt-3 pt-3">
+                        <button type="button" class="btn-add" id="PmdDataAdd" onclick="AddPmdData()">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="add_grid_ pmddata pmdDataGrid" style="display:none">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="m-table__main mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="PMD_Data" class="table table-bordered"></table>
+                                    <div id="pager_PMD"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="pending_hgmlfields product_profile mt-3 pmddata targetCostSection" style="display:none">
+            <h6 class="pro_det">Target Cost</h6>
+            <span style="color:red;display:none" class="Err-TCEmpty removeError">Please add atleast one record for the Target Cost</span>
+            <span style="color:red;display:none" class="Err-TCcombination removeError">Selected Product and SKU combination already exists</span>
+            <div class="row pmddataform targetCostFields">
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Product <span class="color-red">*</span></label>
+                        @*  @Html.TextBoxFor(model=>model.ProductBusinessInfo ,new{@class="form-control BusinessInformationManditoryField " ,@id="BusinessInformationProductName"})*@
+                        @Html.DropDownListFor(model => model.PmdProductName, new List<SelectListItem>(), "--Select--", new { @class = "form-control TCdata PMDdata", @id = "TargetCostProductName" })
+                        <span class="Error_ProdName color-red Error_HgmlData removeError" style="color:red;display:none">Please select Product</span>
+                        <span class="Error_PMD_TProduct" style="color:red;display:none"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>SKU <span class="color-red">*</span></label>
+                        @*                                @Html.TextBoxFor(model=>model.ProductBusinessInfo ,new{@class="form-control BusinessInformationManditoryField " ,@id="BusinessInformationProductName"})*@
+                        @*@Html.DropDownListFor(model => model.PmdProductName, new List<SelectListItem>(), "--Select--",new { @class = "form-control PMDdata", @id="PmdProductName"})
+                            <span class="Error_ProductName Error_HgmlData" style="color:red;display:none">Please select Product</span>
+                            <span class="Error_PMD_Product" style="color:red;display:none"></span>*@
+
+                        @Html.DropDownListFor(model => model.SkuBusinessInfo, new List<SelectListItem>(), "--Select--", new { @class = "form-control ProductOption", @id = "TargetCostSKU" })
+                        <span id="Error_ProdSKU" class="color-red Error_HgmlData" style="color:red;display:none">Please select SKU</span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        @*<label>Currency <span class="color-red">*</span></label>*@
+                        <label>Currency </label>
+                        @*                                @Html.TextBoxFor(model=>model.ProductBusinessInfo ,new{@class="form-control BusinessInformationManditoryField " ,@id="BusinessInformationProductName"})*@
+                        @*@Html.DropDownListFor(model => model.PmdProductName, new List<SelectListItem>(), "--Select--",new { @class = "form-control PMDdata", @id="PmdProductName"})
+                            <span class="Error_ProductName Error_HgmlData" style="color:red;display:none">Please select Product</span>
+                            <span class="Error_PMD_Product" style="color:red;display:none"></span>*@
+
+                        @Html.DropDownListFor(model => model.Currency, Model.CurrencyList, "--Select--", new { @class = "form-control TCdata", @id = "TargetCostCurrency" })
+                        <span class="Err-TCCurrency removeError" style="color:red;display:none">Please select Currency</span>
+
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Accepted Target Cost</label>
+                        @Html.TextBoxFor(model => model.TargetCost, new { @id = "TargetCost", @class = "form-control TCdata PMDdata", @onkeypress = "return onlyNumbers(this);" })
+                        <span id="Error_TC" class="color-red Error_HgmlData removeError" style="display:none">Please enter Target Cost</span>
+                        <span id="Error_PmdInvalidTargetCost" class="color-red Error_HgmlData removeError" style="display:none">Target cost must contain only numbers</span>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="form-group ViewOnly">
+                        <label class="control-label">Remarks</label>
+                        @Html.TextBoxFor(model => model.Remarks, new { @id = "TargetCostRemarks", @class = "form-control ViewOnly TCdata PMDdata" })
+                    </div>
+                </div>
+
+                <div class="col-md-2">
+                    <div class="float-left text-left mt-3 pt-3">
+                        <button type="button" class="btn-add" id="TargertCostAdd" onclick="AddTargetCost()">Add</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="add_grid_ pmddata targetCostGrid" style="display:none">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="">
+                            <div class="m-table__main mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="TargetCost_Grid" class="table table-bordered"></table>
+                                    <div id="pager_PMD"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row sticky-bottom HideClass hubReviewButtonsList">
+            <div class="save_buttons float-right text-right">
+
+                @if (Model.IsEdit)
+                {
+                    <button type="button" class="btn-add" @*data-bs-toggle="modal"*@ id="saveReformulation" onclick="ValidateSaveForm()" data-title="Save"> Save</button>
+                    <button type="button" class="btn-back forPendingStage" style="display:none" @*data-bs-toggle="modal"*@ id="ReformulationSubmitToManager" onclick="validateSendBackformToManager()" data-title="Submit">Send Back</button>
+                    <button type="button" class="btn-back forDrafrStage" @*data-bs-toggle="modal"*@ id="ReformulationSubmitToManager" onclick="validatesubmitformToManager()" data-title="Submit">Send for Approval</button>
+
+                    <button type="button" class="btn-ap forBriefDemotedStage" style="display:none" @*data-bs-toggle="modal"*@ id="ReformulationSubmitToPMD" onclick="ValidatePackSubmitToPMD()" data-title="Submit">Send to PMD</button>
+                    <button type="button" class="btn-ap UnderExpforBriefDemotedStage" style="display:none" @*data-bs-toggle="modal"*@ id="SendtoUnderExp" onclick="ValidatePackSubmitToUnderExp()" data-title="Submit">Send to PMD</button>
+
+                    <button type="button" class="btn-ap" @*data-bs-toggle="modal"*@ id="ReformulationSubmit" onclick="validatesubmitform()" data-title="Submit">Send To HGML</button>
+                }
+                <button type="button" @*data-bs-toggle="modal"*@ id="ReformulationCancel" onclick="CancelForm()" class="btn-cnl hideforView" data-title="Cancel"> Back</button>
+
+            </div>
+        </div>
+
+        <div class="row sticky-bottom HgmlRemarksButton">
+            <div class="save_buttons float-right text-right pdd ">
+                @if (Model.IsEdit)
+                {
+                    <button type="button" class="btn-add ViewModeButton" onclick="ReformulationHgmlSave()" @*data-bs-toggle="modal"*@ data-bs-target="#SaveModal" data-title="Save">Save</button>
+                    <button type="button" class="btn-back ViewModeButton" onclick="ReformulationHgmlSendBack()" @*data-bs-toggle="modal"*@ data-bs-target="#SendbackModal" data-title="Send Back">Send back</button>
+                    <button type="button" class="btn-ap ViewModeButton" id="Button_SendToHub" onclick="ReformulationHgmlSendtoHub()" @*data-bs-toggle="modal"*@ data-bs-target="#SendhubModal">Send To HUB</button>
+                    <button type="button" class="btn-sb ViewModeButton" id="Button_SendToPmd" onclick="ReformulationSendToPMDForm()" data-title="Approve"> Send To PMD</button>
+                    <button type="button" class="btn-sb ViewModeButton" id="Button_SendToUnderExploration" onclick="ReformulationSendToUnderExplorationForm()" style="display:none" data-title="Approve"> Send To PMD</button>
+                    <button type="button" class="btn-rej ViewModeButton" onclick="ReformulationHgmlReject()" @*data-bs-toggle="modal"*@ data-bs-target="#RejectModal" data-title="Reject">Reject</button>
+                }
+                <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn-cnl" data-title="Cancel"> Back</button>
+            </div>
+        </div>
+        <div class="row sticky-bottom HgmlRemarksButton err_btn" style="display:none">
+            <p id="" class="color-red">Please select HUB Approve</p>
+        </div>
+        <div class="modal-footer sticky-bottom HubReview hubReviewCancelBtn">
+            @if (Model.IsEdit)
+            {
+                <button type="button" class="btn-add ViewModeButton" onclick="ReformulationHubSave()">Save</button>
+                <button type="button" class="btn-sb ViewModeButton" onclick="ReformulationHubToHgml()" id="sendHgml">Send To HGML</button>
+
+            }
+            <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn-cnl" data-title="Cancel"> Back</button>
+
+
+        </div>
+
+        <div class="row sticky-bottom HgmlApprovebuttons" style="display:none">
+            <div class="save_buttons float-right text-right pdd">
+                @if (Model.IsEdit)
+                {
+                    <button type="button" class="btn-add ViewModeButton" onclick="ReformulationHgmlSave()" data-title="Save"> Save</button>
+                    <button type="button" class="btn-ap ViewModeButton" data-bs-toggle="modal" data-bs-target="#SendhubModal">Send To HUB</button>
+                    <button type="button" class="btn-sb ViewModeButton hideinHGMLIfUn" data-bs-toggle="modal" onclick="ReformulationSendToPMD()" data-title="Approve"> Send To PMD</button>
+                    <button type="button" class="btn-sb ViewModeButton ShowInHGMLIfUn" data-bs-toggle="modal" onclick="ReformulationSendToUnderExploration()" style="display:none"> Send To PMD</button>
+                    <button type="button" class="btn-rej ViewModeButton" onclick="ReformulationHgmlReject()" data-title="Reject">Reject</button>
+                }
+                <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn-cnl" data-title="Cancel"> Back</button>
+
+            </div>
+
+        </div>
+
+        <div class="row sticky-bottom PMDButtons" style="display:none">
+            <div class="save_buttons float-right text-right pdd">
+                @if (Model.IsEdit)
+                {
+                    <button type="button" class="btn-ap ViewModeButton" onclick="ReformulationPmdSave()" data-title="Save"> Save</button>
+                    <button type="button" class="btn-rej onlyforPMD" data-bs-toggle="modal" onclick="PMDSendBacktoInitiator()" data-title="Send Back">Send back to Initiator</button>
+                    <button type="button" class="btn-sb ViewModeButton" data-bs-toggle="modal" onclick="ReformulationPmdSendBack()" data-title="Send Back To Hgml"> Send Back To HGML</button>
+                    <button type="button" class="btn-exp buttonExp" data-bs-toggle="modal" onclick="validateSendToUnderExploration()" style="display:none" data-title="Send Mail"> Send to Under Exploration</button>
+                    @*<button type="button" class="btn-exp buttonPMD" data-bs-toggle="modal" onclick="validateSendBackToPMD()" style="display:none" data-title="Send Mail"> Send Back To PMD</button>*@
+
+                    <button type="button" class="btn-add ViewModeButton" onclick="ReformulationPmdApprove()">Accept</button>
+                    <button type="button" class="btn-back ViewModeButton" onclick="validatePmdReviewSendMailForm()" data-title="Reject">Send Mail</button>
+                }
+                <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn-cnl" data-title="Back"> Back</button>
+            </div>
+
+        </div>
+
+        <div class="row sticky-bottom AcceptButton" style="display:none">
+            <div class="save_buttons float-right text-right pdd">
+                @if (Model.IsEdit)
+                {
+                    <button type="button" id="Ref_SaveAndUpdate" class="btn-add" data-bs-toggle="modal" data-title="Save" onclick="ValidatePackSaveandUpdate()"> Save and Update</button>
+                    <button type="button" class="btn-back ViewModeButton" onclick="validatePmdReviewSendMailForm()" data-title="Reject">Send Mail</button>
+                }
+                <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn-cnl" data-title="Back"> Back</button>
+            </div>
+
+        </div>
+
+
+        <div class="row sticky-bottom RejectedButton" style="display:none">
+            <div class="save_buttons float-right text-right pdd">
+                <button type="button" data-bs-toggle="modal" id="ReformulationCancel" onclick="CancelForm()" class="btn-cnl" data-title="Back"> Back</button>
+            </div>
+
+        </div>
+
+    }
+</div>
+<span id="err-HUB_info" style="color:red; display:none;float:right;">Please Select HUB Approve</span>
+
+
+
+@*save button*@
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to save the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ReformulationSavePopUp">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*submit button*@
+<div class="modal fade sv hd SubmitReformulation" id="SubmitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Submit Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want Submit the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ConformReformulation">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*cancel button*@
+<div class="modal fade sv hd" id="CancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Dialog</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to go back?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = '@Url.Content("~/NewInitiation/NewInitiation")';">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*@*save button
+    <div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header -bg-green">
+                    <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you sure you want save the details?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" id="ReformulationSavePopUp" class="btn btn-success">OK</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@*submit button*@
+@*<div class="modal fade sv hd" id="SubmitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header -bg-green">
+                    <h5 class="modal-title" id="exampleModalLabel">Confirm Dialog</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Are you Submit the record
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+                    <button type="button" id="ReformulationSubmitPopUp" class="btn btn-success">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+@*reject button*@
+<div class="modal fade  hd" id="RejectModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Reject Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Reject the Project Brief?
+                                </label><br />
+                                <label>Remarks<span class="color-red">*</span></label>
+                                @Html.TextAreaFor(model => model.RejectRemarks, new { @class = "form-control closeModal", @id="ReformulationRejectRemarks", @rows="2" })
+                                <span id="Error_RejectRemarks" class="color-red Error_HgmlData" style="display:none">Please enter the Remarks</span>
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="Reject_Button">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*sendback modal for hub to hgml*@
+<div class="modal fade  hd" id="SendbackModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Send Back Confirmation</h5>
+                <button type="button" id="ReformulationSendBackPopUpty" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Send Back the Project Brief?
+                                </label><br />
+                                <label>Remarks<span class="color-red">*</span></label>
+
+                                @Html.TextAreaFor(model => model.SendBackToInitiatorRemarks, new { @class = "form-control closeModal", @id="PopUp_SendBackToInitiatorRemarks", @rows="2" })
+                                <span id="Error_SendBackRemarks" class="color-red Error_HgmlData" style="display:none">Please enter the Remarks</span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="Reformulation_SendBackToInitiator_Ok">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*sendback modal*@
+<div class="modal fade  hd" id="SendHgmlModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Send To HGML Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Send Project Brief To HGML?
+                                </label><br />
+                                <label>Remarks<span class="color-red">*</span></label>
+
+                                @Html.TextAreaFor(model => model.SendToHgml, new { @class = "form-control closeModal", @id="PopUp_SendToHgml", @rows="2" })
+                                <span id="Error_SendToHgml" class="color-red Error_HgmlData" style="display:none">Please enter the Remarks</span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="Reformulation_SendBackToHgml_Ok">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*sendhub modal*@
+<div class="modal fade  hd" id="SendhubModalReview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Send To HUB Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Send the Project Brief to HUB?
+                                </label><br />
+                                <label>Remarks<span class="color-red">*</span></label>
+                                @Html.TextAreaFor(model => model.HgmlDataHgmlToHubRemarks, new { @class = "form-control closeModal", @id="PopUp_SendToHubRemarks", @rows="2" })
+                                <span id="Error_SendToHub" class="color-red Error_HgmlData" style="display:none">Please enter the Remarks</span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ReformulationSendToHubReformulation">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*sendhub modal*@
+<div class="modal fade  hd shub" id="SendhubModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Send Back To HUB Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to send back the Project Brief to HUB ?
+                                </label>@*<br />
+                                <label>Remarks</label>
+                                <textarea class="form-control" rows="2" spellcheck="false"></textarea>*@
+
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group product_profile hub_user-dropdown">
+                                <label>HUB<span class="color-red">*</span></label>
+
+                                <select class="form-control example-dropUp Toremove" id="HgmlData_HubDropdownApprove">
+                                </select>
+
+                                <span id="Error_HgmlDataHubApprove" class="color-red Error_HgmlData" style="display:none">Please select HUB</span>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group product_profile hub_user-dropdown">
+                                <label>HUB Users<span class="color-red">*</span></label>
+                                <select class="form-control example-dropUp Toremove" id="HgmlData_HubUsersDropdownApprove">
+                                    <option value="">--Select--</option>
+                                </select>
+                                <span id="Error_HgmlDataHubUsersApprove" class="color-red Error_HgmlData" style="display:none">Please select HUB Users</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Remarks</label>
+                                @Html.TextBoxFor(model=>model.Remarks,new { @id="SendHubApproveRemarks", @class="form-control closeModal" })
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="float-left text-left mt-3 pt-3">
+                                <button type="button" class="btn-add" id="sendHubHgmlApproveAddbBtn">Add</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="prd_desc1" class="table table-bordered"></table>
+                                            <div id="pager_expected1"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <span id="Error_HubGridData" class="color-red Error_HgmlData" style="display:none">Please Enter Atleast One Data</span>
+                    <span id="HubDupErr" class="color-red Error_HgmlData" style="display:none">Record Already Present</span>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sb" onclick="HgmlApproveSendToHub()">Submit</button>
+                <button type="button" class="btn btn-rej" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="myModal" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form>
+                <div class="modal-header -bg-green" style="background: #fff;border: none;">
+                    @* <h5 class="modal-title">Modal Window</h5>*@
+                    <button type="button" class="close" data-bs-dismiss="modal">
+                        <span>
+                            <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                        </span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h6 class="apr_hed modal-title"></h6>
+                    <form class="tx_pad">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group pd">
+                                    <label class="control-label">
+                                        Remarks
+                                    </label>
+
+                                    <textarea class="form-control" rows="2"></textarea>
+
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-12">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-sb test" onclick="location.href = './Send';">Send back</button>
+                    <button type="button" class="btn-rej test3 " onclick="location.href = './NewInitiation';">Cancel</button>
+                    <button type="button" class="btn-sb1 test4 " onclick="location.href = './Approve';">Save</button>
+                    <button type="button" class="btn-cnl test1" onclick="location.href = './Approve';">Reject</button>
+
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@* Send to PMD*@
+
+<div class="modal fade  hd" id="SendToPmdModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Send To Fine Screening Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Send the Project Brief to Fine Screening Review?
+                                </label><br />
+                                <label>Remarks<span class="color-red">*</span></label>
+                                @Html.TextAreaFor(model => model.SendToPmdRemarks, new { @name="editor2", @class = "form-control closeModal", @id="PopUp_SendToPmdRemarks", @rows="2" })
+                                <span id="Error_Reformulation_PMDremarks" class="color-red" style="display:none"><br />Please enter the remarks</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ReformulationSendToPMD">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@* PMD Approve Modal*@
+
+<div class="modal fade  hd" id="ApproveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Accept Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Accept the Project Brief?
+                                </label><br />
+                                <label>Remarks<span class="color-red">*</span></label>
+                                @Html.TextAreaFor(model => model.ApproveRemarks, new { @name="editor2", @class = "form-control closeModal", @id="ApproveRemarks", @rows="2" })
+                                <span id="Error_Reformulation_PMDApproveRemarks" class="color-red" style="display:none"><br />Please enter the Remarks</span>
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ReformulatioApproveButton">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="jqGridRow_DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="jqGridRow_DeleteModal_Ok" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btwar btn-warning" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@*View pop up*@
+<div class="modal fade hd" id="remarks_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header  -bg-green">
+                <h5 class="modal-title" id="ProductPositioningHubRemarkHeading">Approval Remarks</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <div class="add_grid_">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-2 mb-4">
+                                                <div class="m-table__responsive -virtual-scroll tableremarks">
+                                                    <table id="remarks_grid" class="table table-bordered"></table>
+                                                    <div id="pager_remarks_grid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+@*  Innitator remarks  *@
+
+<div class="modal fade hd" id="BusinessInformation_Popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header  -bg-green">
+                <h5 class="modal-title" id="HubBusinessInformationPopupHeading"></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Initiator_BusinessInformation_Popup" class="table table-bordered"></table>
+                                        <div id="pager_businessinfo_popup"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-3 PopupBusinessInformationSaveButtons">
+                        <div class="save_buttons float-right text-right">
+                            <button type="button" class="btn-add" data-bs-toggle="modal" onclick="onClickOfSaveInHubBusinessInformationPopup()" data-title="Approve"> Save</button>
+                            <button type="button" class="btn-rej" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*Modal for displaying HUB Business Information in HGML Approve stage*@
+<div class="modal fade hd" id="BI" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="HubbusinessInfoLabel"></h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Hub_business_info_view" class="table table-bordered"></table>
+                                        <div id="pager_husabusinessinfo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+@*Send mail model*@
+<div class="modal fade hd" id="sendMailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Mail Recipients</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body mail_dropdown">
+                <form class="row bdr_clr autocomplete">
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Division</label>
+                            @Html.ListBoxFor(m => m.DivisionForPMD, Model.DivisionList ?? new List<SelectListItem>(), new { @class = "form-control multiselectDropdown  example-dropUp", @multiple = "multiple",@id="PMDReviewDivision" })
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label">Users<span class="color-red">*</span></label>
+                            <select class="example-dropUp addHubUserOption HgmlApprovePopupData" id="PmdReview_SendMail_HubUser_Dropdown" multiple="multiple">
+                            </select>
+                            <span id="Error_PmdReview_SendMail_HubUser_Dropdown" class="text-danger Error_closeModal"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Remarks</label>
+                            @Html.TextAreaFor(model=>model.ConfirmationRemarks, new{ @class = "form-control", @id="PmdReview_SendMail_Remarks",placeholder="Remarks", @rows="2",@spellcheck="false"  })
+                        </div>
+                    </div>
+                    <div class="col-auto pt-5">
+                        <button type="button" id="Add_PmdReview_SendMailUser" class="btn-add">Add</button>
+                    </div>
+                </form><br />
+                <div>
+                    <table class="table table-bordered">
+                        <thead class="mail_tbl">
+                            <tr>
+                                <th class="bdr_mail">Users</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Html.TextAreaFor(model => model.PmdReviewSelectedUsersToSendMailList, new { @name="editor2", @class = "form-control form-control-sm", @id="PmdReview_SelectedUsers", @cols="30"})
+
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <span id="Error_PmdReview_Users" class="text-danger Error_closeModal"></span>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-cnl" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn-back" id="PmdReview_SendMail_Button">Send Mail</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*// Total Business value popup*@
+
+<div class="modal fade hd business_info_mod" id="Business_Value" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Total Business Value (USD)</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="business_value" class="table table-bordered"></table>
+                                        <div id="pager_business_value"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row pt-3">
+                        <div class="save_buttons float-right text-right">
+
+                            <button type="button" class="btn-rej" data-bs-dismiss="modal" aria-label="Close"> Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="modal fade hd" id="PackagingProfileRemarks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-lg">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h5 class="modal-title" id="ReamarksName"></h5>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row showonlyforHGML">
+
+                    <div class="col-md-8">
+
+                        <div class="form-group">
+
+                            <Span id="FiledProductName" style="display:none"></Span>
+
+                            <Span id="FiledSKU" style="display:none"></Span>
+
+                            <label class="control-label">Remarks</label>
+
+                            @Html.TextAreaFor(model=>model.Remarks, new{@id="editor", name="editor2",cols="30",@class="form-control form-control-sm closeModal FieldRemarks"})
+                            @*<span class="color-red" id="FieldRemarks_ErrMsg"></span>*@
+
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                        <div class="save_buttons float-left text-left mt-5 pt-2">
+
+                            <button type="button" class="btn-ap mr-2" id="SavePackagingFiledRemarks" data-title="Save"> Add</button>
+
+                            <button type="button" class="btn-rej" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div>
+                </div>
+
+                <div class="">
+
+                    <div class="m-table__main mt-2">
+
+                        <div class="m-table__responsive -virtual-scroll">
+
+                            <table id="RemarksTable" class="table table-bordered"></table>
+
+                            <div id="pager_RemarksTable"></div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+@*images popup*@
+<div class="modal fade hd" id="Images_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Packaging Images</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="uploaded_images_table" class="table table-bordered"></table>
+                                        <div id="pager_uploaded_images_table"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*UpdateModal*@
+<div class="modal fade  hd" id="UpdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+
+                <h5 class="modal-title" id="exampleModalLabel">Update Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Update the Project Brief?
+                                </label><br />
+                                <label>Remarks</label><span class="color-red">*</span>
+                                @Html.TextAreaFor(model => model.ApproveRemarks, new { @name="editor2", @class = "form-control closeModal", @id="PMDDataUpdateRemarks", @rows="2" })
+                                <span id="Error_Reformulation_PMDUpdateRemarks" class="color-red" style="display:none"><br />Please enter the Remarks</span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ByClickUpdate_Ok">OK</button>
+                <button type="button" class="btn-rej" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="ReformulationDraft" hidden></div>
+<div class="Header" hidden></div>
+
+
+<div class="modal fade  hd" id="SubmitForHGML" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+
+                <h5 class="modal-title" id="exampleModalLabel">Submit Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to submit the project brief?
+                                </label><br />
+
+                                <label>Remarks</label>
+                                @Html.TextAreaFor(model=>model.InitiatorRemarks,new{@id="ShowManagerApprovalRemarks",@class="form-control cancelThisData",@rows="2"})
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ManagerApprovalOK">OK</button>
+                <button type="button" class="btn-cnl" data-bs-dismiss="modal" onclick="canceledData()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade hd" id="Document_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Benchmark Samples Image</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_BenchMarkImage" class="table table-bordered"></table>
+                                        <div id="pager_Grid_BenchMarkImage"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade  hd" id="SendToUnderExModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Send To Under Exploration Confirmation</h5>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label class="control-label">
+                                    Are you sure you want to Send the Project Brief to Under Exploration?
+                                </label><br />
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group datepicker-container">
+                                            <label class="control-label">Due Date</label><span class="color-red">*</span>
+                                            @Html.TextBoxFor(m => m.PMdDueDate, new { @class = "form-control form-control-sm daydatepicker",@id="DueDate",@autocomplete="off",@onpaste="return false",@readonly="readonly" })
+                                            <span class="datepicker-symbol"></span>
+                                            <span id="Error_Daypicker" class="color-red" style="display:none">Please select Date</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <div class="form-group">
+                                             <label>Remarks<span class="color-red">*</span></label>
+                                            @Html.TextAreaFor(model => model.SendToPmdRemarks, new { @name="editor2", @class = "form-control closeModal", @id="PopUp_SendToExpRemarks", @rows="2" })
+                                            <span id="Error_Reformulation_PMDremarks" class="color-red errorUnderExp" style="display:none">Please enter the Remarks</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" id="ReformulationSendToUnderEX">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/reformulation/editreformulation.js")" asp-append-version="true"></script>
+@*<script src="@Url.Content("~/js/reformulation/editreformulation.min.js")" asp-append-version="true"></script>
+*@

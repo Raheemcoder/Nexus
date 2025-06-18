@@ -1,0 +1,482 @@
+﻿@model ChangeLog
+@{
+    ViewData["Title"] = "Change Log";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+    var userRole = Convert.ToInt32(Context.Session.GetString("RoleId"));
+}
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+
+<div class="tracker-support-pages">
+
+    @*header link section*@
+    <section>
+        <div class="">
+            <div class="-m_title_ ">
+                <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Change Log</h4>
+            </div>
+            @if (Convert.ToString(Context.Session.GetString("projectId")) != "")
+            {
+                var projectName = Context.Session.GetString("projectName");
+                var projectId = Context.Session.GetString("projectId");
+                <input type="hidden" id="selectedProjectName" value="@projectName" />
+                <input type="hidden" id="selectedProjectId" value="@projectId" />
+            }
+        </div>
+    </section>
+
+    @*hidden Fields*@
+    <section>
+        <input type="hidden" id="AssignedtoList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.IssueTracker.AssignedtoList)" />
+        <input type="hidden" id="AllDropDownList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.IssueTracker.AllDropDownList)" />
+        <input type="hidden" id="userRole" value="@userRole" />
+    </section>
+
+    @if (userRole != 4 && userRole != 3 && userRole != 6)
+    {
+        @*To show response message*@
+        <section>
+            <div id="response-message-div" class="m-login__erromsg hide">
+                <div class="alert alert-success alert-dismissible d-flex justify-content-between" role="alert" id="response-message">
+                </div>
+            </div>
+        </section>
+
+        @*Add Change section*@
+        <section class="tracker-support">
+            <div class="row p-2">
+
+                <div class="col-width2">
+                    <div class="multiselect">
+                        <div class="form-group">
+                            <label class="control-label">HUB <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.IssueTracker.HubList, new SelectList(Model.IssueTracker.HubList, "HubId", "HubName", ""),
+                             new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "selected-hub" })
+                            <span class="text-danger hide">Please select HUB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width3">
+                    <div class="form-group">
+                        <label class="control-label">Change Details <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="1" id="change-details"></textarea>
+                        <span class="text-danger hide">Please enter change details</span>
+                    </div>
+                </div>
+                <div class="col-width1 trackersupport_calendericon">
+                    <div class="form-group">
+                        <label class="control-label">Proposed Date <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control date_text_freezed" id="proposed-date" founded-date readonly />
+                        <i class="fas fa-calendar" style="right:12px !important"></i>
+                        <span class="text-danger hide">Please enter proposed date</span>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Proposed By <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="proposed-by" data-assigned-to-ss />
+                        <span class="text-danger hide select-user">Please select user </span>
+                        <span class="text-danger hide select-from-list">Please select user from the list</span>
+                        <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                    </div>
+                </div>
+                <div class="col-width2 multiselect">
+                    <div class="form-group">
+                        <label class="control-label">Impact Area <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.IssueTracker.ImpactAssessementList, new SelectList(Model.IssueTracker.ImpactAssessementList, "ImpactId", "ImpactName", ""),
+                       new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "selected-impact-area" })
+                        <span class="text-danger hide">Please select impact area</span>
+                    </div>
+                </div>
+                <div class="col-width3">
+                    <div class="form-group">
+                        <label class="control-label">Impact Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="1" id="impact-description"></textarea>
+                        <span class="text-danger hide">Please enter impact description</span>
+                    </div>
+                </div>
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">CR Status</label>
+                        @Html.DropDownListFor(m => m.IssueTracker.SelectedCR, new SelectList(Model.IssueTracker.CRStatusList, "CRStatusId", "CRStatusName"), "Select",
+                        new { @class = "form-control", @id = "selected-cr-status" })
+                    </div>
+                </div>
+                <div class="col-width2 trackersupport_calendericon">
+                    <div class="form-group">
+                        <label class="control-label">Agree/Rejected Date <span class="text-danger hide cr-add-mand">*</span></label>
+                        <input type="text" class="form-control date_text_freezed" id="app-rej-date" readonly app-rej-date />
+                        <span class="text-danger hide">Please select rejected date</span>
+                        <i class="fas fa-calendar" style="right:12px !important"></i>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Agree/Rejected By <span class="text-danger hide cr-add-mand">*</span></label>
+                        <input type="text" class="form-control" id="app-rej-by" data-assigned-to-ss />
+                        <span class="text-danger hide">Please select rejected by</span>
+                        <span class="text-danger hide select-from-list">Please select user from the list</span>
+                        <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                    </div>
+                </div>
+                <div class="col-width1 sml">
+                    <div class="form-group">
+                        <label class="control-label">Actions</label>
+                        <div class="mt-2 ml-2">
+                            <i class="fas fa-plus-circle issue-tracker-add-icons" title="Actions" id="open-action-popup"></i>
+                            <span class="text-danger hide">Please fill the action completely</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="mt-3">
+                        <div class="">
+                            <button type="button" class="btn btn-success" id="save-change">Save Change</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width51 p-0 mt-3">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="d-flex excel_expand align-items-center">
+                            <div class="images_excel ">
+                                <img src="@Url.Content("~/N_assets/images/excel.png")" title="Excel download" id="exceldownload" />
+                            </div>
+                            <div>
+                                <div class="expand_initiate table_expand">
+                                    <div>
+                                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+    }
+
+    @if (userRole == 4 || userRole == 3 || userRole == 6)
+    {
+        <div class="d-flex excel_expand align-items-center justify-content-end">
+            <div class="images_excel ">
+                <img src="@Url.Content("~/N_assets/images/excel.png")" title="Excel download" id="exceldownload" />
+            </div>
+            <div>
+                <div class="expand_initiate table_expand">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @*List jqgrid*@
+    <section>
+        <div class="animate__animated2 slideInUp mt-1">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height issue_list">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="list-changelog-jqgrid" class="table table-bordered"></table>
+                                <div id="changelog_pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+@*Add Action Popup*@
+<div id="addActionPopup" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Change Log Action</h4>
+                <button type="button" class="close close-action-popup"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Action Plan <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" id="action-plan" autocomplete="off"></textarea>
+                            <span class="text-danger hide">Please Enter action plan</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Assigned To <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="action-assigned-to" data-assigned-to />
+                            <span class="text-danger hide select-user">Please select user </span>
+                            <span class="text-danger hide select-from-list">Please select user from the list</span>
+                            <span class="text-danger hide already-selected">user has been already selected</span>
+                            <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Due Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control date_text_freezed" id="action-due-date" readonly due-date />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please select due date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Priority <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.Priority, new SelectList(Model.IssueTracker.PriorityList, "PriorityId", "PriorityName"), "Select",
+                            new { @class = "form-control", @id = "action-selected-priority" })
+                            <span class="text-danger hide">Please select Priority</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Status <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.Status, new SelectList(Model.IssueTracker.StatusList, "StatusId", "StatusName"), "Select",
+                            new { @class = "form-control", @id = "action-selected-status" })
+                            <span class="text-danger hide">Please select status</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Updates From The Owner</label>
+                            <textarea class="form-control" rows="2" id="action-owner-update" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Closed On Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="action-closed-date" readonly disabled closed-date data-action-closed-date />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please select closed on date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Closing Remarks <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" id="action-closed-remark" disabled autocomplete="off" data-action-closed-remark></textarea>
+                            <span class="text-danger hide">Please enter closing remarks</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <div class="">
+                            <button class="btn btn-success" id="add-action-to-table">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="grid_view listgrid_table without_filter width_100 data_tablegrid" id="grid">
+                        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                            <div class="">
+                                <div class="table-responsive" id="action-table">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Edit Change Popup*@
+<div id="editChangePopup" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Change: <b class="edit-change-no"></b></h4>
+                <button type="button" class="close close-edit-popup"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="hub-multiselect">
+                            <div class="form-group">
+                                <label class="control-label">HUB <span class="text-danger">*</span></label>
+                                @Html.DropDownListFor(m => m.IssueTracker.HubList, new SelectList(Model.IssueTracker.HubList, "HubId", "HubName", ""),
+                               new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "edited-selected-hub" })
+                                <span class="text-danger hide">Please select HUB</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Change Details <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="1" id="edited-change-details"></textarea>
+                            <span class="text-danger hide">Please enter change details</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Proposed Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control date_text_freezed" id="edited-proposed-date" founded-date readonly />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please enter proposed date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Proposed By <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edited-proposed-by" data-assigned-to-ss />
+                            <span class="text-danger hide select-user">Please select user </span>
+                            <span class="text-danger hide select-from-list">Please select user from the list</span>
+                            <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Impact Area <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.IssueTracker.ImpactAssessementList, new SelectList(Model.IssueTracker.ImpactAssessementList, "ImpactId", "ImpactName", ""),
+                            new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "edited-selected-impact-area" })
+                            <span class="text-danger hide">Please select impact area</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Impact Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="1" id="edited-impact-description"></textarea>
+                            <span class="text-danger hide">Please enter impact description</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">CR Status</label>
+                            @Html.DropDownListFor(m => m.IssueTracker.SelectedCR, new SelectList(Model.IssueTracker.CRStatusList, "CRStatusId", "CRStatusName"), "Select",
+                            new { @class = "form-control", @id = "edited-selected-cr-status" })
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Agree/Rejected Date <span class="text-danger hide cr-edit-mand">*</span></label>
+                            <input type="text" class="form-control date_text_freezed" id="edited-app-rej-date" app-rej-date readonly />
+                            <span class="text-danger hide">Please select rejected date</span>
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Agree/Rejected By <span class="text-danger hide cr-edit-mand">*</span></label>
+                            <input type="text" class="form-control" id="edited-app-rej-by" data-assigned-to-ss />
+                            <span class="text-danger hide">Please select rejected by</span>
+                            <span class="text-danger hide select-from-list">Please select user from the list</span>
+                            <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="grid_view listgrid_table without_filter width_100 data_tablegrid" id="grid">
+                        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                            <div class="">
+                                <div class="table-responsive" id="edit-change-table">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-right mt-3">
+                        <button type="button" class="btn btn-success mr-2" id="save-edited-change">Save Change</button>
+                        <button type="button" class="btn btn-cancel mr-1 close-edit-popup">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Update from owner Popup for List Page*@
+<div id="owner-update-modalforlist" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Updates From the Owner</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="owner-update-grid-list" class="table table-bordered"></table>
+                            <div id="owner-update-grid-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Save with Remarks popup*@
+<div id="save-with-remarks-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Confirm Box</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span>Are you sure do you want to Save ?</span>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <label class="control-label" id="save-with-remarks-label">
+                        </label>
+                        <textarea id="change-remarks" class="form-control"></textarea>
+                        <span class="text-danger hide">Please enter Remarks</span>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-draft" id="save-confirm">Save</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Remarks history popup*@
+<div id="remarks-modalforlist" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remarks</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="remarks-grid-list" class="table table-bordered"></table>
+                            <div id="remarks-grid-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectTracker/ChangeLog.js")"></script>

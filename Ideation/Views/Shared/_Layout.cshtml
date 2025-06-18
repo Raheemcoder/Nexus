@@ -1,0 +1,587 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.SessionOptions> SessionOptions
+@{
+    var userName = Context.Session.GetString("UserName");
+    var role = Context.Session.GetString("Role");
+    var timeout = SessionOptions.Value.IdleTimeout.TotalMinutes;
+
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>iSpace - @ViewData["Title"]</title>
+    <script src="https://kit.fontawesome.com/ce2a6a1038.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" integrity="sha512-xX2rYBFJSj86W54Fyv1de80DWBq7zYLn2z0I9bIhQG+rxIF6XVJUpdGnsNHWRa6AvP89vtFupEPDP8eZAtu9qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @*<link rel="icon" type="image/png" sizes="16x16" href="@Url.Content("~/images/title.png")">*@
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="@Url.Content("~/images/leaf.ico")">
+    <link href="@Url.Content("~/fonts/fontawesome/css/fontawesome.min.css")" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/plugins/bootstrap-multiselect/bootstrap-multiselect.min.css")" />
+    <link href="@Url.Content("~/css/main.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/Style.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/common.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/select2/select2.min.css")" rel="stylesheet" />
+
+
+    <link href="@Url.Content("~/css/mvc-grid/mvc-grid.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/bootstrap-datepicker.min.css")" rel="stylesheet" asp-append-version="true" />
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/popper.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/bootstrap.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/libscripts.bundle.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/jquery-validation/dist/jquery.validate.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/Layout.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/plugins/select2/select2.min.js")"></script>
+    <script src="@Url.Content("~/assets_eppm/js/app.js")"></script>
+    <script src="@Url.Content("~/plugins/Moment/moment.js")"></script>
+
+    <script>
+        var ROOT = "@Url.Content("~/")";
+    </script>
+</head>
+<body>
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container">
+            <div class="c-loader__inner"></div>
+            <div class="c-loader__outer"></div>
+            <div class="c-loader__img"></div>
+        </div>
+    </div>
+    @*<div class="" id="loader1">
+        <div class="loading">
+        <div class="outer"></div>
+        <div class="loader_inner"></div>
+        <div class="him-logo"></div>
+        </div>
+        </div>*@
+
+    <div>
+        <div id="wrapper">
+
+            <!-- top navbar -->
+            <nav class="navbar navbar-fixed-top pl-0 pr-0">
+                <div class="container-fluid">
+                    <div class="navbar-brand ps-2">
+                        @*<a href="@Url.Content("~/Dashboard/Dashboard")">*@
+                        <a class="logo" href="@Url.Content("~/Landing/Index")">
+                            <img src="@Url.Content("~/images/logohmnew.png")" class="lg_im" />
+                            <span class="home_main"><i class="fa fa-home"></i></span>
+                        </a>
+                    </div>
+
+                    <div class="d-flex flex-grow-1 align-items-center">
+                        <div class="d-flex " id="main-menu">
+
+                            <ul class="nav_section nav-pills mr-3 ms-2 d-none d-lg-block" id="main_menu">
+                                <li class="nav-item dropdown hover_text ide">
+                                    <a class="nav-link dropdown-toggle ">
+                                        <i class="fas fa-bars"></i>
+                                        @*<img src="@Url.Content("~/images/menu.png")" class="mr-2 mn menu_im" />*@
+                                        <span class="selected-text">Ideation</span> <i class="fas fa-solid fa-angle-down"></i>
+                                    </a>
+                                    @if (@role == "Admin")
+                                    {
+                                        <ul class="dropdown-menu shadow-sm navigation-menu" id="main_menu1">
+                                            <li class="billing_text"><a class="dropdown-item" href="@Url.Content("~/Ideation/Ideation")"><img src="@Url.Content("~/images/dashboard.png")" class="mr-2" />Ideation</a></li>
+                                            <li class="billing_text"><a class="dropdown-item" href="@Url.Content("~/Dashboard/Dashboard")"><img src="@Url.Content("~/images/billing.png")" class="mr-2" />Dashboard</a></li>
+                                            <li class="billing_text"><a class="dropdown-item" href="@Url.Content("~/Innovation/YourInnovation")"><img src="@Url.Content("~/images/billing.png")" class="mr-2" />Your Innovation</a></li>
+
+                                        </ul>
+                                    }
+                                    else
+                                    {
+                                        <ul class="dropdown-menu shadow-sm navigation-menu" id="main_menu1">
+                                            <li class="billing_text"><a class="dropdown-item" href="@Url.Content("~/Innovation/YourInnovation")"><img src="@Url.Content("~/images/billing.png")" class="mr-2" />Your Innovation</a></li>
+                                        </ul>
+                                    }
+                                </li>
+                            </ul>
+                            @* @if (@role == "Admin")
+                                {
+                                <div class="dropdown_text_">
+                                <h2 class="ideation"> Ideations</h2>
+                                <h2 class="dashboard" hidden> Dashboard</h2>
+                                <h2 class="innovation" hidden> Innovation</h2>
+                                </div>
+                                }
+                                else
+                                {
+                                <h2 class="innovation" hidden> Innovation</h2>
+                                }*@
+                        </div>
+
+                        <div class="flex-grow-1 right_header">
+                            <div class="d-flex justify-content-end align-items-center">
+
+                                <ul class="nav_section navbar-nav ">
+                                    @* <li class="dropdown admin_dropdown">
+                                        <span class="usr_nmr">@userName</span>
+                                        <a class="dropdown-toggle icon-menu" href="@Url.Content("#")" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <img src="@Url.Content("~/images/user.png")" class="usr_img">
+                                        </a>
+                                        <ul class="dropdown-menu dropdown-menu-end p-2 shadow ">
+                                        <li><a class="dropdown-item" href="@Url.Content("~/Account/Logout")"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
+                                        </ul>
+
+                                        </li>*@
+                                    <li class="list-inline-item dropdown notification-list user_toggle">
+                                        <a class="nav-link dropdown-toggle waves-effect waves-light nav-user d-flex justify-content-between align-items-center" data-toggle="dropdown" href="#" role="button"
+                                           aria-haspopup="false" aria-expanded="false">
+                                            <span class="usr_nmr">@userName</span>
+                                            <img src="@Url.Content("~/images/user.png")" alt="user" class="usr_img">
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right profile-dropdown " aria-labelledby="Preview">
+                                            <!-- item-->
+                                            <a href="@Url.Content("~/Login/Logout")" class="dropdown-item notify-item">
+                                                <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+                                            </a>
+
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <div class="body-content">
+            <div class="row">
+                <div class="col-md-12">
+                    <div id="message">
+                        @if (TempData["Message"] != null)
+                        {
+                            <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible" role="alert">
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                                </button>
+                                @Html.Raw(Convert.ToString(TempData["Message"]))
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            @RenderBody()
+
+            <footer class="p-2">
+                <p class="text-uppercase m-0 ft_size">&copy; @DateTime.Now.Year - IT Department, Himalaya Wellness Company, All Rights Reserved</p>
+            </footer>
+        </div>
+
+    </div>
+    @*Alert popup*@
+    <div class="modal fade sv hd" id="AlertDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alert</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="AlertDialogMessage" class="modal-body">
+                    @*<small>What would you like to do?</small>*@
+                </div>
+                <div class="modal-footer">
+                    @*<button type="button" class="btn btn-danger" data-dismiss="modal" id="ConfirmOKbutton">Delete</button>*@
+                    <button type="button" class="btn btwar btn-warning" data-bs-dismiss="modal" id="AlertOKbutton">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Alert popup*@
+    <div class="modal fade sv hd" id="ReloginPopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Session Expiry</h5>
+                    @*<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>*@
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span>Your Session is about to expire in <span id="timeoutin" style="font-weight: bold;"></span>. Please click <span style="font-weight: bold;">OK</span> to keep alive</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" id="ReloginPopUpOKbutton" data-bs-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-danger" id="ReloginPopUpCanclebutton" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="@Url.Content("~/js/site.js")" asp-append-version="true"></script>
+    @*<script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>*@
+    <script src="@Url.Content("~/js/mvc-grid/mvc-grid.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/bootstrap-datepicker.min.js")" asp-append-version="true"></script>
+    <script>
+        const alert = function (msg) {
+
+            $('#AlertDialogMessage').empty().html(msg);
+            $('#AlertDialog').modal('show');
+            $('#AlertOKbutton').on("click", function () {
+
+                $('#AlertDialog').modal('hide');
+
+            });
+        };
+    </script>
+    <script>
+        document.querySelectorAll(".mvc-grid").forEach(element => new MvcGrid(element));
+        $(function () { // will trigger when the document is ready
+            $('#StartDate').datepicker(
+                {
+                    format: "dd-mm-yyyy",
+                    todayHighlight: true,
+                    autoclose: true,
+                    clearBtn: true
+                }
+            ); //Initialise any date pickers
+            $('#EndDate').datepicker({
+                format: "dd-mm-yyyy",
+                todayHighlight: true,
+                autoclose: true,
+                clearBtn: true
+            }); //Initialise any date pickers
+
+            const grid = document.querySelector(".mvc-grid");
+
+            // Triggered when grid's row is clicked. It's recommended to use event delegation in ajax scenarios.
+            document.addEventListener("rowclick", e => {
+                // alert(e.detail.data); // - clicked row's data from columns.
+                // alert(e.detail.data.InnovationId); // - clicked row's data from columns.
+                // e.detail.grid - grid's instance.
+                //alert(e.detail.originalEvent); // - original tr click event which triggered the rowclick.
+
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Content("~/Ideation/GetIdeationById")",
+                    data: { InnovationId: e.detail.data.InnovationId },
+                    dataType: "json",
+                    success: function (response) {
+                        if (response == '') {
+                            alert("Please enter the correct no");
+                        }
+                        else {
+                            if (response != null) {
+
+                                var tabledata = ' <tr>  <td class="rd">' + response.BusinessDivisionName + '</td>' +
+                                    '<td>' + response.CreatedBy + '</td>' + '<td>' + response.CreatedDate + '</td>' +
+                                    '<td>' + response.StatusName + '</td>' + '<td>' + response.ActionBy + '</td>' +
+                                    '<td><a class ="remark"  target="_blank" data-bs-toggle="modal" data-bs-target="#remarkModal" data-bs-dismiss="modal" data-val="' + response.InnovationId + '" ><i class="fa fa-download" aria-hidden="true"></i>View Remarks</a></td>';
+                                $("#modal_innovationtile").text(response.InnovationTitle);
+                                $("#modal_innovationid").val(e.detail.data.InnovationId);
+                                $("#modal_keywords").val(response.Keyword);
+                                $("#modal_pt").val(response.PlatformTypeName);
+                                $("#modal_other").val(response.Other);
+                                $("#modal_bd").val(response.BusinessDivisionName);
+                                $("#modal_gs").val(response.GeographicName);
+                                $("#modal_region").val(response.Region);
+                                $("#modal_st").val(response.StrategicFitName);
+                                $("#modal_description").val(response.Description);
+                                $("#modal_CreatedBy").val(response.CreatedBy);
+                                $("#modal_status").val();
+                                $("#modal_remarks").val(response.Remarks)
+
+
+
+
+                                $("#mailDrop").hide();
+                                $("#modal_status").change(function () {
+                                    var statusId = $(this).val();
+                                    var statusName = $("#modal_status option:selected").text()
+
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "@Url.Content("~/Ideation/GetRemarkDiscription")",
+                                        data: { RemarkId: statusId },
+                                        dataType: "json",
+                                        success: function (result) {
+                                            if (result != null && result != 0) {
+                                                $("#mailDrop").show();
+                                                $(".valStatus").hide();
+                                                $("#modal_emailcontent").val(result[0].RemarkDiscription);
+                                            }
+                                            else{
+                                                $(".valStatus").show();
+                                                $("#loader").hide();
+                                            }
+                                            if (statusId == 5 || statusId == 4 || statusId == '') {
+                                                $("#mailDrop").hide();
+                                            }
+
+                                        },
+                                        error: function () {
+                                            alert("Error occured!!");
+                                        }
+                                    })
+
+                                })
+
+
+
+
+                                if (response.FilePath == null || response.FilePath == '') {
+                                    $("#model_filedownload").hide();
+                                    $("#filelabel").hide();
+                                } else {
+                                    $("#model_filedownload").show();
+                                    $("#filelabel").show();
+                                    $("#model_filedownload").attr("href", "@Url.Content("~/imageUpload/")" + response.FilePath);
+                                }
+                                $("#modal_table tbody").html(tabledata);
+
+                                if (response.StatusName == 'Approved' || response.StatusName == 'Declined' || response.StatusName == 'SendBack' || response.StatusName == 'Existing') {
+                                    $("#modal_buttons").hide();
+                                    $("#remarkfield").hide();
+                                    $("#remarkDrop").hide();
+                                } else {
+                                    $("#modal_buttons").show();
+                                    $("#remarkfield").show();
+                                    $("#remarkDrop").show();
+                                }
+
+                                $("#exampleModal").css({ opacity: 1 });
+                                $("#exampleModal").show();
+                                $("body").addClass("modal-open");
+                            }
+                        }
+                    },
+                    error: function () {
+                        alert("Error occured!!");
+                    }
+                });
+
+            });
+
+            $("#modalclose").click(function () {
+                $("#exampleModal").css({ opacity: 0 });
+                $("#exampleModal").hide();
+                $("body").removeClass("modal-open");
+            });
+
+            $(".valStatus").hide();
+            $("#model_submit").click(function () {
+                var action = "";
+                var statusValue = 0;
+                if ($("#modal_status").val() != '' && $("#modal_status").val() != null) {
+                    $(".valStatus").hide();
+                    if ($("#modal_remarks").val() == '') {
+                        if ($("#modal_status").val() == 5) {
+                            alert('Please enter remarks');
+                        } else {
+
+                            if ($("#modal_status").val() == 1) {
+                                statusValue = 1;
+                                action = 'Declined';
+                            } else if ($("#modal_status").val() == 2) {
+                                statusValue = 5;
+                                action = 'Existing';
+                            } else if ($("#modal_status").val() == 3) {
+                                statusValue = 3;
+                                action = 'Approved';
+                            } else if ($("#modal_status").val() == 5) {
+                                statusValue = 4;
+                                action = 'SendBack';
+                            }
+
+                            var idstats = { InnvoationId: $("#modal_innovationid").val(), ActionBy: "", Action: action, Remarks: $("#modal_remarks").val(), RemarkId: $("#modal_status").val(), StatusId: statusValue, CreatedBy: $("#modal_CreatedBy").val(), InnovationTitle: $("#modal_innovationtile").text() };
+
+                            ideationstatu(idstats);
+                        }
+                    } else {
+
+                        if ($("#modal_status").val() == 1) {
+                            statusValue = 1;
+                            action = 'Declined';
+                        } else if ($("#modal_status").val() == 2) {
+                            statusValue = 5;
+                            action = 'Existing';
+                        } else if ($("#modal_status").val() == 3) {
+                            statusValue = 3;
+                            action = 'Approved';
+                        } else if ($("#modal_status").val() == 5) {
+                            statusValue = 4;
+                            action = 'SendBack';
+                        }
+
+                        var idstats = { InnvoationId: $("#modal_innovationid").val(), ActionBy: "", Action: action, Remarks: $("#modal_remarks").val(), RemarkId: $("#modal_status").val(), StatusId: statusValue, CreatedBy: $("#modal_CreatedBy").val(), InnovationTitle: $("#modal_innovationtile").text() };
+                        ideationstatu(idstats);
+                    }
+                } else {
+                    $(".valStatus").show();
+                }
+            });
+
+            //$("#modal_status").on("change", function(){
+            //    if ($("#modal_status").val() != '' && $("#modal_status").val() != null) {
+            //        $(".valStatus").hide();
+            //    }else{
+            //        $(".valStatus").show();
+            //    }
+            //});
+
+            //$("#model_sendback").click(function() {
+            //    if ($("#modal_remarks").val() == '') {
+            //        alert('Enter remarks');
+            //    } else {
+            //        var idstats = { InnvoationId: $("#modal_innovationid").val(), ActionBy: "", Action: "SendBack", Remarks: $("#modal_remarks").val(), StatusId: 4, CreatedBy: $("#modal_CreatedBy").val(), InnovationTitle: $("#modal_innovationtile").text() };
+            //        ideationstatu(idstats);
+            //    }
+            //});
+
+            //$("#model_reject").click(function() {
+            //    if ($("#modal_remarks").val() == '') {
+            //        alert('Enter remarks');
+            //    } else {
+            //        var idstats = { InnvoationId: $("#modal_innovationid").val(), ActionBy: "", Action: "Declined", Remarks: $("#modal_remarks").val(), StatusId: 1, CreatedBy: $("#modal_CreatedBy").val(), InnovationTitle: $("#modal_innovationtile").text() };
+            //        ideationstatu(idstats);
+            //    }
+            //});
+
+            //$("#model_approve").click(function() {
+            //    if ($("#modal_remarks").val() == '') {
+            //        alert('Enter remarks');
+            //    } else {
+            //        var idstats = { InnvoationId: $("#modal_innovationid").val(), ActionBy: "", Action: "Approved", Remarks: $("#modal_remarks").val(), StatusId: 3, CreatedBy: $("#modal_CreatedBy").val(), InnovationTitle: $("#modal_innovationtile").text() };
+            //        ideationstatu(idstats);
+            //    }
+
+            //});
+
+        });
+
+        function ideationstatu(istats) {
+            debugger;
+            console.log(JSON.stringify(istats));
+            $.ajax({
+                type: "POST",
+                url: "@Url.Content("~/Ideation/UpdateIdeationStatus")",
+                data: { idstats: istats },
+                dataType: "json",
+                success: function (response) {
+
+                    alert("Change is Submited Successfully");
+                    $("#exampleModal").css({ opacity: 0 });
+                    $("#exampleModal").hide();
+                    $("body").removeClass("modal-open");
+                    window.location.reload();
+
+                },
+                error: function () {
+                    alert("Error occured!!");
+                }
+            });
+        }
+
+        //view remark-----
+
+        $("body").on('click', '.remark', function () {
+            var innovationValue = $(this).data('val');
+            $.ajax({
+                type: "POST",
+                url: "@Url.Content("~/Ideation/GetIdeationRemarks")",
+                data: { InnovationId: innovationValue },
+                dataType: "json",
+                success: function (response) {
+                    if (response != null) {
+                        $("#remark_body").empty();
+                        $.each(response, function (i, obj) {
+                            var tabledata = ' <tr>  <td class="rd">' + obj.BusinessDivisionName + '</td>' +
+                                '<td>' + obj.CreatedBy + '</td>' + '<td>' + obj.CreatedDate + '</td>' +
+                                '<td>' + obj.StatusName + '</td>' + '<td>' + obj.ActionBy + '</td>' +
+                                '<td>' + obj.RemarkName + '</td>' +
+                                '<tr>'
+                            $("#remark_body").append(tabledata);
+                        })
+                    }
+                    //alert("Change is Submited Successfully");
+                    //$("#exampleModal").css({ opacity: 0 });
+                    //$("#exampleModal").hide();
+                    //$("body").removeClass("modal-open");
+                    //window.location.reload();
+
+                },
+                error: function () {
+                    alert("Error occured!!");
+                }
+            });
+        })
+
+
+    </script>
+    <script>
+        $(function () {
+            debugger;
+    var time = ((@timeout * 1000 * 60) - (2 * 1000 * 60));
+    var timeout;
+    var isLogout = false;
+    timeout = setTimeout(function () {
+        //-- show warning dialog
+        OpenInputDialog();
+        var d = Date(Date.now());
+        console.log(d.toString());
+        isLogout = true;
+    }, time);
+    $(document).on('click', function () {
+        if (!isLogout) {
+            clearTimeout(timeout);
+            timeout = setTimeout(function () {
+                //-- show warning dialog
+                OpenInputDialog();
+                isLogout = true;
+            }, time);
+        }
+    });
+})
+var myInterval = 0;
+function OpenInputDialog() {
+    $('#ReloginPopUp').modal('show');
+    var seconds = 600;
+    myInterval = setInterval(function () {
+        if (seconds === 0) {
+            clearInterval(myInterval);
+            $('#ReloginPopUpCanclebutton').click();
+        }
+        else {
+            var time = moment().startOf('day')
+                .seconds(seconds)
+                .format('mm:ss');
+            $('#timeoutin').text(time)
+        }
+        seconds = seconds - 1
+    }, 1000);
+};
+$('#ReloginPopUpOKbutton').click(function () {
+    debugger;
+    clearInterval(myInterval);
+    $.ajax({
+        type: 'GET',
+        url: ROOT + "Login/AutoLogin",
+        dataType: 'json',
+        data: {
+
+        },
+        success: function (data) {
+
+
+        }
+    });
+});
+
+
+
+$('#ReloginPopUpCanclebutton').click(function () {
+    window.location = ROOT + "Login/LogOff"
+})
+    </script>
+</body>
+</html>

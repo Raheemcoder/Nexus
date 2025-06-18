@@ -1,0 +1,78 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewData["Title"] = "Budget Approval - L2";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+
+<link rel="stylesheet" href="@Url.Content("~/css/PIStyles.css")"/>
+<section>
+    <div class="">
+        <div class="-m_title_">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Budget Approval - L2</h4>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+        <div class="width_float">
+
+            <div class="d-flex justify-content-between mb-1">
+                <div class="add_button ml-2">
+                </div>
+                <div class="">
+                    <div class="status_dropdown" style="float: right">
+                        <div class="">
+                            <div class="">
+                                <select class="form-control status" data-singleselect>
+                                    <option value="1">All</option>
+                                    <option selected value="2">Pending For Baseline Request</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2 l2budget_grid">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="L2BudgetGrid" class="table table-bordered"></table>
+                            <div id="pager_L2BudgetGrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade budget_popup" id="approvedInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Baseline Budget Approved Info</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="approved_grid" class="table table-bordered"></table>
+                                        <div id="approved_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script Src="@Url.Content("~/js/NewProjectInitiation/NewBudgetApprovalPhase2.js")" asp-append-version="true"></script>

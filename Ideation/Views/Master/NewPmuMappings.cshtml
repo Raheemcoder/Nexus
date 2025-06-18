@@ -1,0 +1,635 @@
+﻿@model PMUMapping
+@{
+    ViewBag.Title = "PMUMappings";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+}
+
+@*<link href="~/assets_eppm/plugins/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+<script src="~/assets_eppm/plugins/moment/moment.js"></script>
+<script src="~/assets_eppm/plugins/datepicker/bootstrap-datepicker.min.js"></script>*@
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<link href="~/assets_eppm/js/jquery.dataTables.min.js" rel="stylesheet" />
+<link href="~/assets_eppm/js/dataTables.fixedHeader.min.js" rel="stylesheet" />
+<link href="~/assets_eppm/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="~/assets_eppm/css/fixedHeader.dataTables.min.css" rel="stylesheet" />
+
+@*<link href="~/assets_eppm/css/jquery-ui.css" rel="stylesheet" />
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>*@
+
+<section class="animate__animated1 slideInUp">
+    <div class="card-box newPmu pmumappingNew " id="">
+        <div class="row align-items-center mb-2 mt-3">
+            <div class="col-md-2">
+                <div class="page-title left_title">
+                    <h4 class="-mb-3">New PMU Mappings</h4>
+
+                </div>
+            </div>
+
+            <div class="col-md-10">
+                <div class="text-right">
+                    <div class="row justify-content-end button_right ">
+
+                        <input type="hidden" id="selectedProjectId" value="@Model.ProjectId" />
+                        <input type="hidden" id="selectedHubId" value="@Model.HubId" />
+                        <input type="hidden" id="selectedTemplate" value="@Model.Template_Id" />
+
+                        <input type="hidden" id="ApprovalSlNo" value="@Model.ApprovalSlNo" />
+                        <input type="hidden" id="ApprovalVersion" value="@Model.ApprovalVersion" />
+                        <input type="hidden" id="ApprovalStartDate" value="@Model.ApprovalStartDate" />
+                        <input type="hidden" id="ApprovalEndDate" value="@Model.ApprovalEndDate" />
+                       
+                        <div class="d-flex align-items-center">
+                            <a class="info file_edit mr-2" title="Notes" onclick="GetNotesData()"><i class="fa fa-file-edit"></i></a>
+                            <button type="button" id="ExcelDownload" class="btn-excel mr-1 ml-1 mt-0" title="Excel Download"><img src="@Url.Content("~/NewAssets/assets/images/excel.png")"></button>
+                        </div>
+                        <div>
+                            <button type="button" id="btnClone" onclick="GetCloneData()" data-toggle="modal" class="btn btn-xs clone_btn c-btn mt-0 color-white ml-2 mr-1">Clone</button>
+                            <button class="btn btn-add mt-0 submit_btn mr-2" data-toggle="modal" id="wbsheader">WBS Header</button>
+                            <button class="btn btn-add mt-0 submit_btn mr-2" data-toggle="modal" id="task">Task</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-add mt-0 submit_btn from_temp mr-2" id="save-template" style="display:none;">Save as Template</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-add mt-0 submit_btn" id="btnSubmit" style="display:none;">Save</button>
+                        </div>
+                        <div>
+                            <button type="button" class="btn btn-add mt-0 ml-2 mr-2 submit_btn" id="btnApprove" style="display:none;">Approve</button>
+                        </div>
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn ml-2" aria-label="Enter fullscreen mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn " data-toggle="tooltip" data-placement="bottom" title="Full Screen Mode"></i>
+                                <i class="fas fa-close fullscreen_minimize exitscreen-btn" data-toggle="tooltip" data-placement="bottom" title="Exit Full Screen Mode"></i>
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="mt-0">
+            <marquee direction="left" loop="" Scrolldelay=200>
+                <span class="color-blue" id="notes_span">(<strong>Note:</strong> The New PMU Mappings information will be auto saved for every 5 minutes. Please ensure that WBS Header, Task, Duration, Start Date and End Date is entered to Auto save the data.)</span>
+            </marquee>
+        </div>
+
+        <div id="message" class="m-login__erromsg">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert @TempData["MessageClass"].ToString() alert-dismissible" role="alert" id="message_alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                    </button>
+                    @TempData["Message"].ToString()
+                </div>
+            }
+        </div>
+        <div class="row align-items-center mb-2 ">
+            <div class="col-md-12">
+                <div>
+                    <div>
+                        <div class="d-flex align-items-center justify-content-end">
+
+                            @*<div class="row">
+                                    <div class="col-md-2 mb-1">
+                                        <section class="icon_description">
+                                            <span class="ingredient status-div">
+                                              <i class='edited-color fa fa-square'></i><label class="pr-1">Critical Path</label>
+                                            </span>
+                                        </section>
+                                    </div>
+                                </div>*@
+                            @*<span class="header_percentage">Current Version: <span id="Version"></span></span>*@
+                            <div class=" template-div mr-3" style="display:none;">
+                                <div class="form-group d-flex align-items-center mb-0 dropdown_pmu">
+                                    <label class="control-label pr-2">Template:</label>
+                                    <div class="">
+                                        <select id="fromtemplate" class="form-control" data-singleselect>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" version-div mr-3" style="display:none;">
+                                <div class="form-group d-flex align-items-center mb-0 dropdown_pmu">
+                                    <label class="control-label pr-2">Versions:</label>
+                                    <div class="">
+                                        <select id="Version" class="form-control" data-singleselect>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class=" weekend-switching-div mr-1" style="display:none;">
+                                <div class="form-group d-flex align-items-center mb-0 dropdown_pmu">
+                                    <label class="control-label pr-2">Weekend:</label>
+                                    <div class="">
+                                        <select id="weekend-switching" data-singleselect>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text_data weekend-selected-span" style="display:none;">
+                                <span class="header_percentage"><b>Weekend:</b> <span id="weekend-selected"></span></span>
+                            </div>
+                            <div class="text_data">
+                                <span class="header_percentage"><b>Overall Start Date:</b> <span id="OverAllStartDate"></span></span>
+                            </div>
+                            <div class="text_data">
+                                <span class="header_percentage"><b>Overall End Date:</b> <span id="OverAllEndDate"></span></span>
+                            </div>
+                            <div class="text_data">
+                                <span class="header_percentage"><b>Overall Project Percentage:</b> <span id="OverAllProjectPercentage">0</span>%</span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="" style="display:none;">
+            <table id="jqgrid" class="table table-bordered"></table>
+            <div id="pager"></div>
+        </div>
+
+        <div class="table-responsive" id="pmumappingtablediv">
+
+        </div>
+    </div>
+</section>
+
+<div id="dependency" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Predecessors</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span class="d-none">S No: <span id="SelectedRow"></span></span>
+                    <strong>Task: <strong id="SelectedTask"></strong></strong>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-boarderd" id="dependencyTable">
+                        <thead>
+                            <tr>
+                                <th>Row</th>
+                                <th class="-width250">Task</th>
+                                <th class="-width250">Type</th>
+                                <th>Lead/Lag</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="dependencypopupOk">Ok</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="documents" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Documents History</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <strong class="documents-label"></strong><strong id="documentsSelectedRow"></strong>
+                <div class="table-responsive">
+                    <table class="table table-boarderd" id="documentsTable">
+                        <thead>
+                            <tr>
+                                <th class="-width250">Document Name</th>
+                                <th>Submitted By</th>
+                                <th>Submitted On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="dependencypopupOk">Ok</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="remarks" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Remarks History</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <strong class="remarks-label"></strong><strong id="remarksSelectedRow"></strong>
+                <div class="table-responsive">
+                    <table class="table table-boarderd" id="remarksTable">
+                        <thead>
+                            <tr>
+                                <th class="-width250">Remarks</th>
+                                <th>Submitted By</th>
+                                <th class="submitontd">Submitted On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="dependencypopupOk">Ok</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="versionpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Box</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="versionpopupmesssage">Do you want to save it as a new Version?</span>
+                </div>
+                <div class="row mt-2">
+                    @*<div class="col-md-6">
+                        <input type="text" class="form-control" id="NewVersion" placeholder="Version*" />
+                        <span class="text-danger hide">Please enter Version</span>
+                    </div>*@
+                    <div class="col-md-12">
+                        <textarea id="VersionRemarks" class="form-control" placeholder="Version Remarks*"></textarea>
+                        <span class="text-danger hide">Please enter Remarks</span>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-3 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" id="versionpopupOK" data-dismiss="modal">Yes</button>
+                        <button type="button" class="btn btn-danger" id="versionpopupCancel" data-dismiss="modal">No</button>
+                        <button type="button" class="btn-cnl" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dependentMilestonesAlert" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Dependent Task Details</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <strong>
+                    Are you sure you want to update the Start date & End date for the dependent tasks?
+                </strong>
+                <div class="table-responsive">
+                    <table class="table table-boarderd">
+                        <thead>
+                            <tr>
+                                <th>Sl No</th>
+                                <th>Task</th>
+                                <th>Dependency</th>
+                                <th>Duration</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Revised Start Date</th>
+                                <th>Revised End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dependentAlertTable">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="dependentMilestonesAlertYes">Ok</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="dependentMilestonesAlertNo">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="wbsheader-modal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">WBS Header</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span class="text-success alt-saved-wbsheader" style="display:none;">WBS Header is saved successfully</span>
+                    <span class="text-success alt-delete-wbsheader" style="display:none;">WBS Header is deleted successfully</span>
+                </div>
+                <div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control noSpacesField" id="new-wbsheader" placeholder="WBS Header*" autocomplete="off" />
+                        <span class="text-danger Err-empty-wbsheader" style="display:none;">Please enter WBS Header</span>
+                        <span class="text-danger Err-exists-wbsheader" style="display:none;">WBS Header already exists</span>
+                    </div>
+                    <button type="button" class="btn btn-success" id="add-new-wbsheader">Add</button>
+                </div>
+                @*<div class="m-table__main mt-3 col-md-6">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="wbsheader-grid" class="table table-bordered"></table>
+                            <div id="wbsheadergrid-pager"></div>
+                        </div>
+                    </div>*@
+                <div class="m-table__main mt-5">
+                    <div class="m-table__responsive -virtual-scroll m-table__responsivemaster" style="width:100%!important">
+                        <table id="wbsheader-grid" class="table table-bordered"></table>
+                        <div id="wbsheadergrid-pager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="task-modal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Task</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span class="text-success alt-saved-task" style="display:none;">Task is saved successfully</span>
+                    <span class="text-success alt-delete-task" style="display:none;">Task is deleted successfully</span>
+                </div>
+                <div>
+                    <div class="col-md-6">
+                        <input type="text" class="form-control noSpacesField" id="new-task" placeholder="Task*" autocomplete="off" />
+                        <span class="text-danger Err-empty-task" style="display:none;">Please enter task</span>
+                        <span class="text-danger Err-exists-task" style="display:none;">Task already exists</span>
+                    </div>
+                    <button type="button" class="btn btn-success" id="add-new-task">Add</button>
+                </div>
+                <div class="m-table__main mt-5">
+                    <div class="m-table__responsive -virtual-scroll" style="width:100%!important">
+                        <table id="task-grid" class="table table-bordered"></table>
+                        <div id="taskgrid-pager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="ConfirmDelete" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Delete</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you sure want to Delete ?</span>
+
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" data-dismiss="modal" id="deleteok">Yes</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="save-as-template-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Template</h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span>Do you want to save it as a new template?</span>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-6">
+                        <input type="text" class="form-control" id="new-template-name" placeholder="Template Name*" autocomplete="off" />
+                        <span class="text-danger err-need-template" style="display:none;">Please Enter Template Name</span>
+                        <span class="text-danger err-exists-template" style="display:none;">Template Name Already Exists</span>
+                    </div>
+                </div>
+
+                <div class="col-md-12 mt-3 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" id="save-as-template">Save</button>
+                        <button type="button" class="btn-cnl" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="RemarksModal1" class="modal fade" role="dialog" data-backdrop="static" data-keyboard="false" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Add Notes</h5>
+
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <div class="row">
+                                <div class="col-md-0">
+                                </div>
+                                <div class="col-md-4">
+                                    <strong> <span class="" id="notes_msg"></span></strong>
+                                </div>
+                                <div class="col-md-4">
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <label>Project Name: <span><strong id="project_text"></strong></span></label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>HUB Name : <span><strong id="Hub_text"></strong></span></label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-9">
+                                            <div class="form-group">
+                                                <label class="control-label">Notes:</label>
+
+                                                <textarea id="Notes"  class="form-control noSpacesField"></textarea>
+                                                <span id="btnRemarks" style="color:red">Please enter Remarks</span>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3 text-right">
+
+                                            <div class="save_buttons mt-5 pt-5">
+                                                <button type="submit" class="btn-add" id="btnAdd"> Add</button>
+                                                <button type="button" data-dismiss="modal" class="btn-rej -cancel"> Cancel</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="m-table__main mt-2" id="">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                @Html.HiddenFor(m => m.NotesList)
+                                                <table id="viewlist" class="table table-bordered"></table>
+                                                <div id="pager_expected1"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addModal" class="modal fade m-modal -table-modal" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-lg lg_width">
+        <div class="modal-content width_100">
+            <div class="modal-header">
+                <div class="m-modal__header--center">
+                    <h5 class="modal-title">Clone Project</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+
+                            <form class="m-form__form">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 -auto-margin">
+                                        <div class="row">
+                                            <div class="col-md-7">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3 text-left">From Project:<span style="color:red">*</span></label>
+                                                    <div class="col-md-8">
+                                                        <div class="">
+                                                            <div class="">
+                                                                @Html.DropDownListFor(m => m.MappedProjectId, new SelectList(Model.MappedprojectList, "Value", "Text"), "-- Select the Project--", new { @class = "form-control dropdown projectDrop dropdown-singleselect" })
+                                                                <span class="text-danger  FromProjectId_error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3 text-left">To Project:</label>
+
+                                                    <div class="col-md-8">
+                                                        <div class="mt-8">
+                                                            <div class="">
+                                                                <span><strong id="To_Project"></strong></span>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-5">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3 text-left">From HUB:<span style="color:red">*</span></label>
+
+                                                    <div class="col-md-6">
+                                                        <div class="">
+                                                            <div class="">
+                                                                @Html.DropDownListFor(m => m.MappedHubId, new SelectList(Model.MappedhubList, "Value", "Text"), new { @class = "form-control dropdown projectDrop dropdown-singleselect" })
+                                                                <span class="text-danger  FromHubId_error"></span>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-3 text-left">To HUB:</label>
+                                                    <div class="col-md-6">
+                                                        <div class="text-left">
+                                                            <div class="mt-8">
+                                                                <span><strong id="To_Hub"></strong></span>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                                <input type="button" value="Clone" class="btn btn-xs btn-info c-btn " id="btnClonseSubmit" />
+                                                <button type="button" class="btn btn-xs btn-warning c-btn -cancel ml-2" data-dismiss="modal">Cancel</button>
+                                                @*<button type="submit" class="btn btn-xs btn-info c-btn -sudmit">Submit</button>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewPMUMappings/PMUMappings.min.js")" asp-append-version="true"></script>
+@*<script src="~/js/NewPMUMappings/PMUMappings.js"></script>*@

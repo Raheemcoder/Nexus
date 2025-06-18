@@ -1,0 +1,157 @@
+﻿@model IEnumerable<Ideation.Models.Menu>
+@{
+    ViewData["Title"] = "RoleMenuMapping";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+}
+
+@{
+    ViewBag.Title = "MenuAdd";
+}
+
+<style>
+    .bdr_clr .form-control {
+        border: 1px solid #aaa;
+    }
+
+    .bdr_clr {
+        box-shadow: 0px 0px 3px 0px #dedede;
+        padding: 5px 0px 5px 0px;
+    }
+</style>
+<div class="card-box mb-0">
+    <h6 class="pt-3">Menu Access Rights - @ViewBag.RoleName</h6>
+    <div class="row bdr_clr mb-3">
+        <div class="col-3">
+            <input type="hidden" value="@ViewBag.RoleId" id="RoleId" />
+
+
+            <div class="form-group mb-0">
+                <h6>Role Name</h6>
+                <label class="mb-0">@ViewBag.RoleName</label>
+            </div>
+        </div>
+        </div>
+        <div class="row">
+            <div class="save_buttons float-right text-right mb-3">
+            @if (ViewBag.Edit)
+            {
+                <button type="button" class="btn-ap subbtn" id="subbtn"> Save</button>
+            }
+                <a href="@Url.Content("~/Role/RoleList")">
+                    <button type="button" class="btn-cnl"> Back</button>
+                </a>
+            </div>
+        </div>
+       
+       
+        
+    
+    <div class="add_grid_">
+        <div class="row">
+            <section>
+                <div class="">
+                    <div class="">
+                        <div class="">
+                            <div class="menu_table">
+                                <div class="bg_white">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="roletable">
+                                            <thead>
+                                                <tr>
+                                                    <th>Menu Name</th>
+                                                    <th>Sub Menu Name</th>
+                                                    <th>Read</th>
+                                                    <th>Write</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var menuLevel1 in Model.Where(m => m.ParentMenuId == 0))
+                                                {
+                                                    <tr>
+                                                        <td>@menuLevel1.DisplayName</td>
+                                                     
+                                                        <td></td>
+                                                        <td>
+                                                            <label class="c-checkbox__lbl">
+                                                                <input type="checkbox" class="c-checkbox__input isread" id="@(menuLevel1.MenuId)_Read" data-value="@menuLevel1.MenuId">
+                                                                <span class="c-checkbox__mark"></span>
+                                                            </label>
+                                                        </td>
+                                                        <td>
+                                                            <label class="c-checkbox__lbl">
+                                                                <input type="checkbox" class="c-checkbox__input isedit" id="@(menuLevel1.MenuId)_Edit" data-value="@menuLevel1.MenuId">
+                                                                <span class="c-checkbox__mark"></span>
+                                                            </label>
+                                                        </td>
+                                                    </tr>
+
+                                                    foreach (var menuLevel2 in Model.Where(m => m.ParentMenuId == menuLevel1.MenuId))
+                                                    {
+                                                        <tr>
+                                                       
+
+                                                            <td></td>
+                                                            <td>@menuLevel2.DisplayName</td>
+                                                            <td>
+                                                                <label class="c-checkbox__lbl">
+                                                                    <input type="checkbox" class="c-checkbox__input @(menuLevel2.ParentMenuId)_sublevel_Read isread" id="@(menuLevel2.MenuId)_Read" data-value="@menuLevel2.MenuId" data-parent="@menuLevel2.ParentMenuId">
+                                                                    <span class="c-checkbox__mark"></span>
+                                                                </label>
+                                                            </td>
+                                                            <td>
+                                                                <label class="c-checkbox__lbl">
+                                                                    <input type="checkbox" class="c-checkbox__input @(menuLevel2.ParentMenuId)_sublevel_Edit isedit" id="@(menuLevel2.MenuId)_Edit" data-value="@menuLevel2.MenuId" data-parent="@menuLevel2.ParentMenuId">
+                                                                    <span class="c-checkbox__mark"></span>
+                                                                </label>
+                                                            </td>
+                                                        </tr>
+                                                        foreach (var menuLevel3 in Model.Where(m => m.ParentMenuId == menuLevel2.MenuId))
+                                                        {
+
+                                                            <tr>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td>@menuLevel3.DisplayName</td>
+                                                                <td>
+                                                                    <label class="c-checkbox__lbl">
+                                                                        <input type="checkbox" class="c-checkbox__input @(menuLevel3.ParentMenuId)_sublevel_Read isread" id="@(menuLevel3.MenuId)_Read" data-value="@menuLevel3.MenuId" data-parent="@menuLevel3.ParentMenuId">
+                                                                        <span class="c-checkbox__mark"></span>
+                                                                    </label>
+                                                                </td>
+                                                                <td>
+                                                                    <label class="c-checkbox__lbl">
+                                                                        <input type="checkbox" class="c-checkbox__input @(menuLevel3.ParentMenuId)_sublevel_Edit isedit" id="@(menuLevel3.MenuId)_Edit" data-value="@menuLevel3.MenuId" data-parent="@menuLevel3.ParentMenuId">
+                                                                        <span class="c-checkbox__mark"></span>
+                                                                    </label>
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                   
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <div class="save_buttons float-right text-right mb-3">
+                 @if (ViewBag.Edit)
+            {
+                <button type="button" class="btn-ap subbtn" id="subbtn"> Save</button>
+            }
+                <a href="@Url.Content("~/Role/RoleList")">
+                    <button type="button" class="btn-cnl"> Back</button>
+                </a>            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="@Url.Content("~/js/role/rolemenumapping.js")" asp-append-version="true"></script>

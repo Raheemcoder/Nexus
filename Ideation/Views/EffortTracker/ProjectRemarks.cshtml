@@ -1,0 +1,102 @@
+﻿@model Ideation.Models.EffortTracker
+
+@{
+    ViewBag.Title = "EffortTracker";
+    Layout = "~/Views/Shared/_ETLayout.cshtml";
+}
+<style>
+
+    .m-table__main .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+        color: #424242 !important;
+        font-weight: 700;
+    }
+</style>
+
+@Html.HiddenFor(model=>model.ProjectRemarksData, new { @id = "ProjectRemarksJsonData"})
+
+<div class="card-box myProject effort_tracker" style="min-height: 79.5vh;padding-top:10px;">
+
+    <div class="row sub_form bg_mainrow">
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Project Id
+                </label>
+              
+                @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.ProjectList, "ProjectCode", "ProjectName"), "All", new { @class = "form-control projectid data-singleselect",@id="Project_id" })
+
+       
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    From Date
+                </label>
+
+                @Html.TextBoxFor(m => m.FromDate, new { @class = "form-control  Datepicker_StartDate" ,@id="FromDate" })
+          </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    To Date
+                </label>
+                @Html.TextBoxFor(m => m.ToDate, new { @class = "form-control Datepicker_EndDate",@id="ToDate"})
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">
+                    User Name
+                </label>
+                @Html.DropDownListFor(m => m.UserName, new SelectList(Model.UserNamesList, "UserId", "UserName"), "All", new { @class = "form-control userid data-singleselect",@id="User_Id" })
+            </div>
+        </div>
+
+
+        <div class="form-fields-width">
+            <div class="form-group mt-4 pt-1 mb-0">
+                <button type="button" id="SearchProjectRemarksData" class="btn btn-info c-add-details waves-light waves-effect" onclick="location.href = '#';"><i class="fas fa-search" aria-hidden="true"></i></button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="">
+                <div class="m-table__main mmproject">
+                    <div class="m-table__responsive -virtual-scroll">
+                        <table id="ProjectRemarks_Grid" class="table table-bordered"></table>
+                        <div id="pager_ProjectRemarks"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg upload">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Project Names</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main mmproject myProject">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="ProjectRemarks_Grid1" class="table table-bordered"></table>
+                                <div id="pager_ProjectRemarks1"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="@Url.Content("~/js/projectremarks.js")" asp-append-version="true"></script>*@
+<script src="@Url.Content("~/js/projectremarks.min.js")" asp-append-version="true"></script>

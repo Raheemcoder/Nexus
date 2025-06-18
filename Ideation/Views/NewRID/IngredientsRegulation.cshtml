@@ -1,0 +1,233 @@
+﻿@model Ideation.Models.RID
+@{
+    ViewData["Title"] = "Ingredients Regulation";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var division = @Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.DivisionName;
+
+}
+<style>
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+    .jqgfirstrow {
+        display: contents;
+    }
+</style>
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home / </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division / </a>
+                </span>
+                RWC
+            </h4>
+        </div>
+    </div>
+</section>
+@*To show response message*@
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+</section>
+<section>
+    <div class="filter_status prototype_filter">
+        <div class="d-flex">
+
+            <div class="col-width1 ">
+                <div class="form-group date_icon">
+                    <label class="control-label">Start Date</label>
+                    <input type="text" class="form-control ImpactDates_text_freezed" id="Search_Start_Date" autocomplete="off" data-datepicker-startdate readonly>
+                    <span style="display:none" id="Err_Search_Start_Date" class="Err_Date color-red">Please Select a Valid Date</span>
+                    <i class="fas fa-calendar"></i>
+                </div>
+            </div>
+
+            <div class="col-width1 ">
+                <div class="form-group date_icon">
+                    <label class="control-label">End Date</label>
+                    <input type="text" class="form-control ImpactDates_text_freezed" id="Search_End_Date" autocomplete="off" data-datepicker-enddate readonly>
+                    <span style="display:none" id="Err_Search_End_Date" class="Err_Date color-red">Please Select a Valid Date</span>
+                    <i class="fas fa-calendar"></i>
+                </div>
+            </div>
+
+            <div class="col-width2">
+                <div class="form-group">
+                    <label class="control-label">Search</label>
+                    <input type="text" class="form-control" id="global_search" autocomplete="off">
+
+
+                </div>
+            </div>
+            <div class="col-width1 mt-3 pt-1">
+                <button class="btn btn-search" title="Search" type="button" id="search_ingredient">
+                    <i class="fas fa-search"></i>
+                </button>
+                <button class="btn btn-refresh" title="Refresh" type="button" id="refresh_date">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            </div>
+
+
+        </div>
+
+    </div>
+</section>
+
+@Html.HiddenFor(m => m.Division_Id)
+<section>
+    <div class="d-flex align-items-center justify-content-between mt-2">
+        <div class="d-flex">
+            <div class="ingradient_edited mr-2">
+                <label class="mb-0"><span></span> Ingredients Edited</label>
+            </div>
+            <div class="ingradient_edited rollback_ingre mr-2">
+                <label class="mb-0"><span></span> Ingredients Rollbacked To Initiator</label>
+            </div>
+        </div>
+
+
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="legends_list circle_list ">
+                <ul class="d-flex ">
+                    <li><span class="purple_circle"></span> HGML approval required</li>
+                    <li><span class="green_circle"></span> Allowed</li>
+                    <li><span class="yellow_circle"></span> Restricted</li>
+                    <li><span class="red_circle"></span> Prohibited</li>
+                </ul>
+
+            </div>
+            <div class="d-flex excel_expand align-items-center">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_button ml-2">
+                    <a href="@Url.Content("~/NewRID/AddIngredient")">
+                        <button type="button" class="btn btn-success">
+                            Add Ingredient
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            @Html.HiddenFor(m => m.IngredientId)
+                            @Html.HiddenFor(m => m.DivisionBasedIngredientListJson)
+                            @Html.HiddenFor(m => m.LoginId)
+                            <table id="prd_desc1" class="table table-bordered"></table>
+                            <div id="pager_expected1"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+@*View Ingredient Popup*@
+<div id="IngredientModal1" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    View Ingredient
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="filter_forms">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>Ingredient Name : <span><strong id="ActiveIngredientName"></strong></span></label>
+
+                            </div>
+                            <div class="col-md-8">
+                                <label>Synonyms: <span><strong id="ActiveSynonymName"></strong></span></label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <label>CAS Number: <span><strong id="ActiveCASName"></strong></span></label>
+                            </div>
+                            <div class="col-md-8">
+                                <label>Functions: <span><strong id="ActiveFunctions"></strong></span></label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="legends_list circle_list float-right text-right">
+                        <ul class="d-flex justify-content-end">
+                            <li><span class="purple_circle"></span> HGML approval required</li>
+                            <li><span class="green_circle"></span> Allowed</li>
+                            <li><span class="yellow_circle"></span> Restricted</li>
+                            <li><span class="red_circle"></span> Prohibited</li>
+                        </ul>
+
+                    </div>
+                    <div class="add_ingradient">
+                        <div class="m-table__main mt-2" id="">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="viewlist" class="table table-bordered"></table>
+                                <div id="viewlist_pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+@*Display Uploaded File Popup*@
+<div id="displayuploadedfiles" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Documents
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="FileUploadjqgrid" class="table table-bordered"></table>
+                                    <div id="FileUploadpager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewRID/IngredientList.js")" asp-append-version="true"></script>

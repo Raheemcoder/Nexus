@@ -1,0 +1,910 @@
+﻿@{
+    ViewBag.Title = "Project Master";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    .list_baseline ul {
+        display: flex;
+        list-style-type: none;
+        justify-content: end;
+    }
+
+        .list_baseline ul li {
+            margin-left: 20px;
+            font-size: 10px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+            .list_baseline ul li b {
+                color: #000;
+                font-weight: normal;
+            }
+
+    .budget_status .pending {
+        background: transparent;
+        border: 0px;
+        font-size: 11px;
+        padding: 0px;
+        color: orange;
+        box-shadow: none;
+    }
+
+    .budget_status .approval {
+        background: transparent;
+        border: 0px;
+        font-size: 11px;
+        padding: 0px;
+        color: green;
+        box-shadow: none;
+    }
+
+    .input_budget input {
+        border: 1px solid #757575 !important;
+        height: 24px;
+        padding: 5px;
+        font-size: 10px;
+    }
+</style>
+<section>
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+        @*<div class="list_baseline">
+                <ul>
+                    <li>
+                        <b>Department Name:</b> PD CPD
+                    </li>
+                    <li>
+                        <b> Total Baseline Budget (INR):</b> 800000
+                    </li>
+                    <li>
+                        <b> Total Revised Budget(INR):</b> 110000
+                    </li>
+                </ul>
+            </div>*@
+        <div class="row">
+
+            <div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">Project Id</label>
+                    <select class="form-control" data-singleselect>
+                        <option>Select</option>
+                        <option>IN-100001252 Marula Oil Body Lotion 400 ml</option>
+                        <option>IN-100001251 Cocoa Butter Body Lotion 400 ml</option>
+                        <option>IN-100001248 Ayurvedic Butter 7</option>
+                        <option>5 g jar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">Department </label>
+                    <input class="form-control" />
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group mb-0 ">
+                    <label class="control-label">Category</label>
+                    <select class="form-control" data-singleselect>
+                        <option>Select</option>
+                        <option>Product Development</option>
+                        <option>Travel</option>
+                        <option>RM Procurement</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group mb-0 mt-4">
+                    <button type="button" id="SearchPMData" class="btn btn-info c-add-details waves-light waves-effect" title="Search">
+                        Add
+                    </button>
+
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-right mt-4">
+                    <button type="button" id="SearchPMData" class="btn btn-success m-0 c-add-details waves-light waves-effect" title="Search">
+                        Save & Confirm
+                    </button>
+                </div>
+            </div>
+        </div>
+        @*<div class="d-flex mt-2 mb-1 justify-content-between align-items-center">
+                <div>
+                    <span style="display:flex;justify-content:center;align-items:center" class="icongap">
+                        <label class="btn-icon -view"><i class="fas fa-plus" aria-hidden="true"></i></label>Request for Additional Budget
+                    </span>
+                </div>
+                <div>
+                    <button type="button" id="SearchPMData" class="btn btn-success m-0 c-add-details waves-light waves-effect" title="Search">
+                        Save & Confirm
+                    </button>
+                </div>
+            </div>*@
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="list" class="table table-bordered"></table>
+                            <div id="list_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade budget_popup" id="ViewProjectData" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Budget Request Screen</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Project Id</label>
+                                    <div>
+                                        <span>IN-100001252 Marula Oil Body Lotion 400 ml</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Category</label>
+                                    <select class="form-control">
+                                        <option>Select</option>
+                                        <option>Product Development</option>
+                                        <option>Travel</option>
+                                        <option>RM Procurement</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Requested Budget</label>
+                                    <input type="text" class="form-control" />
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-group">
+                                    <label class="control-label">Remarks</label>
+                                    <textarea class="form-control" rows="1"></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mt-4">
+                                <button type="button" id="SearchPMData" class="btn btn-info c-add-details waves-light waves-effect" title="Search">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="category_grid" class="table table-bordered"></table>
+                                        <div id="category_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade budget_popup" id="approvedInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Baseline Budget Approved Info</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="approved_grid" class="table table-bordered"></table>
+                                        <div id="approved_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    data = [
+        {
+            "Action": "Request for Additional Budget",
+            "ProjectId": "IN-100001243 Himalaya Purifying Neem Acne Patch",
+            "TemplateName": "CPD-IN",
+            "ProjectCreatedDate": "12-Jun-23",
+            "Category": "Product Development",
+            "BaselineBudget": "",
+            "BaseLineBudgetUpdatedBy": "Amit",
+            "BaseLineBudgetUpdatedOn": "18-May-23",
+            "RevisedBudget": "550000",
+        },
+        {
+            "Action": "Request for Additional Budget",
+            "ProjectId": "IN-100001243 Himalaya Purifying Neem Acne Patch",
+            "TemplateName": "CPD-IN",
+            "ProjectCreatedDate": "15-May-23",
+            "Category": "Product Development",
+            "BaselineBudget": "",
+            "BaseLineBudgetUpdatedBy": "Amit",
+            "BaseLineBudgetUpdatedOn": "18-May-23",
+            "RevisedBudget": "550000",
+        },
+        {
+            "Action": "Request for Additional Budget",
+            "ProjectId": "IN-100001252 Marula Oil Body Lotion 400 ml",
+            "TemplateName": "CPD-IN",
+            "ProjectCreatedDate": "12-Feb-23",
+            "Category": "Product Development",
+            "BaselineBudget": "",
+            "BaseLineBudgetUpdatedBy": "Amit",
+            "BaseLineBudgetUpdatedOn": "18-May-23",
+            "RevisedBudget": "550000",
+        },
+    ]
+    colmodels = [
+
+        {
+            name: 'Action',
+            label: 'Action',
+            width: 90,
+            search: false,
+            resizable: true,
+            ignoreCase: true,
+            sortable: false,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="d-flex action_icons align-items-center" title="">' +
+                    '<a href="#" class="" title="" data-toggle="modal" data-target="#ViewProjectData"><i class="fas fa-plus"></i></a>' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'ProjectId',
+            label: 'Project ID',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+
+        },
+        {
+            name: 'TemplateName',
+            label: 'Template Name',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        }, {
+            name: 'ProjectCreatedDate',
+            label: 'Project Created Date',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        }, {
+            name: 'Category',
+            label: 'Category',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="" title="">' +
+                    '<input type="text" class="form-control mb-2" value="Product Development" readonly>' +
+                    '<input type="text" class="form-control" value="Travel" readonly>' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'BaselineBudget',
+            label: 'Req Baseline Budget (INR)',
+            width: 160,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="" title="">' +
+                    '<input type="text" class="form-control mb-2">' +
+                    '<input type="text" class="form-control">' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'BaseLineBudgetUpdatedBy',
+            label: 'BaseLine Budget Requested By',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="" title="">' +
+                    '<input type="text" class="form-control mb-2" value="" readonly>' +
+                    '<input type="text" class="form-control" value="" readonly>' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'BaseLineBudgetUpdatedOn',
+            label: 'BaseLine Budget Requested On',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="" title="">' +
+                    '<input type="text" class="form-control mb-2" value="" readonly>' +
+                    '<input type="text" class="form-control" value="" readonly>' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'BaseLineBudgetStatus',
+            label: 'BaseLine Budget Status',
+            width: 190,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="budget_status" title="">' +
+                    '<input type="text" class="form-control mb-2 pending" value="Pending for Approval" readonly>' +
+                    '<input type="text" class="form-control pending" value="Pending for Approval" readonly>' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'BaseLineBudgetApprovedBy',
+            label: 'BaseLine Budget Approved By',
+            width: 150,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="" title="">' +
+                    '<input type="text" class="form-control mb-2" value="" readonly>' +
+                    '<input type="text" class="form-control" value="" readonly>' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'BaseLineBudgetApprovedOn',
+            label: 'BaseLine Budget Approved On',
+            width: 150,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="" title="">' +
+                    '<input type="text" class="form-control mb-2" value="" readonly>' +
+                    '<input type="text" class="form-control" value="" readonly>' +
+                    '</div>';
+            }
+        },
+        {
+            name: 'RevisedBudget',
+            label: 'Revised Budget(INR)',
+            width: 150,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="" title="">' +
+                    '<input type="text" class="form-control mb-2" value="" readonly>' +
+                    '<input type="text" class="form-control" value="" readonly>' +
+                    '</div>';
+            }
+        },
+
+    ],
+
+        $("#baseline_grid").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#baseline_pager',
+            rowNum: 30,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#baseline_grid tbody tr");
+                var objHeader = $("#baseline_grid tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#baseline_grid").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+
+</script>
+
+<script>
+    data = [
+        {
+            "Action": "Request for Additional Budget",
+            "Category": "Product Development",
+            "RequestedBudget": "50000",
+            "RequestedOn": "1-Feb-2024",
+            "RequestedBy": "Amit",
+            "ApprovedRejectedBy": "",
+            "Status": "Pending For Approval",
+            "Remarks": "Please approve the budget",
+        },
+        {
+            "Action": "Request for Additional Budget",
+            "Category": "Travel",
+            "RequestedBudget": "10000",
+            "RequestedOn": "13-Oct-23",
+            "RequestedBy": "Amit",
+            "ApprovedRejectedBy": "Lakshmi",
+            "Status": "Approved",
+            "Remarks": "Approved",
+        },
+
+    ]
+    colmodels = [
+
+        //{
+        //    name: 'Action',
+        //    label: 'Action',
+        //    width: 90,
+        //    search: false,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //    sortable: false,
+        //    formatter: function (cellvalue, options, rowobject) {
+        //        return '<div class="d-flex action_icons align-items-center" title="">' +
+        //            '<a href="#" class="" title=""><i class="fas fa-plus"></i></a>' +
+        //            '</div>';
+        //    }
+        //},
+        {
+            name: 'Category',
+            label: 'Category',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+
+        },
+        {
+            name: 'RequestedBudget',
+            label: 'Requested Budget',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        }, {
+            name: 'RequestedOn',
+            label: 'Requested On',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        }, {
+            name: 'RequestedBy',
+            label: 'Requested By',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="" title="">' +
+            //        '<input type="text" class="form-control mb-2" value="Product Development" readonly>' +
+            //        '<input type="text" class="form-control" value="Travel" readonly>' +
+            //        '</div>';
+            //}
+        },
+        {
+            name: 'ApprovedRejectedBy',
+            label: 'Approved Rejected By',
+            width: 160,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="" title="">' +
+            //        '<input type="text" class="form-control mb-2">' +
+            //        '<input type="text" class="form-control">' +
+            //        '</div>';
+            //}
+        },
+        {
+            name: 'Status',
+            label: 'Status',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="" title="">' +
+            //        '<input type="text" class="form-control mb-2" value="" readonly>' +
+            //        '<input type="text" class="form-control" value="" readonly>' +
+            //        '</div>';
+            //}
+        },
+        {
+            name: 'Remarks',
+            label: 'Remarks',
+            width: 200,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="" title="">' +
+            //        '<input type="text" class="form-control mb-2" value="" readonly>' +
+            //        '<input type="text" class="form-control" value="" readonly>' +
+            //        '</div>';
+            //}
+        },
+        //{
+        //    name: 'RevisedBudget',
+        //    label: 'Revised Budget(INR)',
+        //    width: 150,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //    formatter: function (cellvalue, options, rowobject) {
+        //        return '<div class="" title="">' +
+        //            '<input type="text" class="form-control mb-2" value="" readonly>' +
+        //            '<input type="text" class="form-control" value="" readonly>' +
+        //            '</div>';
+        //    }
+        //},
+
+    ],
+
+        $("#category_grid").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#category_pager',
+            rowNum: 30,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#category_grid tbody tr");
+                var objHeader = $("#category_grid tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#category_grid").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+
+</script>
+
+
+
+<script>
+    data = [
+        {
+            "Action": "Request for Additional Budget",
+            "RequestedBy": "Amit",
+            "RequestedOn": "18-May-23",
+            "ApprovedBy": "Tanmoy",
+            "ApprovedOn": "19-May-23",
+        },
+        //{
+        //    "Action": "Request for Additional Budget",
+        //    "BaselineBudgetRequestedBy": "Amit",
+        //    "BaselineBudgetRequestedOn": "18-May-23",
+        //    "BaselineBudgetApprovedBy": "Tanmoy",
+        //    "BaselineBudgetApprovedOn": "19-May-23",
+        //},
+
+    ]
+    colmodels = [
+
+        //{
+        //    name: 'Action',
+        //    label: 'Action',
+        //    width: 90,
+        //    search: false,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //    sortable: false,
+        //    formatter: function (cellvalue, options, rowobject) {
+        //        return '<div class="d-flex action_icons align-items-center" title="">' +
+        //            '<a href="#" class="" title=""><i class="fas fa-plus"></i></a>' +
+        //            '</div>';
+        //    }
+        //},
+        {
+            name: 'RequestedBy',
+            label: 'Requested By',
+            width: 160,
+            resizable: true,
+            ignoreCase: true,
+
+        },
+        {
+            name: 'RequestedOn',
+            label: 'Requested On',
+            width: 160,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'ApprovedBy',
+            label: 'Approved By',
+            width: 160,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'ApprovedOn',
+            label: 'Approved On',
+            width: 160,
+            resizable: true,
+            ignoreCase: true,
+
+        },
+
+    ],
+
+        $("#approved_grid").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#approved_pager',
+            rowNum: 30,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#approved_grid tbody tr");
+                var objHeader = $("#approved_grid tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#approved_grid").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+
+</script>
+
+
+<script>
+    $(document).ready(function () {
+        var mydata = [
+            {
+                id: "1", Action: "", ProjectId: "IN-100001251 Cocoa Butter Body Lotion 400 ml", TemplateName: "CPD-IN", ProjectCreatedDate: "15-May-23", Department: "PD CPD", Category: "Product Development", ReqBaselineBudget: "50000", RequestedBy: "Amit", RequestedOn: "18-May-23", BaseLineBudgetStatus: "Pending For Approval", attr: { Action: { rowspan: "1" }, ProjectId: { rowspan: "1" }, TemplateName: { rowspan: "1" }, ProjectCreatedDate: { rowspan: "1" }, Department: { rowspan: "1" } }
+            },
+            { id: "2", Action: "", ProjectId: "IN-100001251 Cocoa Butter Body Lotion 400 ml", TemplateName: "CPD-IN", ProjectCreatedDate: "15-May-23", Department: "R&D (Clinical)", Category: "Clinical Research", ReqBaselineBudget: "40000", RequestedBy: "Amit", RequestedOn: "18-May-23", BaseLineBudgetStatus: "Pending For Approval", attr: { Action: { rowspan: "1" }, ProjectId: { rowspan: "1" }, TemplateName: { rowspan: "1" }, ProjectCreatedDate: { rowspan: "1" }, Department: { rowspan: "1" } } },
+            {
+                id: "3", Action: "", ProjectId: "IN- 100001253 Immunity Enhancing/& Multivitamin Gel", TemplateName: "Health-IN", ProjectCreatedDate: "12-Feb-23", Department: "R&D (FD-CP)", Category: "Product Development", ReqBaselineBudget: "60000", RequestedBy: "Rahul", RequestedOn: "12-Apr-23", BaseLineBudgetStatus: "Approved", attr: { Action: { rowspan: "2" }, ProjectId: { rowspan: "2" }, TemplateName: { rowspan: "2" }, ProjectCreatedDate: { rowspan: "2" }, Department: { rowspan: "2" } }
+            },
+            { id: "4", Action: "", ProjectId: "", TemplateName: "", ProjectCreatedDate: "", Department: "", Category: "Travel", ReqBaselineBudget: "40000", ApproveBaselineBudget: "40000", RequestedBy: "Rahul", RequestedOn: "13-May-23", BaseLineBudgetStatus: "Approved", attr: { Action: { display: "none" }, ProjectId: { display: "none" }, TemplateName: { display: "none" }, ProjectCreatedDate: { display: "none" }, Department: { display: "none" } } },
+            {
+                id: "5", Action: "", ProjectId: "IN- 100001242 Himalaya Purifying Neem Acne Serum", TemplateName: "CPD-IN", ProjectCreatedDate: "12-Mar-23", Department: "", Category: "Product Development", ReqBaselineBudget: "40000", RequestedBy: "Madhuri", RequestedOn: "13-Jun-23", BaseLineBudgetStatus: "Approved", attr: { Action: { rowspan: "1" }, ProjectId: { rowspan: "1" }, TemplateName: { rowspan: "1" }, ProjectCreatedDate: { rowspan: "1" }, Department: { rowspan: "1" } }
+            },
+            //{ id: "3", Departments: "R&D (Clinical)", Category: "Product Development", BaselineBudget: "500000", BaseLineBudgetUpdatedBy: "Amit", BaseLineBudgetUpdatedOn: "18-May-23", AdditionalBudget: "50000", AdditionalBudgetHistory: "", attr: { Departments: { rowspan: "2" }, Category: { rowspan: "2" } } },
+            //{ id: "4", Departments: "R&D (Clinical)", Category: "Travel", BaselineBudget: "300000", BaseLineBudgetUpdatedBy: "Amit", BaseLineBudgetUpdatedOn: "18-May-23", AdditionalBudget: "10000", AdditionalBudgetHistory: "", attr: { Departments: { display: "none" }, Category: { display: "none" } } },
+            //{ id: "5", Departments: "R&D (FD-CP)", Category: "Product Development", BaselineBudget: "500000", BaseLineBudgetUpdatedBy: "Amit", BaseLineBudgetUpdatedOn: "18-May-23", AdditionalBudget: "50000", AdditionalBudgetHistory: "", attr: { Departments: { rowspan: "2" }, Category: { rowspan: "2" } } },
+            //{ id: "6", Departments: "R&D (FD-CP)", Category: "Travel", BaselineBudget: "300000", BaseLineBudgetUpdatedBy: "Amit", BaseLineBudgetUpdatedOn: "18-May-23", AdditionalBudget: "10000", AdditionalBudgetHistory: "", attr: { Departments: { display: "none" }, Category: { display: "none" } } },
+
+
+
+        ],
+            arrtSetting = function (rowId, val, rawObject, cm) {
+                var attr = rawObject.attr[cm.name], result;
+                if (attr.rowspan) {
+                    result = ' rowspan=' + '"' + attr.rowspan + '"';
+                } else if (attr.display) {
+                    result = ' style="display:' + attr.display + '"';
+                }
+                return result;
+            };
+
+        $("#list").jqGrid({
+            datatype: 'local',
+            data: mydata,
+            colNames: ['Action', 'Project Id', 'Template Name', 'Project Created Date', 'Department', 'Category', 'Req Budget (INR)', 'Status', 'Requested By', 'Requested On', ],
+            colModel: [
+                {
+                    name: 'Action', align: 'center', classes: 'trs', cellattr: arrtSetting, width: 90, search: false,
+                    formatter: function (cellvalue, options, rowobject) {
+                        if (rowobject.BaseLineBudgetStatus == "Approved") {
+                            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                                /*'<a href="#" class="" title="Request for Additional Budget" data-toggle="modal" data-target="#ViewProjectData"> <img src="../images/money-bag.png" width="22px"/></a> ' +*/
+                                /*'<a href="#" class="pl-1" title="Info" data-toggle="modal" data-target="#approvedInfo"> <i class="fas fa-info"></i></a > ' +*/
+                                //'<a href="#" class="" title="Thumbs Up" > <i class="fas fa-thumbs-up text-success"></i></a> ' +
+                                //'<a href="#" class="" title="Thumbs Down"> <i class="fas fa-thumbs-down text-danger"></i></a> ' +
+                                '</div>';
+                        }
+                        else if (rowobject.BaseLineBudgetStatus == "Pending For Approval") {
+                            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                            /*'<a href="#" class="" title="Info" data-toggle="modal" data-target="#approvedInfo"> <i class="fas fa-info"></i></a>' +*/
+                                '<a href="#" class="" title="Thumbs Up" > <i class="fas fa-thumbs-up text-success"></i></a> ' +
+                                '<a href="#" class="" title="Thumbs Down"> <i class="fas fa-thumbs-down text-danger"></i></a> ' +
+                                '</div>';
+                        }
+
+
+                    }
+                },
+                /*{ name: 'state',  align: 'center', cellattr: arrtSetting },*/
+                { name: 'ProjectId', classes: 'trs1', cellattr: arrtSetting, width: 220, },
+                { name: 'TemplateName', cellattr: arrtSetting, width: 120 },
+                { name: 'ProjectCreatedDate', cellattr: arrtSetting, width: 120 },
+                {
+                    name: 'Department', width: 180, cellattr: arrtSetting
+
+                },
+                {
+                    name: 'Category', width: 180
+
+                },
+                {
+                    name: 'ReqBaselineBudget',
+                    width: 140,
+                    formatter: function (cellvalue, options, rowobject) {
+                        if (rowobject.BaseLineBudgetStatus == "Pending For Approval") {
+                            //return '<div class="d-flex action_icons input_budget -items-center" title="">' +
+                            //    '<input type="text" class="form-control" value="' + cellvalue +'" />' +
+                            //    '</div>';
+                            return '<div class="text-right">' + cellvalue + '</div>';
+                        }
+                        else if (rowobject.BaseLineBudgetStatus == "Approved") {
+                            return '<div class="text-right">' + cellvalue + '</div>';
+                        }
+
+                    },
+                },
+                //{
+                //    name: 'ApproveBaselineBudget',
+                //    width: 140,
+                //    formatter: function (cellvalue, options, rowobject) {
+                //        if (rowobject.BaseLineBudgetStatus == "") {
+                //            return '';
+                //        }
+                //        else if (rowobject.BaseLineBudgetStatus == "Approved") {
+                //            return '<div class="text-right">' + cellvalue + '</div>';
+                //        }
+                //        else if (rowobject.BaseLineBudgetStatus == "Pending For Approval") {
+                //            return '<div class="d-flex action_icons input_budget -items-center" title="">' +
+                //                '<input type="text" class="form-control" value="' + cellvalue + '" />' +
+                //                '</div>';
+                //        }
+
+                //    },
+                //},
+                {
+                    name: 'BaseLineBudgetStatus',
+                    width: 180,
+                    formatter: function (cellvalue, options, rowobject) {
+                        if (rowobject.BaseLineBudgetStatus == "Pending For Approval") {
+                            return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+                        }
+                        else if (rowobject.BaseLineBudgetStatus == "Approved") {
+                            return '<a href="#" class="task_status value_info "> <span class="text-success">' + cellvalue + '</span></a>'
+                        }
+
+
+                    }
+                },
+
+                {
+                    name: 'RequestedBy',
+                    width: 140,
+
+                },
+                {
+                    name: 'RequestedOn',
+                    width: 140,
+                },
+                //{
+                //    name: 'BaseLineBudgetApprovedOn',
+                //    width: 140,
+
+                //},
+                //{
+                //    name: 'BaseLineBudgetApprovedBy',
+                //    width: 140,
+                //},
+                //{
+                //    name: 'RevisedBudget', width: 120,
+                //    formatter: function (cellvalue, options, rowobject) {
+                //        if (rowobject.RevisedBudget == "400000") {
+                //            return '<a href="#" class="task_status value_info ">' + cellvalue + '</a>'
+                //        }
+                //        else if (rowobject.RevisedBudget == "150000") {
+                //            return '<a href="#" class="task_status value_info "> ' + cellvalue + '</a>'
+                //        }
+                //        else if (rowobject.RevisedBudget == "") {
+                //            return ''
+                //        }
+
+
+                //    }
+                //},
+
+
+            ],
+            cmTemplate: { sortable: false },
+            loadonce: true,
+            viewrecords: true,
+            pager: '#list_pager',
+            rowNum: 20,
+            hoverrows: false,
+            scroll: 1,
+            beforeSelectRow: function () {
+                return false;
+            }
+        });
+
+        $("#list").jqGrid('filterToolbar', {
+            autosearch: true,
+            stringResult: false,
+            searchOnEnter: false,
+            defaultSearch: "cn"
+        });
+
+        $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+        $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 130) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "6px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+        }
+
+
+        $('[data-singleselect]').select2()
+        $('.data-singleselect').select2()
+        $('.data-singleselect').select2({
+            dropdownParent: $('#add_project')
+        });
+    })
+</script>
+

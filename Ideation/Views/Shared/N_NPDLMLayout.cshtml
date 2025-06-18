@@ -1,0 +1,399 @@
+﻿@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.SessionOptions> SessionOptions
+@{
+    var timeout = SessionOptions.Value.IdleTimeout.TotalMinutes;
+
+    var userName = Context.Session.GetString("LoggedUserName");
+    var firstLetter = userName?.Substring(0, 1);
+    var roleId = Context.Session.GetString("RoleId");
+    var AppshortName = Context.Session.GetString("AppShortName");
+}
+
+<!DOCTYPE html>
+<html lang="en" class="skew">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISpace</title>
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/N_assets/images/leaf.ico")" />
+    <link href="@Url.Content("~/N_assets/css/layout.min.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link href="@Url.Content("~/N_assets/css/animate.min.css")" rel="stylesheet" />
+    <style>
+        .datepicker .datepicker-days tr:hover td {
+            background: transparent;
+        }
+
+            .datepicker .datepicker-days tr:hover td:hover {
+                background: #e5e2e3;
+            }
+
+        td.disabled.day {
+            background: transparent !important;
+            color: #9c9c9c !important;
+        }
+
+        .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+            border: 1px solid #e6e6e6 !important;
+            border-left: 0px;
+            border-top: 0px !important;
+        }
+    </style>
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/popper.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/bootstrap.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/grid.locale-en.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery.jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/Moment/moment.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery-ui.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/select2/select2.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/app.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/jquery.fullscreen-min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/crypto-js.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/assets_eppm/plugins/jqgrid/js/jszip.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/jquery.validate.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/jquery.validate.unobtrusive.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/ckeditor/ckeditor.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/ckeditor_4.22.1_standard/ckeditor/ckeditor.js")" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+     var ROOT = "@Url.Content("~/")";
+    </script>
+</head>
+<body class="new_layout NPD_layout" id="jquery-script-menu">
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container">
+            <div class="c-loader__inner">
+            </div>
+            <div class="c-loader__outer">
+            </div>
+            <div class="c-loader__img">
+            </div>
+        </div>
+    </div>
+    <header id="topnav" class="header_section">
+        <div class="ispace-logo">
+            <a class="logo" href="@Url.Content("~/Landing/Index")"><img src="@Url.Content("~/N_assets/images/ispace-logo.png")" alt="ispace" height="30" /></a>
+        </div>
+        <div>
+            <div class="d-flex">
+                <div>
+                    <div class="header_nav">
+                        <div id="navigation">
+                            <ul class="navigation-menu" id="main_menu">
+                                @await Component.InvokeAsync("MainMenu")
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="d-flex align-items-center user_info top_position">
+                        <div class="d-flex user_name_ cursor">
+                            <span class="circular_icon" style="cursor: pointer">@firstLetter</span>
+                            <label class="mb-0" style="cursor: pointer">@userName</label>
+                            <span style="cursor: pointer">
+                                <img src="@Url.Content("~/N_assets/images/himalaya_leaf logo.png")" width="22px" />
+                            </span>
+                            <div class="logout">
+                                <ul>
+                                    <li><a href="@Url.Content("~/Login/Logout")"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="container-fluid body-content element " id="element">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted ">
+        &copy; @DateTime.Now.Year - Himalaya Wellness Company. All rights reserved
+    </footer>
+
+    @*Confirm modal popup*@
+    <div id="confirmpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="confirmpopupmesssage">Are you sure u want Confirm</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Alert modal popup*@
+    <div id="alertpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Alert Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="popupmesssage">Are you sure u want Cancel</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" data-bs-dismiss="modal">Ok</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Alter Session time out popup*@
+    <div id="ReloginPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Session Expiry</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span>Your Session is about to expire in <span id="timeoutin" style="font-weight: bold;"></span>. Please click <span style="font-weight: bold;">OK</span> to keep alive</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" id="ReloginPopUpOKbutton" data-bs-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-cancel" id="ReloginPopUpCanclebutton" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+        var time = ((@timeout * 1000 * 60) - (2 * 1000 * 60));
+        var timeout;
+        var isLogout = false;
+        timeout = setTimeout(function () {
+            //-- show warning dialog
+            OpenInputDialog();
+            var d = Date(Date.now());
+            console.log(d.toString());
+            isLogout = true;
+        }, time);
+        $(document).on('click', function () {
+            if (!isLogout) {
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    //-- show warning dialog
+                    OpenInputDialog();
+                    isLogout = true;
+                }, time);
+            }
+        });
+    })
+        var myInterval = 0;
+        function OpenInputDialog() {
+            $('#ReloginPopUp').modal('show');
+            var seconds = 600;
+            myInterval = setInterval(function () {
+                if (seconds === 0) {
+                    clearInterval(myInterval);
+                    $('#ReloginPopUpCanclebutton').click();
+                }
+                else {
+                    var time = moment().startOf('day')
+                        .seconds(seconds)
+                        .format('mm:ss');
+                    $('#timeoutin').text(time)
+                }
+                seconds = seconds - 1
+            }, 1000);
+        };
+        $('#ReloginPopUpOKbutton').click(function () {
+            clearInterval(myInterval);
+            $.ajax({
+                type: 'GET',
+                url: ROOT + "Login/AutoLogin",
+                dataType: 'json',
+                data: {
+                },
+                success: function (data) {
+                }
+            });
+        });
+        $('#ReloginPopUpCanclebutton').click(function () {
+            window.location = ROOT + "Login/LogOff"
+        })
+    </script>
+    <script>
+        function setNavigation() {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "#");
+            path = decodeURIComponent(path);
+            $("#main_menu li a, #main_menu1 li a").each(function () {
+                var href = $(this).attr('href');
+                var subURL = $(this).attr('data-subURL');
+                var URLs = '';
+                if (subURL != undefined) {
+                    URLs = subURL.split(';');
+                }
+                if (path === href || URLs.indexOf(path) >= 0) {
+                    if ($(this).parents('#main_menu, #main_menu1').length >= 1) {
+                        $(this).parents('li').addClass('active');
+                        $(this).parents(".has-submenu").addClass('active');
+                    }
+                    else {
+                        $(this).addClass('activeparents');
+                        $(this).parents('li').addClass('activeparents');
+                    }
+                }
+            });
+        }
+        setNavigation();
+    </script>
+    <script>
+
+        $(".fullscreen-btn").on("click", function () {
+            $("#fullscreen").addClass("m-table__full-screen");
+        });
+        $(".exitscreen-btn").on("click", function () {
+            $("#fullscreen").removeClass("m-table__full-screen");
+        });
+
+        function toggleFullScreen(elem) {
+
+            if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+                if (elem.requestFullScreen) {
+                    elem.requestFullScreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullScreen) {
+                    elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 230) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "4px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+        }
+
+    </script>
+    <script>
+        $(".logout").click(function () {
+            $(".theme-light").addClass("switch");
+            $(".dark").addClass("switch");
+            $(".switch_login").addClass("switch1");
+        });
+        $(".tile_projects a").click(function () {
+            $(this).closest("li").addClass("active");
+        });
+
+        $(".menuhamburger a").click(function () {
+            $(this).toggleClass("active");
+            $(".main-menu").toggleClass("menu_left");
+        });
+
+        $(".navigation-menu li").click(function () {
+            $(this).toggleClass("submenu_open");
+            $(".navigation-menu li").not(this).removeClass("submenu_open");
+        });
+
+        $(function () {
+
+            $(".fullscreen-supported").toggle($(document).fullScreen() != null);
+            $(".fullscreen-not-supported").toggle($(document).fullScreen() == null);
+
+            $(document).on("fullscreenchange", function (e) {
+                console.log("Full screen changed.");
+                $("#jquery-script-menu").toggleClass("fullscreen_btn");
+            });
+
+            $(document).on("fullscreenerror", function (e) {
+
+            });
+
+        });
+
+        $('.ui-jqgrid-bdiv').css({ 'max-height': 'calc(100vh - 270px)' });
+        $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 130) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "4px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+        }
+
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 330) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "10px");
+            $(".-virtual-scroll").find(".ui-jqgrid-htable").css("padding-right", "10px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px");
+            $(".-virtual-scroll").find(".ui-jqgrid-htable").css("padding-right", "0px");
+        }
+    </script>
+    <script>
+        $(document).ready(function () {
+            $(document)
+                .ajaxStart(function () {
+                    $('#loader').show();
+                    $("#loader").css("visibility", "visible");
+                })
+                .ajaxStop(function () {
+                    $('#loader').hide();
+                    $("#loader").css("visibility", "hidden");
+                })
+                .ajaxComplete(function () {
+                    $('#loader').hide();
+                    $("#loader").css("visibility", "hidden");
+                });
+            $('#loader').hide();
+        });
+        window.onload = function () {
+            $("#loader").css("visibility", "hidden");
+            $('#loader').hide();
+        }
+    </script>
+
+</body>
+</html>

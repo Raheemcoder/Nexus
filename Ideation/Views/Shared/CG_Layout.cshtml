@@ -1,0 +1,665 @@
+﻿@{
+
+    @using Microsoft.AspNetCore.Http;
+    @inject IHttpContextAccessor HttpContextAccessor
+    @inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.SessionOptions> SessionOptions
+    var timeout = SessionOptions.Value.IdleTimeout.TotalMinutes;
+    var userName = Context.Session.GetString("UserName");
+    var userid = Context.Session.GetString("LoginId");
+    var AppshortName = Context.Session.GetString("AppShortName");
+    var loggedUser = Context.Session.GetString("LoggedUserName");
+    var Email = Context.Session.GetString("EmailId");
+
+}
+
+<!DOCTYPE html>
+<html lang="en" class="skew">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISpace</title>
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/NewAssets/assets/images/leaf.ico")" />
+    @*<link href="@Url.Content("~/NewAssets/assets/css/layout.min.css")" rel="stylesheet" />*@
+    @*<link rel="stylesheet" href="@Url.Content("~/NewAssets/lib/bootstrap/dist/css/bootstrap.min.css")" />*@
+
+    @*    <link href="@Url.Content("~/NewAssets/assets/css/ispace-style.css")" rel="stylesheet" />*@
+
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/fontawesome/css/fontawesome.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/fontawesome/css/fontawesome-5.6.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/plugins/jqgrid/css/jquery-ui.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/plugins/jqgrid/css/ui.jqgrid.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/plugins/select2/select2.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/plugins/bootstrap-multselect/bootstrap-multselect.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/flaticons-font/flaticon_ispace.css")" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/css/animate.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/css/dark-style.css")" asp-append-version="true" />
+    <link rel="stylesheet" href="@Url.Content("~/NewAssets/assets/css/ispace-style.css")" asp-append-version="true" />
+
+    <script src="@Url.Content("~/NewAssets/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/js/popper.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/plugins/jqgrid/js/grid.locale-en.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/js/jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/newassets/assets/plugins/jqgrid/jqzip/jszip.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/plugins/select2/select2.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/js/autosize.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")"></script>
+    <script src="@Url.Content("~/plugins/moment/moment.js")"></script>
+    <script src="@Url.Content("~/NewAssets/assets/js/app.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/NewAssets/assets/js/jquery.fullscreen-min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/aes.js")"></script>
+    <script src="@Url.Content("~/ckeditor/ckeditor.js")" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        var ROOT = "@Url.Content("~/")";
+    </script>
+</head>
+<body class="new_layout" id="jquery-script-menu">
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container ">
+            <div class="c-loader__inner">
+            </div>
+            <div class="c-loader__outer">
+            </div>
+            <div class="c-loader__img">
+            </div>
+        </div>
+    </div>
+
+    <header id="topnav" class="header_section">
+
+
+        @*header logo container starts*@
+        <div class="ispace-logo">
+            <a class="logo" href="@Url.Content("~/Landing/Index")"><img src="~/NewAssets/assets/images/ispace-logo.png" alt="ispace" height="26px"/></a>
+
+        </div>
+        @*user info container starts*@
+        <div class="d-flex align-items-center">
+            <div class="Home_tiles cursor_pointer">
+                <i class="flaticon-home cursor_pointer"></i>
+                <div class="list_projects animate__fadeInUp">
+                    <ul>
+                        @{
+                            if (AppshortName != null)
+                            {
+                                var AppshortNameLsit = AppshortName.Split(',');
+                            
+                            foreach (var item in AppshortNameLsit)
+                            {
+                                if (item == "IW")
+                                {
+                                    <li>
+
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/ideation.png" />
+                                                <p>Ideation Workflow</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "PB")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/ProjectBrief.png" />
+                                                <p>Project Brief</p>
+                                            </div>
+                                        </a>
+                                    </li>
+
+                                }
+                                if (item == "PT")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/project-tracker.png" />
+                                                <p>Project Tracker</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "ET")
+                                {
+                                    <li>
+
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/effort.png" />
+                                                <p>Effort Booking</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "MM")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/MasterManagement.png" />
+                                                <p>Master Management</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "PROT")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/Prototype.png" />
+                                                <p>Prototype</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "PU")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/project-update.png" />
+                                                <p>Project Updates</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "CGD")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/claims-grid.png" />
+                                                <p>Claims Grid Document</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "RR")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/ideation.png" />
+                                                <p>Risk Register</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "NPDLM")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/NPDLaunchMaster.png" />
+                                                <p>NPD Launch Master</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                                if (item == "PI")
+                                {
+                                    <li>
+                                        <a href="@Url.Content("~/Landing/Redirection?PageName="+item)">
+                                            <div class="tile_projects">
+                                                <img src="~/NewAssets/assets/images/project_tiles/ProjectInitiation.png" />
+                                                <p>Project Initiation</p>
+                                            </div>
+                                        </a>
+                                    </li>
+                                }
+                            }
+                        }
+                        }
+                     </ul>
+                </div>
+            </div>
+
+            @*header logo container ends*@
+            <div class="main_nav">
+                <div class="project_menu_">
+                    <div class="">
+                        <div id="navigation">
+                            <!-- Navigation Menu-->
+                            <ul class="navigation-menu" id="main_menu">
+                                @* <li class="has-submenu ">
+                                <a href="#"> Masters <i class="flaticon-down-arrow-1"></i></a>
+                                <ul class="submenu" id="main_menu1">
+                                <li><a href="@Url.Content("~/Master/ClaimsGrid2")" data-subURL="@Url.Content("~/Master/EditClaimsGrid2")"> Claims Grid</a></li>
+                                <li><a href="@Url.Content("~/#")"> User</a></li>
+                                <li><a href="@Url.Content("~/#")"> User Role Master</a></li>
+                                </ul>
+                                </li>*@
+                                <li class="has-submenu ">
+                                    <a href="#">Claims Grid <i class="flaticon-down-arrow-1"></i></a>
+                                    <ul class="submenu" id="main_menu1">
+                                        <li><a href="@Url.Content("~/ClaimsGrid/ClaimsGridDocument")"> Claims Grid</a></li>
+                                    </ul>
+                                </li>
+                                @*<li class="has-submenu ">
+                                <a href="#">
+                                Master
+                                </a>
+                                </li>*@
+                            </ul>
+                            <!-- End navigation menu -->
+                        </div> <!-- end #navigation -->
+                    </div> <!-- end container -->
+                </div> <!-- end navbar-custom -->
+            </div>
+            <div>
+                <label id="switch" class="switch">
+                    <input type="checkbox" onchange="toggleTheme()" id="slider">
+                    <span class="slider round mg_t12">
+                        <span class="lt">Light Theme</span>
+                        <span class="dt">Dark Theme</span>
+                    </span>
+                </label>
+            </div>
+            <div class="user_info_latest">
+                <label class="cursor_pointer">...</label>
+                <div class="username">
+                    <ul class="list-unstyled topbar-right-menu float-right mb-0">
+                        <li>
+                            <div class="user_details_list">
+                                <p class="mb-0"><i class="flaticon-user-2"></i> @loggedUser </p>
+                                <p class="mb-0"><i class="flaticon-email"></i> <a href="mailto:"@Email>@Email</a></p>
+                                <p class="mb-0"><i class="flaticon-logout" style="font-size: 13px; color: #000;"></i><a href="@Url.Content("~/Login/Logout")">Logout</a>  </p>
+
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            @*<div>
+            <label id="switch" class="switch">
+            <input type="checkbox" onchange="toggleTheme()" id="slider">
+            <span class="slider round mg_t12">
+            <span class="lt">Light Theme</span>
+            <span class="dt">Dark Theme</span>
+            </span>
+            </label>
+            </div>*@
+            @*<div class="user_info">
+            <div class="admin_dropdown">
+            <a class="nav-user">
+            <span class="rounded-circle">S</span>
+            <span class="user_name">tp005</span>
+            </a>
+            <div class=" profile-dropdown ">
+            <a href="javascript:void(0);" class="dropdown-item notify-item" data-toggle="modal" data-target="#changePasswordDialog" onclick="changePassword()">
+            <i class="fas fa-lock"></i> <span>Change Password</span>
+            </a>
+            <a class="dropdown-item notify-item logout" id="logout-button">
+            <i class="fas fa-sign-out-alt"></i> <span>Logout</span>
+            </a>
+            </div>
+            </div>
+            <div class="clearfix"></div>
+            </div>*@
+            <!-- end container -->
+        </div>
+        <!-- end container -->
+    </header>
+
+    <div class="menu-section">
+        @*<span class="menu_name">Menu's</span>*@
+        <ul>
+            <li><a href=""><i class="fas fa-cog"></i> <span class="menu_item">Claim Grid</span></a></li>
+        </ul>
+    </div>
+    <div class="container-fluid body-content element" id="element">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; @DateTime.Now.Year - Himalaya Wellness Company. All rights reserved
+        </div>
+    </footer>
+    @*Confirm modal popup*@
+    <div id="confirmpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="confirmpopupmesssage">Are you sure u want Confirm</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*Alert modal popup*@
+    <div id="alertpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Alert Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="popupmesssage">Are you sure u want Cancel</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0" style="text-align: right;">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+     @*JQ Grid Delete Confirmation*@
+
+    <div class="modal fade sv hd" id="ConfirmDialog" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Delete Confirmation</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div id="ConfirmDialogMessage" class="modal-body">
+                    @*<small>What would you like to do?</small>*@
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" id="ConfirmOKbutton">OK</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal" id="ConfirmCanclebutton">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+          const confirm = function (msg, func1, func2) {
+         $('#ConfirmDialogMessage').empty().html(msg);
+         $('#ConfirmDialog').modal('show');
+        if (func1) {
+                $("#ConfirmOKbutton").unbind("click");
+                $('#ConfirmOKbutton').on("click", function () {
+                    func1();
+                    $('#ConfirmDialog').modal('hide');
+                });
+            }
+             $("#ConfirmCanclebutton").unbind("click");
+            $('#ConfirmCanclebutton').on("click", function () {
+                $('#ConfirmDialog').modal('hide');
+            });
+        };
+    </script>
+
+    <script>
+        //active class
+        function setNavigation() {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "#");
+            path = decodeURIComponent(path);
+            //path = path.split('/')[2];
+
+            $("#main_menu li a, #main_menu1 li a").each(function () {
+                var href = $(this).attr('href');
+                var subURL = $(this).attr('data-subURL');
+                var URLs = '';
+                if (subURL != undefined) {
+                    URLs = subURL.split(';');
+                }
+
+                //href = href.split('/')[2];
+                if (path === href || URLs.indexOf(path) >= 0) {
+                    if ($(this).parents('#main_menu, #main_menu1').length >= 1) {
+                        $(this).parents('li').addClass('active');
+                        //$(this).parents(".has-menu").addClass('active');
+                        //$(this).parents('.has-menu').last().addClass('activeparents');
+                    }
+                    else {
+                        $(this).addClass('activeparents');
+                        $(this).parents('li').addClass('activeparents');
+                    }
+
+
+                }
+            });
+        }
+        setNavigation();
+    </script>
+    <script>
+
+
+
+
+        //const body = document.querySelector('html');
+        //const button = document.querySelector('.btn_dark');
+        //function toggleFullScreen(elem) {
+        //    if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+        //        if (elem.requestFullScreen) {
+        //            elem.requestFullScreen();
+        //        } else if (elem.mozRequestFullScreen) {
+        //            elem.mozRequestFullScreen();
+        //        } else if (elem.webkitRequestFullScreen) {
+        //            elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+        //        } else if (elem.msRequestFullscreen) {
+        //            elem.msRequestFullscreen();
+        //        }
+        //    } else {
+        //        if (document.cancelFullScreen) {
+        //            document.cancelFullScreen();
+        //        } else if (document.mozCancelFullScreen) {
+        //            document.mozCancelFullScreen();
+        //        } else if (document.webkitCancelFullScreen) {
+        //            document.webkitCancelFullScreen();
+        //        } else if (document.msExitFullscreen) {
+        //            document.msExitFullscreen();
+        //        }
+        //    }
+        //}
+
+
+
+        // function to set a given theme/color-scheme
+        function setTheme(themeName) {
+            localStorage.setItem('theme', themeName);
+            document.documentElement.className = themeName;
+        }
+
+        // function to toggle between light and dark theme
+        function toggleTheme() {
+            if (localStorage.getItem('theme') === 'dark') {
+                setTheme('theme-light');
+            } else {
+                setTheme('dark');
+            }
+        }
+
+        // Immediately invoked function to set the theme on initial load
+        (function () {
+            if (localStorage.getItem('theme') === 'dark') {
+                setTheme('dark');
+                document.getElementById('slider').checked = false;
+            } else {
+                setTheme('theme-light');
+                document.getElementById('slider').checked = true;
+            }
+        })();
+
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 230) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "4px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+        }
+
+    </script>
+    <script>
+        $(".logout").click(function () {
+            $(".theme-light").addClass("switch");
+            $(".dark").addClass("switch");
+            $(".switch_login").addClass("switch1");
+        });
+        $(".tile_projects a").click(function () {
+            $(this).closest("li").addClass("active");
+        });
+        //document.getElementById("logout-button").addEventListener("click", function () {
+        //    // Send a signal to the login page by setting a class on its <html> tag
+        //    window.opener.document.documentElement.classList.add("logout-clicked");
+        //});
+        //document.getElementById("logout-button").addEventListener("click", function () {
+        //    // Redirect to the login page
+        //    window.location.href = "/Account/login"; // Replace with the actual login page URL
+        //});
+        //$(".menutopright").hover(function () {
+        //    $(".main-menu").toggleClass("menu-list");
+        //    $(".menuhamburger a").toggleClass("active");
+        //});
+        //$("#main_menu").click(function(){
+        //    $(this).toggleClass("active");
+        //}
+        $(".menuhamburger a").click(function () {
+            $(this).toggleClass("active");
+            $(".main-menu").toggleClass("menu_left");
+        });
+        //$(".menuhamburger a").click(function () {
+        //    $(".main-menu").toggleClass("menu_left");
+        //});
+
+        $(".navigation-menu li").click(function () {
+            $(this).toggleClass("submenu_open");
+            $(".navigation-menu li").not(this).removeClass("submenu_open");
+        });
+    </script>
+    <script>
+
+        $(function () {
+
+            $(".fullscreen-supported").toggle($(document).fullScreen() != null);
+            $(".fullscreen-not-supported").toggle($(document).fullScreen() == null);
+
+            $(document).on("fullscreenchange", function (e) {
+                console.log("Full screen changed.");
+                $("#jquery-script-menu").toggleClass("fullscreen_btn");
+            });
+
+            $(document).on("fullscreenerror", function (e) {
+
+            });
+
+        });
+
+    </script>
+</body>
+</html>
+
+<div id="ReloginPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header m-modal-header heading">
+                <h4 class="modal-title m-modal-title">Session Time Out</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body m-modal__body">
+                <div>
+                    <span>Your Session is about to expire in <span id="timeoutin"></span>. please click OK to keep alive?</span>
+                </div>
+            </div>
+            <div class="modal-footer m-modal-footer">
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" id="ReloginPopUpOKbutton" data-bs-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="ReloginPopUpCanclebutton">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var time = ((@timeout * 1000 * 60) - (2 * 1000 * 60));
+        var timeout;
+        var isLogout = false;
+        timeout = setTimeout(function () {
+            //-- show warning dialog
+            OpenInputDialog();
+            var d = Date(Date.now());
+            console.log(d.toString());
+            isLogout = true;
+        }, time);
+        $(document).on('click', function () {
+            if (!isLogout) {
+                clearTimeout(timeout);
+                timeout = setTimeout(function () {
+                    //-- show warning dialog
+                    OpenInputDialog();
+                    isLogout = true;
+                }, time);
+            }
+        });
+    })
+    var myInterval = 0;
+    function OpenInputDialog() {
+        $('#ReloginPopUp').modal('show');
+        var seconds = 120;
+        myInterval = setInterval(function () {
+            if (seconds === 0) {
+                clearInterval(myInterval);
+                $('#ReloginPopUpCanclebutton').click();
+            }
+            else {
+                var time = moment().startOf('day')
+                    .seconds(seconds)
+                    .format('mm:ss');
+                $('#timeoutin').text(time)
+            }
+            seconds = seconds - 1
+        }, 1000);
+    };
+    $('#ReloginPopUpOKbutton').click(function () {
+        clearInterval(myInterval);
+        $.ajax({
+            type: 'GET',
+            url: ROOT + "Account/AutoLogin",
+            dataType: 'json',
+
+        });
+    });
+
+
+    $('#ReloginPopUpCanclebutton').click(function () {
+        window.location = ROOT + "Account/LogOff"
+    })
+</script>
+
+
+
+<script>
+    autosize(document.querySelectorAll('textarea'));
+</script>

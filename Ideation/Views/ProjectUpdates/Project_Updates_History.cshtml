@@ -1,0 +1,255 @@
+﻿@model Ideation.Models.ProjectUpdates
+@{
+    ViewBag.Title = "View_Project_Update";
+    Layout = "~/Views/Shared/_PULayout.cshtml";
+}
+<script>
+
+
+    $('.prototype_').hide()
+    $('.prototype_1').hide()
+    $('.prototype_2').hide()
+    $('.prototype_3').hide()
+</script>
+@Html.HiddenFor(m=>m.JsonFormProjectUpdatesData)
+@Html.HiddenFor(m=>m.ViewInfoHistoryData)
+@Html.HiddenFor(m=>m.VolumeInfoHistoryData)
+<div class="card-box mb-0 edit_history">
+    <div class="tb_clr marbt">
+        <h3 class="cen_txt">PROJECT UPDATE DETAILS</h3>
+        <div class="row product_profile">
+            <div class="col-md-12 pr-0">
+                <div class="edit_product">
+                  
+                    <div class="row">
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="edit_label">Project ID<span class="color-red">*</span></label>
+                                <span class="value_input" id="ProjectCode"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="edit_label">Project Description<span class="color-red">*</span></label>
+                                <span class="value_input" id="ProjectDescription"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="edit_label">HUBs</label>
+                                <span class="value_input" id="ProjectHub"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="edit_label">Division<span class="color-red">*</span></label>
+                                <span class="value_input" id="ProjectDivision"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="edit_label">Project Type<span class="color-red">*</span></label>
+                                <span class="value_input" id="ProjectType"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="edit_label">Project Classification<span class="color-red">*</span></label>
+                                <span class="value_input" id="ProjectClassification"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="form-group">
+                                <label class="edit_label">HGH Code</label>
+                                <span class="value_input" id="HghCode"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="edit_label">R&D Name</label>
+                                <span class="value_input" id="RAndDName"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="edit_label">Project Status</label>
+                                <span class="value_input" id="ProjectStatus"></span>
+
+                            </div>
+                        </div> 
+                        <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="edit_label">View Info</label>
+                                <span class="value_input" id="viewHistoryPopup"><i class="fa fa-info-circle"></i></span>
+
+                            </div>
+                        </div>
+                           <div class="col-lg-2">
+                            <div class="form-group">
+                                <label class="edit_label">Volume info</label>
+                                <span class="value_input" id="volumeHistoryPopup"><i class="fa fa-info-circle"></i></span>
+
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+            </div>
+           
+        </div>
+        <div class="row">
+
+            <div class="col-lg-12 tab_padding">
+                <div class="tabs_section">
+                    
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                   
+                        <li class="nav-item" role="presentation">
+
+                            <div class="row product_profile">
+                                <label for="inputEmail" class="col-sm-4 col-form-label">From Date</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="FromDate" data-datepicker-sd>
+                                    <span class="text-danger" id="FromDate_Err" style="display:none"></span>
+                                </div>
+                                
+
+                            </div>
+
+                        </li>
+                        <li class="nav-item" role="presentation">
+
+                            <div class="row product_profile">
+                                <label for="inputEmail" class="col-sm-4 col-form-label">To Date</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" id="ToDate" data-datepicker-ed>
+                                    <span class="text-danger" id="ToDate_Err" style="display:none"></span>
+                                </div>
+                               
+                            </div>
+
+                        </li>
+                        <li class="nav-item pl-2" role="presentation">
+
+                            <button type="button" id="SearchPrototypeData" class="btn btn-info c-add-details waves-light waves-effect " onclick="location.href = '#';"><i class="fas fa-search" aria-hidden="true"></i></button>
+
+                        </li>
+
+                        <li class="view_table" data-bs-toggle="modal" data-bs-target="#ViewModal">
+                            <i class="fas fa-eye"></i>
+                        </li>
+                    </ul>
+                   
+                    <div class="col-lg-12">
+                        <div class="tabs_section">
+                           
+                            <div class="tab-content scroll_div" id="myTabContent">
+                                <div class="tab-pane fade show active" id="DynamicHistory" role="tabpanel" aria-labelledby="home-tab">
+                                </div>
+                                <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">Hello1</div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+                         <div class="row sticky-bottom">
+        <div class="save_buttons float-right text-right">
+                <button type="button" class="btn-cnl" onclick="location.href = '@Url.Content("~/ProjectUpdates/ProjectUpdates")'" data-title="Back"> Back</button>
+        </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want save the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = './Prototype';">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="ViewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg upload">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">View Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="Document_Download_Grid" class="table table-bordered"></table>
+                                <div id="pager_upload"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade sv hd" id="InfoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl upload">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">View History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="ViewHistoryGrid" class="table table-bordered"></table>
+                                <div id="ViewHistoryGrid_Pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="InfoVolumeModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl upload">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title" id="exampleModalLabel">Volume History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="">
+                        <div class="m-table__main">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="VolumeHistoryGrid" class="table table-bordered"></table>
+                                <div id="VolumeHistoryGrid_Pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*<script src="@Url.Content("~/js/ProjectUpdates/ProjectUpdatesHistory.js")" asp-append-version="true"></script>
+*@
+<script src="@Url.Content("~/js/ProjectUpdates/ProjectUpdatesHistory.min.js")" asp-append-version="true"></script>
+

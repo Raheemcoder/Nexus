@@ -1,0 +1,459 @@
+﻿@model IssueTracker
+@{
+    ViewData["Title"] = "Issue Tracker";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+    var userRole = Convert.ToInt32(Context.Session.GetString("RoleId"));
+}
+
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+
+<div class="tracker-support-pages">
+
+    @*header link section*@
+    <section>
+        <div class="">
+            <div class="-m_title_ ">
+                <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Issue Tracker</h4>
+            </div>
+            @if (Convert.ToString(Context.Session.GetString("projectId")) != "")
+            {
+                var projectName = Context.Session.GetString("projectName");
+                var projectId = Context.Session.GetString("projectId");
+                <input type="hidden" id="selectedProjectName" value="@projectName" />
+                <input type="hidden" id="selectedProjectId" value="@projectId" />
+            }
+        </div>
+    </section>
+
+    @*hidden Fields*@
+    <section>
+        <input type="hidden" id="AssignedtoList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.AssignedtoList)" />
+        <input type="hidden" id="AllDropDownList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.AllDropDownList)" />
+        <input type="hidden" id="userRole" value="@userRole" />
+    </section>
+
+    @if (userRole != 4 && userRole != 3 && userRole!=6)
+    {
+        @*To show response message*@
+        <section>
+            <div id="response-message-div" class="m-login__erromsg hide">
+                <div class="alert alert-success alert-dismissible d-flex justify-content-between" role="alert" id="response-message">
+                </div>
+            </div>
+        </section>
+
+        @*Add Issue section*@
+        <section class="tracker-support">
+            <div class="row">
+
+                <div class="col-width2 ml-2">
+                    <div class="hub-multiselect">
+                        <div class="form-group">
+                            <label class="control-label">HUB <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.HubList, new SelectList(Model.HubList, "HubId", "HubName", ""),
+                           new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "selected-hub" })
+                            <span class="text-danger hide">Please select HUB</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width4">
+                    <div class="form-group">
+                        <label class="control-label">Issue Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="2" name="ISSUEDESCRIPTION" id="issue-desc"></textarea>
+                        <span class="text-danger hide">Please enter issue description</span>
+                    </div>
+                </div>
+                <div class="col-width2 trackersupport_calendericon">
+                    <div class="form-group">
+                        <label class="control-label">Issue Identification Date <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control date_text_freezed" name="ISSUEIDENTIFICATIONDATE" id="issue-iden-date" readonly founded-date />
+                        <i class="fas fa-calendar"></i>
+                        <span class="text-danger hide">Please enter issue identification date</span>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Impact Assessment <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.ImpactAssessementList, new SelectList(Model.ImpactAssessementList, "ImpactId", "ImpactName", ""),
+                       new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "selected-impact-ass" })
+                        <span class="text-danger hide">Please select impact assessment</span>
+                    </div>
+                </div>
+                <div class="col-width1 sml">
+                    <div class="form-group">
+                        <label class="control-label">Impacted Task <span class="text-danger">*</span></label>
+                        <div class="mt-2 ml-2">
+                            <i class="fas fa-list issue-tracker-add-icons" title="Impacted Task" id="open-task-popup"></i>
+                            <span class="text-danger hide">Please select impacted task</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width1 sml">
+                    <div class="form-group">
+                        <label class="control-label">Actions </label>
+                        <div class="mt-2 ml-2">
+                            <i class="fas fa-plus-circle issue-tracker-add-icons" title="Actions" id="open-action-popup"></i>
+                            <span class="text-danger hide">Please fill the action completely</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width2 mt-3">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="">
+                            <button type="button" class="btn btn-success" id="save-issue">Save Issue</button>
+                        </div>
+                        <div class="d-flex excel_expand align-items-center">
+                            <div class="images_excel ">
+                                <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                            </div>
+                            <div>
+                                <div class="expand_initiate table_expand">
+                                    <div>
+                                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+    @if (userRole == 4 || userRole == 3 || userRole==6)
+    {
+        <div class="d-flex excel_expand align-items-center justify-content-end">
+            <div class="images_excel ">
+                <img src="@Url.Content("~/N_assets/images/excel.png")" title="Excel download" id="exceldownload" />
+            </div>
+            <div>
+                <div class="expand_initiate table_expand">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    @*List jqgrid*@
+    <section class="hide_grid">
+        <div class="animate__animated2 slideInUp mt-1">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height issue_list">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="list-issuetracker-jqgrid" class="table table-bordered"></table>
+                                <div id="list-issuetracker-pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+@*Add Action Popup*@
+<div id="addActionPopup" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">Add Issue Tracker Action</h4>
+                <button type="button" class="close close-action-popup"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Action Plan <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" id="action-plan" autocomplete="off"></textarea>
+                            <span class="text-danger hide">Please Enter action plan</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Assigned To <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="action-assigned-to" data-assigned-to />
+                            <span class="text-danger hide select-user">Please select user </span>
+                            <span class="text-danger hide select-from-list">Please select user from the list</span>
+                            <span class="text-danger hide already-selected">user has been already selected</span>
+                            <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Due Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control date_text_freezed" id="action-due-date" readonly due-date />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please select due date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Priority <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.Priority, new SelectList(Model.PriorityList, "PriorityId", "PriorityName"), "Select",
+                            new { @class = "form-control", @id = "action-selected-priority" })
+                            <span class="text-danger hide">Please select Priority</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Status <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.Status, new SelectList(Model.StatusList, "StatusId", "StatusName"), "Select",
+                            new { @class = "form-control", @id = "action-selected-status" })
+                            <span class="text-danger hide">Please select status</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Updates From The Owner</label>
+                            <textarea class="form-control" rows="2" id="action-owner-update" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Closed On Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="action-closed-date" readonly disabled closed-date data-action-closed-date />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please select closed on date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Closing Remarks <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" id="action-closed-remark" disabled autocomplete="off" data-action-closed-remark></textarea>
+                            <span class="text-danger hide">Please enter closing remarks</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <div class="">
+                            <button class="btn btn-success" id="add-action-to-table">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="grid_view listgrid_table without_filter width_100 data_tablegrid" id="grid">
+                        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                            <div class="">
+                                <div class="table-responsive" id="action-table">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*Edit Issue Popup*@
+<div id="editIssuePopup" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Issue: <b class="edit-issue-no"></b></h4>
+                <button type="button" class="close close-edit-popup"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">HUB <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.HubList, new SelectList(Model.HubList, "HubId", "HubName", ""),
+                           new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "edited-selected-hub" })
+                            <span class="text-danger hide">Please select HUB</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Issue Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" name="ISSUEDESCRIPTION" id="edited-issue-desc"></textarea>
+                            <span class="text-danger hide">Please Enter Issue Description</span>
+                        </div>
+                    </div>
+                    <div class="col-width2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Issue Identification Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control date_text_freezed" name="ISSUEIDENTIFICATIONDATE" id="edited-issue-iden-date" readonly founded-date />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please Enter Issue Identification Date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Impact Assessment <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.ImpactAssessementList, new SelectList(Model.ImpactAssessementList, "ImpactId", "ImpactName", ""),
+                            new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "edited-selected-impact-ass" })
+                            <span class="text-danger hide">Please select Impact Assessment</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Impacted Task <span class="text-danger">*</span></label>
+                            <div class="mt-2 ml-2">
+                                <i class="fas fa-list" style="cursor:pointer;" id="open-edit-impactedtask-popup"></i>
+                                <span class="text-danger hide">Please select Impact Task</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="grid_view listgrid_table without_filter width_100 data_tablegrid" id="grid">
+                        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                            <div class="">
+                                <div class="table-responsive" id="edit-issue-table">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-right mt-3">
+                        <button type="button" class="btn btn-success mr-2" id="save-edited-issue">Save Issue</button>
+                        <button type="button" class="btn btn-cancel mr-1 close-edit-popup">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Impacted Task popup*@
+<div id="task-modal" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Impacted Task
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <span class="text-success alt-saved-task" style="display:none;">Task is saved successfully</span>
+                        <span class="text-success alt-delete-task" style="display:none;">Task is deleted successfully</span>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label">Task <span class="text-danger">*</span></label>
+                            <input type="text" id="new-task" class="form-control noSpacesField" style="height:28px;" placeholder="Enter the Task" />
+                            <span class="text-danger Err-empty-task" style="display:none;">Please enter task</span>
+                            <span class="text-danger Err-exists-task" style="display:none;">Task already exists</span>
+                        </div>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label">HUB <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.SelectedImpactedTaskHub, new SelectList(Model.HubList, "HubId", "HubName", ""), new { @class = "form-control textvalid example-dropUp", @data_multiselect = "", @multiple = "multiple" })
+                            <span class="text-danger Err-task" style="display:none;">Please select HUB</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group mg-17">
+                            <button class="btn btn-success" id="add-new-task" title="Add Task" type="button">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="task-grid" class="table table-bordered"></table>
+                                    <div id="taskgrid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Impacted Task Popup for List Page*@
+<div id="task-modalforlist" class="modal fade tracker-support " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Impacted Task</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="task-grid-list" class="table table-bordered"></table>
+                            <div id="taskgridlist-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Update from owner Popup*@
+<div id="owner-update-modalforlist" class="modal fade tracker-support " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Updates From the Owner</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="owner-update-grid-list" class="table table-bordered"></table>
+                            <div id="owner-update-grid-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Confirm changes popup*@
+<div id="confirmDateChange" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Confirm Box</h6>
+            </div>
+            <div class="modal-body">
+                <span id="confirmDateChangemsg">
+                </span>
+                <div class="col-md-12 mt-3 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="confirmDateChangeSave">Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="confirmDateChangeCancel">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectTracker/IssueTracker.js")"></script>

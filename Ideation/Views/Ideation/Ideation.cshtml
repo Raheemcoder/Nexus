@@ -1,0 +1,306 @@
+﻿@using Microsoft.AspNetCore.Mvc.Rendering;
+@using Microsoft.Extensions.Primitives;
+@using NonFactors.Mvc.Grid;
+@using System.Linq;
+@model Ideation.Models.IdeationData
+@{
+    ViewBag.Title = "Ideation";
+}
+
+<div class="card-box mb-0 sg">
+    <br />
+
+    @using (Html.BeginForm("Ideation", "Ideation", FormMethod.Get))
+    {
+        <div class="row sub_form">
+            <div class="form-fields-width">
+                <div class="form-group formposition">
+                    <label class="control-label">
+                        Start Date
+                    </label>
+                    @Html.TextBoxFor(model => model.StartDate,new { @class = "form-control", @readonly="readonly"})
+                    <i class="fas fa-calendar-check-o datetpicker_icon" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="form-fields-width">
+                <div class="form-group formposition">
+                    <label class="control-label">
+                         End Date
+                    </label>
+                    @Html.TextBoxFor(model => model.EndDate,new { @class = "form-control", @readonly="readonly"})
+                    <i class="fas fa-calendar-check-o datetpicker_icon" aria-hidden="true"></i>
+                </div>
+            </div>
+            <div class="form-fields-width">
+                <div class="form-group">
+                    <label class="control-label">
+                        Platform Domain
+                    </label>
+                    @Html.DropDownListFor(model => model.BusinessDivisionId ,Model.BusinessDivisionList,"All",new { @class = "form-select"})
+                </div>
+            </div>
+            <div class="form-fields-width">
+                <div class="form-group">
+                    <label class="control-label">
+                         Platform Type
+                    </label>
+                    @Html.DropDownListFor(model => model.PlatformTypeId ,Model.PlatformTypeList,"All",new { @class = "form-select"})
+                </div>
+            </div>
+            <div class="form-fields-width">
+                <div class="form-group">
+                    <label class="control-label">
+                         Geographic Scope
+                    </label>
+                    @Html.DropDownListFor(model => model.GeographicId ,Model.GeographicList,"All",new { @class = "form-select"})
+                </div>
+            </div>
+            <div class="form-fields-width">
+                <div class="form-group">
+                    <label class="control-label">
+                         Status
+                    </label>
+                    @Html.DropDownListFor(model => model.StatusId ,Model.StatusList,"All",new { @class = "form-select"}) 
+                </div>
+            </div>
+            <div class="form-fields-width_button">
+                <div class="form-group">
+                    <button type="submit" class="btn  btn-info c-add-details waves-light waves-effect m-b-10 mt-25" id="search" title="Search"><i class="fas fa-search" aria-hidden="true"></i></button>
+                    @*<button type="submit" id="search" class="btn btn-info btn-sm src_bt search_alignment"><i class="fas fa-search" aria-hidden="true"></i></button>*@
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12 text-left">
+        <a href="@(Url.Action("ExportIndex","Ideation") + ViewContext.HttpContext.Request.QueryString)" data-form-method="post">Export</a>
+        </div>
+        <div class="id_tbl">
+            @(Html
+        .Grid(Model.IdeationListData)
+        .Build(columns =>
+        {
+        columns.Add(model => model.InnovationId).Titled("ID").Filterable(false);
+        columns.Add(model => model.BusinessDivisionName).Titled("Platform Domain").Filterable(false);
+        columns.Add(model => model.InnovationTitle).Titled("Title").Filterable(GridFilterCase.Lower);
+        columns.Add(model => model.PlatformTypeName).Titled("Platform Type").Filterable(false);
+        columns.Add(model => model.StatusName).Titled("Status").Filterable(false).RenderedAs(s=>s.StatusName=="Pending"?
+        ("<span class='bold'>"+s.StatusName+"</span>"):("<span class='text-grey'>"+s.StatusName+"</span>")).Encoded(false);
+        columns.Add(model => model.CreatedBy).Titled("Submitted By").Filterable(GridFilterCase.Lower);
+        columns.Add(model => model.CreatedDate).Titled("Submitted Date").Filterable(false);
+        })
+        .Empty("No data found")
+        .Filterable() // Enables single filtering for not explicitly configured property expression columns.
+        .Pageable(pager =>
+        {
+        //pager.PageSizes = new Dictionary<Int32, String> { { 0, "All" }, { 2, "2" }, { 4, "4" } };
+        // pager.ShowPageSizes = true;
+        pager.PagesToDisplay = 3;
+        pager.RowsPerPage = 15;
+        })
+
+        .Sortable()
+        
+        )
+        </div>
+
+    }
+</div>
+
+
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" role="dialog" data-bs-dismiss="modal">
+    <div class="modal-dialog ideation modal-lg">
+        <div class="modal-content idti">
+            <div class="modal-header -bg-green">
+                <button type="button" class="btn btn-primary cl_bt close" data-bs-dismiss="modal">
+                    @*<img src="@Url.Content("../images/Undo-icon.png")" class="undoicon" />*@
+                    <span>
+                        <i class="fas fa-times undoicon" aria-hidden="true" data-bs-dismiss="modal" onclick="closeModalPopup()" id="modalclose"></i>
+                    </span>
+                </button>
+                <h4 class="modal-title"><span id="selectedRoomSpan" class="selected-room__title"></span>Innovation Details</h4>
+            </div>
+            <div class="modal-body mdg">
+                <table class="table table-bordered" id="modal_table">
+                    <thead>
+                        <tr class="mod_th">
+                            <th scope="col">Platform Domain</th>
+                            <th scope="col">Submitted By</th>
+                            <th scope="col">Submitted Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Approved/Declined By</th>
+                            <th scope="col">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr></tr>
+                    </tbody>
+                </table>
+
+                <div class="download-btn-flex">
+                    <div>
+                        <h4 class="isf" id="modal_innovationtile"></h4><br />
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group text-right">
+                            <label class="control-label pb-0 mb-0" id="filelabel">
+                                Download File (Image, PDF, PPT)
+                            </label>
+                            <a class="download-btn float-right mb-3" href="#" target="_blank" id="model_filedownload"><i class="fas fa-download" aria-hidden="true"></i>Download/View File</a>
+                        </div>
+                    </div>
+                </div>
+                <input type="hidden" id="modal_innovationid" />
+                <input type="hidden" id="modal_CreatedBy" />
+
+                <form>
+                    <div class="row fr">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Keywords
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="modal_keywords" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Domain
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_bd" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Geographic Scope
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_gs" />
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Type<span class="color-red">*</span>
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="modal_pt" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Other
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_other" />
+                            </div>
+                        </div>
+                        
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Strategic Fit<span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_st" />
+                            </div>
+                        </div>
+
+
+                       @* <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Description <span class="color-red">*</span>
+                                </label>
+                                <textarea class="form-control" readonly="readonly" id="modal_description"></textarea>
+                            </div>
+                        </div>*@
+
+                        <div class="col-md-7">
+                            <div class="form-group" id="remarkfield">
+                                <label class="control-label" id="remarkLabel">
+                                    Remarks @*<span class="color-red">*</span>*@
+                                </label>
+                                <textarea class="form-control"  id="modal_remarks" ></textarea>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group" id="remarkDrop">
+                                <label class="control-label">
+                                    Status <span class="color-red">*</span>
+                                </label>
+                                @Html.DropDownListFor(model => model.RemarkId,Model.RemarksList,"--Select--",new { @class = "form-select form-control", @id="modal_status"})
+                                <span class="color-red valStatus">Select Status</span>
+                            </div>
+
+                        </div>
+                        
+                        <div class="col-md-12">
+                            <div class="save_buttons float-right text-right hgy" id="modal_buttons">
+                                @*<button type="button" class="btn-sb" id="model_sendback">Send Back</button>
+                                <button type="button" class="btn-cnl" id="model_reject">Reject</button>
+                                <button type="button" class="btn-ap" id="model_approve">Approve</button>*@
+                                <button type="button" class="btn-add" id="model_submit">Submit</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group" id="mailDrop">
+                                <label class="control-label">
+                                    Mail Content
+                                </label>
+                                <div id="mail_content">
+                                    @Html.TextAreaFor(model => model.RemarkDiscription,new { @class = "form-control", @id="modal_emailcontent",style="height: 193px;" })
+                                </div>     
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<!--Remark Modal-->
+<div class="modal fade" id="remarkModal" role="dialog" data-bs-dismiss="modal">
+    <div class="modal-dialog ideation modal-lg">
+        <div class="modal-content idti">
+            <div class="modal-header -bg-green">
+                <button type="button" class="close" data-bs-dismiss="modal" id="modalclose">
+                    @*<img src="@Url.Content("../images/Undo-icon.png")" class="undoicon" />*@
+                    <span>
+                        <i class="fas fa-times undoicon" aria-hidden="true" data-bs-dismiss="modal" onclick="closeModalPopup()" id="modalclose"></i>
+                    </span>
+                </button>
+                <h4 class="modal-title"><span id="selectedRoomSpan" class="selected-room__title"></span>Innovation Details</h4>
+            </div>
+            <div class="modal-body mdg">
+                <table class="table table-bordered" id="modal_table">
+                    <thead>
+                        <tr class="mod_th">
+                            <th scope="col">Platform Domain</th>
+                            <th scope="col">Submitted By</th>
+                            <th scope="col">Submitted Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Approved/Declined By</th>
+                            <th scope="col">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody id="remark_body">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+

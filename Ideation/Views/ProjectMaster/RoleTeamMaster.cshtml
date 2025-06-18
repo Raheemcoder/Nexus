@@ -1,0 +1,90 @@
+﻿@using Newtonsoft.Json;
+@model Ideation.Models.TemplateData
+@{
+    ViewBag.Title = "Role Team Master";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+
+}
+<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+<style>
+    .add_grid__ .m-table__main .ui-jqgrid .ui-jqgrid-htable {
+        padding-right: 17px !important;
+    }
+
+    .ui-jqgrid-hdiv table th {
+        padding: 1px 10px !important;
+    }
+
+    .add_grid__ .ui-jqgrid-bdiv table td {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+
+    input.form-control.tags.ui-autocomplete-input {
+        height: 29px;
+    }
+</style>
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+
+<div class="card-box mb-1 card_height pb-3 pt-2 sg">
+
+    <div class="row justify-content-between">
+
+        <div class="col-md-2">
+            <div class="float-left">
+                <div class="page-title">
+                    <h4>Role Team Master</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="text-right">
+                <button type="button" class="btn btn-excel" id="ExcelDownload" title="Excel Download"><img src="@Url.Content("~/images/excel.png")"></button>
+                <button type="button" class="btn-add ex_bt excel_btn" id="saveButton">Save</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="add_grid__">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="RoleBudgetGrid" class="table table-bordered"></table>
+                            <div id="pager_RoleBudgetGrid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade" id="SavePopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Save the Details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveOk" class="btn btn-xs btn-add c-btn" data-bs-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-xs btn-rej c-btn" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectMaster/RoleTeamMaster.js")" asp-append-version="true"></script>

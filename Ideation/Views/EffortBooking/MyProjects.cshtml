@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewData["Title"] = "My Projects";
+    Layout = "~/Views/Shared/EffortBookingLayout.cshtml";
+}
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>My Projects</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div>
+
+        <div class="d-flex excel_expand align-items-center justify-content-end">
+            <div class="images_excel ">
+                <img src="@Url.Content("~/assets/images/excel.png")" />
+            </div>
+            <div>
+                <div class="expand_initiate table_expand pr-3">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="animate__animated2 slideInUp mt-1">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll -project_master_scroll " ">
+                                <table id="myProjectsJqgrid" class="table table-bordered"></table>
+                                <div id="pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script src="@Url.Content("~/js/EffortBooking/MyProjects.js")"></script>
+
+

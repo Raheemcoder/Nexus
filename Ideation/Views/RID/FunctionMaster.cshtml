@@ -1,0 +1,153 @@
+﻿@model Ideation.Models.FunctionData
+
+@{
+    ViewData["Title"] = "Function Master";
+    Layout = "~/Views/Shared/RIDLayout.cshtml";
+}
+<style>
+    .jqgfirstrow {
+        display: contents !important;
+    }
+
+    .btn-icon -delete {
+        margin-left: 10px;
+    }
+
+    .pull-right {
+        float: right;
+    }
+
+    td span.text-danger {
+        line-height: 1;
+        background: rgba(255, 49, 49,.15) !important;
+        padding: 1px 10px;
+        border-radius: 50px;
+        font-weight: 500;
+        font-size: 11px;
+        width: 60px;
+    }
+</style>
+<link href="@Url.Content("~/assets_rid/css/rid.css")" rel="stylesheet" />
+<section class="animate__animated1 slideInUp  ">
+    <div class="-m_pagetitle">
+        <div class="-m_title">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/RID/RIDIndex")" class="RID_PageLink">Cosmetics</a>
+                </span>
+                <label style="font-size:16px;">/ Function Master</label>
+            </h4>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div class="d-flex">
+        <div class="col-md-12 row">
+            <div class="col-md-3 m-0 pl-0 pr-0">
+                <label class="col-sm-auto col-form-label">Function Name:<span class="color-red">*</span> </label>
+                <div class="col-lg-12">
+                    @Html.HiddenFor(m => m.FunctionId)
+                    @Html.HiddenFor(m => m.Status)
+                    @Html.TextBoxFor(m => m.FunctionName, new { @class = "form-control alphanumeric textvalid  noSpacesField", @autocomplete = "off" })
+                    <span id="FunctionName_valid" class="text-danger _hide">Please enter Function Name</span>
+                    <span class="ml-10 text-danger" id="Function_Err"></span>
+                </div>
+            </div>
+            <div class="col-md-1 m-0 pl-0 pr-0 showStatus">
+                <label class="col-sm-auto col-form-label pl-0 pr-0">Status</label>
+                <div class="">
+                    <input type="radio" class="viewTypegrid" name="StatusType" id="Filter_Active" value="0" checked></input>
+                    <label for="Filter_Active">Active </label>&nbsp; &nbsp;
+                    <input type="radio" class="viewTypegrid" name="StatusType" id="Filter_InActive" value="1"></input>
+                    <label for="Filter_InActive">In Active</label>
+                </div>
+            </div>
+            <div class="col-md-3 mt-4 mb-3">
+                <button type="button" class="btn btn-success mr-1 mb-3 " id="savebtn">Save</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="grid_view listgrid_table" id="grid">
+        <div class="d-none">
+            <div class="list_search">
+                <ul class="list_grid">
+
+                    <li>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                            <i class="flaticon-fullscreen fullscreen_expand fullscreen-btn "></i>
+                            <i class="flaticon-close-1 fullscreen_minimize exitscreen-btn"></i>
+                        </button>
+                    </li>
+                    <li>
+                        <button type="button" class="btn-excel mr-1 ml-1 mt-0" title="Excel Download">
+                            <img src="~/assets/images/excel.png" />
+                        </button>
+                    </li>
+                    <li>
+                        <input type="text" id="global-search" class="global-search search_filter" placeholder="Search...">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+            <div class="">
+
+                <div class="col-md-12">
+                    <div class="row">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<section>
+    <div class="grid_view listgrid_table" id="grid">
+        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+            <div class="col-md-12 pt-5">
+                <div class="row">
+                    <div class="m-table__main" id="">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="function_list" class="table table-bordered"></table>
+                            <div id="pager_expected1_"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="confirmpopup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Confirm Box</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="confirmpopupmesssage">Are you sure you want to delete</span>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-success" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="~/js/rid/FunctionMaster.js"></script>*@
+<script src="@Url.Content("~/js/rid/FunctionMaster.min.js")" asp-append-version="true"></script>
+

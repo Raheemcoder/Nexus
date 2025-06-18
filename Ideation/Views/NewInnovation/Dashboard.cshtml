@@ -1,0 +1,414 @@
+﻿@model Ideation.Models.DashBoard
+@{
+    ViewData["Title"] = "Dashboard";
+    Layout = "/Views/Shared/Ideation_Layout.cshtml";
+}
+<section>
+
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span> Dashboard</h4>
+        </div>
+        @*<div class="-m_title-Buttons">
+            <div class=" button button-add">
+                <a href="@Url.Content("~/")" class=" ">
+                    <i class="fas fa-plus color-white"></i> <span class="color-white">User</span>
+                </a>
+            </div>
+            </div>*@
+    </div>
+</section>
+
+
+<section>
+    <div>
+        <ul class="dashboard_status status_legends mt-2 mb-2">
+            <li class="number_count first_number"></li>Approved
+            <li class="number_count second_number"></li>Pending
+            <li class="number_count third_number"></li>Declined
+        </ul>
+    </div>
+    <div class="dashboard_table_ideation table-responsive">
+        <table class="table table-bordered text-center">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>AHP</th>
+                    <th>CPD</th>
+                    <th>FOODS</th>
+                    <th>OTHER</th>
+                    <th>PACKAGING</th>
+                    <th>PHARMA</th>
+                    <th>
+                        PROCESS ENGINEERING
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th><div class="acti_header">ACTIVES</div></th>
+
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count third_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        @*<ul class="dashboard_status">
+                                <li class="number_count first_number"><span>1</span></li>
+                                <li class="number_count second_number"><span>2</span></li>
+                                <li class="number_count third_number"><span>3</span></li>
+                            </ul>*@
+                    </td>
+                </tr>
+                <tr>
+                    <th><div class="acti_header">CLAIMS</div></th>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count third_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <th><div class="acti_header">OTHER</div></th>
+                    <td>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <th><div class="acti_header">PACKAGING</div></th>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count third_number" data-target="#dashboard_data" data-toggle="modal"><span>3</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count third_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <th><div class="acti_header">PROCESS TECHNOLOGY</div>	</th>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        @*<ul class="dashboard_status">
+                                <li class="number_count first_number"><span>1</span></li>
+                                <li class="number_count second_number"><span>2</span></li>
+                                <li class="number_count third_number"><span>3</span></li>
+                            </ul>*@
+                    </td>
+                </tr>
+                <tr>
+                    <th><div class="acti_header">PRODUCT</div></th>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <th><div class="acti_header">PRODUCT TECHNOLOGY</div>		</th>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count first_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="dashboard_status">
+                            <li class="number_count second_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                            <li class="number_count third_number" data-target="#dashboard_data" data-toggle="modal"><span>1</span></li>
+                        </ul>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+                <tr>
+                    <th><div class="acti_header">SUSTAINABILITY</div></th>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+</section>
+
+
+<div id="dashboard_data" class="modal fade layout_popup ideation_css" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    DashBoard Data
+
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead>
+                        <tr class="bd1">
+                            <th scope="col"></th>
+                            <th scope="col">ID</th>
+                            <th scope="col">Platform Domain</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">Platform Type</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Submitted By</th>
+                            <th scope="col">Submitted Date</th>
+                        </tr>
+                    </thead>
+                    <tbody class="tb" id="table_data">
+                        <tr data-toggle="modal" data-target="#bcw">
+                            <td><div data-toggle="modal" data-target="#dashboard_dataview" class="cursor"><i class="fas fa-eye" aria-hidden="true" title="Eye"></i></div> </td>
+                            <td>37</td>
+                            <td>AHP</td>
+                            <td>Test</td>
+                            <td>Actives</td>
+                            <td>Pending</td>
+                            <td>tp051</td>
+                            <td>16 Jul 2022</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="dashboard_dataview" class="modal fade layout_popup ideation_css new_innovation" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    DashBoard Data
+
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="download-btn-flex">
+                    <div>
+                        <h4 class="" id="dbmodal_innovationtile">Test</h4><br>
+                    </div>
+
+                </div>
+                <form>
+                    <div class="row fr">
+                        <input type="hidden" id="dbmodal_innovationid" value="37">
+                        <div class="col-md-4">
+
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Keywords
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="dbmodal_keywords" value="test">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Domain
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_bd" value="AHP">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Geographic Scope
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_gs" value="APAC">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Type<span class="color-red">*</span>
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="dbmodal_pt" value="Actives">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Other
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_other">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Strategic Fit<span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_st" value="First to Himalaya,First to Market,Line Extension">
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/Innovation/Dashboard.js")"></script>
+
+
+
+
+

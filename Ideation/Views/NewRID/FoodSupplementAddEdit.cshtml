@@ -1,0 +1,637 @@
+﻿@model Ideation.Models.RID
+@{
+    var isFrom = @Model.IsFrom;
+    var pageName = @Model.IsFrom == 1 ? "New FS" : "Edit FS";
+    ViewData["Title"] = pageName;
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var division = @Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.DivisionName;
+    var activesName = "Active ";
+    var activesId = "";
+    var serializedIngredientTypeList = System.Text.Json.JsonSerializer.Serialize(Model.IngredientTypeList);
+}
+
+<style>
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #e6e6e6;
+    }
+
+    .jqgfirstrow {
+        display: contents !important;
+    }
+
+        .jqgfirstrow td {
+            padding: 0px !important
+        }
+
+    .ui-jqgrid .ui-jqgrid-btable td, .ui-jqgrid .ui-jqgrid-htable th {
+        padding: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable td {
+        padding: 5px !important
+    }
+
+    .ui-jqgrid td input, .ui-jqgrid td select, .ui-jqgrid td textarea {
+        margin: 1px 0px;
+        padding: 1px 3px;
+        width: 100%;
+    }
+
+    .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        text-align: center !important;
+    }
+
+    .m-table__main .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+        font-size: 10px !important;
+        font-weight: normal
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        border: 1px solid #dedede !important;
+        border-right: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable {
+        width: 100% !important;
+    }
+
+    .col-button {
+        width: 3%;
+        padding: 3px;
+    }
+
+    .e-num-div {
+        width: 13.5% !important;
+    }
+
+    .modal-xl {
+        max-width: 98% !important;
+    }
+
+    .header-title-color {
+        border-bottom: 0px solid #9d9d9d;
+        font-size: 14px;
+        font-weight: normal;
+        margin-bottom: 10px;
+        background: #fccaa2;
+        color: #000;
+        padding: 5px 10px;
+        line-height: 1;
+    }
+
+    .modal .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #e6e6e6;
+        padding: 5px !important;
+    }
+
+    .modal label.control-label {
+        margin-bottom: 5px;
+        line-height: 1;
+    }
+
+    .modal-title .text-right b {
+        color: #f86e00;
+    }
+
+    #preview-ing-details-popup th {
+        background: #ffe0ca !important;
+        border: 1px solid #000;
+        width: 130px;
+    }
+
+    #preview-ing-details-popup td {
+        border: 1px solid #000;
+    }
+
+    .popup img {
+        height: 160px;
+        margin-bottom: 0px
+    }
+   
+    #preview-ing-details-popup .rich-text-editor-data b {
+        margin-top: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    div#preview-ing-details-popup {
+        background: #05050585;
+    }
+
+    #compliance-remarks-popup .modal-body, #preview-ing-details-popup .modal-body {
+        height: 75vh;
+        overflow: auto;
+    }
+
+    div#alertpopup {
+        z-index: 10000000;
+    }
+
+    .d-none, .cke_button__maximize {
+        display: none !important;
+    }
+
+</style>
+
+@*alert message*@
+<section>
+    <div id="message" class="m-login__erromsg">
+        @if (TempData["FS_SaveMessage"] != null)
+        {
+            <div class="alert @TempData["FS_SaveMessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+                @TempData["FS_SaveMessage"].ToString()
+                <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+            </div>
+        }
+    </div>
+</section>
+
+@*header link*@
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home/ </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division/ </a>
+                </span>
+                @pageName
+            </h4>
+        </div>
+    </div>
+</section>
+
+@*hidden fields*@
+<section>
+    @Html.HiddenFor(m => m.RegulatoryStatus)
+    @Html.HiddenFor(m => m.IngredientTypeId)
+    <input type="hidden" id="serializedIngredientTypeList" value="@serializedIngredientTypeList" />
+    @Html.HiddenFor(m => m.IsFrom)
+    @Html.HiddenFor(m => m.IngredientORRequestId)
+    @Html.HiddenFor(m => m.IngredientNameList)
+    @Html.HiddenFor(m => m.IngredientId)
+</section>
+
+@*tabs, headers, gird and buttons*@
+<section>
+
+    <div class="project_modules ingredient-tab-div">
+        <ul class="nav nav-tabs">
+
+            @foreach (var type in Model.IngredientTypeList)
+            {
+                @if (@type.KDSDescription == "Active")
+                {
+                    int spaceIndex = @type.IngredientTypeName.IndexOf(' ');
+                    if (spaceIndex != -1)
+                    {
+                        activesName += @type.IngredientTypeName.Substring(spaceIndex + 1) + "/";
+                    }
+                    else
+                    {
+                        activesName += @type.IngredientTypeName + "/";
+                    }
+                    activesId += @type.IngredientTypeId + ",";
+                }
+            }
+            @if (activesName.EndsWith("/"))
+            {
+                activesName = activesName.TrimEnd('/');
+            }
+            @if (activesId.EndsWith(","))
+            {
+                activesId = activesId.TrimEnd(',');
+            }
+            <li>
+                @*1 represents all active menus*@
+                <a href="javascript:void(0)" class="active all_content"
+                   onclick="TabSwitch(1,this)"
+                   IngredientTypeId="@activesId">
+                    @activesName
+                </a>
+            </li>
+
+            @foreach (var type in Model.IngredientTypeList)
+            {
+                @if (@type.KDSDescription != "Active")
+                {
+                    <li>
+                        @*2 represents inactive menus*@
+                        <a href="javascript:void(0)" class=""
+                           onclick="TabSwitch(2,this)"
+                           IngredientTypeId="@type.IngredientTypeId">
+                            @type.IngredientTypeName
+                        </a>
+                    </li>
+                }
+            }
+
+        </ul>
+        <div class="d-flex excel_expand align-items-end tabs_excel">
+            <div>
+                <div class="expand_initiate table_expand">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (@isFrom != 1)
+    {
+        <div class="ingredient-type-name-div">
+            <div class="d-flex align-item-center justify-content-between">
+                <b class="ing-type-name mb-2">
+                </b>
+                <div class="d-flex excel_expand align-items-end tabs_excel">
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+
+    <div class="page-headers mt-1">
+        <div>
+            <div class="row">
+
+                <div class="col-md-2 ingredient-type-div">
+                    <div class="form-group">
+                        <label class="control-label">Ingredient Type <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.IngredientTypeList,
+                        new SelectList(Model.IngredientTypeList.Where(i => i.KDSDescription == "Active"), "IngredientTypeId", "IngredientTypeName"), "Select",
+                        new { @class = "form-control", @id = "ingredient-type" })
+                        <span class="text-danger hide mandatory-field">Please select ingredient type</span>
+                    </div>
+                </div>
+                <div class="col-md-2 botanical-name-div">
+                    <div class="form-group">
+                        <label class="control-label">Botanical Name <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="botanical-name" autocomplete="off" />
+                        <span class="text-danger hide mandatory-field">Please enter botanical name</span>
+                    </div>
+                </div>
+                <div class="col-md-4 ing-name-div">
+                    <div class="form-group">
+                        <label class="control-label herb-lab-name">Ingredient Name (Sanskrit/ English) <span class="text-danger ">*</span></label>
+                        <label class="control-label other-lab-name">Ingredient Name <span class="text-danger ">*</span></label>
+                        <input type="text" class="form-control" id="ingredient-name" autocomplete="off" />
+                        <span class="text-danger hide mandatory-field">Please enter ingredient name</span>
+                        <span class="text-danger hide ingredient-exists mandatory-field">Ingredient name already exists</span>
+                    </div>
+                </div>
+                <div class="col-md-2 syn-div">
+                    <div class="form-group">
+                        <label class="control-label">Synonyms</label>
+                        <input type="text" class="form-control" id="synonyms" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-md-2 cas-no-div">
+                    <div class="form-group">
+                        <label class="control-label">CAS Number</label>
+                        <input type="text" class="form-control" id="cas-number" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-md-2 e-num-div">
+                    <div class="form-group">
+                        <label class="control-label">E Number</label>
+                        <input type="text" class="form-control" id="E-number" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="col-md-2 part-used-div hide">
+                    <div class="form-group">
+                        <label class="control-label">Part Used</label>
+                        <input type="text" class="form-control" id="part-used" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-md-2 solvents-used-div hide">
+                    <div class="form-group">
+                        <label class="control-label">Solvents Used</label>
+                        <input type="text" class="form-control" id="solvents-used" autocomplete="off" />
+                    </div>
+                </div>
+                <div class="col-md-2 markers-div hide">
+                    <div class="form-group">
+                        <label class="control-label">Markers/Phyto-constituents</label>
+                        <input type="text" class="form-control" id="marker" autocomplete="off" />
+                    </div>
+                </div>
+
+                <div class="col-button">
+                    <div class="filter_status prototype_filter mt-2 pt-1">
+                        <button class="btn btn-refresh" title="refresh" type="button" id="refresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="page-grid animate__animated2 slideInUp mt-1 modal-header-align">
+        <div class="">
+            <div class="">
+                <div class="add_ingradient">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="add-edit-grid" class="table table-bordered"></table>
+                            <div id="add-edit-grid-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-buttons float-right mt-1">
+        <div class="text-right">
+            <button type="button" class="btn btn-success mr-1" id="save-draft-fs">Save as draft</button>
+            <button type="button" class="btn btn-success mr-1" id="save-con-fs">Save &amp; Confirm</button>
+            @if (Model.IsFrom == 3)
+            {
+                <button type="button" class="btn btn-cancel" onclick="navigateMenu(3)">Back</button>
+
+            }
+            else
+            {
+                <button type="button" class="btn btn-cancel" onclick="navigateMenu(1)">Back</button>
+            }
+        </div>
+    </div>
+
+</section>
+
+@*page modals*@
+<section>
+
+    <div id="compliance-remarks-popup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Compliance Remarks
+                        <span class="text-right pl-5 ml-5">
+                            <b>Region: </b>
+                            <span class="cr-popup-reg-name"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name: </b>
+                            <span class="cr-popup-ing-name"></span>
+                        </span>
+                    </h4>
+                    <button type="button" class="close com-rem-popup-close"><span>&times;</span></button>
+                </div>
+                <div class="modal-body popup">
+                    <div class="row mb-2">
+                        <div class="d-flex align-item-center justify-content-end">
+                            <div class="right_top m-0">
+                                <ul>
+                                    <li class="preview" onclick="OpenPreview()"><i class="fa fa-eye"></i> Preview</li>
+                                </ul>
+                            </div>
+                            <div class="mr-2 mt-1">
+                                <i class="flaticon-download color-blue" role="button"
+                                   id="download-com-rem-pdf-ondemand" title="Compliance remarks Pdf"> PDF Download</i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="region-group-jqgrid" class="table table-bordered"></table>
+                        </div>
+                    </div>
+                    <div class="col-md-12 p-0 mt-3">
+                        <div class="form-group">
+                            <label class="control-label">Additional Information</label>
+                            <textarea rows="1" class="form-control" id="compliance-remarks-editor"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-3 p-0">
+                        <div class="header-title-color cr-popup-recc-header">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">In Medicine </label>
+                                    <textarea class="form-control" rows="3" id="in-med-recommendation"></textarea>
+                                    <span class="text-danger hide mandatory-field">Please enter in medicine recommendation</span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">In Food Supplement </label>
+                                    <textarea class="form-control" rows="3" id="in-fs-recommendation"></textarea>
+                                    <span class="text-danger hide mandatory-field">Please enter in food supplement recommendation</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success mr-1" id="save-com-rem">Save</button>
+                    <button type="button" class="btn btn-cancel com-rem-popup-close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="preview-ing-details-popup" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Compliance Remarks Preview
+                        <span class="text-right pl-5 ml-5">
+                            <b>Region:</b>
+                            <span class="crp-popup-reg-name"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name :</b>
+                            <span class="crp-popup-ing-name"></span>
+                        </span>
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body popup">
+
+                    <div class="table-responsive">
+                        <table class="table table-boardered crp-popup-reg-grp-data">
+                        </table>
+                    </div>
+
+                    <div class="col-md-12 mt-3 p-0">
+                        <div class="header-title-color">
+                            Additional Information
+                        </div>
+                    </div>
+                    <div class="table rich-text-editor-data crp-popup-add-info-data">
+                    </div>
+
+                    <div class="col-md-12 mt-3 p-0">
+                        <div class="header-title-color crp-popup-recc-header">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">In Medicine </label>
+                                    <textarea class="form-control crp-in-med-recommendation" rows="3" readonly></textarea>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">In Food Supplement </label>
+                                    <textarea class="form-control crp-in-fs-recommendation" rows="3" readonly></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="claims-info-popup" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Claims Info
+                        <span class="text-right pl-5 ml-5">
+                            <b>Region: </b>
+                            <span class="ci-popup-reg-name"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name: </b>
+                            <span class="ci-popup-ing-name"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Category: </b>
+                            <span class="ci-popup-cat-name"></span>
+                        </span>
+                    </h4>
+                    <button type="button" class="close c-info-popup-close"><span>&times;</span></button>
+                </div>
+                <div class="modal-body popup">
+                    <div class="col-md-12 claims-info-ck-div">
+                        <div class="form-group">
+                            <label class="control-label">Claims Info</label>
+                            <textarea rows="1" class="form-control" id="claims-info-editor"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success mr-1" id="save-cla-info">Save</button>
+                    <button type="button" class="btn btn-cancel c-info-popup-close">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="compliance-remarks-popup-inactives" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Compliance Remarks
+                        <span class="text-right pl-5 ml-5">
+                            <b>Region: </b>
+                            <span class="cir-popup-reg-name"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name: </b>
+                            <span class="cir-popup-ing-name"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Category: </b>
+                            <span class="cir-popup-cat-name"></span>
+                        </span>
+                    </h4>
+                    <button type="button" class="close com-rem-popup-close-inactives"><span>&times;</span></button>
+                </div>
+                <div class="modal-body popup">
+                    <div class="col-md-12 com-rem-ck-div-inactives">
+                        <div class="form-group">
+                            <label class="control-label">Compliance Remarks</label>
+                            <textarea rows="1" class="form-control" id="compliance-remarks-editor-inactives"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-cancel com-rem-popup-close-inactives">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="confirm-popup-with-remarks" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Remarks</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="panel panel-primary filterable mdp">
+                            <div class="id_tbl d-flex flex-column">
+                                <span class="mb-2">Remarks:</span>
+                                <textarea id="remarks-text" class="remarksfiled noSpacesField mb-2 p-2 form-control" rows="5"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" id="confirm-save">Save</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade sv hd" id="confirmationPopUpforSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <span class="msg-1" id="confirmationmsgforsave">
+                    </span>
+
+                    <div class="col-md-12">
+                        <div class="float-right text-right">
+                            <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div class="GenerateFSPdf" hidden></div>
+
+<script src="@Url.Content("~/js/NewRID/FoodSupplementAddEdit.js")"></script>

@@ -1,0 +1,419 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewData["Title"] = "Budget Transfer";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+
+<link rel="stylesheet" href="@Url.Content("~/css/PIStyles.css")" />
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Budget Transfer</h4>
+        </div>
+    </div>
+</section>
+<section>
+    <input type="hidden" id="ProjIdForTransferHistory" />
+</section>
+<section>
+
+    <div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong id="alertText"></strong>
+    </div>
+
+    <div class="card-box mb-1 card_height pb-3 sg test123">
+
+        <div class="d-flex align-items-center justify-content-between">
+
+            <div class="d-flex mt-3 mb-1 pt-2">
+                <span class="icongap d-flex">
+                    <span class="text-warning"><i class="fas fa-history pr-1" aria-hidden="true"></i></span>Audit Trail
+                </span>
+                <span class="icongap d-flex">
+                    <span class="text-info ml-4"><i class="fas fa-link pr-1" aria-hidden="true"></i></span> Link to Report
+                </span>
+                <span class="icongap d-flex">
+                    <span class="text-success ml-4"><i class="fas fa-info-circle pr-1" aria-hidden="true"></i></span> Year wise Budget and Expenses Details
+                </span>
+                <span class="icongap d-flex">
+                    <span class="ml-4"><i class="fas fa-info pr-1" aria-hidden="true"></i></span> Department wise Budget and Expenses Details
+                </span>
+            </div>
+
+            <div class="prototype_filter">
+                <div class="d-flex align-items-center">
+                    <span title="Budget difference" class="Syncdifferent" role="button"><i class="fas fa-info mr-2" aria-hidden="true"></i></span>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="TransferExcelDownload" title="Excel Download" />
+                    </div>
+                    <button type="button" title="Project Sync" id="ProjectView" class="btn ProjectButtonSync mr-1">
+                        Sync to Project View <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button type="button" title="Budget Sync" id="BudgetView" class="btn BudgetButtonSync mr-1">
+                        Sync to Budget View <i class="fas fa-sync-alt"></i>
+                    </button>
+                    <button type="button" title="Expenses Sync" id="ExpenseView" class="btn ExpensesButtonSync mr-1">
+                        Sync to Expenses <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="budgetTransfer_grid" class="table table-bordered"></table>
+                            <div id="pager_budgetTransfer_grid"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="">
+                <div class="m-table__main mt-2 mb-2">
+                    <div class="m-table__responsive -virtual-scroll">
+                        <table id="budgetTransfer_grid" class="table table-bordered"></table>
+                        <div id="pager_budgetTransfer_grid"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<div class="modal fade budget_popup" id="auditTrail" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Audit Trail</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>Project Id: <span class="project_id"></span></div>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="HistoryExcelDownload" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="audit_trail" class="table table-bordered"></table>
+                                        <div id="audit_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                <button type="button" id="" data-bs-dismiss="modal" class="btn btn-cancel ">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade budget_popup" id="ShowBudget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Year Wise Budget And Expenses Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>Project Id: <span class="project_id projname"></span></div>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="YearExcelDownload" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <table id="YearWisebudget" class="table table-bordered"></table>
+                                        <div id="pager_YearWisebudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-cancel ">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade budget_popup" id="showYearWiseBudget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title"></h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="d-flex">
+                        <div class="mr-3">Project Id: <span class="project_data project_id"></span></div>
+                        <div>Year: <span class="year_data project_id"></span></div>
+                    </div>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="DepartmentBudgetDownload" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <input type="text" id="budget_projectid" hidden />
+                                        <table id="YearWiseIndividualbudget" class="table table-bordered"></table>
+                                        <div id="pager_YearWiseIndividualbudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-cancel ">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade budget_popup" id="ShowDifference" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title">Budget Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-end">
+                    <div class="images_excel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="SAPExcelDownload" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <input type="text" id="budget_projectid" hidden />
+                                        <table id="SAPDifferenceProjects" class="table table-bordered"></table>
+                                        <div id="pager_SAPDifferenceProjects"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-cancel ">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="AlertPopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Alert</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="AlertMessage" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-bs-dismiss="modal" data-title="Cancel">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade budget_popup" id="approvalhistorypopup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">History Info</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <span> <b>Project Id:</b> <span class="project_id pr-4"></span></span>
+                            <span class="pr-4">
+                                <b>Requested Year:</b> <span class="RequestedYearForHistory colordetails"></span>
+                            </span>
+                            <span class="pr-4">
+                                <b>Department:</b> <span class="RequestedDepartmentForHistory colordetails"></span>
+                            </span>
+                            <span class="pr-4"> <b>Category:</b> <span class="category pr-4 colordetails"></span></span>
+                            <span class="pr-4">
+                                <b>Budget Type:</b> <span class="BudgetTypeForHistory colordetails"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="list_baseline">
+                    </div>
+                </div>
+
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="history_gridforapprovalinfo" class="table table-bordered"></table>
+                                        <div id="history_pagerforapprovalinfo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade budget_popup" id="ProjectDepartmentBudget" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Department Wise Budget And Expenses Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>Project Id: <span class="project_id projname"></span></div>
+                    <div>
+                        <div class="images_excel ">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="PrjDepartmentBudgetDownload" title="Excel Download" />
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <table id="DepartmentWiseBudget" class="table table-bordered jqgrid-table"></table>
+                                        <div id="pager_DepartmentWiseBudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-cancel">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade budget_popup" id="ShowDifferenceDepartmentWise" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title">Budget Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between">
+                    <div> <b>Project Id:</b> <span class="project_id pr-4"></span></div>
+                    <div class="images_excel">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="SAPExcelDownloadDepartmentWise" title="Excel Download" />
+                    </div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <input type="text" id="budget_projectid" hidden />
+                                        <table id="SAPDifference_DepartmenetWise_Project" class="table table-bordered"></table>
+                                        <div id="pager_SAPDifference_DepartmenetWise_Project"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-cancel ">
+                                Cancel
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/NewBudgetTransferList.js")" asp-append-version="true"></script>

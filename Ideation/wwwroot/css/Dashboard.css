@@ -1,0 +1,350 @@
+﻿/*
+.login_bg {
+    background: linear-gradient(to right, transparent, #ffffffe6), url(../images/bg-ideation.jpg) no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+.navbar-fixed-top {
+    background: none;
+}
+
+.box {
+    background: #fff;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    border: 1px #ccc solid;
+    border-radius: 5px;
+    color: #fff;
+}
+
+    .box h4 {
+        color: #000;
+        font-size: 13px;
+        font-weight: 700;
+        padding-top: 0px;
+        margin-bottom: 0px;
+        min-height: 30px;
+    }
+
+.dash {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+.img_align {
+    width: 40% !important;
+    padding-bottom: 10px;
+    padding-top: 0px;
+}
+
+.container {
+    max-width: 100% !important;
+    margin-top: 15px;
+}
+
+.lg_im1 {
+    height: 55px;
+
+}
+
+
+    .ispace_logo > p:first-child {
+        font-size: 32px;
+        font-weight: 700;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        display:flex;
+        background-clip: text;
+        margin-bottom: 8px;
+        position: relative;
+    }
+.logoBox {
+    width: 10%;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #002543;
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin-top: 20px;
+    margin-right: 7px;
+    padding: 10px;
+    border-radius: 29px;
+    align-self: flex-end;
+}
+
+.usr_na {
+    background: #00d647;
+    border-radius: 50%;
+    padding: 5px 8px 5px 8px;
+    color: #fff;
+}
+
+.dash .col-auto {
+    width: 20%;
+    padding: 0px 5px;
+}
+
+
+==== FADE IN UP ===
+@-webkit-keyframes fadeInUp {
+    from
+
+{
+    opacity: 0;
+    -webkit-transform: translate3d(0, 100%, 0);
+    transform: translate3d(0, 100%, 0);
+}
+
+to {
+    opacity: 1;
+    -webkit-transform: none;
+    transform: none;
+}
+
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate3d(0, 100%, 0);
+        transform: translate3d(0, 100%, 0);
+    }
+
+    to {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.fadeInUp {
+    -webkit-animation-name: fadeInUp;
+    animation-name: fadeInUp;
+}
+
+=== FADE IN DOWN ===
+.fadeInDown {
+    -webkit-animation-name: fadeInDown;
+    animation-name: fadeInDown;
+}
+
+@-webkit-keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        -webkit-transform: translate3d(0, -100%, 0);
+        transform: translate3d(0, -100%, 0);
+    }
+
+    100% {
+        opacity: 1;
+        -webkit-transform: none;
+        transform: none;
+    }
+}
+
+.one {
+    -webkit-animation-delay: 0.5s;
+    -moz-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+
+.two {
+    -webkit-animation-delay: 1.5s;
+    -moz-animation-delay: 1.5s;
+    animation-delay: 1.5s;
+}
+
+.animate {
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+}
+
+.user_name {
+    color: #000;
+    font-weight: 700;
+}
+
+.navbar-nav .icon-menu {
+    display: flex
+}
+
+.col-auto {
+    margin-bottom: 10px;
+}
+*/
+
+/* === Layout & Background === */
+.login_bg {
+    background: linear-gradient(to right, transparent, #ffffffe6), url(../images/bg-ideation.jpg) no-repeat;
+    background-size: cover;
+    height: 100vh;
+}
+
+body {
+    color: #fff;
+    font-family: 'Open Sans', sans-serif;
+    background: linear-gradient(135deg, #1a1e39, #3a4c79);
+    margin: 0;
+    padding: 0;
+}
+
+/* === Navbar === */
+.navbar-fixed-top {
+    background: none;
+    backdrop-filter: blur(10px);
+    /*    border-bottom: 1px solid #4a5a79;*/
+    box-shadow: 5px 5px 5px #CACED0;
+    padding-bottom: 4px;
+}
+
+
+/* === Logo Branding === */
+.ispace_logo > p:first-child {
+    font-size: 32px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #5e81ac, #88c0d0);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: flex;
+    background-clip: text;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+/* === Logo Container === */
+.logoBox {
+    width: 10%;
+    display: flex;
+    justify-content: flex-end;
+    background: linear-gradient(135deg, #5e81ac, #88c0d0);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    margin-top: 20px;
+    margin-right: 7px;
+    padding: 10px;
+    border-radius: 29px;
+    align-self: flex-end;
+    box-shadow: 0 4px 16px -5px rgba(94, 129, 172, 0.5);
+    transition: all 0.3s ease;
+}
+
+    .logoBox:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px -10px rgba(94, 129, 172, 0.6);
+    }
+
+/* === Card Box === */
+.box {
+    background: #2a3055;
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 10px;
+    color: #fff;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 20px -5px #000;
+    position: relative;
+}
+
+    .box h4 {
+        color: #fff;
+        font-size: 13px;
+        font-weight: 700;
+        padding-top: 0px;
+        margin-bottom: 0px;
+        min-height: 30px;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+
+    .box:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px -10px rgba(94, 129, 172, 0.6);
+        background: linear-gradient(135deg, #5e81ac, #88c0d0);
+        color: #fff;
+    }
+
+/* === Image in Box === */
+.img_align {
+    width: 40% !important;
+    padding-bottom: 10px;
+    padding-top: 0px;
+    filter: brightness(1) contrast(1);
+    transition: filter 0.3s ease;
+}
+
+.box:hover .img_align {
+    filter: brightness(1.1) contrast(1.05);
+}
+
+/* === Grid & Spacing === */
+.container {
+    max-width: 100% !important;
+    margin-top: 15px;
+}
+
+.dash {
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+}
+
+    .dash .col-auto {
+        width: 20%;
+        padding: 0px 5px;
+        margin-bottom: 20px;
+    }
+
+.col-auto {
+    margin-bottom: 10px;
+}
+
+/* === User Badge === */
+.usr_na {
+    background: linear-gradient(135deg, #5e81ac, #88c0d0);
+    border-radius: 50%;
+    padding: 5px 8px;
+    color: #fff;
+    box-shadow: 0 4px 16px -5px rgba(94, 129, 172, 0.5);
+}
+
+/* === Navbar Icons === */
+.navbar-nav .icon-menu {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.one {
+    -webkit-animation-delay: 0.5s;
+    -moz-animation-delay: 0.5s;
+    animation-delay: 0.5s;
+}
+
+.two {
+    -webkit-animation-delay: 1.5s;
+    -moz-animation-delay: 1.5s;
+    animation-delay: 1.5s;
+}
+

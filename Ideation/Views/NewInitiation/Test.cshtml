@@ -1,0 +1,37 @@
+﻿@{
+    ViewBag.Title = "Test";
+	Layout = "~/Views/Shared/_PBLayout.cshtml";
+}
+
+
+<h1>hgshg</h1>
+<div id="editortest">
+	
+</div>
+<div id="editortest22">
+</div>
+<script>
+	ClassicEditor
+		.create(document.querySelector('#editortest'), {
+			// toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+		})
+		.then(editor => {
+			window.editor = editor;
+		})
+		.catch(err => {
+			console.error(err.stack);
+		});
+
+	ClassicEditor
+		.create(document.querySelector('#editortest22'), {
+			// toolbar: [ 'heading', '|', 'bold', 'italic', 'link' ]
+		})
+		.then(editor => {
+			window.editor = editor;
+		})
+		.catch(err => {
+			console.error(err.stack);
+		});
+</script>
+
+

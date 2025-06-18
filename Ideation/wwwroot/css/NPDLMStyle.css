@@ -1,0 +1,148 @@
+﻿/*NPD Css starts*/
+
+.appearence {
+    appearance: auto;
+}
+
+    .appearence.form-control, .input_height.form-control {
+        border: 1px solid #a7a7a7
+    }
+
+.input_height {
+    height: 26px !important;
+}
+
+.NPD_sticky.sticky-bottom {
+    position: sticky;
+    bottom: 0;
+    z-index: 1000;
+    background: #fff;
+    padding: 20px;
+    float: left;
+    width: 100%;
+    padding-right: 0px;
+}
+
+.year_dropdown .input_height {
+    height: 31px !important;
+    border: 1px solid #dedede;
+}
+
+select.singleselect_year {
+    border: 1px solid #dedede;
+}
+
+.excel_btn.ex_bt {
+    padding: 4px 10px !important;
+    font-size: 14px !important;
+}
+
+.save_edit {
+    display: none !important;
+}
+
+.show_edit .save_edit, .show_edit .save_edit1 {
+    display: block !important;
+}
+
+.value_close {
+    display: block !important
+}
+
+.show_edit .value_close {
+    display: none !important
+}
+
+.show_edit .close_edit {
+    display: none !important
+}
+
+#claims_documeent .btn-icon.-edit {
+    width: 20px;
+    height: 20px;
+    float: left;
+    text-align: center;
+    position: relative;
+}
+
+    #claims_documeent .btn-icon.-edit i {
+        position: relative;
+        left: 1px;
+        top: 1px;
+    }
+
+.card_height {
+    min-height: 92vh;
+}
+
+.btn-icon.-view {
+    color: #358375;
+    background-color: #358375;
+}
+
+.btn-icon.-delete {
+    color: #c62828;
+    background-color: #c62828;
+}
+
+.btn-ap {
+    background: #14b97a;
+    color: #fff;
+    padding: 4px 25px 4px 25px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 10px;
+    border: 1px solid #14b97a;
+    font-size: 14px;
+}
+
+.fa-thumbs-up:hover {
+    color: white !important;
+}
+
+.save_edit1 {
+    display: none !important
+}
+
+
+/*To display datepicker icon*/
+
+.datepicker-container {
+    position: relative;
+    display: inline-block;
+}
+
+.datepicker-symbol {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+    .datepicker-symbol::before {
+        content: "\f073"; /* Replace with the Unicode value or icon code for your desired symbol */
+        font-family: "FontAwesome"; /* Replace with the font family of your chosen icon library */
+        font-size: 14px;
+    }
+
+
+.visible-visibility {
+    visibility:visible !important;
+}
+
+/*form calendar icon command category drop down*/
+.multi__select .btn-group > .btn {
+    text-align: left;
+}
+
+.cal_ i.fas.fa-calendar-alt {
+    position: absolute;
+    top: 15px;
+    right: 10px;
+}
+
+.pointer_event {
+    pointer-events: none;
+}

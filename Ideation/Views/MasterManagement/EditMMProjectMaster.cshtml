@@ -1,0 +1,285 @@
+﻿@model Ideation.Models.MMProject
+@{
+    ViewBag.Title = "EditProjectMaster";
+    Layout = "~/Views/Shared/_MMLayout.cshtml";
+}
+<style>
+    .select2-container--open .select2-dropdown {
+        width: 300px !important;
+        height: 160px;
+        max-height: 160px;
+        overflow: auto;
+    }
+   /* .select2-container--default .select2-results > .select2-results__options {
+        max-height: 90px
+    }*/
+   /* #usersDropDowm .select2-container--open .select2-dropdown, #mappedUsersDropDowm .select2-container--open .select2-dropdown {
+        width: 37vw !important;
+        left: 10px !important;
+    }*/
+    .icons_center {
+        position: relative;
+        top: 100px;
+        z-index: 100000;
+    }
+    li.select2-results__option {
+        font-size: 12px;
+        line-height: 1;
+        font-size: 12px !important;
+    }
+    .select2-container--default .select2-results > .select2-results__options {
+        max-height: 120px !important;
+        overflow-y: auto;
+    }
+</style>
+@using (Html.BeginForm("EditMMProjectMaster", "MasterManagement", FormMethod.Post, new { @id = "MMProjectMasterForm", @enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+
+    @Html.HiddenFor(m=>m.MappedUsers, new{id="mappedUsers"})
+    @Html.HiddenFor(m=>m.MilestonesCompleted, new{id="milestonesCompleted"})
+    
+    <div class="container-fluid p-0">
+        <div class="card-box card-box_height">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="page-title">
+                        <h4 class="-mb-3">Edit Project Master</h4>
+                    </div>
+                    <div class="add_form edit_formlabel">
+                        <form class="form-horizantal">
+                            <div class="col-md-12 pl-0">
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Project Code <span class="color-red">*</span>
+                                            </label>
+                                            @Html.TextBoxFor(m => m.ProjectCode, new { @class = "form-control",@readOnly="readonly" })
+                                            @Html.ValidationMessageFor(m => m.ProjectCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Project Name <span class="color-red">*</span>
+                                            </label>
+                                            @Html.TextBoxFor(m => m.ProjectName, new { @class = "form-control",@readOnly="readonly" })
+                                            @Html.ValidationMessageFor(m => m.ProjectName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Project Manager <span class="color-red">*</span>
+                                            </label>
+                                            @Html.DropDownListFor(m => m.UserId, Model.ManagerList,"--Select--",  new { @class = "form-control data-singleselect" })
+                                            @Html.ValidationMessageFor(m => m.UserId, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Project Division <span class="color-red">*</span>
+                                            </label>
+                                            @Html.DropDownListFor(m => m.Division, new SelectList(Model.DropDownList.Where(m => m.KDSKey == "ProjDiv"), "KDSValue", "KDSValue"),"--Select--",  new { @class = "form-control data-singleselect" })
+                                            @Html.ValidationMessageFor(m => m.Division, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Project HUB <span class="color-red">*</span>
+                                            </label>
+                                            @Html.ListBoxFor(m => m.HubList, new SelectList(Model.DropDownList.Where(m => m.KDSKey == "ProjHub"), "KDSValue", "KDSValue"), new { @class = "form-control data-multiselect",@multiple="multiple" })
+                                            @Html.ValidationMessageFor(m => m.HubList, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                R&D Team <span class="color-red">*</span>
+                                            </label>
+                                            @Html.DropDownListFor(m => m.RnDTeamList, new SelectList(Model.DropDownList.Where(m => m.KDSKey == "R&DTeam"), "KDSValue", "KDSValue"),"--Select--",  new { @class = "form-control data-singleselect" })
+                                            @Html.ValidationMessageFor(m => m.RnDTeamList, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Project Type <span class="color-red">*</span>
+                                            </label>
+                                            @Html.DropDownListFor(m => m.Type, new SelectList(Model.DropDownList.Where(m => m.KDSKey == "ProjType"), "KDSValue", "KDSValue"),"--Select--",  new { @class = "form-control data-singleselect" })
+                                            @Html.ValidationMessageFor(m => m.Type, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Classification <span class="color-red">*</span>
+                                            </label>
+                                            @Html.DropDownListFor(m => m.Classification, new SelectList(Model.DropDownList.Where(m => m.KDSKey == "ProjClas"), "KDSValue", "KDSValue"),"--Select--",  new { @class = "form-control data-singleselect" })
+                                            @Html.ValidationMessageFor(m => m.Classification, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                HGH Code
+                                            </label>
+                                            @Html.TextBoxFor(m => m.HGHCode, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Product Name
+                                            </label>
+                                            @Html.TextBoxFor(m => m.ProductName, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label class="control-label">
+                                                Project Status <span class="color-red">*</span>
+                                            </label>
+                                         @*   @Html.DropDownListFor(m => m.ProjectStatusId, Model.StatusList,"--Select--",  new { @class = "form-control data-singleselect" })
+                                            @Html.ValidationMessageFor(m => m.ProjectStatusId, "", new { @class = "text-danger" })*@
+                                            @Html.DropDownListFor(m => m.ProjectStatusId, new SelectList(Model.DropDownList.Where(m => m.KDSKey == "ProjStatus"), "KDSId", "KDSValue"),"--Select--",  new { @class = "form-control data-singleselect" })
+                                            @Html.ValidationMessageFor(m => m.ProjectStatusId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="save_buttons float-right text-right editmm_buttons">
+                                        <button type="button" class="btn-add" id="userAdd"> Submit</button>
+                                        <a href="@Url.Content("~/MasterManagement/MMProjectMaster")"><button type="button" class="btn-cnl" id="btnReject"> Cancel</button></a>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            @* <div class="table_grid">
+                        <div class="col-md-12">
+                        <div class="list_popup">
+                        <div class="m-table__main mt-1">
+                        <div class="m-table__responsive -virtual-scroll">
+                        <table id="userGrid" class="table table-bordered"></table>
+                        <div id="pager_central"></div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>
+                        </div>*@
+
+                            @*<div class="row usermappingrow">
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                           Users <span class="color-red"></span>
+                                        </label>
+                                        <select id="usersDropDowm" class="form-control data-singleselect">
+                                            <option value="">--Select--</option>
+                                        </select>
+                                    
+                                        <div class="error-suuccessmsg">
+                                            <span class="text-danger" style="display:none;" id="addUserErr">Please Select User To Add</span>
+                                            <span class="text-success" style="display:none;" id="usersDropDownAdded">User Added Successfully</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2 icons_center ">
+                                    <div>
+                                        <button type="button" id="addBtn" class="btn-add" ><i class="fa fa-angle-right"></i></button>
+                                    </div>
+                                    <div>
+                                        <button type="button" id="removeBtn" class="btn-cnl"><i class="fa fa-angle-left"></i></button>
+                                    </div>
+                                    
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                           Mapped Users <span class="color-red"></span>
+                                        </label>
+                                        <select id="mappedUsersDropDowm" class="form-control data-singleselect">
+                                            <option value="">--Select--</option>
+                                        </select>
+                                        <div class="error-suuccessmsg">
+                                            <span class="text-danger" style="display:none;" id="removeUserErr">Please Select User To Remove</span>
+                                            <span class="text-danger" style="display:none;" id="addUserErr">Please Select User To Add</span>
+                                            <span class="text-success" style="display:none;" id="mappedUsersDropDownAdded">User Added Successfully</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            
+
+                                <div class="col-md-4">
+                                    <div class="save_buttons float-right text-right editmm_buttons">
+                                        <button type="button" class="btn-add" id="userAdd"> Submit</button>
+                                        <a href="@Url.Content("~/MasterManagement/MMProjectMaster")"><button type="button" class="btn-cnl" id="btnReject"> Cancel</button></a>
+                                    </div>
+                                </div>
+                            </div>*@
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+<script>
+    $(function () {
+        $('#ProjectCode').valid();
+    })
+</script>
+
+<script>
+   $(document).ready(function(){
+        setTimeout(() => {
+            var list = $('#usersDropDowm, #mappedUsersDropDowm').select2({
+                allowClear: true,
+                closeOnSelect: false,
+
+            }).on("select2:closing", function (e) {
+                e.preventDefault();
+            }).on("select2:closed", function (e) {
+                list.select2("open");
+            });
+            list.select2("open");
+        }, 2000)
+
+
+        $('#addBtn').on('click', function (e) {
+            $("#mappedUsersDropDowm, #usersDropDowm").select2('destroy');
+            $("#mappedUsersDropDowm, #usersDropDowm").select2();
+            $("#mappedUsersDropDowm, #usersDropDowm").select2("open");
+        });
+        $('#removeBtn').on('click', function (e) {
+            $("#mappedUsersDropDowm, #usersDropDowm").select2('destroy');
+            $("#mappedUsersDropDowm, #usersDropDowm").select2();
+            $("#mappedUsersDropDowm, #usersDropDowm").select2("open");
+        });
+
+        //setTimeout(() => {
+        //    var list = $('#mappedUsersDropDowm').select2({
+        //        allowClear: true,
+        //        closeOnSelect: false,
+        //    }).on("select2:closing", function (e) {
+        //        e.preventDefault();
+        //    }).on("select2:closed", function (e) {
+        //        list.select2("open");
+        //    });
+        //    list.select2("open");
+        //}, 1000)            
+    });
+
+    </script>
+  
+<script src="~/js/mastermanagement/editmmprojectmaster.js"></script>

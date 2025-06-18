@@ -1,0 +1,125 @@
+﻿@model Ideation.Models.RID
+@{
+    Layout = null;
+    var userName = Context.Session.GetString("UserName");
+}
+<html>
+<head>
+    <meta name="viewport" content="width=device-width">
+    <title>RID Index</title>
+    <link href="@Url.Content("~/N_assets/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/N_assets/flaticons-font/flaticon_ispace.css")" rel="stylesheet" />
+
+    <script src="@Url.Content("~/N_assets/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/js/aes.js")"></script>
+    <style>
+        .RID_Division ul li {
+            padding: 27px;
+            border: 1px solid #dedede;
+            width: 22vw;
+            float: left;
+            margin: 3px 3px;
+            height: 14vh;
+        }
+
+        .tile_projects {
+            text-align: center;
+        }
+
+            .tile_projects img {
+                width: 100px;
+            }
+
+        .RID_Division ul li a {
+            float: left;
+            width: 100%;
+            text-decoration: none;
+        }
+
+        .RID_Division ul li p {
+            font-size: 16px;
+            margin-bottom: 0;
+            margin-top: 7px;
+            color: #4d4d4d;
+            font-weight: 600;
+        }
+
+        .RID_Division ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-bottom: 0;
+        }
+
+        .card-list {
+            height: 76vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .RID_Division ul li:hover {
+            background: #f4f4f4;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="p-2">
+        <div class="header_section d-flex justify-content-between align-items-center p-1">
+            <div>
+                <a href="@Url.Content("~/Landing/index")"><img src="@Url.Content("~/N_assets/images/logohmnew.png")" width="60px" /></a>
+            </div>
+            <div>
+                <img src="@Url.Content("~/N_assets/images/ispace-logo.png")" width="120px" />
+            </div>
+            <div>
+                <div>
+                    <span>@userName</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-list">
+            <div class="RID_Division animate__fadeInUp">
+                <ul>
+                    @foreach (var division in Model.DivisionList)
+                    {
+                        <li>
+                            <div class="tile_projects">
+                                <a href="javascript:void(0)" class="IngredientCategory" onclick="GetIngredient('@division.DivisionId', '@division.DivisionName')">
+                                    <h6>@division.DivisionName</h6>
+                                </a>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var ROOT = "@Url.Content("~/")";
+
+    function GetIngredient(divisionId, divisionName) {
+        window.location.href = ROOT + "NewRID/RIDList" + '?q=' + Encrypt("DivisionId=" + divisionId + "&DivisionName=" + divisionName)
+    }
+
+    function Encrypt(str) {
+        var key = CryptoJS.enc.Utf8.parse('8080808080808080');
+        var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+        var enString = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(str), key,
+            {
+                keySize: 128 / 8,
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        return enString;
+    }
+</script>

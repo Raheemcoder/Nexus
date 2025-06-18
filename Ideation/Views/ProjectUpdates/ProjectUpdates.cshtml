@@ -1,0 +1,536 @@
+﻿@model Ideation.Models.ProjectUpdates
+
+@{
+    ViewBag.Title = "ProjectUpdates";
+    Layout = "~/Views/Shared/_PULayout.cshtml";
+    var userName = Context.Session.GetString("UserName");
+}
+
+<style>
+    .-history {
+        background: #fd6100 !important;
+    }
+
+ 
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        font-size: 12px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        border: 1px solid #dedede !important;
+        white-space: normal !important;
+        line-height: 1.5;
+    }
+
+    .read-more-show{
+    color:blue !important;
+    cursor:pointer;
+    font-weight:bold;
+    }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.6.0/jszip.min.js"></script>
+
+
+<div class="card-box mb-0 sg project_updatesBox">
+    <br />
+    <div id="message" class="m-login__erromsg">
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert @TempData["Messageclass"].ToString() alert-dismissible" role="alert" id="message_alert">
+                @TempData["Message"].ToString()
+                <button type="button" id="cc" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                    @*  <span aria-hidden="true">&times;</span>*@
+                </button>
+            </div>
+        }
+    </div>
+
+    @Html.HiddenFor(model=>model.ProjectUpdatesDetailsHeaderData, new { @id = "ProjectUpdatesDetailsHeaderData"})
+    @Html.HiddenFor(model=>model.RoleId, new { @id = "RoleId"})
+    <input type="hidden" id="userName" value="@userName">
+
+
+    <div class="col-md-12 mb-2">
+    </div>
+    <div class="row sub_form bg_mainrow project_fields">
+
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                   Division
+                </label>
+                @Html.DropDownListFor(model=>model.DivisionName,Model.DivisionList,"All",new{@class="form-control form-control-sm data-singleselect",@id="PUDivision"})
+
+            </div>
+        </div>
+
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    R&D Name
+                </label>
+                @Html.DropDownListFor(model=>model.RAndDName,Model.RandDList,"All",new{@class="form-control form-control-sm data-singleselect",@id="PURandDName"})
+
+            </div>
+        </div>
+        
+        @*<div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Project Type
+                </label>
+                @Html.DropDownListFor(model=>model.ProjectType,Model.ProjectTypeList,"All",new{@class="form-control form-control-sm data-singleselect",@id="PUProjectType"})
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Project Classification
+                </label>
+                @Html.DropDownListFor(model=>model.ProjectClassification,Model.ProjectClassificationList,"All",new{@class="form-control form-control-sm data-singleselect",@id="PUProjectClassification"})
+            </div>
+        </div>*@
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Project Status
+                </label>
+                @Html.DropDownListFor(model=>model.Status,Model.StatusList,"All",new{@class="form-control form-control-sm data-singleselect",@id="PUStatus"})
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Project Lead
+                </label>
+                @Html.DropDownListFor(model=>model.ProjectLead,Model.ProjectLeadList,"All",new{@class="form-control form-control-sm data-singleselect",@id="Projectleaddetails"})
+@*                <input type="text" id="ProjectLeadFilter" class="form-control tags " placeholder="" />
+*@
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group">
+                <label class="control-label">
+                    Project Updates
+                </label>
+                @Html.DropDownListFor(model=>model.UpdatesYesNo,
+                    new SelectList(new[]{new SelectListItem
+                        { Value = "All", Text = "All" },
+                new SelectListItem
+                { Value = "Yes", Text = "Yes" },
+                   new SelectListItem 
+                   { Value = "No", Text = "No" },
+                }, "Value", "Text", "All"),new{@class="form-control form-control-sm data-singleselect",@id="PUYesNo"})
+
+            </div>
+        </div>
+        <div class="form-fields-width">
+            <div class="form-group sg">
+                <button type="button" id="SearchPUData" class="btn btn-info c-add-details waves-light waves-effect mt-4 pb-2" title="Search"><i class="fas fa-search" aria-hidden="true"></i></button>
+             
+            </div>
+        </div>
+       
+        <div class="d-flex justify-content-between">
+            <div class="d-flex">
+            <span style="display:flex;justify-content:center;align-items:center" id="editIcon"><label class="btn-icon -edit"><i class="fa fa-edit" aria-hidden="true"></i></label>Edit</span>
+            <span style="display:flex;justify-content:center;align-items:center"><label class="btn-icon -history"><i class="fa fa-history" aria-hidden="true"></i></label>History</span>
+            <span style="display:flex;justify-content:center;align-items:center"><label class="btn-icon -add"><i class="fas fa-chart-bar" aria-hidden="true"></i></label>Gantt Chart</span>
+            </div>
+            <div class="">
+                <button type="button" id="ExcelDownload" class="btn btn-success c-add-details waves-light waves-effect"><i class="fas fa-download" aria-hidden="true"></i> Excel</button>
+            </div>
+        </div>
+    </div>
+    @*jqgrid*@
+
+    <div class="add_grid_">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-4">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="ProjectUpdatesList" class="table table-bordered"></table>
+                            <div id="pager_ProjectUpdatesList"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="commentsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="commentModalPopup"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div id="commentsData"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*Approval pop up*@
+<div class="modal fade hd" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="list_status">
+                            <ul>
+                                <li class="bg_marketing completed">Marketing</li>
+                                <li class="fas fa-arrow-right text-success"></li>
+                                <li class="bg_hgml warning">HGML</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_pmd">PMD</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_fine">Fine Screnning</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+                                        <th scope="col">Approval Level</th>
+                                        @*<th scope="col">Designation</th>*@
+                                        <th scope="col">Confirmed By</th>
+                                        @*<th scope="col">Status</th>*@
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                    <tr class="filters fil_bck">
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        @*<th><input type="text" class="form-control form-control-sm"></th>*@
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        @* <th><input type="text" class="form-control form-control-sm"></th>*@
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="tb">
+                                    <tr>
+                                        <td>HGML Review</td>
+                                        <td>Sumitra</td>
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>HGML Approve</td>
+                                        <td>Mohan VV</td>
+                                        <td></td>
+
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*Approval pop up pending with hgml*@
+<div class="modal fade hd" id="exampleModal_hgml" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="list_status">
+                            <ul>
+                                <li class="bg_marketing completed">Marketing</li>
+                                <li class="fas fa-arrow-right text-success"></li>
+                                <li class="bg_hgml warning">HGML</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_pmd">PMD</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_fine">Fine Screnning</li>
+                            </ul>
+                            @* <div class="button_popup">
+                            <button type="button" class="btn btn-success">Approve</button>
+                            <button type="button" class="btn btn-danger">Reject</button>
+                            </div>*@
+                        </div>
+                    </div>
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+                                        <th scope="col">Approval Level</th>
+                                        @*<th scope="col">Designation</th>*@
+                                        <th scope="col">Confirmed By</th>
+                                        @*<th scope="col">Status</th>*@
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                    <tr class="filters fil_bck">
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        @*<th><input type="text" class="form-control form-control-sm"></th>*@
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        @*<th><input type="text" class="form-control form-control-sm"></th>*@
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="tb">
+                                    <tr>
+                                        @*<td>Initiated by</td>*@
+                                        <td>Pending With GM</td>
+                                        @*<td>Project Manager</td>*@
+                                        <td>Sumitra</td>
+                                        @*<td>Pending With GM</td>*@
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        @*<td>1st Level Approval</td>*@
+                                        <td>Pending with HGML</td>
+                                        @*<td>Vertical Head</td>*@
+                                        <td>Mohan VV</td>
+                                        @*<td>Pending with HGML</td>*@
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        @*<td>2nd Level Approval</td>*@
+                                        <td>Approved</td>
+                                        @*<td>HOD</td>*@
+                                        <td>Amrish Mahajan</td>
+                                        @*<td>Approved</td>*@
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+@*Approval pop up pending with PMD*@
+<div class="modal fade hd" id="exampleModal_PDM" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="list_status">
+                            <ul>
+                                <li class="bg_marketing completed">Marketing</li>
+                                <li class="fas fa-arrow-right text-success"></li>
+                                <li class="bg_hgml completed">HGML</li>
+                                <li class="fas fa-arrow-right text-success"></li>
+                                <li class="bg_pmd warning">PMD</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_fine">Fine Screnning</li>
+                            </ul>
+                            @* <div class="button_popup">
+                            <button type="button" class="btn btn-success">Approve</button>
+                            <button type="button" class="btn btn-danger">Reject</button>
+                            </div>*@
+                        </div>
+                    </div>
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+                                        <th scope="col">Approval Level</th>
+                                        @*<th scope="col">Designation</th>*@
+                                        <th scope="col">Confirmed By</th>
+                                        @*<th scope="col">Status</th>*@
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                    <tr class="filters fil_bck">
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        @*<th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>*@
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody class="tb">
+                                    <tr>
+                                        @*<td>Initiated by</td>*@
+                                        <td>Pending With PMD</td>
+                                        @*<td>Project Manager</td>*@
+                                        <td>Sumitra</td>
+                                        @*<td>Pending With GM</td>*@
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        @*<td>1st Level Approval</td>*@
+                                        <td>Pending with HGML</td>
+                                        @*<td>Vertical Head</td>*@
+                                        <td>Mohan VV</td>
+                                        @*<td>Pending with HGML</td>*@
+                                        <td></td>
+
+                                    </tr>
+                                    <tr>
+                                        @*<td>2nd Level Approval</td>*@
+                                        <td>Approved</td>
+                                        @*<td>HOD</td>*@
+                                        <td>Amrish Mahajan</td>
+                                        @*<td>Approved</td>*@
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade hd" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CFT Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+
+                                        <th scope="col">Department Name</th>
+                                        <th scope="col">Users</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">CFT remarks</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody class="tb">
+
+                                    <tr>
+                                        <td>IRA</td>
+                                        <td>Shreyas</td>
+                                        <td>Not Sent</td>
+                                        <td>Subjected to clinical study outcome</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>Clinical</td>
+                                        <td>Shankar</td>
+                                        <td>Confirmed</td>
+                                        <td><a href="#" data-bs-toggle="modal" data-bs-target="#CFTRModal"><i class="fas fa-info-circle" aria-hidden="true"></i></a></td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>F&D</td>
+                                        <td>Shekar</td>
+                                        <td>Yet to Confirm</td>
+                                        <td>Subject to regulatory approval in RUMEA</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td>IRA</td>
+                                        <td>Shreyas</td>
+                                        <td>Not Sent</td>
+                                        <td>Updated</td>
+
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*CFTRModal*@
+<div class="modal fade hd" id="CFTRModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">CFT Remarks</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+
+                                        <th scope="col">Claims</th>
+                                        <th scope="col">IRA Remarks</th>
+                                    </tr>
+
+                                </thead>
+                                <tbody class="tb">
+
+                                    <tr>
+                                        <td>Clear Skin  </td>
+                                        <td> *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome </td>
+                                    </tr>
+                                    <tr>
+                                        <td>With 2 % Niacinamide + 2 0/0 Glycolic acid </td>
+                                        <td> *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Reveals your natural</td>
+                                        <td> *Spots refer to (Blemishes, sunspots, age - spots,) H Subjected to clinical study outcome </td>
+                                    </tr>
+
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*<script src="@Url.Content("~/js/ProjectUpdates/ProjectUpdates.js")" asp-append-version="true"></script>
+*@<script src="@Url.Content("~/js/ProjectUpdates/ProjectUpdates.min.js")" asp-append-version="true"></script>
+
+

@@ -1,0 +1,387 @@
+﻿@model Ideation.Models.NewInitiation
+
+@{
+    ViewData["Title"] = "Project Brief";
+    Layout = "/Views/Shared/N_PB_Layout.cshtml";
+    var projectList = Model.ProjectList;
+    var hubList = Model.HubList;
+}
+@Html.HiddenFor(model => model.RoleId)
+@Html.HiddenFor(model => model.empId)
+@Html.HiddenFor(model => model.Role)
+@Html.HiddenFor(model => model.IsEdit)
+@Html.HiddenFor(model => model.SearchedYear)
+@Html.HiddenFor(model => model.Year, new { @id = "YearVal" })
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Project Brief</h4>
+        </div>
+    </div>
+</section>
+
+<div class="PDFNPD" hidden></div>
+<div class="PIDraft" hidden></div>
+<div class="ReformulationDraft" hidden></div>
+<div class="Header" hidden></div>
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert alert_green @TempData["Messageclass"].ToString() alert-dismissable">
+        <button type="button" class="btn-close status-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["Message"].ToString()
+    </div>
+}
+<section>
+    <div>
+        <div class="">
+            <div class="project_modules ">
+                <ul class="nav nav-tabs projecttypes">
+                    <li><a data-toggle="tab" onclick="getProjectdetails(this)" class="active allProjects">All  <span class="allProjectTotal"></span></a></li>
+                    @foreach (var item in projectList)
+                    {
+                        <li><a data-toggle="tab" onclick="getProjectdetails(this)">@item.Text <span class="@(item.Text.Replace(" ","") + "Total")"></span></a></li>
+                    }
+                </ul>
+            </div>
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <div class="tabs-Data_ d-flex">
+                        <ul class="nav nav-tabs Hubdetails">
+                            <li><a data-toggle="tab" onclick="getHubdetails(this)" class="active allHubs">All  <span class="AllHubTotal"></span></a></li>
+                            @foreach (var item in hubList)
+                            {
+                                <li><a data-toggle="tab" onclick="getHubdetails(this)">@item.Text <span class="@(item.Text.Replace(" ","")+"Total")"></span></a></li>
+                            }
+
+                        </ul>
+
+                        <div class="filter_status">
+                            <div class="d-flex">
+                                <div class="col-width1">
+                                    <div class="form-group flaoting_ ">
+                                        <input type="text" class="form-control input-field floating_input" placeholder="" id="Year" data-datepicker-year value="">
+                                        <label for="fromdate" class="control-label form_lable floating_lable">Year</label>
+                                    </div>
+                                </div>
+                                <div class="col-width1">
+                                    <div class="form-group flaoting_ multidropdown">
+                                        @*@Html.DropDownListFor(model => model.Division, Model.DivisionList, "All", new { @class = "form-control status_ floating_select division data-singleselect" })*@
+                                        @Html.DropDownListFor(m => m.Division_arr, Model.DivisionList ?? new List<SelectListItem>(), new { @class = "form-control  multiselectDropdown  example-dropUp", @multiple = "multiple" })
+                                        <label class="control-label form_lable floating_lable">Division</label>
+                                    </div>
+                                </div>
+                                <div class="col-width1">
+                                    <div class="form-group flaoting_ multidropdown">
+                                        @*@Html.DropDownListFor(model => model.Status, Model.StatusList, "All", new { @class = "form-control status_ floating_select Status data-singleselect" })*@
+                                        @Html.DropDownListFor(m => m.Status_arr, Model.StatusList ?? new List<SelectListItem>(), new { @class = "form-control  multiselectDropdown  example-dropUp", @multiple = "multiple"})
+
+                                        <label class="control-label form_lable floating_lable">Status</label>
+                                    </div>
+                                </div>
+                                <div class="col-width1 filter_button">
+                                    <button class="btn btn-search" title="search" id="Search" type="button">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <button class="btn btn-refresh" title="refresh" id="refresh" type="button">
+                                        <i class="fas fa-sync-alt"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="animate__animated2 slideInUp mt-2">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="legends_list">
+                                <ul class="d-flex ">
+                                    <li class="edit-color"><i class="fas fa-pen"></i> Edit</li>
+                                    <li class="view-color"><i class="fas fa-eye"></i> View</li>
+                                    <li class="download-color"><i class="fas fa-download"></i> Download</li>
+                                    <li class="detete-color"><i class="fas fa-trash"></i> Delete</li>
+                                    <li class="history-color"><i class="fas fa-history"></i> View History</li>
+                                    <li class="document-color"><i class="fas fa-file"></i> Supporting Document</li>
+                                    <li class="remarks-color"><i class="fas fa-info"></i> Remarks Info</li>
+                                </ul>
+                            </div>
+                            <div class="d-flex excel_expand align-items-center">
+                                <div class="images_excel">
+                                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="ExcelDownload" title="Excel Download">
+                                </div>
+                                <div>
+                                    <div class="expand_initiate table_expand" title="Full Screen">
+                                        <div>
+                                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                                <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="animate__animated2 slideInUp mt-1">
+                        <div class="">
+                            <div class="">
+                                <div class="row">
+                                    <div class="m-table__main grid_height">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="ProjectBriefList" class="table table-bordered"></table>
+                                            <div id="ProjectBriefList_pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="remarks" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Remarks
+                </h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="remarks_grid" class="table table-bordered"></table>
+                                    <div id="remarks_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="supporting_documents" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Supporting Documents
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive sd_documents">
+                                    <table id="sd_grid" class="table table-bordered"></table>
+                                    <div id="sd_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="exampleModal1555" tabindex="-1" aria-labelledby="exampleModal1Label566" aria-hidden="true">
+    <div class="modal-dialog ideation  modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">HUB Status Details</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive sd_documents">
+                                    <table id="hubtable" class="table table-bordered"></table>
+                                    <div id="HubStatus_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="PrototypeHistory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">LifeCycle History</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="list_status">
+                            <ul>
+                                <span id="AddLi"></span>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 mt-1">
+                        <div class="images_excel float-right text-right">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" title="Excel Download" id="DownloadExcel">
+                        </div>
+                    </div>
+
+                    <div class="panel panel-primary mt-2 mdp">
+                        <div class="id_tbl approval_history1 new_initiation">
+                            <table id="ViewApprovalHistory" class="table table-bordered"></table>
+                            <div id="pager_ViewApprovalHistory"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="Document_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Documents</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive sd_documents">
+                                        <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Supporting_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="productModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">Products</h4>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="panel panel-primary filterable mdp mt-0">
+                        <div class="id_tbl">
+                            <table class="table table-bordered" id="ProductTable">
+                                <thead>
+                                    <tr class="bd1">
+                                        <th scope="col">Sl No.</th>
+                                        <th scope="col">Product Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tb ProductName">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete button in jq grid*@
+<div class="modal fade sv hd" id="ToDeleteTheSelectedGridRow" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <i class="fas fa-times btn_inn" aria-hidden="true" data-bs-dismiss="modal"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="ToDeleteTheSelectedGridRow_Ok" class="btn btn-draft" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="remarks_section" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <span id="EffortBookingRemarks_productid" hidden></span>
+                <h4 class="modal-title" id="EffortBookingRemarks_ProductName">Remarks</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <input type="text" class="ProjectId" style="display:none" />
+
+            <div class="modal-body">
+                <div class="row PMDDueDateAndRemarks">
+                    <div class="col-md-3">
+                        <div class="form-group datepicker-container">
+                            <label class="control-label">Due Date</label>
+                            @Html.TextBoxFor(m => m.PmdDueDate, new { @class = "form-control form-control-sm DayDatePicker closeModal1", @id = "RemarksDate", @readonly = "readonly", @autocomplete = "off", @onpaste = "return false" })
+                            <span class="datepicker-symbol"></span>
+                            <span id="Error_Daypicker" class="color-red Error_closeModal" style="display:none">Please select Date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Remarks</label>
+                            @Html.TextAreaFor(m => m.PMDRemarks, new { @class = "form-control form-control-sm closeModal", @id = "ProjectRemarks" })
+                            <span id="Error_Remarks" class="color-red Error_closeModal" style="display:none">Please enter Remarks</span>
+                        </div>
+                    </div>
+                    <div class="col-md-1">
+                        <div class="save_buttons float-left text-left mt-3 pt-3">
+                            <button type="button" class="btn btn-draft mr-2" data-title="Save" id="Save_PmdRemarks"> Save</button>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                </div>
+                <div class="">
+                    <div class="m-table__main mt-2">
+                        <div class="m-table__responsive sd_documents">
+                            <table id="remarks_info" class="table table-bordered"></table>
+                            <div id="pager_remarks"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/projectbrief/projectbrief.js")" asp-append-version="true"></script>

@@ -1,0 +1,413 @@
+﻿@model NewPMUMappings
+@{
+    // Here approval means whether baseline version is created or not
+    // if Details > 0 means data is saved so not new project,
+    // if versionlist > 0 means it is approved and checking islatest true and considering it as ApproveApprovedLatestVersion.
+
+    var ApprovedLatestVersion = Model.PMUMappingDetails.Count() > 0 ? @Model.PMUVersionList.Count() > 0 ?
+        Model.PMUVersionList.FirstOrDefault(v => v.IsLatest == true).PMUVersion : "" : "";
+
+    var currentSelectedVersion = Model.PMUMappingDetails.Count() > 0 ? Model.PMUMappingDetails.FirstOrDefault().PMUVersion : "";
+}
+
+<input type="hidden" id="RevisedRequestData" value="@Model.RevisedRequestData" />
+
+<div class="">
+    <div class="col-md-12 mb-1">
+        <div class="d-flex align-items-center legends_path">
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ critical"></span> Critical Path
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ dependency"></span> Dependent Date Modification
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ delete"></span> Dependent Task Deletion
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ completed"></span> Completed Task
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ approval"></span> Task For Approval
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" value="@ApprovedLatestVersion" id="ApprovedLatestVersion" />
+<input type="hidden" value="@currentSelectedVersion" id="currentSelectedVersion" />
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.DocumentDetails)" id="DocumentDetails" />
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RemarkDetails)" id="RemarksDetails" />
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.PMUVersionList)" id="PMUVersionList" />
+<input type="hidden" value="@Context.Session.GetString("IsWeekEndExclude")" id="isWeekEndExclude" />
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.PMUMappingDetails)" id="PMUMappingDetails" />
+<table id="pmumapping" class="display table table-fixed">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            @if (currentSelectedVersion == ApprovedLatestVersion)
+            {
+                <th class="width30">Action</th>
+            }
+            <th class="width30">WBS Header</th>
+            <th class="width30">Task</th>
+            <th class="width30">Dependency</th>
+            <th class="width30">Duration (Days)</th>
+            <th class="width30">Start Date</th>
+            <th class="width30">End Date</th>
+            <th class="width30">Percentage</th>
+            <th class="width30">Resources</th>
+            <th class="width30">File Upload</th>
+            <th class="width30">Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (currentSelectedVersion == ApprovedLatestVersion)
+        {
+            @for (int i = 1; i <= 50;)
+            {
+                if (i <= Model.PMUMappingDetails.Count())
+                {
+                    foreach (var item in Model.PMUMappingDetails.OrderBy(l => l.SlNo))
+                    {
+                        if (item.WBSHeaderId > 0 && item.TaskId == 0)
+                        {
+                            <tr id="row_@item.SlNo" data-isupdated="0" data-headerid="@item.SlNo" data-milestonestatus="@item.MilestoneStatus" class="@(item.MilestoneStatus.ToLower()=="completed"?"-completed":"")">
+                                <td data-slno="@item.SlNo">@item.SlNo</td>
+                                <td>
+                                    <div class="action_width">
+                                        <button type="button" title="Add Row" onclick="addRow(this)"><i class="fas fa-plus"></i></button>
+
+                                        @if ((Model.PMUMappingDetails.FindAll(p => p.Relation == item.SlNo && p.MilestoneStatus.ToLower() == "completed")).Count() == 0)
+                                        {
+                                            <button class="trash_icon mr-2" title="Delete Row" type="button" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="input_width" style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <input type="text" class="form-control" data-wbsheader="@item.WBSHeaderId" value="@item.WBSHeader" placeholder="" style="@(item.MilestoneStatus.ToLower()=="completed"?"background-color: #eee;":"")" />
+                                    <span class="text-danger hide">Please select WBS Header</span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="task_section">
+                                        <input type="text" class="form-control" data-task="@item.TaskId" value="@item.Task" placeholder="" readonly />
+                                        <span class="text-danger hide">Please enter the Task</span>
+                                    </div>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <span class="d-flex align-items-center">
+                                        <input data-dependency="" type="text" class="form-control -uppercase" value="@item.Dependency" readonly />
+                                        <i class="fas fa-pencil ml-2 hide" title="Edit Predecessors" onclick="showDependency(this)"></i>
+                                    </span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="duration">
+                                        <input type="text" data-duration="" value="@item.Duration" class="form-control text-right" readonly />
+                                        <span class="text-danger hide">Please enter the Duration</span>
+                                    </div>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <input type="text" data-startdate="" value="@item.StartDate" data-previousvalue="@item.StartDate" class="form-control" readonly />
+                                    <span class="text-danger hide">Please select the Start Date</span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <input type="text" data-enddate="" data-previousvalue="@item.EndDate" value="@item.EndDate" class="form-control" readonly />
+                                    <span class="text-danger hide">Please select the End Date</span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="percentage_list">
+                                        <input type="text" class="form-control text-right" data-percentage="" value="@item.TaskPercentage" readonly />
+                                        <span class="w3-light-grey"><span class="w3-grey" style="height:24px;width:@(item.TaskPercentage+"%")"></span></span>
+                                    </div>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="resources">
+                                        <input type="text" class="form-control" data-resources="" value="" readonly placeholder="Please select the Resource" />
+                                        <span class="text-danger hide">Please select the Resources</span>
+                                    </div>
+                                </td>
+                                <td class="file_upload">
+                                    <span class="d-flex align-items-center">
+                                        <input type="file" class="form-control" name="files_@i" data-files="" multiple style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")" />
+                                        @if (Model.DocumentDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(@item.SlNo)" title="Documents History"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(@item.SlNo)" title="Documents History"></i>
+                                        }
+
+                                    </span>
+                                </td>
+                                <td class="input_width">
+                                    <span class="d-flex align-items-center">
+                                        <textarea class="form-control" data-remarks="" style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;background-color:#eee;":"")"></textarea>
+                                        @if (Model.RemarkDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            <i class="fa fa-history ml-2" id="newRemarks_@item.SlNo" onclick="showRemarks(@item.SlNo)" title="Remarks History"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-history ml-2" id="newRemarks_@item.SlNo" style="display:none;" onclick="showRemarks(@item.SlNo)" title="Remarks History"></i>
+                                        }
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                        else
+                        {
+                            <tr id="row_@item.SlNo" data-isupdated="0" data-relationid="@item.Relation" data-milestonestatus="@item.MilestoneStatus" class="@(item.MilestoneStatus.ToLower()=="completed"?"-completed":"")">
+                                <td data-slno="@item.SlNo">@item.SlNo</td>
+                                <td>
+                                    <div class="action_width">
+                                        <button type="button" title="Add Row" onclick="addRow(this)"><i class="fas fa-plus"></i></button>
+                                        @if (item.MilestoneStatus.ToLower() != "completed")
+                                        {
+                                            <button class="trash_icon mr-2" title="Delete Row" type="button" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+                                        }
+                                    </div>
+                                </td>
+                                <td class="input_width" style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <input type="text" class="form-control" data-wbsheader="@item.WBSHeaderId" placeholder="" readonly />
+                                    <span class="text-danger hide">Please select WBS Header</span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="task_section">
+                                        <input type="text" class="form-control" data-task="@item.TaskId" value="@item.Task" placeholder="" style="@(item.MilestoneStatus.ToLower()=="completed"?"background-color: #eee;":"")" />
+                                        <span class="text-danger hide">Please enter the Task</span>
+                                    </div>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <span class="d-flex align-items-center">
+                                        <input data-dependency="" type="text" class="form-control depndency -uppercase" value="@item.Dependency" style="@(item.MilestoneStatus.ToLower()=="completed"?"background-color: #eee;":"")" />
+                                        <i class="fas fa-pencil ml-2" title="Edit Predecessors" onclick="showDependency(this)"></i>
+                                    </span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="duration">
+                                        <input type="text" data-duration="" value="@item.Duration" class="form-control text-right" style="@(item.MilestoneStatus.ToLower()=="completed"?"background-color: #eee;":"")" />
+                                        <span class="text-danger hide">Please enter the Duration</span>
+                                    </div>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <input type="text" data-startdate="" value="@item.StartDate" data-previousvalue="@item.StartDate" class="form-control from" readonly />
+                                    <span class="text-danger hide">Please select the Start Date</span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <input type="text" data-enddate="" data-previousvalue="@item.EndDate" value="@item.EndDate" class="form-control to" readonly />
+                                    <span class="text-danger hide">Please select the End Date</span>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="percentage_list">
+                                        <input type="text" class="form-control text-right" data-percentage="" value="@item.TaskPercentage" style="@(item.MilestoneStatus.ToLower()=="completed"?"background-color: #eee;":"")" />
+                                        <span class="w3-light-grey"><span class="w3-grey" style="height:24px;width:@(item.TaskPercentage+"%")"></span></span>
+                                    </div>
+                                </td>
+                                <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                                    <div class="resources">
+                                        <input type="text" class="form-control" data-resources="" value="@item.Resources" placeholder="Please select the Resource" style="@(item.MilestoneStatus.ToLower()=="completed"?"background-color: #eee;":"")" />
+                                        <span class="text-danger hide">Please select the Resources</span>
+                                    </div>
+                                </td>
+                                <td class="file_upload">
+                                    <span class="d-flex align-items-center">
+                                        <input type="file" class="form-control" name="files_@i" data-files="" multiple style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")" />
+                                        @if (Model.DocumentDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            @if (item.MilestoneStatus.ToLower() == "completed")
+                                            {
+                                                <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(@item.SlNo,0)" title="Documents History"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(@item.SlNo)" title="Documents History"></i>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @if (item.MilestoneStatus.ToLower() == "completed")
+                                            {
+                                                <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(@item.SlNo)" title="Documents History"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(@item.SlNo)" title="Documents History"></i>
+                                            }
+                                        }
+                                    </span>
+                                </td>
+                                <td class="input_width">
+                                    <span class="d-flex align-items-center">
+                                        <textarea class="form-control" data-remarks="" style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;background-color:#eee":"")"></textarea>
+                                        @if (Model.RemarkDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            <i class="fa fa-history ml-2" id="newRemarks_@item.SlNo" onclick="showRemarks(@item.SlNo)" title="Remarks History"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fa fa-history ml-2" id="newRemarks_@item.SlNo" style="display:none;" onclick="showRemarks(@item.SlNo)" title="Remarks History"></i>
+                                        }
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                        i++;
+                    }
+                }
+                else
+                {
+                    <tr id="row_@i" data-isupdated="0" data-milestonestatus="Not Started">
+                        <td data-slno="@i">@i</td>
+                        <td>
+                            <div class="action_width">
+                                <button type="button" title="Add Row" class="mr-2" onclick="addRow(this)"><i class="fas fa-plus"></i></button>
+                                <button class="trash_icon" title="Delete Row" type="button" onclick="deleteRow(this)"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </td>
+
+
+                        <td class="input_width">
+                            <input type="text" class="form-control" data-wbsheader="" placeholder="" />
+                            <span class="text-danger hide">Please select WBS Header</span>
+                        </td>
+                        <td>
+                            <div class="task_section">
+                                <input type="text" class="form-control" data-task="" placeholder="" />
+                                <span class="text-danger hide">Please enter the Task</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="d-flex align-items-center">
+                                <input data-dependency="" type="text" class="form-control -uppercase" />
+                                <i class="fas fa-pencil ml-2" title="Edit Predecessors" onclick="showDependency(this)"></i>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="duration">
+                                <input type="text" data-duration="" class="form-control text-right" />
+                                <span class="text-danger hide">Please enter the Duration</span>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" data-startdate="" data-previousvalue="" class="form-control from" readonly />
+                            <span class="text-danger hide">Please select the Start Date</span>
+                        </td>
+                        <td>
+                            <input type="text" data-enddate="" data-previousvalue="" class="form-control to" readonly />
+                            <span class="text-danger hide">Please select the End Date</span>
+                        </td>
+                        <td>
+                            <div class="percentage_list">
+                                <input type="text" class="form-control text-right" data-percentage="" />
+                                <span class="w3-light-grey"><span class="w3-grey" style="height:24px;width:0%"></span></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="resources">
+                                <input type="text" class="form-control" data-resources="" placeholder="Please select the Resource" />
+                                <span class="text-danger hide">Please select the Resources</span>
+                            </div>
+                        </td>
+                        <td class="file_upload">
+                            <span class="d-flex align-items-center">
+                                <input type="file" class="form-control" name="files_@i" data-files="" multiple />
+                                <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@i" style="display:none;" onclick="showDocuments(@i)" title="Documents History"></i>
+                            </span>
+
+                        </td>
+                        <td class="input_width">
+                            <span class="d-flex align-items-center">
+                                <textarea class="form-control" data-remarks=""></textarea>
+                                <i class="fa fa-history ml-2 show-file-icon" id="newRemarks_@i" style="display:none;" onclick="showRemarks(@i)" title="Remarks History"></i>
+                            </span>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        }
+        else
+        {
+            foreach (var item in Model.PMUMappingDetails.OrderBy(l => l.SlNo))
+            {
+                <tr id="row_@item.SlNo" data-isupdated="0" data-headerid="@item.SlNo" data-milestonestatus="@item.MilestoneStatus">
+                    <td data-slno="@item.SlNo">@item.SlNo</td>
+                    <td class="input_width" style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <input type="text" class="form-control" data-wbsheader="@item.WBSHeaderId" value="@item.WBSHeader" placeholder=""
+                               style="@(item.MilestoneStatus.ToLower()=="completed"?"background-color: #eee;":"")" readonly />
+                    </td>
+                    <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <div class="task_section">
+                            <input type="text" class="form-control" data-task="@item.TaskId" value="@item.Task" placeholder="" readonly />
+                        </div>
+                    </td>
+                    <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <span class="d-flex align-items-center">
+                            <input data-dependency="" type="text" class="form-control -uppercase" value="@item.Dependency" readonly />
+                        </span>
+                    </td>
+                    <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <div class="duration">
+                            <input type="text" data-duration="" value="@item.Duration" class="form-control text-right" readonly />
+                        </div>
+                    </td>
+                    <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <input type="text" data-startdate="" value="@item.StartDate" data-previousvalue="@item.StartDate" class="form-control" readonly />
+                    </td>
+                    <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <input type="text" data-enddate="" data-previousvalue="@item.EndDate" value="@item.EndDate" class="form-control" readonly />
+                    </td>
+                    <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <div class="percentage_list">
+                            <input type="text" class="form-control text-right" data-percentage="" value="@item.TaskPercentage" readonly />
+                        </div>
+                    </td>
+                    <td style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")">
+                        <div class="resources">
+                            <input type="text" class="form-control" data-resources="" value="@item.Resources" placeholder="Please select the Resource" readonly />
+                        </div>
+                    </td>
+                    <td class="file_upload">
+                        <span class="d-flex align-items-center">
+                            <input type="file" class="form-control" name="files_readonly" data-files="" multiple style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;":"")" readonly onclick="return false" />
+                            @if (Model.DocumentDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                            {
+                                <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(@item.SlNo,0)" title="Documents History"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-history ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(@item.SlNo,0)" title="Documents History"></i>
+                            }
+                        </span>
+                    </td>
+                    <td class="input_width">
+                        <span class="d-flex align-items-center">
+                            <textarea class="form-control" data-remarks="" style="@(item.MilestoneStatus.ToLower()=="completed"?"pointer-events: none;background-color:#eee;":"")" readonly></textarea>
+                            @if (Model.RemarkDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                            {
+                                <i class="fa fa-history ml-2" id="newRemarks_@item.SlNo" onclick="showRemarks(@item.SlNo)" title="Remarks History"></i>
+                            }
+                            else
+                            {
+                                <i class="fa fa-history ml-2" id="newRemarks_@item.SlNo" style="display:none" onclick="showRemarks(@item.SlNo)" title="Remarks History"></i>
+                            }
+                        </span>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+
+</table>
+<script src="@Url.Content("~/js/NewPMUMappings/PV_NewPMUMappings.js")" asp-append-version="true"></script>

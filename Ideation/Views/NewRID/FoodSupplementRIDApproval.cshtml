@@ -1,0 +1,344 @@
+﻿@model Ideation.Models.RID
+@{
+    ViewData["Title"] = "FS RID Approval";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var UserApprovalLevel = Model.UserApprovalLevel;
+    var pageName = Model.UserApprovalLevel != "" ? "- " + Model.PageName : "";
+    var division = Model.DivisionName == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : Model.DivisionName;
+    var ingtypelist = Model.IngredientTypeList;
+    var firsingredientId = ingtypelist.FirstOrDefault().IngredientTypeId;
+    var firstIngredientTypeName = ingtypelist.FirstOrDefault().IngredientTypeName;
+}
+
+<style>
+    .preview_popup th {
+        background: #ffe0ca !important;
+        border: 1px solid #000;
+        width: 130px;
+    }
+
+    .preview_popup td {
+        border: 1px solid #000;
+    }
+
+    .preview_popup .richediter img {
+        height: 160px;
+        margin-bottom: 0px
+    }
+
+    .preview_popup .richediter b {
+        margin-top: 10px;
+        float: left;
+        width: 100%;
+    }
+
+    div.preview_popup {
+        background: #05050585;
+    }
+
+    .recomandation_title {
+        border-bottom: 0px solid #9d9d9d;
+        font-size: 14px;
+        font-weight: normal;
+        margin-bottom: 10px;
+        background: #fccaa2;
+        color: #000;
+        padding: 5px 10px;
+        line-height: 1;
+    }
+
+    .cremarks_icon {
+        justify-content: center !important;
+        align-items: center;
+    }
+
+    .modal-title .text-right b {
+        color: #f86e00;
+    }
+
+    .grid-scroll {
+        max-height: 400px;
+        overflow-y: auto;
+        overflow-x: hidden !important;
+    }
+
+    .purple_circle {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        display: inline-block;
+        background: #5f5fe2;
+        margin-right: 2px;
+    }
+</style>
+
+@*header link*@
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home/ </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division/ </a>
+                </span>
+                G C @pageName
+            </h4>
+        </div>
+    </div>
+</section>
+
+@*hidden fields*@
+<section>
+    @Html.HiddenFor(m => m.UserApprovalLevel)
+    @Html.HiddenFor(m => m.PageName)
+</section>
+
+@*To show response message*@
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+    <div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong id="alertText"></strong>
+    </div>
+</section>
+
+@*list grid*@
+<section>
+    @if (UserApprovalLevel != "" && UserApprovalLevel != null)
+    {
+        <div class="project_modules">
+            <input type="text" id="searchingredienttype" hidden />
+            <input type="text" id="firstingredient" hidden value="@firsingredientId" />
+            <input type="hidden" id="firstingredientname" value="@firstIngredientTypeName" />
+            <ul class="nav nav-tabs ingredienttype_content">
+                @foreach (var item in ingtypelist)
+                {
+                    <li>
+                        <a data-toggle="tab" onclick="getapprovallist(this)" data-value="@item.IngredientTypeId"
+                           id="selectedingredient_@item.IngredientTypeId" data-ingredienttype="@item.IngredientTypeName">@item.IngredientTypeName
+                        </a>
+                    </li>
+                }
+            </ul>
+        </div>
+
+        <div class="mt-2">
+            <div class="d-flex justify-content-between align-items-center">
+
+                <div class="d-flex">
+                    @if (UserApprovalLevel.ToLower() == "level1")
+                    {
+                        @Html.HiddenFor(m => m.MostRecentRemark)
+                        <span class="ml-1">
+                            Remarks
+                            <button id="Level2_Remarks" title="Remarks" type="button" style="background:transparent;border:none;">
+                                <i class="fas fa-list" aria-hidden="true" style="color:blue;"></i>
+                            </button>
+                        </span>
+                    }
+                </div>
+
+                <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex">
+                        <div class="ingradient_edited mr-2">
+                            <label class="mb-0"><span></span> Ingredients Edited</label>
+                        </div>
+                        <div class="ingradient_edited rollback_ingre mr-2">
+                            <label class="mb-0"><span></span> Ingredients Rollback</label>
+                        </div>
+                    </div>
+
+
+                    <div class="legends_list circle_list ">
+                        <ul class="d-flex">
+                            <li><span class="purple_circle"></span>Higher Management/HUB Decision Required</li>
+                            <li><span class="green_circle"></span> Allowed</li>
+                            <li><span class="yellow_circle"></span> Allowed With Restrictions</li>
+                            <li><span class="red_circle"></span> Prohibited</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-flex excel_expand align-items-center">
+                        <div>
+                            <div class="expand_initiate table_expand">
+                                <div>
+                                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="animate__animated2 slideInUp mt-2 rid_approval">
+            <div class="">
+                <div class="">
+                    <div class="m-table__main" id="">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="Approve_IngredientListGrid" class="table table-bordered"></table>
+                            <div id="Approve_IngredientListGrid_Pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="button_top pull-right mt-2">
+
+            <div class="text-right">
+                @if (UserApprovalLevel.ToLower() == "level2")
+                {
+                    <button type="button" class="btn btn-draft" id="revertbtn">Roll Back</button>
+                }
+                @if (UserApprovalLevel.ToLower() == "level1")
+                {
+                    <button type="button" class="btn btn-draft" id="revertbtn">Roll Back</button>
+                    <button type="button" class="btn btn-draft" id="saveasdraftbtn">Save As Draft</button>
+                }
+                <button type="button" class="btn btn-draft" id="approvebtn">Submit</button>
+                <button type="button" class="btn btn-cancel" id="cancelbtn">Cancel</button>
+            </div>
+
+        </div>
+    }
+</section>
+
+@*unauthorize page message*@
+<section>
+    @if (UserApprovalLevel == "" || UserApprovalLevel == null)
+    {
+        <div class="alert alert-danger alert-dismissable">
+            <div class="d-flex" style="justify-content:center">
+                <bold> Oops, you are not authorized for the approval </bold>
+            </div>
+        </div>
+    }
+</section>
+
+@*page modals*@
+<section>
+
+    <div id="Approve_Confirmation_Modal" class="modal fade " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Save Confirmation</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="">
+                        <p>Are you sure you want submit? <strong id="Confirm_approve_ingredient"></strong> Ingredients details?</p>
+                    </div>
+
+                    <div class="">
+                        <div class="pull-right">
+                            <div class="pull-right">
+                                <button type="button" class="btn  btn-draft" id="Approve_ok" style="background-color:green">OK</button>
+                                <button type="button" class="btn  btn-cancel" data-bs-dismiss="modal" id="Approve_cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="Remarks_modal" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="submit_confirm">Submit Confirmation</h4>
+                    <h4 class="modal-title" id="rollback_confirm">Rollback Confirmation</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="panel panel-primary filterable mdp">
+                            <div class="id_tbl d-flex flex-column">
+                                <span class="mb-2">Are you sure, you want to submit?</span>
+                                <span>Remarks<span class="color-red hide" id="remarks-mandatory">*</span></span>
+                                <textarea id="Remarks_text" class="remarksfiled noSpacesField mb-2 p-2 form-control" rows="5"></textarea>
+                                <span id="Err_Remarks_text" style="display:none;color:red;">Please enter remarks</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" id="SendtoApproveRevert">Save</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="RollBack_RemarksToShow" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Rollback Remarks</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="panel panel-primary filterable mdp">
+                            <div class="id_tbl">
+                                <table border="1" id="Remarks_table" class="table">
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="displayremarks" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Remarks
+                    </h4>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                    </div>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div class="">
+                        <div class="">
+                            <div class="row">
+                                <div class="m-table__main grid_height">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Remarksjqgrid" class="table table-bordered"></table>
+                                        <div id="Remarkspager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<script src="@Url.Content("~/js/NewRID/FoodSupplementRIDApproval.js")"></script>

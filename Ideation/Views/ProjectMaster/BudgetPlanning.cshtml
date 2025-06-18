@@ -1,0 +1,93 @@
+﻿@model Ideation.Models.TemplateData
+@{
+    ViewBag.Title = "Budget Planning";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+
+}
+<style>
+    .add_grid__ .m-table__main .ui-jqgrid .ui-jqgrid-htable {
+        padding-right: 17px !important;
+    }
+
+    .ui-jqgrid-hdiv table th {
+        padding: 1px 10px !important;
+    }
+</style>
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+<div class="card-box mb-1 card_height pb-3 pt-2 sg">
+
+    <div class="row ">
+
+        <div class="width_float">
+            <div class="float-left">
+                <div class="page-title">
+                    <h4>Budget Planning</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-2">
+            <div class="form-group mb-0 ">
+                <label class="control-label">
+                    Template Name
+                </label>
+                @Html.DropDownListFor(model => model.Description, Model.TemplateList, "Select TemplateName", new { @class = "form-control form-control-sm data-singleselect", @id = "TemplateName" })
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group mb-0 mt-4">
+                <button type="button" id="SearchTMData" class="btn btn-info c-add-details waves-light waves-effect" title="Search"><i class="fas fa-search" title="Search" aria-hidden="true"></i></button>
+            </div>
+        </div>
+
+        <div class="col-md-7 mt-4">
+            <div class="text-right">
+                <button type="button" class="btn btn-excel" id="ExcelDownload" title="Excel Download"><img src="@Url.Content("~/images/excel.png")"></button>
+                <button type="button" class="btn-add ex_bt excel_btn" id="saveButton">Save</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="add_grid__">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="BudgetPlanning" class="table table-bordered"></table>
+                            <div id="pager_BudgetPlanning"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="SavePopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to Save the Details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveOk" class="btn btn-xs btn-add c-btn" data-bs-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-xs btn-rej c-btn" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectMaster/BudgetPlanning.js")" asp-append-version="true"></script>

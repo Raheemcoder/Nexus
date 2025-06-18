@@ -1,0 +1,140 @@
+﻿@{
+    ViewBag.Title = "Masters";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+
+}
+
+<style>
+    .nav-tabs {
+        border: 0px solid #d46262;
+    }
+
+
+</style>
+
+
+<div class="card-box mb-1 card_height pb-3 sg">
+
+    <div class="col-md-12 mb-0">
+        <div class="page-title title_  mt-3">
+            <h4>Masters</h4>
+            @*<div class=" text-left">
+            <button type="button" class="btn-add ex_bt"><i class="fas fa-download ex_download mr-2 " aria-hidden="true"></i>Excel</button>
+            </div>*@
+        </div>
+
+    </div>
+<div>
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                <button class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" data-bs-target="#nav-home" type="button" role="tab" aria-controls="nav-home" aria-selected="true">Home</button>
+                <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
+                <button class="nav-link" id="nav-contact-tab" data-bs-toggle="tab" data-bs-target="#nav-contact" type="button" role="tab" aria-controls="nav-contact" aria-selected="false">Contact</button>
+            </div>
+        </nav>
+        <div class="tab-content" id="nav-tabContent">
+            <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+                <div class="row product_profile card_bx">
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Project Description</label>
+                            <div class="demo-content">
+                                <input type="text" class="form-control form-control-sm" value="Tulasi Syrup">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Item Type</label>
+
+                            <div class="demo-content">
+                                <input type="text" class="form-control form-control-sm" value="EOD">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Bucket<span class="color-red">*</span></label>
+
+                            <div class="demo-content">
+                                <input type="text" class="form-control form-control-sm" value="Pharma wellness and dietary supplements">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>Start Date<span class="color-red">*</span></label>
+                            <div class="ckediter_tolbar">
+                                <input type="text" class="form-control" value="05 July 2023" data-datepicker-startdate>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="form-group">
+                            <label>End Date<span class="color-red">*</span></label>
+                            <div class="ckediter_tolbar">
+                                <input type="text" class="form-control" value="05 July 2023" data-datepicker-enddate>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="save_buttons float-right text-right">
+                            <button type="button" class="btn-add" data-bs-toggle="modal" data-bs-target="#SaveModal" data-title="Save"> Save & Confirm</button>
+
+                            @* <button type="button" class="btn-sb" data-bs-toggle="modal" data-bs-target="#SendCFTModal" data-title="Submit">Send To CFT</button>*@
+
+                            <button type="button" class="btn-rej" onclick="location.href = './ProjectMaster';" data-title="Cancel"> Cancel</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">...</div>
+            <div class="tab-pane fade" id="nav-contact" role="tabpanel" aria-labelledby="nav-contact-tab">...</div>
+        </div>
+</div>
+<div>
+    <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">Home</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">Profile</button>
+        </li>
+        <li class="nav-item" role="presentation">
+            <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">Contact</button>
+        </li>
+    </ul>
+
+    </div>
+
+    <div>
+    <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">...</div>
+        <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">...</div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">...</div>
+    </div>
+
+    </div>
+</div>
+@*save button*@
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Do you want create the project for project brief <strong>PB230001</strong>?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = './ProjectMaster';">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>

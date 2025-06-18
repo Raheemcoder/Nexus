@@ -1,0 +1,965 @@
+﻿@model Ideation.Models.Prototype;
+@{
+    ViewBag.Title = "EditAddPrototype";
+    Layout = "~/Views/Shared/_PROTLayout.cshtml";
+}
+<!-- jQuery library -->
+@*<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>*@
+
+<!-- DataTables CSS -->
+@*<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.css">*@
+
+<!-- DataTables JS -->
+@*<script type="text/javascript" src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.js"></script>*@
+
+<div class="card-box mb-0">
+    @using (Html.BeginForm("EditAddPrototype", "Prototype", FormMethod.Post, new { id = "Prototype_Details_Submit", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model=>model.PrototypeId)
+        @Html.HiddenFor(model=>model.UserRoleId)
+        @Html.HiddenFor(model=>model.ProjectDetails)
+        @Html.HiddenFor(model=>model.SubmissionDetailsData, new { @id = "SubmissionDetailsData"})
+        @Html.HiddenFor(model=>model.StatusId, new { @id = "PrototypeStatusId"})
+        @Html.HiddenFor(model=>model.JsonFormPrototypeData, new { @id = "JsonFormPrototypeData"})
+        @Html.HiddenFor(model=>model.ApprovalStatus, new { @id = "ApprovalStatus"})
+        @Html.HiddenFor(model=>model.ConfirmationRemarks, new { @id = "Prot_ConfirmationRemarks"})
+        @Html.HiddenFor(model=>model.SelectedPmdUsersToSendPrototype, new { @id = "Prot_SelectedPmdUsersToSendPrototype"})
+        @Html.HiddenFor(model=>model.SupportingDocument, new { @id = "Prot_SupportingDocument"})
+        @Html.HiddenFor(model=>model.FromStageName, new { @id = "FromStageName"})
+        @Html.HiddenFor(model=>model.JsonFormPrototypeHubReviewData)
+        @Html.HiddenFor(model=>model.JsonFormPrototypeHgmlReviewData)
+        @Html.HiddenFor(model=>model.JsonFormPrototypeApprovedData)
+        @Html.HiddenFor(model=>model.ReceivedDate, new {@id="ReceivedDate"})
+        @Html.HiddenFor(model=>model.JsonFormPrototypeReworkData)
+        @Html.HiddenFor(model=>model.Icon, new {@id="IconName"})
+        @Html.HiddenFor(model=>model.UserName, new {@id="UserName"})
+        @Html.HiddenFor(model=>model.PrototypeHubDetais)
+
+        @Html.HiddenFor(model => model.DownloadFileInfo)
+
+        <div class="tb_clr marbt mt-4">
+            <h6 class="pro_det">Prototype Details</h6>
+            <div class="row product_profile">
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Project No <span class="color-red">*</span></label>
+                        @Html.DropDownListFor(model => model.ProjectNo,Model.ProjectNoList,"--Select--",new { @class = "form-control", @data_singleselect = "",  @id="ProjectNo"})
+                        <span style="color:red; display:none" id="Error_ProjectNo" class="Error_PrototypeDetails">Please select Project No</span>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Project Description<span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextBoxFor(model => model.ProjectDescription, new { @class = "form-control", @readonly="readonly", @id="ProjectDescription"})
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>HGH Code</label>
+                        <div class="demo-content">
+                            @Html.TextBoxFor(model => model.HghCode, new { @class = "form-control", @readonly="readonly", @id="HghCode"})
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Product Name<span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextBoxFor(model => model.ProductName, new { @class = "form-control", @id="ProductName"})
+                            <span style="color:red; display:none" id="Error_ProductName" class="Error_PrototypeDetails">Please enter Product Name</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Division<span class="color-red">*</span></label>
+                        @Html.TextBoxFor(model => model.DivisionName, new { @class = "form-control", @readonly="readonly", @id="DivisionName"})
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Dosage Form<span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextBoxFor(model => model.DosageForm, new { @class = "form-control", @id="DosageForm"})
+                            <span style="color:red; display:none" id="Error_DosageForm" class="Error_PrototypeDetails">Please enter Dosage Form</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Provisional Claim <span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.ProvisionalClaim, new { @class = "form-control", @id="ProvisionalClaim", @cols="30"})
+                            <span style="color:red; display:none" id="Error_ProvisionalClaim" class="Error_PrototypeDetails">Please enter Provisional Claim</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="form-group">
+                        <label>Remarks</label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.ProvisionalClaim, new { @class = "form-control", @id="Remarks", @cols="30"})
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Supporting Documents</label>
+                        <div class="demo-content">
+                            <input type="file" class="form-control file-input" accept=".pdf,.doc,.docx,.xls,.xlsx" id="Supportingdocuments" name="AttachSpecFile" onchange="return fileValidation()" />
+                            <span id="Support_Doc_Name">@Model.PrototypeDetailsList.ElementAt(0).SupportingDocument</span>
+                            <span id="Err_SupportingDocuments" style="color:red;display:none">The file must be of type: .pdf, .doc, .docx, .xls, .xlsx</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col pl-0">
+                    <div class="action_container">
+                        <div><label class="control-label"></label></div>
+                        <div class="float  mt-2 pt-1">
+                            @if (@Model.PrototypeDetailsList.ElementAt(0).SupportingDocument != "" && @Model.PrototypeDetailsList.ElementAt(0).SupportingDocument != null)
+                            {
+                                <label class="btn-icon -delete" title="Delete" id="Delete_Support_Doc" onclick="onDeleteSupportingDocument()"><i class="fas fa-trash" aria-hidden="true"></i></label>
+                            }
+                            <label id="ViewData" title="View Details" class="btn-icon -info"><i class="fas fa-info-circle" aria-hidden="true"></i></label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-12">
+                    <div class="float-right text-left mt-2 mb-2">
+                        <button type="button" id="SaveHeader" class="btn-add">Save Header</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="SubmissionDetails">
+                <h6 class="pro_det">Submission Details</h6>
+                <span style="color:red; display:none" id="Error_SubmissionDetails">Please enter atleast one Submission Details data</span>
+
+                @if (Model.StatusId == "7" && Model.Icon != "View")
+                {
+                    <div class="col-lg-12 mt-4">
+                        <div class="float-right text-left">
+                            <button type="button" class="btn-add" id="Add_Submission">Add Submission</button>
+                        </div>
+                    </div>
+                }
+
+                <div class="batch_add">
+                    <div id="batch">
+                        <div class="row product_profile">
+
+                            @if (Model.StatusId != "7")
+                            {
+                                <div id="Dynamic_SubmissionNo">
+                                </div>
+                            }
+
+                            @if (Model.StatusId != "6" && Model.StatusId != "7")
+                            {
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Submission No. <span class="color-red">*</span></label>
+                                        <div class="demo-content">
+                                            @Html.TextBoxFor(model => model.SubmissionNo, new { @class = "form-control", @id="SubmissionNo",@readonly="readonly"})
+                                            <span style="color:red; display:none" id="Error_SubmissionNo" class="Error">Submission No. is not present</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                @* @if (Model.StatusId != "2" && Model.StatusId != "9")
+                        {
+                        <div class="col-lg-2">
+                        <div style="text-align:center">
+                        <label>Composition History</label>
+                        <div>
+                        <label class="btn-icon -history" id="CompositionFileHistory" title="Composition History"><i class="fas fa-history" aria-hidden="true"></i></label>
+                        </div>
+                        </div>
+                        </div>
+                        }*@
+                                @if (Model.StatusId == "3" && Model.Icon != "View")
+                                {
+                                    @*<div class="col-lg-7">*@
+
+
+                                    <div class="col-lg-9">
+                                        <div class="form-group mt-4 pt-1 text-right">
+                                            <button type="button" id="Add_HubDetails" class="btn-ap" onclick="addHubDetails(this)" data-bs-toggle="modal" data-title="Save"> Send Samples</button>
+                                        </div>
+                                    </div>
+                                }
+
+                            }
+                            @if (Model.StatusId == "5" || Model.StatusId == "8")
+                            {
+                                <div class="col-lg-3">
+                                    <div class="form-group" style="text-align: center">
+                                        <label>HUB Status</label>
+                                        <div class="demo-content mr-2 pt-2">
+                                            <a href="#"><i class="fa fa-info-circle" id="CompleteHubStatus_Icon"></i> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="add_grid_">
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+
+                                        @if (Model.StatusId != "6" && Model.StatusId != "7" && Model.StatusId != "8")
+                                        {
+
+                                            <div class="d-flex">
+                                                <button type="button" id="Delete" class="btn-cnl1" title="Delete"><i class="fas fa-trash"></i></button>
+                                                <button type="button" id="Clone" class="btn-sb ms-2" title="Clone"> Clone</button>
+                                            </div>
+                                            <div class="save_buttons float-right text-right save_add">
+                                                <input type="button" id="Add_GridRow" class="btn-ap ms-2" value="Add Row" />
+                                            </div>
+
+                                            <span style="color:red; display:none" id="Error_Clone" class="ErrorMessage">You can clone only one row data at a time</span>
+
+                                            <div class="m-table__main mt-2 mb-4 prototype_table">
+
+                                                <div class="Responsive_SubmissionDetail_Table">
+
+                                                    <table class="table table-bordered" id="SubmissionDetail_Table">
+                                                        <thead id="SubmissionDetail_Table_Header">
+                                                            <tr class="bd1">
+                                                                <th style="text-align:center;" id="Check_Header1" scope="col"><input id="Check_Header" type="checkbox"></th>
+                                                                <th style="text-align:center;" class="SlNo" scope="col">S.No</th>
+                                                                <th style="text-align:center;" class="Date" scope="col">Date<span class="color-red">*</span></th>
+                                                                <th style="text-align:center;" class="BatchNumber" scope="col">Batch Number<span class="color-red">*</span></th>
+                                                                <th style="text-align:center;" scope="col">Samples By FD<span class="color-red">*</span></th>
+                                                                <th style="text-align:center;" scope="col">F&D Comments</th>
+                                                                <th style="text-align:center;" scope="col">Composition</th>
+                                                                <th style="text-align:center; display:none" scope="col">CompositionHide</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="tb SubmissionDetail_Table_Body">
+
+
+                                                        <tbody />
+                                                    </table>
+
+                                                </div>
+
+                                            </div>
+                                        }
+
+                                        @if (Model.StatusId == "6")
+                                        {
+                                            <div class="accordion accordion-flush mt-3" id="accordionFlushExample">
+                                                <div class="accordion-item">
+                                                    <h2 class="accordion-header" id="flush-headingOne">
+                                                        <button class="accordion-button collapsed px-2 py-2 approvedStageCollapseButton" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                                            <span class="accordion_header" id="Approved_SubmissionNo">PT001-S1</span>
+                                                        </button>
+                                                    </h2>
+                                                    <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                                        <div class="accordion-body">
+                                                            <div class="row product_profile">
+                                                            </div>
+
+                                                            <div class="row">
+                                                                <div class="save_buttons float-right text-right" id="ApprovedTotalHubStatus">
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="m-table__main mt-2 mb-4 prototype_table">
+                                                                <div class="m-table__responsive -virtual-scroll">
+                                                                    <table id="Approved_Prototype" class="table table-bordered"></table>
+                                                                    <div id="Approved_Prototype_pager"></div>
+                                                                </div>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                                @if (Model.StatusId == "8")
+                                {
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-2 mb-4 prototype_table">
+                                                <div class="m-table__responsive -virtual-scroll">
+                                                    <table id="Approved_Prototype" class="table table-bordered"></table>
+                                                    <div id="Approved_Prototype_pager"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <h6 class="pro_det float_width">HGML Data</h6>
+                                    <div class="row product_profile">
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>HGML Status</label>
+                                                <input type="text" class="form-control" value="Rejected" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="form-group">
+                                                <label>HGML Remarks</label>
+                                                <div class="demo-content">
+                                                    <textarea id="Rejected_HgmlRemarks" name="editor1" cols="30" class="form-control" disabled></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (Model.StatusId == "7")
+                    {
+                        <div id="Dynamic_SubmissionNo">
+                        </div>
+
+                        <div style="display:none" id="OnClickAddSubmission_ShowMe_1">
+                            <div class="row product_profile">
+                                <div class="col-lg-3">
+                                    <div class="form-group">
+                                        <label>Submission No. <span class="color-red">*</span></label>
+                                        <div class="demo-content">
+                                            @Html.TextBoxFor(model => model.SubmissionNo, new { @class = "form-control", @id="SubmissionNo",@readonly="readonly"})
+                                            <span style="color:red; display:none" id="Error_SubmissionNo" class="Error">Submission No. is not present</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="add_grid_">
+                                    <div class="col-md-12">
+                                        <div class="mb-3">
+                                            <div class="d-flex">
+                                                <button type="button" id="Delete" class="btn-cnl1" title="Delete"><i class="fas fa-trash"></i></button>
+                                                <button type="button" id="Clone" class="btn-sb ms-2" title="Clone">Clone</button>
+                                            </div>
+                                            <div class="save_buttons float-right text-right save_add">
+                                                <input type="button" id="Add_GridRow" class="btn-ap ms-2" value="Add Row" />
+                                            </div>
+
+                                            <span style="color:red; display:none" id="Error_Clone" class="ErrorMessage">You can clone only one row data at a time</span>
+
+                                            <div class="m-table__main mt-2 mb-4 prototype_table">
+
+                                                <div class="m-table__responsive -virtual-scroll">
+
+                                                    <table class="table table-bordered" id="SubmissionDetail_Table">
+                                                        <thead id="SubmissionDetail_Table_Header">
+                                                            <tr class="bd1">
+                                                                <th style="text-align:center" id="Check_Header1"><input id="Check_Header" type="checkbox"></th>
+                                                                <th>S.No</th>
+                                                                <th style="text-align:center" scope="col">Date<span class="color-red">*</span></th>
+                                                                <th style="text-align:center" scope="col">Batch Number<span class="color-red">*</span></th>
+                                                                <th style="text-align:center" scope="col">Samples By FD<span class="color-red">*</span></th>
+                                                                <th style="text-align:center" scope="col">F&D Comments</th>
+                                                                <th style="text-align:center" scope="col">Composition</th>
+                                                                <th style="text-align:center; display:none" scope="col">CompositionHide</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody class="tb SubmissionDetail_Table_Body">
+
+
+                                                        <tbody />
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+
+
+                <div class="row sticky-bottom">
+                    <div class="save_buttons float-right text-right">
+
+                        @if (Model.Icon != "View")
+                        {
+                            @if (Model.StatusId == "1" || Model.StatusId == "2" || Model.StatusId == "7" || Model.StatusId == "9")
+                            {
+                                <button type="button" id="Save" class="btn-add" data-bs-toggle="modal" data-title="Save"> Save</button>
+                                <button type="button" id="SendForApproval" class="btn-ap" data-bs-toggle="modal" data-title="Send For Approval">Send For Approval</button>
+                                <button type="button" id="SendToPmd" onclick="validateSendToPmd()" class="btn-sb" data-bs-toggle="modal" data-title="Submit">Send To PMD</button>
+
+                            }
+                            
+                            @if (Model.StatusId == "10")
+                            {
+                                <button type="button" id="Save" class="btn-add" data-bs-toggle="modal" data-title="Save"> Save</button>
+                                <button type="button" id="SendBackToInitiator" onclick="validateSendBackFromManager()" class="btn-ap" data-bs-toggle="modal" data-title="Send Back To Initiator">Send Back To Initiator</button>
+                                <button type="button" id="SendToPmd" onclick="validateSendToPmd()" class="btn-sb" data-bs-toggle="modal" data-title="Submit">Send To PMD</button>
+                            }
+
+                            @if (Model.StatusId == "3")
+                            {
+                                <button type="button" id="SaveInPmdReview" class="btn-ap" data-bs-toggle="modal" data-title="Save"> Save</button>
+                                <button type="button" id="SendBackToInitiator" onclick="validateSendToHubOrSendBackToInitiator('9')" class="btn-sb" data-bs-toggle="modal" data-title="Send Back To Initiator">Send Back To Initiator</button>
+                                <button type="button" id="SendToHub" onclick="validateSendToHubOrSendBackToInitiator('4')" class="btn-back" data-bs-toggle="modal" data-title="Send To HUB">Send To HUB</button>
+                            }
+
+                            @if (Model.StatusId == "4")
+                            {
+                                <button type="button" id="SaveInHubReview" class="btn-ap" data-bs-toggle="modal" data-title="Save"> Save</button>
+                                <button type="button" id="SendToHgml" onclick="validateSendToHgml()" class="btn-sb" data-bs-toggle="modal" data-title="Send To HGML">Send To HGML</button>
+                            }
+                            @if (Model.StatusId == "5")
+                            {
+                                <button type="button" id="SaveInHgmlReview" class="btn-add" data-bs-toggle="modal" data-title="Save"> Save</button>
+                                <button type="button" id="Submit" onclick="validateSubmitInHgmlReview()" class="btn-ap" data-bs-toggle="modal" data-title="Submit">Submit</button>
+                            }
+                        }
+
+                        <button type="button" class="btn-cnl" onclick="location.href = '@Url.Content("~/Prototype/Prototype")';" data-title="Back"> Back</button>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+
+@*save button*@
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want save the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="Save_Ok" class="btn btn-success">OK</button>
+                <button type="button" class="btn-cnl" data-bs-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*submit button*@
+<div class="modal fade sv hd submitdata" id="SubmitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Submit Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                                <label id="Common_Cofirmation_Popup_Message" class="control-label">
+                                    Are you sure you want submit the details?
+                                </label><br />
+                                <label>Remarks</label>
+                                @Html.TextAreaFor(model=>model.ConfirmationRemarks, new{ @class = "form-control closeModal ConfirmationRemarks", @id="Confirmation_Remarks", @rows="2",@spellcheck="false"  })
+                                <span class="color-red" id="Error_CommonConfirmationRemarks" style="display:none">Please enter Confirmation Remarks</span>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="Submit_Ok" class="btn btn-success">Ok</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Approval Icon*@
+<div class="modal fade sv hd submitdata" id="ApproveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approval Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to submit the details for Approval?
+            </div>
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <Span id="FiledProductName" style="display:none"></Span>
+                        <Span id="FiledSKU" style="display:none"></Span>
+                        <label class="control-label">Remarks</label>
+                        @Html.TextAreaFor(model=>model.Remarks, new{@id="editor", name="editor2",cols="30",@class="form-control form-control-sm ApprovalRemarks"})
+
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="Approve_Ok" class="btn btn-success">Ok</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*Delete Icon*@
+<div class="modal fade sv hd" id="DeleteModal1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="Delete_Ok1" class="btn btn-danger" data-bs-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-cnl" data-bs-dismiss="modal">Back</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*Send To PMD modal*@
+<div class="modal fade hd" id="sendToPmdModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Prototype Recipients</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form class="row bdr_clr autocomplete">
+                    <div class="col-auto" style="width:420px;">
+                        <label>PMD Users</label><span class="color-red">*</span>
+
+                        <select class="example-dropUp" id="AddPrototype_PmdUserDropDown" multiple="multiple">
+
+                            <option value="">--Select--</option>
+
+                        </select>
+                        <span class="color-red Error_PopupField" style="display:none" id="Error_SelectPmdUser">Please select PMD user</span>
+                    </div>
+                    <div class="col-auto">
+                        <label>Remarks</label>
+                        @Html.TextAreaFor(model=>model.ConfirmationRemarks, new{ @class = "form-control closeModal", @id="ConfirmationRemarks", @rows="1", @cols="30", @placeholder="Remarks"})
+                        <span class="color-red Error_PopupField" style="display:none" id="Error_ConfirmationRemarks">Please enter Remarks</span>
+                    </div>
+                    <div class="col-auto pt-1">
+                        <button type="button" id="Add_SendPmdUser" class="btn-add mt-4">Add</button>
+                    </div>
+                </form><br />
+                <div>
+                    <table class="table table-bordered">
+                        <thead class="mail_tbl">
+                            <tr>
+                                <th class="bdr_mail">PMD Users</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Html.TextAreaFor(model => model.SelectedPmdUsersToSendPrototype, new { @name="editor2", @readonly="readonly", @class = "form-control form-control-sm closeModal", @id="SelectedPmdUsersToSendPrototype", @cols="30" })
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+
+                <button type="button" class="btn-rej" data-bs-dismiss="modal">Back</button>
+                <button type="button" class="btn-mail" id="SendToPmd_Ok">Send To PMD</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*ViewSupportingDocumentModel*@
+<div class="modal fade hd" id="ViewModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="exampleModalLabel">Supporting Documents</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="ViewDataforUser" class="table table-bordered"></table>
+                                        <div id="pager_ViewDataForUser"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Send to HUB Modal*@
+<div class="modal fade  hd shub" id="addHubDetailModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">HUB Samples</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body hub_modal">
+                <form>
+
+                    @*   <div class="row">
+                    <div class="col-md-12">
+                    <div class="form-group pd">
+                    </div>
+                    </div>
+                    <div class="col-md-12">
+                    </div>
+                    </div>*@
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>HUB <span class="color-red">*</span></label>
+                                <span class="hub"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Batch No <span class="color-red">*</span></label>
+                                <span class="BatchNo"></span><span class="color-red BatchNo_ErrorMsg"></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-1">
+                            <div class="float-left text-left mt-4 pt-1">
+                                <button type="button" onclick="AddHubAndBatchNo()" class="btn-add">Add</button>
+                            </div>
+                        </div>
+                        <div class="col-lg-5 mt-4 pt-1">
+                            <div class="save_buttons float-right text-right mb-2">
+
+                                <button type="button" class="btn-add NotInPmdReview" id="Save_HubDetail" data-bs-toggle="modal" data-title="Approve">Save</button>
+                                <button type="button" class="btn-sb NotInPmdReview" id="Submit_HubDetail" data-bs-toggle="modal" data-title="Approve">Submit</button>
+                                <button type="button" class="btn-cnl" id="HubDetailModal_Cnl" data-bs-dismiss="modal" aria-label="Close"> Back</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mdp">
+                                    <div class="m-table__main mt-0 mb-4">
+                                        <div class="m-table__responsive  m-table__responsive--overflow -virtual-scroll">
+                                            <div class="table-responsive HUBtable-height">
+                                                <table class="table table-bordered" id="HubDetail_Table">
+                                                    <thead id="HubDetail_Table_Header">
+                                                        <tr class="bd1">
+                                                            <th style="text-align:center" scope="col">Action</th>
+                                                            <th style="text-align:center" scope="col">S.No</th>
+                                                            <th style="text-align:center" scope="col">
+                                                                <div>
+                                                                    <span>HUB</span>
+                                                                    <input type="text" class="filter-input form-control closeModal" data-column="2" placeholder="HUB">
+                                                                </div>
+                                                            </th>
+                                                            <th style="text-align:center" scope="col">
+                                                                <div>
+                                                                    <span>Batch No</span>
+                                                                    <input type="text" class="filter-input form-control closeModal" data-column="3" placeholder="Batch No">
+                                                                </div>
+                                                            </th>
+                                                            <th style="text-align:center" scope="col">
+                                                                <div>
+                                                                    <span>Samples By FD</span>
+                                                                    <input type="text" class="filter-input form-control closeModal" data-column="4" placeholder="Samples By FD">
+                                                                </div>
+                                                            </th>
+                                                            <th style="text-align:center" scope="col">
+                                                                <div>
+                                                                    <span>No of Samples</span>
+                                                                    <input type="text" class="filter-input form-control closeModal" data-column="5" placeholder="No of Samples">
+                                                                </div>
+                                                            </th>
+                                                            <th style="text-align:center" scope="col">
+                                                                <div>
+                                                                    <span>View Composition</span>
+                                                                    <input type="text" class="filter-input form-control closeModal" data-column="6" placeholder="View Composition">
+                                                                </div>
+                                                            </th>
+                                                            <th style="text-align:center" scope="col">
+                                                                <div>
+                                                                    <span>PMD Remarks</span>
+                                                                    <input type="text" class="filter-input form-control closeModal" data-column="7" placeholder="PMD Remarks">
+                                                                </div>
+                                                            </th>
+                                                            <th style="text-align:center; display:none" scope="col">Composition</th>
+                                                        </tr>
+                                                    </thead>
+
+
+                                                    <tbody class="tb" id="HubDetail_Table_Body">
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive  m-table__responsive--overflow -virtual-scroll">
+
+                                            <table class="table table-bordered" id="HubUser_Table">
+                                                <thead id="HubUser_Table_Header">
+                                                    <tr class="bd1">
+                                                        <th style="text-align:center" scope="col">HUB</th>
+                                                        <th style="text-align:center" scope="col">HUB Users</th>
+                                                        <th style="text-align:center" scope="col">Tracking Details</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody class="tb" id="HubUser_Table_Body">
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+
+                <div class="save_buttons float-right text-right mb-2">
+                    <button type="button" class="btn-add NotInPmdReview" id="Save_HubDetail" data-bs-toggle="modal" data-title="Approve">Save</button>
+                    <button type="button" class="btn-sb NotInPmdReview" id="Submit_HubDetail" data-bs-toggle="modal" data-title="Approve">Submit</button>
+                    <button type="button" class="btn-cnl" id="HubDetailModal_Cnl" data-bs-dismiss="modal" aria-label="Close"> Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade hd" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Approval History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="list_status">
+                            <ul>
+                                <li class="bg_marketing completed">Prepare (F&D)</li>
+                                <li class="fas fa-arrow-right text-success"></li>
+                                <li class="bg_hgml warning">PMD Review</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_pmd">HUB Review</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_pmd">HGML Review</li>
+                                <li class="fas fa-arrow-right"></li>
+                                <li class="bg_fine">Completed</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 ">
+                        <div class="float-right text-right ">
+                            <button type="button" class="btn-add"><i class="fas fa-file-export"></i>Export</button>
+                        </div>
+                    </div>
+                    <div class="panel panel-primary filterable mdp">
+                        <div class="id_tbl">
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr class="bd1">
+                                        <th scope="col">From Stage</th>
+                                        <th scope="col">To Stage</th>
+                                        <th scope="col">Received On </th>
+                                        <th scope="col">Approved / Promoted On</th>
+                                        <th scope="col">Remarks By</th>
+                                        <th scope="col">No of days taken</th>
+                                        <th scope="col">Remarks</th>
+                                    </tr>
+                                    <tr class="filters fil_bck">
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                        <th><input type="text" class="form-control form-control-sm"></th>
+                                    </tr>
+                                </thead>
+                                <tbody class="tb">
+                                    <tr>
+                                        <td>Prepare (F&D)</td>
+                                        <td>
+                                            <select class="form-control" multiple="multiple" data-multiselect>
+                                                <option>[700003] AFREEN ENTERPRISE</option>
+                                                <option>[700028] BALAK SALES AGENCY</option>
+                                                <option>[700033] BHAVANA DISTRIBUTORS</option>
+                                            </select>
+                                        </td>
+                                        <td>02-11-2022</td>
+                                        <td>
+                                        </td>
+                                        <td>Shreyas K R</td>
+                                        <td>3</td>
+                                        <td>Please add the benchmark details</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modalstatus_popup hd shub" id="" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">HUB Status</h5>
+                <button type="button" class="btn-close close_status" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="HubDetail_BasedOn_BatchNo" class="table table-bordered"></table>
+                                            <div id="HubDetail_BasedOn_BatchNo_pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @*<div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Back</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+<div class="modal fade hd" id="HubStatusModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">HUB Status</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group pd">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                        </div>
+                    </div>
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="HubDetail_BasedOn_BatchNos" class="table table-bordered"></table>
+                                            <div id="HubDetail_BasedOn_BatchNos_pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            @*<div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Back</button>
+            </div>*@
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade hd" id="CompositionHistory" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title">Composition History</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body compositionHistory_modal">
+                <div class="add_grid_">
+                    <div class="row">
+                        @*<div class="col-md-3">
+                        <div class="PrototypeId" style="display: flex;flex-direction: row;">
+                        <label class="col-md-5">Prototype Id</label>
+                        <span id="ShowPrototypeId"></span>
+                        </div>
+                        </div>*@
+                        <div class="col-md-12">
+                            <div class="">
+
+                                <div class="m-table__main mt-2">
+                                    <div class="id_tbl new_initiation">
+                                        <table id="Compositoin_History_PopUp" class="table table-bordered"></table>
+                                        <div id="Pager_Compositoin_History_PopUp"></div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="@Url.Content("~/js/prototype/editaddprototype.js")" asp-append-version="true"></script>

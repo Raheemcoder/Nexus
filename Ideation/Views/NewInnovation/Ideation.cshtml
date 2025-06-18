@@ -1,0 +1,329 @@
+﻿@model Ideation.Models.IdeationData
+@{
+    ViewData["Title"] = "Ideation";
+    Layout = "/Views/Shared/Ideation_Layout.cshtml";
+}
+<section>
+
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span> Ideation</h4>
+        </div>
+        @*<div class="-m_title-Buttons">
+            <div class=" button button-add">
+                <a href="@Url.Content("~/")" class=" ">
+                    <i class="fas fa-plus color-white"></i> <span class="color-white">User</span>
+                </a>
+            </div>
+            </div>*@
+
+
+    </div>
+</section>
+<section>
+    @using (Html.BeginForm("Ideation", "NewInnovation", FormMethod.Get))
+    { 
+        <div class="prototype_filter">
+            <div class="d-flex excel_expand align-items-center justify-content-between">
+                <div class="d-flex">
+                    <div class="col-width1">
+                        <div class="form-group ">
+                            <label for="fromdate" class="control-label ">Start Date</label>
+                            @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @readonly = "readonly" })
+                            <i class="fas fa-calendar-check-o datetpicker_icon" aria-hidden="true"></i>
+
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group ">
+                            <label for="fromdate" class="control-label">End Date</label>
+                            @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @readonly = "readonly" })
+                            <i class="fas fa-calendar-check-o datetpicker_icon" aria-hidden="true"></i>
+
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group flaoting_ ">
+                            <label class="control-label ">Platform Domain</label>
+                            @Html.DropDownListFor(model => model.BusinessDivisionId, Model.BusinessDivisionList, "All", new { @class = "form-select data-singleselect" })
+
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group">
+                            <label class="control-label">Platform Type</label>
+                            @Html.DropDownListFor(model => model.PlatformTypeId, Model.PlatformTypeList, "All", new { @class = "form-select data-singleselect" })
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group">
+                            <label class="control-label ">Geographic Scope</label>
+                            @Html.DropDownListFor(model => model.GeographicId, Model.GeographicList, "All", new { @class = "form-select data-singleselect" })
+
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group ">
+                            <label class="control-label">Status</label>
+                            @Html.DropDownListFor(model => model.StatusId, Model.StatusList, "All", new { @class = "form-select data-singleselect" })
+
+                        </div>
+                    </div>
+
+                    <div class="col-width1 mt-3 ">
+                        <button class="btn btn-search" title="search" type="button" id="btn-search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-refresh" title="refresh" type="button" id="btn-refresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex excel_expand align-items-center">
+                        <div class="images_excel ">
+                            <img src="@Url.Content("~/N_assets/images/excel.png")" id="exporttoexcel" />
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand">
+                                <div>
+                                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn " title="Expand"></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Co"></i>
+                                    </button>
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+<section>
+
+
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            @Html.HiddenFor(m=>m.IdeationListData)
+                            <table id="ideation_grid" class="table table-bordered"></table>
+                            <div id="ideation_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<div id="Innovation_Details" class="modal fade layout_popup ideation_css" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Innovation Details
+
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="modal_table">
+                    <thead>
+                        <tr class="mod_th">
+                            <th scope="col">Platform Domain</th>
+                            <th scope="col">Submitted By</th>
+                            <th scope="col">Submitted Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Approved/Declined By</th>
+                            <th scope="col">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rd">AHP</td>
+                            <td>shankar.mb </td>
+                            <td>15 May 2023</td>
+                            <td>Pending</td>
+                            <td>shankar.mb</td>
+                            <td><a class="color-blue" href="" data-bs-toggle="modal" data-bs-target="#Innovation_DetailsNew"><i class="fas fa-download mr-1" aria-hidden="true"></i>View Remarks</a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="download-btn-flex d-flex justify-content-between align-items-center">
+                    <div>
+                        <h4 class="title_Popup" id="modal_innovationtile">Fish range</h4>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group text-right">
+                            <label class="control-label pb-0 mb-0" id="filelabel">
+                                Download File (Image, PDF, PPT)
+                            </label>
+                            <a class="download-btn float-right" href="@Url.Content("~/assets/images/iSpacepitchtemplates.pptx")" target="_blank" id="model_filedownload"><i class="fas fa-download mr-1" aria-hidden="true"></i>Download/View File</a>
+                        </div>
+                    </div>
+                </div>
+
+                <form novalidate="novalidate">
+                    <div class="row fr">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Keywords
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="modal_keywords">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Domain
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_bd">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Geographic Scope
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_gs">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Platform Type<span class="color-red">*</span>
+                                </label>
+                                <input type="text" readonly="readonly" class="form-control" id="modal_pt">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Other
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_other">
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Strategic Fit<span class="color-red">*</span>
+                                </label>
+                                <input type="text" class="form-control" readonly="readonly" id="modal_st">
+                            </div>
+                        </div>
+
+
+
+                        <div class="col-md-7">
+                            <div class="form-group" id="remarkfield">
+                                <label class="control-label" id="remarkLabel">
+                                    Remarks
+                                </label>
+                                <textarea class="form-control" id="modal_remarks"></textarea>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-7">
+                            <div class="form-group" id="remarkDrop">
+                                <label class="control-label">
+                                    Status <span class="color-red">*</span>
+                                </label>
+                                <select class="form-select form-control" data-val="true" data-val-required="The RemarkId field is required." id="modal_status" name="RemarkId" data-singleselect>
+                                    <option value="">--Select--</option>
+                                    <option value="1">DECLINED IDEA</option>
+                                    <option value="2">EXISTING IDEA</option>
+                                    <option value="3">APPROVED IDEA</option>
+                                    <option value="5">SEND BACK</option>
+                                </select>
+                                <span class="color-red valStatus" style="display: none;">Select Status</span>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="button_top float-right mt-2">
+                                <button type="button" class="btn btn-draft">Submit</button>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group" id="mailDrop" style="display: none;">
+                                <label class="control-label">
+                                    Mail Content
+                                </label>
+                                <div id="mail_content">
+                                    <textarea class="form-control" id="modal_emailcontent" name="RemarkDiscription" style="height: 193px;"></textarea>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="Innovation_DetailsNew" class="modal fade layout_popup new_innovation" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Innovation Details
+
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <table class="table table-bordered" id="modal_table">
+                    <thead>
+                        <tr class="mod_th">
+                            <th scope="col">Platform Domain</th>
+                            <th scope="col">Submitted By</th>
+                            <th scope="col">Submitted Date</th>
+                            <th scope="col">Status</th>
+                            <th scope="col">Approved/Declined By</th>
+                            <th scope="col">Remarks</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="rd">AHP</td>
+                            <td>shankar.mb </td>
+                            <td>15 May 2023</td>
+                            <td>Pending</td>
+                            <td>shankar.mb</td>
+                            <td>null</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/Innovation/IdeationList.js")"></script>
+
+
+
+
+

@@ -1,0 +1,255 @@
+﻿
+@{
+    ViewBag.Title = "ApproveProject";
+}
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="page-title">
+            <h4 class="-mb-3">Approve Project</h4>
+        </div>
+    </div>
+   
+</div>
+
+<div class="m-form -filter-form">
+    <div class="m-form__container">
+        <div class="m-form__List">
+            <div class="row">
+          
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label class="control-label">Project</label>
+                        <select class="form-control" data-singleselect>
+                            <option>Select</option>
+                            <option>Saksham</option>
+                            <option>HiDesk</option>
+                            <option>HiCare</option>
+                        </select>
+                    </div>
+                </div>
+              
+                <div class="col-md-2">
+                    <button type="button" class="btn btn-xs btn-info c-btn">Search</button>
+                </div>
+                @*<div class="col-md-7">
+                    <div class="float-right">
+                        <button type="button" class="btn btn-xs btn-info c-btn">Save</button>
+                    </div>
+                </div>*@
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="m-table__main">
+            <div class="m-table__responsive -virtual-scroll">
+                <table id="jqgrid" class="table table-bordered"></table>
+                <div id="pager"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="editModal" class="modal fade m-modal -table-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="m-modal__header--center">
+                    <h5 class="modal-title">PMU Mappings</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <form class="m-form__form">
+                                <div class="row">
+                                    <div class="col-md-8 -auto-margin">
+                                        <div class="form-group row">
+                                            <label class="control-label col-md-3">Project Name*</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control">
+                                                    <option>Select</option>
+                                                    <option>Saksham</option>
+                                                    <option>HiCare</option>
+                                                    <option>HiDesk</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="control-label col-md-3">Milestone*</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control">
+                                                    <option>Select</option>
+                                                    <option>Lab stability</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label class="control-label col-md-3">User*</label>
+                                            <div class="col-md-9">
+                                                <select class="form-control">
+                                                    <option>Select</option>
+                                                    <option>Thrinadh</option>
+                                                    <option>Raja</option>
+                                                    <option>Valli</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-8 -auto-margin m-form__page--buttons">
+                                        <button type="button" class="btn btn-xs btn-warning c-btn -cancel" data-dismiss="modal">Cancel</button>
+                                        <button type="submit" class="btn btn-xs btn-info c-btn -sudmit">Submit</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    data = [
+        { "Action": "0", "MilestoneNo": "1", "MilestoneName": "Project Approval", "StartDate": "02/10/2021", "EndDate": "02/12/2021", "users":"Thrinadh" },
+        { "Action": "1", "MilestoneNo": "2", "MilestoneName": "Kick Off", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Raja" },
+        { "Action": "0", "MilestoneNo": "3", "MilestoneName": "Active Finalisation", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Valli" },
+        { "Action": "1", "MilestoneNo": "4", "MilestoneName": "Active Submission for Prototype", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Suresh" },
+        { "Action": "0", "MilestoneNo": "5", "MilestoneName": "Formulation Prototype Submission", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Kailesh" },
+        { "Action": "1", "MilestoneNo": "6", "MilestoneName": "Formulation Prototype Approval", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Thrinadh" },
+        { "Action": "0", "MilestoneNo": "7", "MilestoneName": "Packaging Prototype Submission", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Raja" },
+        { "Action": "1", "MilestoneNo": "8", "MilestoneName": "Packaging Prototype Approval", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Valli" },
+        { "Action": "0", "MilestoneNo": "8a", "MilestoneName": "Capex Approval For Mould", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Suresh" },
+        { "Action": "1", "MilestoneNo": "9", "MilestoneName": "Mould Development", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Kailesh" },
+        { "Action": "0", "MilestoneNo": "10", "MilestoneName": "Active For Lab Stability", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Thrinadh" },
+        { "Action": "1", "MilestoneNo": "10a", "MilestoneName": "RM For Lab Stability", "StartDate": "02/12/2021", "EndDate": "02/12/2021", "users": "Raja" }
+
+
+    ]
+    colmodels = [
+        {
+            name: 'Action',
+            resizable: true,
+            width: 30,
+            label: 'Action',
+            ignoreCase: true,
+            classes: 'text-center',
+            search: false,
+            sortable: false,
+            formatter: function (cellvalue, options, rowobject) {
+                //if (rowobject.Action == "1") {
+                    return '<input type="checkbox" checked>';
+                //}
+                //else {
+                //    return '<input type="checkbox">' ;
+
+                //}
+            }
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="grid-icons-group -justify-center"><input type="checkbox"/></div>';
+
+            //}
+        },
+        //{
+        //    name: 'ProjectName',
+        //    label: 'Project Name',
+        //    width: 100,
+        //    resizable: true,
+        //    ignoreCase: true
+        //},
+        {
+            name: 'MilestoneNo',
+            label: 'Milestone No',
+            width: 100,
+            resizable: true,
+            ignoreCase: true
+        },
+        {
+            name: 'MilestoneName',
+            resizable: true,
+            label: 'Milestone Name',
+            ignoreCase: true
+        },
+        {
+            name: 'StartDate',
+            label: 'Start Date',
+            width: 100,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="grid-icons-group -justify-center grid_date_picker"><input type="text" class="form-control" data-datepicker-startdate placeholder="dd-mm-yyyy"/></div>';
+            //}
+        },
+        {
+            name: 'EndDate',
+            resizable: true,
+            label: 'End Date',
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="grid-icons-group -justify-center grid_date_picker"><input type="text" class="form-control" data-datepicker-enddate placeholder="dd-mm-yyyy"/></div>';
+            //}
+        },
+        {
+            name: 'users',
+            resizable: true,
+            label: 'User(s)',
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class="grid-icons-group -justify-center grid_date_picker"><input type="text" id="tags" class="form-control" placeholder="user"/></div>';
+            //}
+        }
+    ]
+
+    //Important!!!
+    //While integrating jqGrid dynamically use this function
+    CreateJQGrid('', 'GET', data, 'local', colmodels);
+
+
+    $('[data-singleselect]').select2();
+
+    //StartDate and EndDate Validation
+    var start = new Date();
+    var end = new Date(new Date().setYear(start.getFullYear() + 1));
+    $('[data-datepicker-startdate]').datepicker({
+        dateFormat: 'dd-mm-yy',
+        endDate: end,
+        autoclose: true
+    }).on('changeDate', function () {
+        $('[data-datepicker-enddate]').datepicker('setStartDate', new Date($(this).val()));
+    });
+    $('[data-datepicker-enddate]').datepicker({
+        dateFormat: 'dd-mm-yy',
+        startDate: start,
+        endDate: end,
+        autoclose: true
+    }).on('changeDate', function () {
+        $('[data-datepicker-startdate]').datepicker('setEndDate', new Date($(this).val()));
+    });
+</script>
+
+<script>
+    $(function () {
+        var availableTags = [
+            "User1",
+            "User2",
+            "User3",
+            "User4",
+            "User5",
+        ];
+        $("#tags").autocomplete({
+            source: availableTags
+        });
+    });
+</script>

@@ -1,0 +1,120 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewData["Title"] = "Material Master";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+
+<style>
+    .multiselect_List button.multiselect.dropdown-toggle.btn.btn-default {
+        background: transparent;
+        color: #000;
+    }
+    button.multiselect.dropdown-toggle.btn.btn-default {
+        text-align: left;
+        line-height: 7px;
+        width: 100%;
+    }
+    .filter_status .btn-group {
+        background: #fff !important;
+        width: 100% !important;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        height: 22px;
+        text-align: left;
+    }
+
+    /*.multiselect_List .btn-group {
+        height: 22px;
+    }*/
+</style>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> Material Master</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="filter_status prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex">
+                <div class="col-width3">
+                    <div class="form-group multiselect_List">
+                        <label class="control-label">Material</label>
+                        <input type="text" class="form-control" id='MaterialId' value="" placeholder="Please select the Material" />
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Division</label>
+                        @Html.DropDownListFor(m => m.DivisionName, new SelectList(Model.DivisionList, "Value", "Text"), "--Select--",
+                        new { @class = "form-control data-singleselect", @id = "DivisionId", @data_singleselect = "" })
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Material Type</label>
+                        @Html.DropDownListFor(m => m.MaterialTypeName, new SelectList(Model.MaterialTypeList, "Value", "Text"), "--Select--",
+                        new { @class = "form-control  data-singleselect", @id = "MaterialTypeId", @data_singleselect = "" })
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Purchase Group</label>
+                        @Html.DropDownListFor(m => m.PurchaseGroup, new SelectList(Model.PurchaseGroupList, "Value", "Text"), "--Select--",
+                        new { @class = "form-control  data-singleselect", @id = "PurchaseGroupId", @data_singleselect = "" })
+                    </div>
+                </div>
+                <div class="col-width1 mt-3 ml-2">
+                    <button class="btn btn-search" title="Search" type="button" id="btnSearch">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh" title="Refresh" type="button" id="btnrefresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+            </div>
+            <div class="d-flex excel_expand align-items-center prototype_filter">
+                <button type="button" title="Material Sync" id="SyncMaterial" class="btn MaterialButtonSync mr-2">
+                    Material Sync <i class="fas fa-sync-alt"></i>
+                </button>
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      
+    </div>
+</section>
+
+<section>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="MaterialMaster_grid" class="table table-bordered"></table>
+                            <div id="MaterialMaster_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/MaterialMaster.js")"></script>

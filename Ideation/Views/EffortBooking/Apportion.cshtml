@@ -1,0 +1,414 @@
+﻿@model Ideation.Models.Apportion
+@{
+    ViewData["Title"] = "Apportion";
+    Layout = "~/Views/Shared/EffortBookingLayout.cshtml";
+}
+
+<style>
+    .prototype_filter button.btn {
+        padding: 4px;
+        line-height: 1;
+        background: #00d546;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 2px;
+        border: 0;
+    }
+
+    #table-container {
+        margin-top: 10px;
+        max-height: 102vh !important;
+        overflow-y: auto !important;
+        padding-right: 7px;
+        padding-top: 0px;
+        width: 100%;
+        margin-bottom: 10px;
+    }
+    tfoot {
+        position: sticky;
+        bottom: 0;
+        z-index: 1;
+    }
+    .datepicker .datepicker-days tr td.active ~ td {
+        color: #af1623 !important;
+        background: transparent !important;
+    }
+    .viewbold{
+        font-weight:600;
+    }
+    .total_effort{
+        float : right;
+    }
+</style>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Apportion</h4>
+        </div>
+    </div>
+</section>
+
+@Html.HiddenFor(m => m.WeeklyEfforts, new { @id = "weekefforts" })
+@Html.HiddenFor(m => m.SerializedWeekEfforts, new { @id = "JsonWeekEfforts" })
+@Html.HiddenFor(m => m.ApportionDataList, new { @id = "JsonApportionViewData" })
+@Html.HiddenFor(model => model.LeavesList, new { @id = "LeavesList" })
+@Html.HiddenFor(model => model.HolidaysList, new { @id = "HolidaysList" })
+
+@if (TempData["Message"] != null)
+{
+    <div class="alert @TempData["Messageclass"].ToString() alert-dismissable">
+        <button type="button" class="btn-close status-alert" data-bs-dismiss="alert" aria-label="Close"></button>
+        @TempData["Message"].ToString()
+    </div>
+}
+
+<div class="alert alert-danger alert-dismissable" style="display:none;" id="alertBox">
+    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+</div>
+<div class="">
+    <div class="effort_tracker">
+        <div class="row mt-2">
+
+            <div id="Projectheader">
+                <div class="project_Master filter_status d-flex justify-content-between align-items-center">
+                    <div class="d-flex">
+                        <div class="col-width2 pl-2">
+                            <div class="form-group  ">
+                                <label class="control-label "> Date</label>
+                                @Html.HiddenFor(m => m.WeekPickerHidden)
+                                @Html.TextBoxFor(m => m.weekpicker, new { @class = "form-control form-control-sm weekpicker", @onpaste = "return false", @autocomplete = "off", @readonly = "readonly" })
+                            </div>
+                        </div>
+                        <div class="pr-2 mt-3 mb-2">
+                            <button class="btn btn-search" title="search" type="button" id="searchbtn">
+                                <i class="fas fa-search"></i>
+                            </button>
+
+                        </div>
+
+                        <div class="col-width2">
+                            <div class="form-group">
+                                <label class="control-label">Task<span class="color-red ml-1">*</span>&nbsp;</label>
+                                @Html.DropDownListFor(model => model.Task, Model.TaskList, "--Select--", new { @class = "form-control data-singleselect form-control-sm", @id = "Task" })
+                                <span style="color:red; display:none" id="ApportionTaskErr" class="">Please select Task</span>
+                            </div>
+                        </div>
+                        <div class="col-width3">
+                            <div class="form-group ">
+                                <label class="control-label">Remarks</label>
+                                @Html.TextAreaFor(m => m.Remarks, new { id = "Apportion_Remarks", @class = "form-control form-select-sm", @rows = "1" })
+                                <span style="color:red; display:none" id="Error_ApportionRemarks" class="">Please enter Remarks</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="save_buttons float-right pr-2">
+                        <button type="button" class="btn btn-draft btn_view-list" data-toggle="modal" data-target="#viewlist" data-title="View List"> View List</button>
+                    </div>
+                </div>
+            </div>
+
+            <span style="color:red; display:none;font-size:12px;" id="NoRecordsErr" class="mt-3 mb-0">Please enter data for atleast one day</span>
+            <div id="WeekEntry">
+                <div class="effort_tracker et_tab table-responsive">
+                    <table class="table table-bordered" id="">
+                        <thead>
+                            <tr class="week_select">
+                                @{
+                                    var WeekDetails = Model.WeeklyEfforts;
+
+                                    var WeekHeadings = ((IDictionary<string, object>)WeekDetails[0]).Keys.ToArray();
+
+                                    double[] colTotalsWeakEffort = new double[WeekHeadings.Count() - 2];
+
+                                    for (int index = 0; index < WeekHeadings.Count(); index++)
+                                    {
+                                        if (index > 2)
+                                        {
+                                            <th class='week_header' data-attr="@WeekHeadings[index]">
+                                                @(Convert.ToDateTime(WeekHeadings[index]).ToString("ddd")) <br />
+                                                @(Convert.ToDateTime(WeekHeadings[index]).ToString("dd MMM"))
+                                            </th>
+                                        }
+
+                                    }
+                                }
+                                <th class="week_header ">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tr_tbodyPadding" id="table_body">
+                            <tr class="valu">
+                                <td style="padding:0px;" class="EtDay1">
+                                    <input type="text" class="form-control EfDay day1 EtDay1" data-attribute="1" value="" />
+                                    <span class="effortGreater text-danger" style="display:none">The sum of manual and apportion efforts cannot be greater than 24 Hrs</span>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control EfDay day2" data-attribute="2" value="" />
+                                    <span class="effortGreater text-danger" style="display:none">The sum of manual and apportion efforts cannot be greater than 24 Hrs</span>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control EfDay day3" data-attribute="3" value="" />
+                                    <span class="effortGreater text-danger" style="display:none">The sum of manual and apportion efforts cannot be greater than 24 Hrs</span>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control EfDay day4" data-attribute="4" value="" />
+                                    <span class="effortGreater text-danger" style="display:none">The sum of manual and apportion efforts cannot be greater than 24 Hrs</span>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control EfDay day5" data-attribute="5" value="" />
+                                    <span class="effortGreater text-danger" style="display:none">The sum of manual and apportion efforts cannot be greater than 24 Hrs</span>
+                                </td>
+                                <td style="padding:0px;">
+                                    <input type="text" class="form-control EfDay day6" data-attribute="6" value="" />
+                                    <span class="effortGreater text-danger" style="display:none">The sum of manual and apportion efforts cannot be greater than 24 Hrs</span>
+                                </td>
+                                <td style="padding:0px;" class="EtDay1">
+                                    <input type="text" class="form-control EfDay day7 EtDay1" data-attribute="7" value="" />
+                                    <span class="effortGreater text-danger" style="display:none">The sum of manual and apportion efforts cannot be greater than 24 Hrs</span>
+                                </td>
+                                <td class="righttotal total_td"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="FilterHeader">
+                <div class="row pb-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div class="d-flex">
+                            <div class="col-width1 pl-2">
+                                <div class="form-group flaoting_ multiselect-dropdown">
+                                    <label class="control-label">
+                                        Division
+                                    </label>
+                                    @Html.ListBoxFor(model => model.Division, Model.DivisionList ?? new List
+                                    <SelectListItem>(), new
+                                    {
+                                        @class = "form-control multiselectDropdown ddlmulti example-dropUp hub_user-dropdown",
+                                        @multiple = "multiple",
+                                        @id = "Division"
+                                    })
+                                    <span style="color:red; display:none" id="ApportionDivisionErr" class="">Please select Division</span>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group flaoting_ multiselect-dropdown">
+                                    <label class="control-label">
+                                        Classification
+                                    </label>
+                                    @Html.ListBoxFor(model => model.Classification, Model.ClassificationList ?? new List
+                                    <SelectListItem>
+                                    (),
+                                    new
+                                    {
+                                    @class = "form-control multiselectDropdown ddlmulti example-dropUp hub_user-dropdown",
+                                    @multiple = "multiple",
+                                    @id = "Classification"
+                                    })
+                                    <span style="color:red; display:none;font-size:12px" id="ApportionClassificationErr" class="">Please select Classification</span>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group flaoting_ multiselect-dropdown">
+                                    <label class="control-label">
+                                        Project Type
+                                    </label>
+                                    @Html.ListBoxFor(model => model.ProjectType, Model.ProjectTypeList ?? new List
+                                    <SelectListItem>
+                                    (),
+                                    new
+                                    {
+                                    @class = "form-control multiselectDropdown ddlmulti example-dropUp hub_user-dropdown",
+                                    @multiple = "multiple",
+                                    @id = "ProjectType"
+                                    })
+                                    <span style="color:red; display:none;font-size:12px" id="ApportionProjectTypeErr" class="">Please select Project Type</span>
+                                </div>
+                            </div>
+                            <div class="col-width1">
+                                <div class="form-group multiselect-dropdown">
+
+                                    <label class="control-label">
+                                        R&D
+                                    </label>
+                                    @Html.ListBoxFor(model => model.RnDTeam, Model.RnDList ?? new List
+                                    <SelectListItem>
+                                    (),
+                                    new
+                                    {
+                                    @class = "form-control multiselectDropdown ddlmulti example-dropUp hub_user-dropdown",
+                                    @multiple = "multiple",
+                                    @id = "RnDTeam"
+                                    })
+                                    <span style="color:red; display:none;font-size:12px" id="ApportionProjectRnDErr" class="">Please select R&D Team</span>
+                                </div>
+                            </div>
+                            <div class="pr-2 pl-2 mt-3 prototype_filter">
+                                <button class="btn btn-search" title="search" type="button" id="filterbtn">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                                <button class="btn btnsearch btn-refresh" title="refresh" type="button" id="projectgrid_refresh">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="save_buttons float-right pr-2">
+                            <button type="button" id="SplitData" class="btn btn-draft split_btn">Split</button>
+                            <button type="button" class="btn btn-draft SaveData"> Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <span style="color:red; display:none;font-size:12px;" id="NoRecordsSelectedErr" class="mt-3 mb-0">Please select at least one project to Split/Save</span>
+            <div class="tab-conten mt-0" id="ApportionTable">
+                <div class="effort_tracker et_tab table-responsive" id="table-container">
+                    <table class="table table-bordered" id="ApportionTracker">
+
+                        <thead>
+                            <tr class="week_select">
+                                <th class="week_header">
+                                    <div class="action_container">
+                                        <input type="checkbox" value="" id="SelectAll" class="parentCheckBox">
+                                    </div>
+                                </th>
+                                @{
+                                    for (int index = 0; index < WeekHeadings.Count(); index++)
+                                    {
+                                        if (index > 2)
+                                        {
+                                            string day = "day" + (index - 2);
+                                            <th class='week_header' id="@day" data-attr="@WeekHeadings[index]">
+                                                @(Convert.ToDateTime(WeekHeadings[index]).ToString("ddd")) <br />
+                                                @(Convert.ToDateTime(WeekHeadings[index]).ToString("dd MMM"))
+                                            </th>
+                                        }
+                                        else
+                                        {
+                                            if (WeekHeadings[index] != "ProjectName" && WeekHeadings[index] != "Status")
+                                            {
+                                                <th class='week_header' style="width:100%;padding:5px;"> Project Name </th>
+                                            }
+                                        }
+                                    }
+                                }
+                                <th class="week_header ">Total</th>
+                            </tr>
+                        </thead>
+
+                        <tbody class="tr_tbodyPadding" id="table_body_shared">
+                        </tbody>
+
+                        <tfoot class="tf00t_bck" id="tfoot">
+                            <tr class="tr_padding value_ value1_">
+                                <td></td>
+                                <td class="total_effort">Total Efforts</td>
+                                @{
+                                    double Finaltotal1 = 0.0;
+                                    @for (int index2 = 0; index2 < colTotalsWeakEffort.Count() - 1; index2++)
+                                    {
+                                        var ColTotalId = "day" + (index2 + 1) + "totalsplitvalue";
+                                        var ColTotalClass = "day" + (index2 + 1) + "totalsplit";
+
+                                        <td class="tf_td">
+                                            <label class="@ColTotalId">@Math.Round(colTotalsWeakEffort[index2], 2)</label><br>
+                                            <span class="@ColTotalClass text-danger font-weight:bold;" style="display:none">Total Efforts in a day cannot be more that 24 Hrs</span>
+                                        </td>
+
+                                        Finaltotal1 = Finaltotal1 + Convert.ToDouble(colTotalsWeakEffort[index2]);
+                                    }
+                                }
+                                <td class="tf_td"><label id="FinalTotalSplit">@Math.Round(Finaltotal1, 2)</label></td>
+                            </tr>
+                        </tfoot>
+
+                    </table>
+                </div>
+                <div class="button_top float-right pr-2">
+                    <button type="button" class="btn btn-draft SaveData">Save</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="viewlist" class="modal fade apportion" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">View List</h6>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="add_form">
+                    <form class="form-horizantal">
+                        <div class="col-md-12 pl-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Year <span class="color-red">*</span>
+                                        </label>
+                                        <input type="text" class="form-control data-datepicker-month" id="viewMonth" />
+                                    </div>
+                                </div>
+                                <div class="col-md-3 pl-0 pt-1">
+                                    <div class="text-left">
+                                        <div class="prototype_filter mt-3">
+                                            <button type="button" class="btn btn-search" title="search" id="apportionViewBtn">
+                                                <i class="fas fa-search"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="table_grid">
+                    <div class="col-md-12">
+                        <div class="list_popup apportion_popup">
+                            <div class="m-table__main mt-1">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="centralmaster" class="table table-bordered"></table>
+                                    <div id="pager_central"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="showlist" class="modal fade apportion" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h6 class="modal-title">Apportion Data</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body show_listvalues">
+                <table class="table table-bordered" id="apportionMaster">
+                    <thead style="background: #d8d8d8;">
+                    </thead>
+                    <tbody class="tr_padding" id="viewApportionPopup">
+                    </tbody>
+                    <tfoot style="background: #e7ecf7;">
+                    </tfoot>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/EffortBooking/Apportion.js"></script>

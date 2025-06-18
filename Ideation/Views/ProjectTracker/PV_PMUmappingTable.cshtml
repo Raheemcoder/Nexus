@@ -1,0 +1,621 @@
+﻿@model NewPMUMappings
+@{
+    // Here approval means whether baseline version is created or not
+    // if Details > 0 means data is saved so not new project,
+    // if versionlist > 0 means it is approved and checking islatest true and considering it as ApproveApprovedLatestVersion.
+
+    var currentSavedLatestVersion = Model.PMUMappingDetails.Count() > 0 ? Model.PMUVersionList.Count() > 0 ?
+    Model.PMUVersionList.FirstOrDefault(item => item.IsLatest == true)?.PMUVersion : "" : "";
+
+    var currentSavedLatestVersionGroup = Model.PMUMappingDetails.Count() > 0 ? Model.PMUVersionList.Count() > 0 ?
+    Model.PMUVersionList.FirstOrDefault(item => item.IsLatest == true)?.VersionGroup : "" : "";
+
+    var currentWorkingVersion = Model.PMUMappingDetails.Count() > 0 ? Model.PMUMappingDetails.FirstOrDefault()?.PMUVersion : "";
+
+    // for giving some condition -- flag
+    var IsKPIInclude = Context.Session.GetString("IsKPIIncluded")?.ToLower();
+    var kpiinclude = IsKPIInclude == "true" ? true : false;
+}
+
+<input type="hidden" value="@currentSavedLatestVersion" id="currentSavedLatestVersion" />
+<input type="hidden" value="@currentSavedLatestVersionGroup" id="currentSavedLatestVersionGroup" />
+<input type="hidden" value="@currentWorkingVersion" id="currentWorkingVersion" />
+@*Maintaning the flag since for comparing with version change*@
+
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.DocumentDetails)" id="DocumentDetails" />
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RemarkDetails)" id="RemarksDetails" />
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.PMUVersionList)" id="PMUVersionList" />
+
+<input type="hidden" value="@Context.Session.GetString("IsWeekEndExclude")" id="isWeekEndExclude" />
+<input type="hidden" value="@Context.Session.GetString("IsKPIIncluded")" id="IsKPIIncluded" />
+<input type="hidden" value="@Model.RevisedRequestData" id="RevisedRequestData" />
+
+<div class="row mb-1 mr-0 ml-0">
+    <div class="col-md-10">
+        <div class="d-flex align-items-center legends_path">
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ critical"></span> Critical Path
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ dependency"></span> Dependent Date Modification
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ delete"></span> Dependent Task Deletion
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ completed"></span> Completed Task
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ approval"></span> Task For Approval
+                </span>
+            </div>
+            <div class="icon_description">
+                <span class="ingredient status-div">
+                    <span class="squre_ kpi"></span> KPI Task
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2 d-flex align-items-center justify-content-end">
+        <div class="images_excel">
+            <a href="#" id="ExcelDownload" class="btn-excel mt-0" title="Excel Download"><img src="@Url.Content("~/N_assets/images/excel.png")"></a>
+        </div>
+        <div>
+            <div class="expand_initiate table_expand">
+                <div>
+                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                        <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                        <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<table id="pmumapping" class="display table table-fixed">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Slack</th>
+            @if (currentWorkingVersion == currentSavedLatestVersion || currentWorkingVersion == "")
+            {
+                <th class="width30">Action</th>
+            }
+            <th class="width30">WBS Header</th>
+            <th class="width30">Task</th>
+            <th class="width30">Dependency</th>
+            <th class="width30">Duration (Days)</th>
+            <th class="width30">Start Date</th>
+            <th class="width30">End Date</th>
+            <th class="width30">Percentage</th>
+            <th class="width30">Resources</th>
+            <th class="width30">File Upload</th>
+            <th class="width30">Remarks</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*current version*@
+        @if (currentWorkingVersion == currentSavedLatestVersion || currentWorkingVersion == "")
+        {
+            @for (int i = 1; i <= 50;)
+            {
+                @*Already save PMU Mappings*@
+                if (i <= Model.PMUMappingDetails.Count())
+                {
+                    foreach (var item in Model.PMUMappingDetails.OrderBy(l => l.SlNo))
+                    {
+                        @*WBS Header*@
+                        if (item.WBSHeaderId > 0 && item.TaskId == 0)
+                        {
+                            <tr id="row_@item.SlNo" data-headerid="@item.SlNo" data-milestonestatus="@item.MilestoneStatus"
+                                class="@(item.MilestoneStatus.ToLower() == "completed" ? "-completed" : "")">
+
+                                <td data-slno="@item.SlNo">
+                                    @item.SlNo
+                                </td>
+
+                                <td class="input_width" data-slack="">
+                                </td>
+
+                                <td>
+                                    <div class="action_width">
+                                        <a class="plus_icon mr-2" title="Add Row" onclick="addRow(this)"><i class="fas fa-plus"></i></a>
+                                        @if (@item.IsKPI == false)
+                                        {
+                                            if ((Model.PMUMappingDetails.FindAll(p => p.Relation == item.SlNo && p.MilestoneStatus.ToLower() == "completed")).Count() == 0)
+                                            {
+                                                <a class="trash_icon" title="Delete Row" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (@item.MilestoneStatus.ToLower() != "completed" && currentWorkingVersion == "")
+                                            {
+                                                <a class="trash_icon" title="Delete Row" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
+                                            }
+                                        }
+                                    </div>
+                                </td>
+
+                                <td class="taskheader_section">
+                                    <input type="text" class="colwidth_250 form-control" data-wbsheader="@item.WBSHeaderId" value="@item.WBSHeader" title="@item.WBSHeader" placeholder="" />
+                                    <span class="text-danger hide">Please select WBS Header</span>
+                                    <span class="text-danger hide duplicate-data">WBS Header cannot be duplicated</span>
+                                    <span class="text-danger hide select-from-list">Please select WBS Header from the list</span>
+                                    <span class="text-danger hide not-valid-data">Please select a valid WBS Header</span>
+                                </td>
+
+                                <td>
+                                    <div class="taskheader_section @(item.IsKPI ? "color-red" : "")">
+                                        <input type="text" class="colwidth_250 form-control @(item.IsKPI ? "color-red" : "")" data-task="@item.TaskId" value="@item.Task" placeholder="" readonly title="@item.Task" />
+                                        <span class="text-danger hide">Please select the Task</span>
+                                        <span class="text-danger hide duplicate-data">Task cannot be duplicated</span>
+                                        <span class="text-danger hide select-from-list">Please select Task from the list</span>
+                                        <span class="text-danger hide not-valid-data">Please select a valid Task</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="d-flex align-items-center action_icons">
+                                        <input data-dependency="" type="text" class="form-control -uppercase" value="@item.Dependency" readonly title="@item.Dependency" />
+                                        <i class="fas fa-pen color-info ml-2 hide" title="Edit Predecessors" role="button" onclick="showDependency(this)"></i>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="duration">
+                                        <input type="text" data-duration="" value="@item.Duration" class="colwidth_50 form-control text-right" readonly title="@item.Duration" />
+                                        <span class="text-danger hide">Please enter the Duration</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <input type="text" data-startdate="" value="@item.StartDate" data-previousvalue="@item.StartDate" class="form-control" readonly title="@item.StartDate" />
+                                    <span class="text-danger hide">Please select the Start Date</span>
+                                </td>
+
+                                <td>
+                                    <input type="text" data-enddate="" value="@item.EndDate" data-previousvalue="@item.EndDate" class="form-control" readonly title="@item.EndDate" />
+                                    <span class="text-danger hide">Please select the End Date</span>
+                                </td>
+
+                                <td>
+                                    <div class="percentage_list">
+                                        <input type="text" class="form-control text-right colwidth_60" data-percentage="" value="@item.TaskPercentage" readonly title="@item.TaskPercentage" />
+                                        <span class="w3-light-grey"><span class="w3-grey" style="width:@(item.TaskPercentage + "%")"></span></span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="resources">
+                                        <input type="text" class="form-control colwidth_180" data-resources="" value="" readonly placeholder="" title="" />
+                                        <span class="text-danger hide">Please select the Resources</span>
+                                        <span class="text-danger hide duplicate-data">Resource cannot be duplicated</span>
+                                        <span class="text-danger hide select-from-list">Please select Resource from the list</span>
+                                    </div>
+                                </td>
+
+                                <td class="file_upload action_icons">
+                                    <span class="d-flex align-items-center">
+                                        <input type="file" class="form-control" name="files_@i" data-files="" multiple />
+                                        @if (Model.DocumentDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(this)" title="Documents History"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(this)" title="Documents History"></i>
+                                        }
+                                    </span>
+                                </td>
+
+                                <td class="input_width action_icons">
+                                    <span class="d-flex align-items-center">
+                                        <textarea class="form-control" data-remarks=""></textarea>
+                                        @if (Model.RemarkDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" onclick="showRemarks(this)" title="Remarks History"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" style="display:none;" onclick="showRemarks(this)" title="Remarks History"></i>
+                                        }
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+                        @*Task*@
+                        else
+                        {
+                            <tr id="row_@item.SlNo" data-relationid="@item.Relation" data-milestonestatus="@item.MilestoneStatus"
+                                class="@(item.MilestoneStatus.ToLower() == "completed" ? "-completed" : "")">
+
+                                <td data-slno="@item.SlNo">
+                                    @item.SlNo
+                                </td>
+
+                                <td class="input_width" data-slack="">
+                                </td>
+
+                                <td>
+                                    <div class="action_width">
+                                        <a class="plus_icon mr-2" title="Add Row" onclick="addRow(this)"><i class="fas fa-plus"></i></a>
+                                        @if (@item.IsKPI == false)
+                                        {
+                                            if ((@item.MilestoneStatus.ToLower() != "completed" || currentSavedLatestVersion == ""))
+                                            {
+                                                <a class="trash_icon" title="Delete Row" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (kpiinclude == false)
+                                            {
+                                                if (@item.MilestoneStatus.ToLower() != "completed")
+                                                {
+                                                    <a class="trash_icon" title="Delete Row" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (@item.MilestoneStatus.ToLower() != "completed" && currentWorkingVersion == "")
+                                                {
+                                                    <a class="trash_icon" title="Delete Row" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
+                                                }
+                                            }
+
+                                        }
+                                    </div>
+                                </td>
+
+                                <td class="taskheader_section">
+                                    <input type="text" class="colwidth_250 form-control" data-wbsheader="@item.WBSHeaderId" placeholder="" readonly title="@item.WBSHeaderId" />
+                                    <span class="text-danger hide">Please select WBS Header</span>
+                                    <span class="text-danger hide duplicate-data">WBS Header cannot be duplicated</span>
+                                    <span class="text-danger hide select-from-list">Please select WBS Header from the list</span>
+                                    <span class="text-danger hide not-valid-data">Please select a valid WBS Header</span>
+                                </td>
+
+                                <td>
+                                    <div class="taskheader_section @(item.IsKPI ? "color-red" : "")">
+                                        <input type="text" class="colwidth_250 form-control @(item.IsKPI ? "color-red" : "")" data-task="@item.TaskId" value="@item.Task" title="@item.Task" placeholder="" />
+                                        <span class="text-danger hide">Please select the Task</span>
+                                        <span class="text-danger hide duplicate-data">Task cannot be duplicated</span>
+                                        <span class="text-danger hide select-from-list">Please select Task from the list</span>
+                                        <span class="text-danger hide not-valid-data">Please select a valid Task</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <span class="d-flex align-items-center action_icons">
+                                        <input data-dependency="" type="text" class="form-control depndency -uppercase" value="@item.Dependency" title="@item.Dependency" />
+                                        <i class="fas fa-pen color-info ml-2" title="Edit Predecessors" role="button" onclick="showDependency(this)"></i>
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="duration">
+                                        <input type="text" data-duration="" value="@item.Duration" title="@item.Duration" class="colwidth_50 form-control text-right" />
+                                        <span class="text-danger hide">Please enter the Duration</span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <input type="text" data-startdate="" value="@item.StartDate" data-previousvalue="@item.StartDate" class="form-control from" readonly title="@item.StartDate" />
+                                    <span class="text-danger hide">Please select the Start Date</span>
+                                </td>
+
+                                <td>
+                                    <input type="text" data-enddate="" value="@item.EndDate" data-previousvalue="@item.EndDate" class="form-control to" readonly title="@item.EndDate" />
+                                    <span class="text-danger hide">Please select the End Date</span>
+                                </td>
+
+                                <td>
+                                    <div class="percentage_list">
+                                        <input type="text" class="form-control text-right colwidth_60" data-percentage="" value="@item.TaskPercentage" title="@item.TaskPercentage" />
+                                        <span class="w3-light-grey"><span class="w3-grey" style="width:@(item.TaskPercentage+"%")"></span></span>
+                                    </div>
+                                </td>
+
+                                <td>
+                                    <div class="resources">
+                                        <input type="text" class="form-control colwidth_180" data-resources="" value="@item.Resources" title="@item.Resources" placeholder="Please select the Resource" />
+                                        <span class="text-danger hide">Please select the Resources</span>
+                                        <span class="text-danger hide duplicate-data">Resource cannot be duplicated</span>
+                                        <span class="text-danger hide select-from-list">Please select Resource from the list</span>
+                                    </div>
+                                </td>
+
+                                <td class="file_upload action_icons">
+                                    <span class="d-flex align-items-center">
+                                        <input type="file" class="form-control" name="files_@i" data-files="" multiple />
+                                        @if (Model.DocumentDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            @if (item.MilestoneStatus.ToLower() == "completed")
+                                            {
+                                                <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(this,0)" title="Documents History"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(this)" title="Documents History"></i>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            @if (item.MilestoneStatus.ToLower() == "completed")
+                                            {
+                                                <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(this)" title="Documents History"></i>
+                                            }
+                                            else
+                                            {
+                                                <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(this)" title="Documents History"></i>
+                                            }
+                                        }
+                                    </span>
+                                </td>
+
+                                <td class="input_width action_icons">
+                                    <span class="d-flex align-items-center">
+                                        <textarea class="form-control " data-remarks=""></textarea>
+                                        @if (Model.RemarkDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                        {
+                                            <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" onclick="showRemarks(this)" title="Remarks History"></i>
+                                        }
+                                        else
+                                        {
+                                            <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" style="display:none;" onclick="showRemarks(this)" title="Remarks History"></i>
+                                        }
+                                    </span>
+                                </td>
+
+                            </tr>
+                        }
+                        i++;
+                    }
+                }
+                @*Fresh PMU Mappings*@
+                else
+                {
+                    <tr id="row_@i" data-milestonestatus="Not Started">
+
+                        <td data-slno="@i">@i</td>
+                        <td class="input_width" data-slack=""></td>
+                        <td>
+                            <div class="action_width">
+                                <a class="plus_icon mr-2" title="Add Row" onclick="addRow(this)"><i class="fas fa-plus"></i></a>
+                                <a class="trash_icon" title="Delete Row" onclick="deleteRow(this)"><i class="fas fa-trash"></i></a>
+                            </div>
+                        </td>
+
+                        <td class="taskheader_section">
+                            <input type="text" class=" colwidth_250 form-control" data-wbsheader="" placeholder="" title="" />
+                            <span class="text-danger hide">Please select WBS Header</span>
+                            <span class="text-danger hide duplicate-data">WBS Header cannot be duplicated</span>
+                            <span class="text-danger hide select-from-list">Please select WBS Header from the list</span>
+                            <span class="text-danger hide not-valid-data">Please select a valid WBS Header</span>
+                        </td>
+                        <td>
+                            <div class="taskheader_section input_width">
+                                <input type="text" class="colwidth_250 form-control" data-task="" placeholder="" title="" />
+                                <span class="text-danger hide">Please select the Task</span>
+                                <span class="text-danger hide duplicate-data">Task cannot be duplicated</span>
+                                <span class="text-danger hide select-from-list">Please select Task from the list</span>
+                                <span class="text-danger hide not-valid-data">Please select a valid Task</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span class="d-flex align-items-center action_icons">
+                                <input data-dependency="" type="text" class="form-control -uppercase" />
+                                <i class="fas fa-pen color-info ml-2" title="Edit Predecessors" role="button" onclick="showDependency(this)"></i>
+                            </span>
+                        </td>
+                        <td>
+                            <div class="duration">
+                                <input type="text" data-duration="" class="colwidth_50 form-control text-right" title="" />
+                                <span class="text-danger hide">Please enter the Duration</span>
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" data-startdate="" data-previousvalue="" class="form-control from" readonly title="" />
+                            <span class="text-danger hide">Please select the Start Date</span>
+                        </td>
+                        <td>
+                            <input type="text" data-enddate="" data-previousvalue="" class="form-control to" readonly title="" />
+                            <span class="text-danger hide">Please select the End Date</span>
+                        </td>
+                        <td>
+                            <div class="percentage_list">
+                                <input type="text" class="form-control text-right colwidth_60" data-percentage="" />
+                                <span class="w3-light-grey"><span class="w3-grey" style="width:0%"></span></span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="resources">
+                                <input type="text" class="form-control colwidth_180" data-resources="" placeholder="Please select the Resource" title="" />
+                                <span class="text-danger hide">Please select the Resources</span>
+                                <span class="text-danger hide duplicate-data">Resource cannot be duplicated</span>
+                                <span class="text-danger hide select-from-list">Please select Resource from the list</span>
+                            </div>
+                        </td>
+                        <td class="file_upload action_icons">
+                            <span class="d-flex align-items-center">
+                                <input type="file" class="form-control" name="files_@i" data-files="" multiple />
+                                <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@i" style="display:none;" onclick="showDocuments(this)" title="Documents History"></i>
+                            </span>
+
+                        </td>
+                        <td class="input_width action_icons">
+                            <span class="d-flex align-items-center">
+                                <textarea class="form-control " data-remarks=""></textarea>
+                                <i class="fas fa-history color-eye ml-2 show-file-icon" id="newRemarks_@i" style="display:none;" onclick="showRemarks(this)" title="Remarks History"></i>
+                            </span>
+                        </td>
+                    </tr>
+                    i++;
+                }
+            }
+        }
+        @*Old Version*@
+        else
+        {
+            foreach (var item in Model.PMUMappingDetails.OrderBy(l => l.SlNo))
+            {
+                @*WBS Header*@
+                if (item.WBSHeaderId > 0 && item.TaskId == 0)
+                {
+                    <tr id="row_@item.SlNo" data-headerid="@item.SlNo" data-milestonestatus="@item.MilestoneStatus"
+                        class="@(item.MilestoneStatus.ToLower() == "completed" ? "-completed" : "") readonly">
+
+                        <td data-slno="@item.SlNo">
+                            @item.SlNo
+                        </td>
+                        <td class="input_width" data-slack=""></td>
+                        <td class="taskheader_section">
+                            <input type="text" class="colwidth_250 form-control" data-wbsheader="@item.WBSHeaderId" value="@item.WBSHeader" title="@item.WBSHeader" placeholder="" />
+                        </td>
+                        <td>
+                            <div class="taskheader_section @(item.IsKPI ? "color-red" : "")">
+                                <input type="text" class=" colwidth_250 form-control @(item.IsKPI ? "color-red" : "")" data-task="@item.TaskId" value="@item.Task" title="@item.Task" placeholder="" />
+                            </div>
+                        </td>
+                        <td>
+                            <span class="d-flex align-items-center">
+                                <input data-dependency="" type="text" class="form-control -uppercase" value="@item.Dependency" title="@item.Dependency" />
+                            </span>
+                        </td>
+                        <td>
+                            <div class="duration">
+                                <input type="text" data-duration="" value="@item.Duration" title="@item.Duration" class="colwidth_50 form-control text-right" />
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" data-startdate="" value="@item.StartDate" title="@item.StartDate" data-previousvalue="@item.StartDate" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="text" data-enddate="" data-previousvalue="@item.EndDate" value="@item.EndDate" title="@item.EndDate" class="form-control" />
+                        </td>
+                        <td>
+                            <div class="percentage_list">
+                                <input type="text" class="form-control text-right colwidth_60" data-percentage="" value="@item.TaskPercentage" title="@item.TaskPercentage" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="resources">
+                                <input type="text" class="form-control colwidth_180" data-resources="" value="@item.Resources" title="@item.Resources" placeholder="" />
+                            </div>
+                        </td>
+                        <td class="file_upload action_icons">
+                            <span class="d-flex align-items-center">
+                                <input type="file" class="form-control" name="files_" data-files="" multiple onclick="return false" />
+                                @if (Model.DocumentDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                {
+                                    <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(this,0)" title="Documents History"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(this,0)" title="Documents History"></i>
+                                }
+                            </span>
+                        </td>
+                        <td class="input_width action_icons">
+                            <span class="d-flex align-items-center">
+                                <textarea class="form-control " data-remarks=""></textarea>
+                                @if (Model.RemarkDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                {
+                                    <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" onclick="showRemarks(this)" title="Remarks History"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" style="display:none" onclick="showRemarks(this)" title="Remarks History"></i>
+                                }
+                            </span>
+                        </td>
+                    </tr>
+                }
+                //task
+                else
+                {
+                    <tr id="row_@item.SlNo" data-relationid="@item.Relation" data-milestonestatus="@item.MilestoneStatus"
+                        class="@(item.MilestoneStatus.ToLower() == "completed" ? "-completed" : "") readonly">
+
+                        <td data-slno="@item.SlNo">
+                            @item.SlNo
+                        </td>
+                        <td class="input_width" data-slack=""></td>
+                        <td class="taskheader_section">
+                            <input type="text" class="colwidth_250 form-control" data-wbsheader="@item.WBSHeaderId" value="@item.WBSHeader" title="@item.WBSHeader" placeholder="" />
+                        </td>
+                        <td>
+                            <div class="taskheader_section @(item.IsKPI ? "color-red" : "")">
+                                <input type="text" class=" colwidth_250 form-control @(item.IsKPI ? "color-red" : "")" data-task="@item.TaskId" value="@item.Task" title="@item.Task" placeholder="" />
+                            </div>
+                        </td>
+                        <td>
+                            <span class="d-flex align-items-center">
+                                <input data-dependency="" type="text" class="form-control -uppercase" value="@item.Dependency" title="@item.Dependency" />
+                            </span>
+                        </td>
+                        <td>
+                            <div class="duration">
+                                <input type="text" data-duration="" value="@item.Duration" title="@item.Duration" class="colwidth_50 form-control text-right" />
+                            </div>
+                        </td>
+                        <td>
+                            <input type="text" data-startdate="" value="@item.StartDate" title="@item.StartDate" data-previousvalue="@item.StartDate" class="form-control" />
+                        </td>
+                        <td>
+                            <input type="text" data-enddate="" data-previousvalue="@item.EndDate" value="@item.EndDate" title="@item.EndDate" class="form-control" />
+                        </td>
+                        <td>
+                            <div class="percentage_list">
+                                <input type="text" class="form-control text-right colwidth_60" data-percentage="" value="@item.TaskPercentage" title="@item.TaskPercentage" />
+                            </div>
+                        </td>
+                        <td>
+                            <div class="resources">
+                                <input type="text" class="form-control colwidth_180" data-resources="" value="@item.Resources" title="@item.Resources" placeholder="" />
+                            </div>
+                        </td>
+                        <td class="file_upload action_icons">
+                            <span class="d-flex align-items-center">
+                                <input type="file" class="form-control" name="files_" data-files="" multiple onclick="return false" />
+                                @if (Model.DocumentDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                {
+                                    <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" onclick="showDocuments(this,0)" title="Documents History"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-history color-eye ml-2 show-file-icon" id="newDocuments_@item.SlNo" style="display:none;" onclick="showDocuments(this,0)" title="Documents History"></i>
+                                }
+                            </span>
+                        </td>
+                        <td class="input_width action_icons">
+                            <span class="d-flex align-items-center">
+                                <textarea class="form-control " data-remarks=""></textarea>
+                                @if (Model.RemarkDetails.Where(d => d.SlNo == item.SlNo).Count() > 0)
+                                {
+                                    <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" onclick="showRemarks(this)" title="Remarks History"></i>
+                                }
+                                else
+                                {
+                                    <i class="fas fa-history color-eye ml-2" id="newRemarks_@item.SlNo" style="display:none" onclick="showRemarks(this)" title="Remarks History"></i>
+                                }
+                            </span>
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </tbody>
+</table>

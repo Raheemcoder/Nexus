@@ -1,0 +1,243 @@
+﻿@model Ideation.Models.PMUMapping
+@{
+    var weeks = 0;
+    var startYear = 0;
+    var len = 0;
+    if (Model.PMUMappingList.Count() != 0)
+    {
+        weeks = (Model.PMUMappingList.LastOrDefault().EndYear + 1) * 4;
+    }
+}
+
+
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="large-table-fake-top-scroll-container-3">
+            <div>&nbsp;</div>
+        </div>
+        <div class="table table-responsive large-table-container-3">
+            @*<div class="table table-responsive">*@
+                <table class="table table-responsive-lg">
+                    <thead class="-table-bg-grey">
+                        <tr>
+                            <th class="text-white text-center" colspan="1">Sl.No</th>
+                            <th class="text-white" colspan="1">Tasks</th>
+                            <th class="text-white text-center">History</th>
+                            <th class="text-white text-center">Duration</th>
+                            <th class="text-white text-center" colspan="1">Relation</th>
+                            <th class="text-white text-center" colspan=@weeks>Task Relationship</th>
+                        </tr>
+
+
+                    </thead>
+                    <tbody class="table-bordered text-white">
+
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            @{
+
+                                if (Model.PMUMappingList.Count() != 0)
+                                {
+                                    var count = Model.PMUMappingList.FirstOrDefault().StartMonth - 1;
+                                    var syear = Model.PMUMappingList.FirstOrDefault().StartYear;
+                                    for (int i = 0; i <= Model.PMUMappingList.FirstOrDefault().EndYear; i++)
+                                    {
+
+                                        <td colspan="4" class="text-center">@Model.months[count]-@syear</td>
+                                        count++;
+                                        if (count == 12)
+                                        {
+                                            syear++;
+                                            count = 0;
+                                        }
+                                    }
+
+                                }
+
+
+                            }
+
+
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>S.no</td>
+                            <td class="w-100">Activities</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            @if (Model.PMUMappingList.Count() != 0)
+                            {
+                                for (int i = 0; i <= Model.PMUMappingList.FirstOrDefault().EndYear; i++)
+                                {
+                                    for (int j = 1; j <= 4; j++)
+                                    {
+                                        <td>W @j</td>
+                                    }
+                                }
+                            }
+                            <td></td>
+                        </tr>
+
+                        @if (Model.PMUMappingList.Count() != 0)
+                        {
+                            var flag = true;
+                            var a = 0;
+                            var b = 0;
+                            var Syear = Model.PMUMappingList.FirstOrDefault().StartYear;
+                            var Eyear = Model.PMUMappingList.FirstOrDefault().EndYearmonth;
+
+                            var Start = Model.PMUMappingList.FirstOrDefault().StartMonth;
+                            var End = Model.PMUMappingList.FirstOrDefault().EndMonth;
+
+                            var DIFF = Model.PMUMappingList.FirstOrDefault().Monthesdifference;
+                            foreach (var item in Model.PMUMappingList)
+                            {
+
+                        <tr data-milestone="@item.MilestoneId">
+                            <td class="w100 -task-bg">@item.SequenceNo</td>
+                            <td class="w-100 -task-bg">@item.MilestoneName</td>
+                            <td class="w100 -task-bg"><a class="History" data-toggle="modal">History</a></td>
+                            <td class="w100 -task-bg"><a class="Duration" data-toggle="modal">@item.Duration</a></td>
+
+                            @*<td class="w100 -task-Rel-bg">@item.RelationType @item.SetRelation1 </td>*@
+                            <td class="w100 -task-Rel-bg"> @item.SetRelation1 </td>
+
+
+                            @{
+
+                                a = ((item.Monthesdifference) * 4 + item.StartWeek);
+
+                                //if (a==0)
+                                //{
+
+
+                                //    a = item.StartWeek;
+
+                                //}
+                                //else
+                                //{
+                                //    a = ((DIFF) * 4 + item.StartWeek) + ((item.StartMonth - End) * 4);
+                                //    // a = ((item.Monthesdifference) * 4 + item.StartWeek) + ((item.StartMonth - End) * 4);
+
+
+                                //    if (Eyear != item.EndYearmonth)
+                                //    {
+                                //        if (item.RelationType == "SS ( Parallel)")
+                                //        {
+                                //            //DIFF = (DIFF + item.Monthesdifference) + 2;
+                                //            //Eyear = item.EndYearmonth;
+                                //            //DIFF = item.Monthesdifference;
+                                //            DIFF = Model.PMUMappingList.FirstOrDefault().Monthesdifference;
+                                //        }
+                                //        else
+                                //        {
+                                //            //DIFF = Model.PMUMappingList.FirstOrDefault().Monthesdifference;
+                                //            DIFF = item.Monthesdifference;
+                                //        }
+
+                                //        // DIFF = item.Monthesdifference;
+                                //    }
+                                //    else
+                                //    {
+                                //        DIFF = Model.PMUMappingList.FirstOrDefault().Monthesdifference;
+                                //    }
+
+
+
+                                //}
+
+                                // b = item.EndWeek + a - item.StartWeek + ((item.Monthesdifference) * 4);//52
+                                b = item.EndWeek + a - item.StartWeek + ((item.currentmonthdiff) * 4);//52;//52
+                                for (int i = 1; i <= weeks; i++)
+                                {
+                                    if (i >= a && i <= b)
+                                    {
+                                        <td class="w100 @item.Class"></td>
+                                    }
+                                    else
+                                    {
+                                        <td class="w100"></td>
+                                    }
+                                }
+                                //a = b;
+                            }
+
+                            @*}*@
+                        </tr>
+                            }
+                        }
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+
+<div id="HistoryModal" class="modal fade m-modal -table-modal HistoryModal " tabindex="-1" role="dialog">
+    <div class="modal-dialog-centered  modal-xl " style="padding-left:150px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="m-modal__header--center">
+                    <h5 class="modal-title">History</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal-info__text">
+
+                            </div>
+                            <div class="m-table__main">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="HistoryGrid" class="table table-bordered"></table>
+                                    <div id="HistoryGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        
+        var tableContainer = $(".large-table-container-3");
+        var table = $(".large-table-container-3 table");
+        var fakeContainer = $(".large-table-fake-top-scroll-container-3");
+        var fakeDiv = $(".large-table-fake-top-scroll-container-3 div");
+
+
+
+        var tableWidth = table.width();
+        fakeDiv.width(tableWidth);
+
+
+
+        fakeContainer.scroll(function () {
+            tableContainer.scrollLeft(fakeContainer.scrollLeft());
+        });
+        tableContainer.scroll(function () {
+            fakeContainer.scrollLeft(tableContainer.scrollLeft());
+        });
+    });
+
+</script>
+<script src="~/js/GanttChart/GanttChart.js" asp-append-version="true"></script>
+@*<script src="~/JS/GanttChart/GanttChart.js"></script>*@

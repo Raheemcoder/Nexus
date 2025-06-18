@@ -1,0 +1,261 @@
+﻿/*Project update css starts*/
+
+.edit_history li.nav-item {
+    padding: 0px;
+}
+
+    .edit_history li.nav-item:hover {
+        background: none !important;
+        padding: 0px;
+    }
+
+.edit_history .nav-tabs .nav-link.active, .edit_history .nav-tabs .nav-item.show .nav-link {
+    color: #ffffff;
+    background-color: #01686a;
+    padding: 5px 20px;
+    border-radius: 10px 10px 0px 0px;
+    border: 0px solid #01686a;
+}
+
+.edit_history .nav-tabs .nav-link {
+    border: 0px solid #01686a;
+    padding: 5px 20px;
+    background: 0px;
+    border-radius: 10px 10px 0px 0px;
+    color: #000;
+}
+
+.edit_history .scroll_div {
+    overflow: auto;
+    max-height: 500px;
+    overflow-x: hidden;
+    margin-top: 10px;
+    position:relative;
+}
+
+    .edit_history .scroll_div hr {
+        margin: 10px 0px 0px 0px;
+    }
+
+        .edit_history .scroll_div hr:not([size]) {
+            height: 0.2px;
+            background: var(--bs-secondary);
+        }
+
+.edit_history .date_font {
+    font-size: 11px;
+    padding-right: 10px;
+}
+
+.edit_history .hide {
+    display: none;
+}
+
+.edit_history .history_section p {
+    margin-bottom: 0px;
+    float: left;
+    width: 100%;
+    margin-top: 5px;
+    font-size: 12px;
+    word-wrap: break-word;
+}
+
+.edit_history .history_section {
+    background: transparent;
+    border-bottom: 1px solid #dedede;
+    padding: 5px;
+    margin-bottom: 5px !important;
+    float: left;
+    width: 100%;
+}
+
+    .edit_history .history_section .lbl_flex {
+        padding-top: 0px;
+    }
+
+.edit_history .lbl_flex {
+    display: inline;
+    justify-content: space-between;
+}
+
+.edit_history .tabs_section {
+    border: 1px solid #dedede;
+    padding: 10px;
+    height: 100%;
+    background: #fafafa;
+}
+
+.edit_history .edit_product {
+    border: 1px solid #dedede;
+    padding: 10px;
+    height: 100%;
+}
+
+.edit_history .pr-0 {
+    padding-right: 0px;
+}
+
+.edit_history .tabs_section .nav li {
+    margin: 0px;
+    margin-right: 3px;
+}
+
+.edit_history .tabs_section .nav-tabs .nav-link:hover, .tabs_section .nav-tabs .nav-link:focus {
+    isolation: isolate;
+    border: 0px solid #01686a;
+    padding: 5px 20px;
+    background: 0px;
+    border-radius: 10px 10px 0px 0px;
+    background: #01686a;
+    color: #fff;
+}
+
+.edit_history .tabs_section .nav-tabs { /*border-color: #7a7a7a; border-bottom: 1px solid #7a7a7a;*/
+    background: transparent;
+    border-color: #01686a;
+}
+
+.edit_history .history_info span:nth-child(1) {
+    background: #dedede; /* padding: 10px; */
+    width: 30px;
+    border-radius: 40px;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    display: inherit;
+    float: left;
+    text-align: center;
+    line-height: 24px;
+    margin-right: 10px;
+}
+
+.edit_history .history_info span i {
+    font-size: 13px;
+}
+
+.edit_history .history_info {
+    float: left;
+}
+
+.edit_history ._download {
+    float: right;
+}
+
+.edit_history .history_name {
+    position: relative;
+    top: 1px;
+}
+
+.edit_history ._download span:nth-child(1) {
+    background: green;
+    width: 20px;
+    height: 20px;
+    float: left;
+    border-radius: 30px;
+    text-align: center;
+    line-height: 20px;
+    color: #fff;
+    margin-right: 6px;
+}
+
+.edit_history ._download span i {
+    font-size: 12px;
+}
+
+.edit_history textarea.form-control {
+    height: auto !important;
+}
+
+.edit_history .select2-container--default .select2-selection--single {
+    background: #e9ecef !important;
+}
+
+.edit_history .form-group {
+    float: left;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.edit_history span.value_input {
+    width: 100%;
+    float: left;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.edit_history .form-group label.edit_label {
+    margin-bottom: 2px;
+}
+
+.card-box.edit_history {
+    margin-bottom: 28px !important;
+}
+
+.project_txt {
+    font-size: 16px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    font-weight: 600;
+}
+
+
+li.view_table {
+    position: absolute;
+    right: 8px;
+    background: #eaeaea !important;
+    top: 7px;
+    border-radius: 5px !important;
+    padding: 6px 10px !important;
+    cursor: pointer;
+}
+
+.upload {
+    width: 100% !important;
+}
+
+.modal .upload .ui-jqgrid tr.ui-search-toolbar th:nth-last-child(1) {
+    border-right: 1px solid #dedede !important
+}
+
+.btn-icon.-view {
+    color: #fff;
+    background-color: green;
+}
+
+.project_updatesBox{
+    min-height: calc(100vh - 100px)
+}
+
+.history_section ol li, .history_section ul li {
+    float: left;
+    width: 100%;
+}
+.head_bar {
+    background: #f3f3f3;
+    padding: 4px 10px;
+}
+.head_bar h6{
+    margin:0px;
+}
+.target_volume {
+    border-top: 1px solid #dedede;
+    padding-top: 5px;
+}
+.ckeditor_height .cke_contents.cke_reset {
+    height: 60px !important;
+}
+
+#commentsModal {
+    max-height: 100vh;
+    overflow-y: clip;
+}
+.filter_greyscale {
+    filter: invert(100%);
+}
+
+.-history {
+    background: #fd6100 !important;
+}
+.-add {
+    background: #28a754 !important;
+}

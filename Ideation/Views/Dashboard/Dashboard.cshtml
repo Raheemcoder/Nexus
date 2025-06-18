@@ -1,0 +1,220 @@
+﻿@model Ideation.Models.DashBoard
+@{
+    ViewBag.Title = "Dashboard";
+}
+
+<div class="card-box mb-0">
+
+    <div class="tab_data_">
+
+        <div id="Two" class="tabcontent">
+            <div class="row">
+                <div class="col-md-4 status_align">
+                    <div class="form-group">
+                        <label class="col-md-12 p-0"></label>
+                        <button class="gg"></button>
+                        <strong>Approved</strong> &nbsp; &nbsp;
+                        <button class="rj"></button>
+                        <b>Declined</b> &nbsp; &nbsp;
+                        <button class="yl"></button>
+                        <b>Pending</b>
+
+                    </div>
+                </div>
+
+
+
+                <table class="table dashboard_table">
+
+                    <tr class="bd_top_less head_font">
+                        <th class="dash_th"></th>
+                        <th>AHP</th>
+                        <th>CPD </th>
+                        <th>FOODS</th>
+                        <th>Other</th>
+                        <th>PACKAGING</th>
+                        <th>PHARMA</th>
+                        <th>PROCESS ENGINEERING </th>
+                    </tr>
+
+
+                    @foreach (var pt in Model.PlatformTypeList)
+                    {
+                        <tr class="bck_th  tt_text">
+                            <th class="cl_text"><span class="th_padd">@pt.PlatformTypeName</span></th>
+
+                            @foreach (var bd in Model.BusinessDivisionList)
+                            {
+                                <td>
+                                    @foreach (var tc in Model.StatusList)
+                                    {
+
+                                        if (@pt.PlatformTypeName == @tc.PlatformTypeName && @bd.BusinessDivisionName == @tc.BusinessDivisionName)
+                                        {
+                                            @if (@tc.StatusName == "Approved")
+                                            {
+                                                <button class="btn btn-success c-btn -approve statusdetails" data-bs-pt="@tc.PlatformTypeName" data-bs-bd="@tc.BusinessDivisionName" data-bs-st="@tc.StatusName" data-bs-toggle="modal" data-bs-target="#exampleModal">@tc.TicketCount</button>
+                                            }
+                                            @if (@tc.StatusName == "Declined")
+                                            {
+                                                <button class="btn btn-danger c-btn -cancel statusdetails" data-bs-pt="@tc.PlatformTypeName" data-bs-bd="@tc.BusinessDivisionName" data-bs-st="@tc.StatusName" data-bs-toggle="modal" data-bs-target="#exampleModal">@tc.TicketCount</button>
+                                            }
+                                            @if (@tc.StatusName == "Pending")
+                                            {
+                                                <button class="btn btn-warning statusdetails" data-bs-pt="@tc.PlatformTypeName" data-bs-bd="@tc.BusinessDivisionName" data-bs-st="@tc.StatusName" data-bs-toggle="modal" data-bs-target="#exampleModal">@tc.TicketCount</button>
+                                            }
+                                        }
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                </table>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+<div class="dash_mod">
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content idti">
+                <div class="modal-header -bg-green">
+                    <button type="button" class="close" >
+                        <span>
+                            <i class="fas fa-times undoicon" aria-hidden="true" data-bs-dismiss="modal" onclick="closeModalPopup()" id=""></i>
+                        </span>
+                        @*<img src="@Url.Content("~/images/Undo-icon.png")" class="undoicon" />*@
+                    </button>
+                    <h4 class="modal-title"><span id="selectedRoomSpan" class="selected-room__title"></span>DashBoard Data</h4>
+                </div>
+                <div class="modal-body mdg">
+                    <table class="table">
+                        <thead>
+                            <tr class="bd1">
+                                <th scope="col"></th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Platform Domain</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Platform Type</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Submitted By</th>
+                                <th scope="col">Submitted Date</th>
+                            </tr>
+                        </thead>
+                        <tbody class="tb" id="table_data">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="inn_moda">
+    <div class="modal fade test" id="dashBoardModal" tabindex="-1" aria-labelledby="dashBoardModal" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header -bg-green">
+
+                    <button type="button" class="close" data-bs-toggle="modal" data-bs-target="#exampleModal" onclick="closeModalPopup()" id="dbmodalclose">
+                        @*<img src="@Url.Content("../images/Undo-icon.png")" class="undoicon" />*@
+                        <span>
+                            <i class="fas fa-times undoicon" aria-hidden="true" data-bs-dismiss="modal" onclick="closeModalPopup()" id=""></i>
+                        </span>
+                    </button>
+
+                    <h4 class="modal-title"><span id="selectedRoomSpan" class="selected-room__title"></span>DashBoard Data</h4>
+                </div>
+                <div class="modal-body mdg">
+
+                    <div class="download-btn-flex">
+                        <div>
+                            <h4 class="isf" id="dbmodal_innovationtile"></h4><br />
+                        </div>
+                        <div class="col-md-3">
+                            <div class="form-group text-right">
+                                <label class="control-label" id="downloadlable">
+                                    Download File (Image,PDF, PPT)
+                                </label>
+                                <a class="download-btn" href="#" target="_blank" id="dbmodel_filedownload"><i class="fa fa-download position_relative" aria-hidden="true"></i>Download/View File</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form>
+                        <div class="row fr">
+                            <input type="hidden" id="dbmodal_innovationid" />
+                            <div class="col-md-4">
+
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Keywords
+                                    </label>
+                                    <input type="text" readonly="readonly" class="form-control" id="dbmodal_keywords" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Platform Domain
+                                    </label>
+                                    <input type="text" class="form-control" readonly="readonly" id="dbmodal_bd" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Geographic Scope
+                                    </label>
+                                    <input type="text" class="form-control" readonly="readonly" id="dbmodal_gs" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Platform Type<span class="color-red">*</span>
+                                    </label>
+                                    <input type="text" readonly="readonly" class="form-control" id="dbmodal_pt" />
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Other
+                                    </label>
+                                    <input type="text" class="form-control" readonly="readonly" id="dbmodal_other" />
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="control-label">
+                                        Strategic Fit<span class="color-red">*</span>
+                                    </label>
+                                    <input type="text" class="form-control" readonly="readonly" id="dbmodal_st" />
+                                </div>
+                            </div>
+
+                            @*<div class="col-md-12">
+                            <div class="form-group">
+                            <label class="control-label">
+                            Description <span class="color-red">*</span>
+                            </label>
+                            <textarea class="form-control" readonly="readonly" id="dbmodal_description"></textarea>
+                            </div>
+                            </div>*@
+                        </div>
+                    </form>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="~/js/DashBoard.js" asp-append-version="true"></script>
+

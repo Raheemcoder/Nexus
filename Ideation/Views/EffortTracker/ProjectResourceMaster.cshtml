@@ -1,0 +1,77 @@
+﻿@model Ideation.Models.EffortTracker
+@{
+    ViewBag.Title = "ProjectResourceMaster";
+    Layout = "~/Views/Shared/_ETLayout.cshtml";
+}
+<link href="https://www.codehim.com/demo/bootstrap-multiselect-dropdown/dist/css/bootstrap-multiselect.css" rel="stylesheet" />
+<script src="@Url.Content("https://www.codehim.com/demo/bootstrap-multiselect-dropdown/dist/js/bootstrap-multiselect.js")" asp-append-version="true"></script>
+
+
+@Html.HiddenFor(m=>m.JsonFormProjectsDetails)
+<div class="card-box myProject">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title">
+                <h4 class="-mb-3">Project Resource Master</h4>
+            </div>
+
+            <div class="row mb-4">
+                
+                    
+                        <div class="col-md-3">
+                            <div class="">
+                                <div class="">
+                                    <label class="mt-2">Project<span class="color-red"></span></label>
+                                </div>
+                                <div class="">
+                                    @Html.ListBoxFor(model => model.ProjectId, Model.ProjectDataList ?? new List
+                                        <SelectListItem>
+                                        (),
+                                    new { @class = "form-control data-multiselect", @multiple = "multiple",
+                                    @id="Projects" })
+                                    <span style="color:red; display:none" id="ApportionDivisionErr" class="">Please select Division</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="">
+                                <div class="">
+                                    <label class="mt-2">Resource<span class="color-red"></span></label>
+                                </div>
+                                <div class="">
+                                    @Html.ListBoxFor(model => model.Resource, Model.ResourceList ?? new List
+                                        <SelectListItem>
+                                        (),
+                                    new { @class = "form-control data-multiselect", @multiple = "multiple",
+                                    @id="Resource" })
+                                    <span style="color:red; display:none;font-size:12px" id="ApportionClassificationErr" class="">Please select Classification</span>
+                                </div>
+                            </div>
+                        </div>
+                       
+                <div class="col-md-3 d-flex flex-column">
+                    <div class="mt-auto">
+                        <button type="button" class="btn btn_search" id="projectsFilter" style="margin-top:6vh;"><i class="fa fa-search" aria-hidden="true"></i></button>
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex flex-column">
+                    <div class="mt-auto ml-auto">
+                        <button type="button" class="btn-add mt-1 px-4" id="ProjectResourceMasterExport">Export To Excel</button>
+                    </div>
+                </div>
+                   
+                
+            </div>
+            <div class="m-table__main mmproject">
+                <div class="m-table__responsive -virtual-scroll m-table__responsivemaster">
+                    <div>
+                        <table id="ProjectResouceMasterGrid" class="table table-bordered"></table>
+                        <div id="pager"></div>
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+</div>
+</div>
+<script src="@Url.Content("~/js/projectresourcemaster.js")" asp-append-version="true"></script>

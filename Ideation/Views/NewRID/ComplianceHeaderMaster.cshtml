@@ -1,0 +1,145 @@
+﻿@model Ideation.Models.ComplianceHeaderMaster
+@{
+    ViewData["Title"] = "Region Compliance Header Master";
+    Layout = "/Views/Shared/N_RIDLayout.cshtml";
+    var division = @Model.Division == "COSMETICS/PERSONAL CARE" ? "COSMETICS" : @Model.Division;
+}
+
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.IngredientTypeList)" id="IngredientTypeList" />
+<input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.RegionList)" id="RegionList" />
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home / </a>
+                    <a href="@Url.Content("~/NewRID/RIDIndex")">@division / </a>
+                </span>
+                RCHM
+            </h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="d-flex align-items-center justify-content-between">
+        <div>
+            <div class="d-flex ">
+                @Html.HiddenFor(m => m.ComplianceHeaderId)
+                @Html.HiddenFor(m => m.HeaderListData)
+                <div class="col-width2 mr-2">
+                    <div class="form-group">
+                        <label class="control-label">Region : <span class="color-red">*</span></label>
+                        @Html.DropDownListFor(m => m.RegionId, new SelectList(Model.RegionList, "Value", "Text"), "--Select--", new { @class = "form-control data-singleselect" })
+                        <span id="RegionId_valid" class="text-danger required">Please select Region</span>
+                    </div>
+                </div>
+                <div class="col-width2 mr-2">
+                    <div class="form-group">
+                        <label class="control-label">Ingredient Type : <span class="color-red">*</span></label>
+                        @Html.DropDownListFor(m => m.IngredientTypeId, new SelectList(Model.IngredientTypeList, "IngredientTypeId", "IngredientTypeName"), "--Select--", new { @class = "form-control data-singleselect" })
+                        <span id="IngredientTypeId_valid" class="text-danger required">Please select Ingredient Type</span>
+                    </div>
+                </div>
+                <div class="col-width3 mr-2">
+                    <div class="form-group">
+                        <label class="control-label">Header Name : <span class="color-red">*</span></label>
+                        @Html.TextBoxFor(m => m.ComplianceHeaderName, new { @class = "form-control alphanumeric textvalid  noSpacesField", @autocomplete = "off" })
+                        <span id="ComplianceHederName_valid" class="text-danger required">Please enter Header Name</span>
+                    </div>
+                </div>
+                <div class="col-width1 mt-3 mb-3">
+                    <button type="button" class="btn btn-success ml-3 mb-3  mt-1" id="addcompliancedata">Add</button>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div class="d-flex excel_expand align-items-center">
+                <div class="add_button ml-2">
+                    <button type="button" data-bs-toggle="modal" id="saveButton" class="btn btn-draft">Save</button>
+                </div>
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode" title="Enter Full Screen Mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+@Html.HiddenFor(m => m.DivisionId)
+<section>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="complianceHeader_list" class="table table-bordered"></table>
+                            <div id="complianceHeader_list_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade sv hd" id="confirmationPopUpforSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgforsave">
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete button in jq grid*@
+<div class="modal fade sv hd" id="DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="DeleteRecord" class="btn btn-draft" data-bs-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewRID/ComplianceHeaderMaster.js")"></script>

@@ -1,0 +1,482 @@
+﻿@model Ideation.Models.EffortTracker
+@{
+    ViewData["Title"] = "Project Resource Master";
+    Layout = "/Views/Shared/EffortBookingLayout.cshtml";
+}
+@Html.HiddenFor(m => m.JsonFormProjectsDetails)
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Project Resource Master</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div>
+        <div class="">
+            <div class="project_Master d-flex justify-content-between filter_formdata">
+                <div class="d-flex">
+                    <div class="col-width1">
+                        <div class="form-group multiselect-dropdown">
+                            <label class="control-label">Project<span class="text-danger"></span></label>
+                            @Html.ListBoxFor(model => model.ProjectId, Model.ProjectDataList ?? new List<SelectListItem>(), new { @class = "form-control data-multiselect", @multiple = "multiple", @id = "Projects" })
+                            <span style="color:red; display:none" id="ApportionDivisionErr" class="">Please select Division</span>
+                        </div>
+                    </div>
+                    <div class="col-width1">
+                        <div class="form-group  multiselect-dropdown">
+                            <label class="control-label">Resource</label>
+                            @Html.ListBoxFor(model => model.Resource, Model.ResourceList ?? new List<SelectListItem>(), new { @class = "form-control data-multiselect", @multiple = "multiple", @id = "Resource" })
+                            <span style="color:red; display:none;font-size:12px" id="ApportionClassificationErr" class="">Please select Classification</span>
+                        </div>
+                    </div>
+                    <div class="col-width1 mt-3">
+                        <button class="btn btnsearch" title="search" type="button" id="projectsFilter">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btnsearch btn-refresh" title="refresh" type="button" id="projectgrid_refresh">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex excel_expand align-items-center">
+                        <div class="images_excel ">
+                            <img src="~/N_assets/images/excel.png" id="ProjectResourceMasterExport" />
+                        </div>
+                        <div>
+                            <div class="expand_initiate table_expand pr-3">
+                                <div>
+                                    <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="animate__animated2 slideInUp mt-1">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll -project_master_scroll ">
+                                <table id="ProjectResouceMasterGrid" class="table table-bordered"></table>
+                                <div id="pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+<script src="@Url.Content("~/js/EffortBooking/ProjectResourceMaster.js")" asp-append-version="true"></script>
+
+@*<script src="~/js/EffortBooking/ProjectResourceMaster.js"></script>*@
+@***********Meterial List Grid****************@
+@*<script>
+        data = [
+            {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Renosante capsules",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Telomerase",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Cystone PF Low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            }, {
+                "ProjectNo": "IN-100000563",
+                "projectDes": "Koflet PF low sugar syrup",
+                "Resourcename": "DIVYA V.R.",
+                "Manager": "MOHAN A.R .",
+
+            },
+
+
+        ]
+        colmodels = [
+            {
+                name: 'ProjectNo',
+                label: 'Project No',
+                width: 120,
+                resizable: true,
+                ignoreCase: true,
+            },
+            {
+                name: 'projectDes',
+                label: 'Project Description',
+                width: 70,
+                resizable: true,
+                ignoreCase: true,
+            },
+            {
+                name: 'Resourcename',
+                label: 'Resource Name',
+                width: 100,
+                resizable: true,
+                ignoreCase: true,
+
+            },
+            {
+                name: 'Manager',
+                label: 'Manager',
+                width: 150,
+                resizable: true,
+                ignoreCase: true,
+
+            },
+
+        ],
+
+            $("#ProjectResource_grid").jqGrid({
+                url: '',
+                datatype: 'local',
+                data: data,
+                mtype: 'GET',
+                colModel: colmodels,
+                loadonce: true,
+                viewrecords: true,
+                pager: '#ProjectResource_pager',
+                rowNum: 30,
+                scroll: 1,
+                //multiselect: true,
+                gridComplete: function () {
+                    var objRows = $("#ProjectResource_grid tbody tr");
+                    var objHeader = $("#ProjectResource_grid tbody tr td");
+
+                    if (objRows.length > 1) {
+                        var objFirstRowColumns = $(objRows[1]).children("td");
+                        for (i = 0; i < objFirstRowColumns.length; i++) {
+                            $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                        }
+                    }
+
+                }
+            });
+        $("#ProjectResource_grid").jqGrid('filterToolbar', {
+            autosearch: true,
+            stringResult: false,
+            searchOnEnter: false,
+            defaultSearch: "cn"
+        });
+
+        $('.ui-jqgrid-bdiv').css({ 'max-height': 'calc(100vh - 210px)' });
+        $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 130) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "4px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+        }
+
+    </script>*@
+

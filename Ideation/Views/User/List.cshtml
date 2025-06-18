@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+}
+<div class="alert_message">
+    <div id="message">
+        @if (TempData["message"] != null)
+        {
+            <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                </button>
+                <span class="alert-text">@Html.Raw(Convert.ToString(TempData["message"]))</span>
+            </div>
+        }
+    </div>
+</div>
+
+<div class="card-box mb-0">
+    
+    <div>
+        <div class="page_start">
+            <h4 class="">
+                User
+            </h4>
+            <div>
+               
+                @if (Model.IsEdit)
+                {
+               <a href="@Url.Content("~/User/Add")" class="btn-sb">Add</a>
+                }
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+        <div class="d-flex justify-content-between mt-2">
+            <div>
+            <span><label class="btn-icon -edit"><i class="fa fa-edit" aria-hidden="true"></i></label>Edit</span>
+            </div>
+       
+        <div>
+            <button type="button" id="ExcelDownload" class="btn-add"><i class="fas fa-download"></i> Excel</button>
+        </div>
+        </div>
+        </div>
+        </div>
+            <div class="add_grid_">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="new_initiation">
+                        <div class="m-table__main mt-2 mb-4">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="UserList" class="table table-bordered"></table>
+                                <div id="pager_user"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script src="@Url.Content("~/js/user/userlist.js")" asp-append-version="true"></script>

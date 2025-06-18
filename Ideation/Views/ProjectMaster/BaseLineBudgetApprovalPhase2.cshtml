@@ -1,0 +1,372 @@
+﻿@model Ideation.Models.ProjectMasters;
+
+@{
+    ViewBag.Title = "Budget Approval L2";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    a.color-blue {
+        color: blue !important;
+    }
+
+        a.color-blue:hover {
+            color: #000 !important;
+        }
+
+    .info_popup {
+        background: #01686a !important;
+        border: #01686a !important;
+    }
+    .tabs_data .fade:not(.show) {
+        opacity: 1;
+    }
+
+    .tabs_list li a.active, .tabs_list li a:hover {
+        padding: 7px 20px;
+        background: #fd6100;
+        border-radius: 20px 0px;
+        color: #fff;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li a {
+        padding: 7px 20px;
+        background: #dedede;
+        border-radius: 20px 0px;
+        color: #000;
+        margin: 0px 0px;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li, .tabs_list li:hover {
+        padding: 0px;
+        margin: 0px;
+        background: transparent;
+    }
+
+    .list_baseline ul {
+        display: flex;
+        list-style-type: none;
+        justify-content: end;
+        margin-bottom: 0px;
+        padding-left:0px !important;
+    }
+
+        .list_baseline ul li {
+            margin-left: 17px;
+            font-size: 10px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+            .list_baseline ul li:nth-child(2) {
+                margin-left: 0px;
+            }
+
+            .list_baseline ul li b {
+                color: #000;
+                font-weight: normal;
+            }
+
+    td input {
+        border: 1px solid #000 !important;
+    }
+    td.text-right {
+        text-align: right !important;
+    }
+</style>
+
+<section>
+
+    @if (TempData["Message"] != null && TempData["MessageClass"].ToString() != "alert-danger")
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert" style="padding: 5px 10px;">&times;</button>
+        </div>
+    }
+
+    else if (TempData["Messageclass"]?.ToString() == "alert-danger")
+    {
+
+        @Html.HiddenFor(model => model.OutMessage)
+    }
+
+
+    @using (Html.BeginForm("SaveL2ApprovalData", "ProjectMaster", FormMethod.Post, new { id = "L2Approve_Save", enctype = "multipart/form-data" }))
+    {
+        @Html.HiddenFor(model => model.ProjectDataToSave)
+        @Html.HiddenFor(model => model.ProjectId)
+        @Html.HiddenFor(model => model.Role)
+        @Html.HiddenFor(model => model.Remarks)
+
+        <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+            @*<div class="row">
+                    <div class="col-md-2">
+                        <div class="page-title">
+                            <h4>Baseline Budget</h4>
+                        </div>
+                    </div>
+                </div>*@
+            <div class="list_baseline pb-1">
+                <ul>
+                    <li style="display:none">
+                        <b>Project Id:</b> <span class="ProjectId_hidden"></span>
+                    </li>
+                    <li>
+                        <b>Project Id:</b> <span class="projectName"></span>
+                    </li>
+                    @*<li>
+                            <b> Template Name:</b> <span class="template"></span>
+                        </li>*@
+                    <li>
+                        <b> Created Date:</b> <span class="createdDate"></span>
+                    </li>
+                    <li>
+                        <b> L2 Approved  Baseline Budget (INR):</b> <span class="ApprovedBaselineBudget"></span>
+                    </li>
+                    <li>
+                        <b> L2 Approved  Additional Budget (INR):</b> <span class="ApprovedAdditionalBudget"></span>
+                    </li>
+                    <li>
+                        <b> L2 Total Budget (INR):</b> <span class="TotalBudget"></span>
+                    </li>
+                </ul>
+            </div>
+
+            <div>
+                <div class="">
+                    <div>
+                        <div class="row">
+                            @*<div class="col-md-2">
+                                    <div class="form-group mb-0 ">
+                                        <label class="control-label">Year</label>
+                                        <input type="text" class="form-control year" data-datepicker-year="" readonly>
+                                    </div>
+                                </div>*@
+
+                            <div class="col-md-2">
+                                <div class="form-group mb-0 ">
+                                    <label class="control-label">Department </label>
+                                    <select class="form-control DepartmentValue" data-singleselect id="Department">
+                                        <option value="">--All--</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group mb-0 ">
+                                    <label class="control-label">Category</label>
+                                    <select class="form-control CategoryValue" data-singleselect id="Category">
+                                        <option value="">--All--</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-group mb-0 mt-4">
+                                    <button type="button" id="SearchData" class="btn btn-info c-add-details waves-light waves-effect" title="Search">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                    <a onclick="GetInformation()">
+                                        <button type="button" id="GetInfo" class="info_popup btn btn-info c-add-details waves-light waves-effect" title="Budget Info">
+                                            <i class="fas fa-info"></i>
+                                        </button>
+                                    </a>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="text-right mt-4">
+                                    <button type="button" id="ApproveData" class="btn btn-success m-0 c-add-details waves-light waves-effect">
+                                        Approve
+                                    </button>
+                                    <button type="button" id="" onclick="location.href = './BudgetApprovalPhase2';" class="btn btn-danger m-0 c-add-details waves-light waves-effect" title="Back">
+                                        Back
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-2">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="list" class="table table-bordered"></table>
+                                            <div id="list_pager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    }
+</section>
+
+<div class="modal fade budget_popup" id="approvedInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Baseline Budget Approved Info</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="approved_grid" class="table table-bordered"></table>
+                                        <div id="approved_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade budget_popup" id="historyInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Baseline Budget History</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="project_id"><span><b>Project Id:</b></span> IN-100001252 Marula Oil Body Lotion 400 ml</div>
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="approved_grid1" class="table table-bordered"></table>
+                                        <div id="approved_pager1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade budget_popup" id="actionInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Budget Request History</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="project_id"><span><b>Project Id:</b></span> IN-100001251 Cocoa Butter Body Lotion 400 ml</div>
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="actionInfo_grid" class="table table-bordered"></table>
+                                        <div id="actionInfo_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade budget_popup" id="actionInfo1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Budget Request History</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="project_id"><span><b>Project Id:</b></span> IN-100001251 Cocoa Butter Body Lotion 400 ml</div>
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="actionInfo_grid1" class="table table-bordered"></table>
+                                        <div id="actionInfo_pager1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Modal approve popup*@
+<div id="Approve" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xs upload">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h5 class="modal-title modaltitle" id="exampleModalLabel"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="ProjctAndBudget"></p>
+                <p class="modalmsg"></p>
+                <div class="form-group">
+                    <label class="control-label">
+                        Remarks
+                    </label><span class="color-red">*</span>
+                    @Html.TextAreaFor(model => model.ApprovalRemarks, new { @class = "form-control cancelThisData closeModal ApprovalRemarks", @rows = "2", @spellcheck = "false", id = "ApprovalRemarks" })
+                    <span id="Error_ApprovalRemarks" class="color-red Error_closeModal" style="display:none">Please enter the remarks</span>
+
+                </div>
+                <div class="text-right mt-2">
+                    <button type="button" class="btn btn-success" id="ByClick_OK" data-title="Ok"> Ok</button>
+                    <button type="button" class="btn btn-xs btn-cnl c-btn" data-bs-dismiss="modal" data-title="Cancel"> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="AlertPopUp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="PopAlertMessage" class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-rej" data-dismiss="modal" data-title="Cancel">Ok</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectMaster/BaseLineBudgetApprovalPhase2.js")"></script>

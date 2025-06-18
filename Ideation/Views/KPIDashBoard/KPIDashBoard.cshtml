@@ -1,0 +1,238 @@
+﻿@model Ideation.Models.KPIDashBoard
+@{
+    ViewData["Title"] = "ProjectMaster";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+}
+
+<style>
+    .multiselect_ .dropdown_list button.multiselect.dropdown-toggle.btn.btn-default {
+        border: 1px solid #aaa !important;
+    }
+
+    .multiselect_ ul.multiselect-container.dropdown-menu.show {
+        max-height: 40vh;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+        .jqgfirstrow td {
+            padding: 0px;
+        }
+
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        padding: 3px !important;
+    }
+
+    .jqg-second-row-header th.ui-state-default.ui-th-column-header.ui-th-ltr {
+        text-align: center !important;
+    }
+
+    .issue_list .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        white-space: initial !important;
+        /*border: none !important;*/
+    }
+
+    .filter_status button.multiselect.dropdown-toggle.btn.btn-default {
+        border: 1px solid #aaaaaa;
+        border-radius: 3px;
+    }
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #e6e6e6 !important;
+        border-left: 0px;
+        border-top: 0px !important;
+    }
+</style>
+
+<div class="min-body-height">
+    <section>
+
+        @if (TempData["Message"] != null)
+        {
+            <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+                @TempData["Message"].ToString()
+                <button type="button" class="close" data-bs-dismiss="alert" style="padding: 5px 10px;">&times;</button>
+            </div>
+        }
+
+        @using (Html.BeginForm("KPIDataSave", "KPIDashBoard", FormMethod.Post, new { id = "ProjectDataToSave_Submit", enctype = "multipart/form-data" }))
+        {
+            @Html.HiddenFor(model => model.ProjectDataToSave)
+            @Html.HiddenFor(model => model.DelayReason, new { @id = "ResonForDelay" })
+            @Html.HiddenFor(model => model.StatusNames, new { @id = "StatusNames" })
+            @Html.HiddenFor(model => model.Month_Selected)
+            @Html.HiddenFor(model => model.Year_Selected)
+
+            <div class="filter_status prototype_filter ">
+                <div class="col-md-12 row p-0">
+
+                    <div class="d-flex col-md-6">
+                        <div class="col-width1">
+                            <div class="form-group ">
+                                <label class="control-label">Year</label>
+                                <input type="text" class="form-control year" year-picker placeholder="" id="" value="">
+                            </div>
+                        </div>
+                        <div class="col-width1 multiselect_ select">
+                            <div class="form-group">
+                                <label class="control-label">Month</label>
+                                @Html.DropDownListFor(m => m.Month, Model.MonthList ?? new List<SelectListItem>(),
+                               new { @class = "form-control form-control-sm Month multiselectDropdown  example-dropUp", @multiple = "multiple" })
+                            </div>
+                        </div>
+                        <div class="col-width1 multiselect_ select">
+                            <div class="form-group">
+                                <label class="control-label">Division</label>
+                                @Html.DropDownListFor(m => m.Division, new SelectList(Model.DivisionList, "DivisionName", "DivisionName", ""),
+                               new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "selected-division" })
+                            </div>
+                        </div>
+                        <div class="col-width1 mt-3">
+                            <button class="btn btn-search search" title="search" type="button">
+                                <i class="fas fa-search"></i>
+                            </button>
+                            <button class="btn btn-refresh refresh" title="refresh" type="button">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class=" col-md-6 p-0 mt-3">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="d-flex excel_expand align-items-center">
+                                @if (Model.Role == "Admin")
+                                {
+                                    <div class="ml-2">
+                                        <button type="button" class="btn btn-draft" id="open-reason">Reason For Delay</button>
+                                    </div>
+                                }
+                                <div class="ml-2">
+                                    <button type="button" class="btn btn-draft Savedetails">Save</button>
+                                </div>
+                                <div class="images_excel">
+                                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download" />
+                                </div>
+                                <div>
+                                    <div class="expand_initiate table_expand">
+                                        <div>
+                                            <div onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" role="button">
+                                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        }
+
+    </section>
+
+    @*List of KPI jqgrid*@
+    <section>
+        <div class="animate__animated2 slideInUp mt-3">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height issue_list">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="KPIdashboard" class="table table-bordered"></table>
+                                <div id="pager_KPIdashboard"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+@*view remarks popup*@
+<div class="modal fade hd" id="KPIRemarks" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <h4 class="modal-title" id="modal-label"></h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <label>Project Name : <span><strong id="project-name"></strong></span></label>
+                    </div>
+                    <div>
+                        <label>KPI : <span><strong id="kpi-name"></strong></span></label>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="approve_reject">
+                        <div class="row">
+                            <div class="mt-2">
+                                <div class="m-table__main grid_height issue_list">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="ViewRemarks" class="table table-bordered"></table>
+                                        <div id="pager_ViewRemarks"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Reason for delay popup*@
+<div class="modal fade layout_popup" id="reason-modal" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Reason for delay
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row filter_status prototype_filter">
+                    <div class="col-md-6">
+                        <span class="text-success alt-success-reason hide"></span>
+                        <div class="form-group">
+                            <label class="control-label">Reason</label>
+                            <input type="text" class="form-control noSpacesField" id="new-reason" placeholder="Enter Reason" />
+                            <span class="text-danger hide">Please enter reason</span>
+                            <span class="text-danger reason-exists hide">Reason already exists</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mt-3">
+                        <button class="btn btn-search" id="add-new-reason" type="button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="reason-grid" class="table table-bordered"></table>
+                                    <div id="reasongrid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/projectmaster/kpidashboard.js")" asp-append-version="true"></script>

@@ -1,0 +1,453 @@
+﻿@model RiskRegister
+@{
+    ViewData["Title"] = "Risk Register";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+    var userRole = Convert.ToInt32(Context.Session.GetString("RoleId"));
+}
+
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+
+<div class="tracker-support-pages">
+
+    @*header link section*@
+    <section>
+        <div class="">
+            <div class="-m_title_ ">
+                <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Risk Register</h4>
+            </div>
+            @if (Convert.ToString(Context.Session.GetString("projectId")) != "")
+            {
+                var projectName = Context.Session.GetString("projectName");
+                var projectId = Context.Session.GetString("projectId");
+                <input type="hidden" id="selectedProjectName" value="@projectName" />
+                <input type="hidden" id="selectedProjectId" value="@projectId" />
+            }
+        </div>
+    </section>
+
+    @*hidden Fields*@
+    <section>
+        <input type="hidden" id="AssignedtoList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.IssueTracker.AssignedtoList)" />
+        <input type="hidden" id="AllDropDownList" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.IssueTracker.AllDropDownList)" />
+        <input type="hidden" id="userRole" value="@userRole" />
+    </section>
+
+    @if (userRole != 4 && userRole != 3 && userRole != 6)
+    {
+        @*To show response message*@
+        <section>
+            <div id="response-message-div" class="m-login__erromsg hide">
+                <div class="alert alert-success alert-dismissible d-flex justify-content-between" role="alert" id="response-message">
+                </div>
+            </div>
+        </section>
+
+        @*Add Risk section*@
+        <section>
+            <div class="row tracker-support ml-1">
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Risk Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="1" id="risk-desc"></textarea>
+                        <span class="text-danger hide">Please enter Risk Description</span>
+                    </div>
+                </div>
+                <div class="col-width2 trackersupport_calendericon">
+                    <div class="form-group">
+                        <label class="control-label">Risk Identification Date <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control date_text_freezed" id="risk-iden-date" founded-date readonly />
+                        <i class="fas fa-calendar"></i>
+                        <span class="text-danger hide">Please select risk identification date</span>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Impact Area <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.IssueTracker.ImpactAssesment, new SelectList(Model.IssueTracker.ImpactAssessementList, "ImpactId", "ImpactName", ""),
+                        new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "selected-impact-area" })
+                        <span class="text-danger hide">Please select impact area</span>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group">
+                        <label class="control-label">Impact Description <span class="text-danger">*</span></label>
+                        <textarea class="form-control" rows="1" id="impact-description"></textarea>
+                        <span class="text-danger hide">Please enter impact description</span>
+                    </div>
+                </div>
+                <div class="col-width1 sml">
+                    <div class="form-group">
+                        <label class="control-label">Impact Level <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.IssueTracker.ImpactLevelList, new SelectList(Model.IssueTracker.ImpactLevelList,
+                        "ImpactLevelId", "ImpactLevelName"), "Select",
+                        new { @class = "form-control", @id = "selected-impact-level" })
+                        <span class="text-danger hide">Please select impact level</span>
+                    </div>
+                </div>
+                <div class="col-width1 sml">
+                    <div class="form-group">
+                        <label class="control-label">Probability Level <span class="text-danger">*</span></label>
+                        @Html.DropDownListFor(m => m.IssueTracker.ProbabilityLevelList, new SelectList(Model.IssueTracker.ProbabilityLevelList,
+                        "ProbabilityLevelId", "ProbabilityLevelName"), "Select",
+                        new { @class = "form-control", @id = "selected-probability-level" })
+                        <span class="text-danger hide">Please select probability level</span>
+                    </div>
+                </div>
+                <div class="col-width1 sml">
+                    <div class="form-group">
+                        <label class="control-label">Priority Level <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="priority-level" disabled />
+                        <span class="text-danger hide">Priority level is mandatory</span>
+                    </div>
+                </div>
+                <div class="col-width0">
+                    <div class="form-group">
+                        <label class="control-label">Actions</label>
+                        <div class="d-flex align-content-center">
+                            <div class="mt-2 ml-1">
+                                <i class="fas fa-plus-circle issue-tracker-add-icons" title="Actions" id="open-action-popup"></i>
+                                <span class="text-danger hide">Please fill the action completely</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width0 risk-icon">
+                    <div class="mt-2 ml-1 icon icon-container">
+                        <i class="fas fa-table"></i>
+                        <div class="table-container" id="riskTableContainer">
+                            <table id="riskTable">
+                                <caption class="risk">RISK REGISTER SCALE</caption>
+                                <caption class="Impact">IMPACT</caption>
+                                <caption class="probability-header">PROBABILITY</caption>
+                                <tbody>
+                                    <tr>
+                                        <th>5</th>
+                                        <td class="risk-low">5</td>
+                                        <td class="risk-moderate">10</td>
+                                        <td class="risk-high">15</td>
+                                        <td class="risk-high">20</td>
+                                        <td class="risk-extreme">25</td>
+                                    </tr>
+                                    <tr>
+                                        <th>4</th>
+                                        <td class="risk-low">4</td>
+                                        <td class="risk-moderate">8</td>
+                                        <td class="risk-moderate">12</td>
+                                        <td class="risk-high">16</td>
+                                        <td class="risk-high">20</td>
+                                    </tr>
+                                    <tr>
+                                        <th>3</th>
+                                        <td class="risk-low">3</td>
+                                        <td class="risk-moderate">6</td>
+                                        <td class="risk-moderate">9</td>
+                                        <td class="risk-moderate">12</td>
+                                        <td class="risk-high">15</td>
+                                    </tr>
+                                    <tr>
+                                        <th>2</th>
+                                        <td class="risk-low">2</td>
+                                        <td class="risk-low">4</td>
+                                        <td class="risk-low">6</td>
+                                        <td class="risk-moderate">8</td>
+                                        <td class="risk-moderate">10</td>
+                                    </tr>
+                                    <tr>
+                                        <th>1</th>
+                                        <td class="risk-low">1</td>
+                                        <td class="risk-low">2</td>
+                                        <td class="risk-low">3</td>
+                                        <td class="risk-low">4</td>
+                                        <td class="risk-low">5</td>
+                                    </tr>
+                                    <tr>
+                                        <th></th>
+                                        <th>1</th>
+                                        <th>2</th>
+                                        <th>3</th>
+                                        <th>4</th>
+                                        <th>5</th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width1 mt-3">
+                    <div class="d-flex justify-content-end align-items-center">
+                        <div class="d-flex excel_expand align-items-center">
+                            <div>
+                                <button type="button" class="btn btn-success mr-1" id="save-risk">Save Risk</button>
+                            </div>
+                            <div class="images_excel ">
+                                <img src="@Url.Content("~/N_assets/images/excel.png")" id="exceldownload" title="Excel Download">
+                            </div>
+                            <div>
+                                <div class="expand_initiate table_expand">
+                                    <div>
+                                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    }
+
+    @if (userRole == 4 || userRole == 3 || userRole == 6)
+    {
+        <div class="d-flex excel_expand align-items-center justify-content-end">
+            <div class="images_excel ">
+                <img src="@Url.Content("~/N_assets/images/excel.png")" title="Excel download" id="exceldownload" />
+            </div>
+            <div>
+                <div class="expand_initiate table_expand">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+
+    @*List section*@
+    <section>
+        <div class="animate__animated2 slideInUp mt-3">
+            <div class="">
+                <div class="">
+                    <div class="row">
+                        <div class="m-table__main grid_height issue_list risk-list">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="list-riskregister-jqgrid" class="table table-bordered"></table>
+                                <div id="RiskRegister_pager"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+@*Add Action Popup*@
+<div id="addActionPopup" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Add Risk Register Action</h4>
+                <button type="button" class="close close-action-popup"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Action Plan <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" id="action-plan" autocomplete="off"></textarea>
+                            <span class="text-danger hide">Please Enter action plan</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Assigned To <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="action-assigned-to" data-assigned-to />
+                            <span class="text-danger hide select-user">Please select user </span>
+                            <span class="text-danger hide select-from-list">Please select user from the list</span>
+                            <span class="text-danger hide already-selected">user has been already selected</span>
+                            <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Due Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control date_text_freezed" id="action-due-date" readonly due-date />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please select due date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Priority <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.Priority, new SelectList(Model.IssueTracker.PriorityList, "PriorityId", "PriorityName"), "Select",
+                            new { @class = "form-control", @id = "action-selected-priority" })
+                            <span class="text-danger hide">Please select Priority</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Status <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.Status, new SelectList(Model.IssueTracker.StatusList, "StatusId", "StatusName"), "Select",
+                            new { @class = "form-control", @id = "action-selected-status" })
+                            <span class="text-danger hide">Please select status</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Updates From The Owner</label>
+                            <textarea class="form-control" rows="2" id="action-owner-update" autocomplete="off"></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Closed On Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="action-closed-date" readonly disabled closed-date data-action-closed-date />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please select closed on date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Closing Remarks <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="2" id="action-closed-remark" disabled autocomplete="off" data-action-closed-remark></textarea>
+                            <span class="text-danger hide">Please enter closing remarks</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 mt-4">
+                        <div class="">
+                            <button class="btn btn-success" id="add-action-to-table">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="grid_view listgrid_table without_filter width_100 data_tablegrid" id="grid">
+                        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                            <div class="">
+                                <div class="table-responsive" id="action-table">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Edit Risk Popup*@
+<div id="editRiskPopup" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit Risk: <b class="edit-risk-no"></b></h4>
+                <button type="button" class="close close-edit-popup"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="row">
+
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Risk Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="1" id="edited-risk-desc"></textarea>
+                            <span class="text-danger hide">Please enter Risk Description</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2 trackersupport_calendericon">
+                        <div class="form-group">
+                            <label class="control-label">Risk Identification Date <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control date_text_freezed" id="edited-risk-iden-date" founded-date readonly />
+                            <i class="fas fa-calendar"></i>
+                            <span class="text-danger hide">Please select risk identification date</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Impact Area <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.IssueTracker.ImpactAssesment, new SelectList(Model.IssueTracker.ImpactAssessementList, "ImpactId", "ImpactName", ""),
+                            new { @class = "form-control", @data_multiselect = "", @multiple = "multiple", @id = "edited-selected-impact-area" })
+                            <span class="text-danger hide">Please select impact area</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Impact Description <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="1" id="edited-impact-description"></textarea>
+                            <span class="text-danger hide">Please enter impact description</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Impact Level <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.IssueTracker.ImpactLevelList, new SelectList(Model.IssueTracker.ImpactLevelList,
+                            "ImpactLevelId", "ImpactLevelName"), "Select",
+                            new { @class = "form-control", @id = "edited-selected-impact-level" })
+                            <span class="text-danger hide">Please select impact level</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Probability Level <span class="text-danger">*</span></label>
+                            @Html.DropDownListFor(m => m.IssueTracker.ProbabilityLevelList, new SelectList(Model.IssueTracker.ProbabilityLevelList,
+                            "ProbabilityLevelId", "ProbabilityLevelName"), "Select",
+                            new { @class = "form-control", @id = "edited-selected-probability-level" })
+                            <span class="text-danger hide">Please select probability level</span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <div class="form-group">
+                            <label class="control-label">Priority Level <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="edited-priority-level" disabled />
+                            <span class="text-danger hide">Priority level is mandatory</span>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="grid_view listgrid_table without_filter width_100 data_tablegrid" id="grid">
+                        <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                            <div class="">
+                                <div class="table-responsive" id="edit-risk-table">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-right mt-3">
+                        <button type="button" class="btn btn-success mr-2" id="save-edited-risk">Save Risk</button>
+                        <button type="button" class="btn btn-cancel mr-1 close-edit-popup">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Update from owner Popup for List Page*@
+<div id="owner-update-modalforlist" class="modal fade tracker-support " role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Updates From the Owner</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="owner-update-grid-list" class="table table-bordered"></table>
+                            <div id="owner-update-grid-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectTracker/RiskRegister.js")"></script>

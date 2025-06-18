@@ -1,0 +1,530 @@
+﻿@model Ideation.Models.PRCreation
+@{
+    var prNo = Model.PRHeaderId;
+    var pageName = prNo == 0 ? "New PR" : "Update PR";
+    ViewData["Title"] = pageName;
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+    var statusId = Model.StatusId;
+    var roleName = Model.Role.ToLower();
+}
+<style>
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #e6e6e6 !important;
+        border-left: 0px;
+        border-top: 0px !important;
+    }
+
+    .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        text-align: left !important;
+        border: 1px solid #dedede !important;
+        border-left: 0px !important;
+        border-top: 0px !important;
+    }
+
+    td .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 22px;
+    }
+
+    td .select2-container .select2-selection--single {
+        height: 23px;
+    }
+
+    .pr_fields_ textarea {
+        width: 100% !important;
+    }
+
+    .create_pr .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        padding: 5px !important;
+    }
+
+    .col-width1 {
+        width: 130px;
+    }
+
+    .col-width2 {
+        width: 160px;
+        margin: 0 2px;
+    }
+
+    .prototype_filter input.form-control {
+        height: 22px;
+        padding: 5px 10px !important;
+    }
+
+    .form-control[type=file] {
+        cursor: pointer;
+        padding: 5px 5px;
+    }
+
+    .ui-widget.ui-widget-content.ui-autocomplete {
+        box-shadow: 0px 0px 3px !important;
+    }
+
+    .back_aroow {
+        position: absolute;
+        right: 20px;
+        margin-top: -5px;
+    }
+
+    .freeze_scroll .ui-jqgrid .ui-jqgrid-bdiv {
+        height: auto !important;
+        max-height: calc(100vh - 270px) !important;
+    }
+
+    .freeze_scroll .ui-jqgrid .frozen-bdiv.ui-jqgrid-bdiv {
+        height: auto !important;
+        background: #fff;
+        max-height: calc(100vh - 277px) !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable {
+        width: 100% !important;
+    }
+
+    .ui-jqgrid .frozen-bdiv.ui-jqgrid-bdiv .ui-jqgrid-btable {
+        width: auto !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-hbox {
+        float: left;
+        padding-right: 0px;
+    }
+
+    .frozen-div tr.ui-jqgrid-labels.jqg-second-row-header {
+        display: none
+    }
+
+    .freeze_scroll1 .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        text-align: center !important;
+        color: #fff !important;
+    }
+
+    .ui-search-toolbar td.ui-search-clear {
+        display: none;
+    }
+
+    .frozen-bdiv.ui-jqgrid-bdiv .ui-jqgrid-btable.ui-common-table {
+        border-collapse: collapse !important;
+        background: #fff;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+    .body-content {
+        overflow: hidden;
+    }
+
+    .ui-widget.ui-widget-content, .ui-jqgrid .ui-jqgrid-view, .ui-jqgrid .ui-jqgrid-hdiv, .ui-jqgrid .ui-jqgrid-bdiv {
+        width: 100% !important;
+        width: inherit !important;
+    }
+
+    .frozen-div tr.ui-jqgrid-labels.jqg-second-row-header {
+        display: none;
+    }
+
+    .frozen-div.ui-jqgrid-hdiv.ui-state-default .ui-jqgrid-labels.jqg-third-row-header th div {
+        top: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-htable .ui-th-div {
+        height: auto !important;
+        top: 0px !important;
+    }
+
+    tr.ui-jqgrid-labels.jqg-second-row-header {
+        display: none;
+    }
+
+    table.ui-pg-table.navtable.ui-common-table {
+        display: none;
+    }
+
+    .jqgfirstrow {
+        display: none;
+    }
+
+    select.form-control {
+        padding: 5px;
+        height: 22px !important
+    }
+
+    .form-control:disabled, .form-control[readonly] {
+        background-color: #dadada;
+        opacity: 1;
+    }
+
+    td .select2-container .select2-selection--single {
+        height: 23px;
+        display: grid;
+    }
+
+    td input.form-control {
+        padding: 5px;
+    }
+
+    span.color_highlight {
+        color: #ff6b00;
+        font-weight: bold;
+    }
+
+    .modal-row ul {
+        list-style-type: none;
+        padding-left: 5px;
+        margin-bottom: 0px !important;
+    }
+
+    label.control-label {
+        margin-bottom: 0;
+        font-weight: bold;
+    }
+
+    .modal-row li {
+        margin: 10px 0px;
+        line-height: 1.2;
+        font-size: 12px;
+    }
+
+    .uom_qty input.form-control {
+        border-right: 0px !important;
+        border-radius: 5px 0px 0px 5px;
+    }
+
+    .pr_fields_.uom_qty {
+        display: flex;
+        align-items: center;
+    }
+
+        .pr_fields_.uom_qty span {
+            background: #dedede;
+            min-width: 30px;
+            padding: 2px 0px;
+            height: 22px;
+            border-radius: 0px 5px 5px 0px;
+            text-align: center;
+            font-size: 9px;
+            max-width: 30px;
+            line-height: 2;
+        }
+
+    table.ui-pg-table.ui-common-table.ui-paging-pager, table.ui-pg-table.navtable.ui-common-table {
+        display: none;
+    }
+
+    a:not([href]):not([class]) {
+        color: #0d6efd !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        padding: 4px 4px;
+    }
+
+    .prototype_filter .select2-container--default .select2-selection--single .select2-selection__rendered {
+        line-height: 28px;
+    }
+
+    .pr_calendericon {
+        position: relative;
+    }
+
+        .pr_calendericon i.fas {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+        }
+
+    .pr_fields_ {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .modal-title .text-right b {
+        color: #f86e00;
+    }
+</style>
+
+@*To show saved response message*@
+@if (TempData["Message"] != null)
+{
+    <div id="message" class="m-login__erromsg">
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    </div>
+}
+
+@*To show deleted response message*@
+<section>
+    <div id="response-message-div" class="m-login__erromsg hide">
+
+    </div>
+</section>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home/ </a>
+                    <a Onclick="NavigateToPRList()">PR Request/ </a>
+                </span>
+                @pageName
+            </h4>
+        </div>
+        <div class="back_aroow"><a Onclick="NavigateToPRList()"><i class="fas fa-arrow-left"></i> Back</a></div>
+    </div>
+</section>
+
+<section>
+    @Html.HiddenFor(m => m.PRHeaderId)
+    @Html.HiddenFor(m => m.Role)
+    @Html.HiddenFor(m => m.LoginId)
+    <a id="hiddenDownloadLink" class="d-none"></a>
+</section>
+
+<section>
+    <div class="prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex">
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">Department <span class="text-danger">*</span></label>
+                        @Html.DropDownList("DepartmentDropDown", new SelectList(Model.PRDropdownList.Where(m => m.Type == "Department"),
+"Key", "Description"), "Select",
+new { @class = "form-control data-singleselect", @id = "department" })
+                        <span class="hide text-danger prj-err">Please select department</span>
+                    </div>
+                </div>
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">Priority </label>
+                        @Html.DropDownList("PriorityDropDown", new SelectList(Model.PRDropdownList.Where(m => m.Type == "Priority"),
+"Key", "Description"), "Select",
+new { @class = "form-control data-singleselect", @id = "priority" })
+                    </div>
+                </div>
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">Category <span class="text-danger">*</span></label>
+                        @Html.DropDownList("DepartmentDropDown", new SelectList(Model.PRDropdownList.Where(m => m.Type == "Category"),
+"Key", "Description"), "Select",
+new { @class = "form-control data-singleselect", @id = "category" })
+                        <span class="hide text-danger prj-err">Please select category</span>
+                    </div>
+                </div>
+                <div class="col-width1">
+                    <div class="form-group">
+                        <label class="control-label">Vendor Quotations</label>
+                        <div class="mt-1 ml-1">
+                            <i class="fas fa-info-circle" role="button" title="Add Vendor Quotations" onclick="ViewDocumentsDataModal()"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-width1 mt-3">
+                    <button class="btn btn-refresh" title="refresh" type="button" onclick="RefreshPRCreation()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+
+            </div>
+            <div class="d-flex excel_expand align-items-center">
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_button ml-2 d-flex">
+
+                    @if (roleName != "admin")
+                    {
+
+                        @if (
+                           (roleName != "hod" && (statusId == 0 || statusId == 5)) ||
+                           (roleName == "hod" && (statusId == 0 || statusId == 5))
+                        )
+                        {
+                            <button type="button" class="btn btn-success mr-1" id="save-draft-Button">Save as draft</button>
+                        }
+
+                        @if (
+                          (roleName == "hod" || roleName == "pr admin") && (statusId == 140 || statusId == 70) ||
+                          (roleName == "depttl" || roleName == "deptuser") && (statusId == 130)
+                        )
+                        {
+                            <button type="button" class="btn btn-success mr-1" id="save-Button">Save</button>
+                        }
+
+                        @if (roleName != "hod" && (statusId == 0 || statusId == 5 || statusId == 130))
+                        {
+                            <button type="button" class="btn btn-success mr-1" id="send-approval-Button">Send for approval</button>
+                        }
+
+                        @if (roleName == "hod" && (statusId == 140 || (statusId == 70 && Model.IsInitiatorPR == 1)))
+                        {
+                            <button type="button" class="btn btn-success mr-1" id="roll-back-pr-Button">Roll back PR</button>
+                        }
+
+                        @if ((roleName == "hod" || roleName == "pr admin") && (statusId != 70))
+                        {
+                            <button type="button" class="btn btn-success mr-1" id="create-approve-pr-Button">Approve & Create PR</button>
+                        }
+
+                        @if ((roleName == "pr admin" || roleName == "hod") && statusId == 70)
+                        {
+                            <button type="button" class="btn btn-success " id="retry-pr-Button">Save & Retry to SAP</button>
+                        }
+
+                    }
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class=" mt-1">
+        <div class="">
+            <div class="">
+                <div class="col-md-12 p-0">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="pr-creation-grid" class="table table-bordered"></table>
+                            <div id="pr-creation-grid-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="ViewFileModal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Vendor Quotations
+                </h4>
+                <button type="button" class="close" id="closebtn" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <b class="text-danger hide file-deleted"></b>
+                        <b class="text-danger hide file-format-err">Files must be of type .jpg,.jpeg,.png,.xlsx,.xls,.pdf,.doc,.docx,.txt,.csv,.ppt,.pptx</b>
+                        <b class="text-danger hide file-exceed-err">Each file size should be less than 5 MB</b>
+                    </div>
+                    <div class="row">
+                        <div class="d-flex mb-3">
+                            <div class="col-md-4 p-0">
+                                <label>Vendor Name <span class="text-danger">*</span></label>
+                                @Html.TextBox("VendorForFile", "", new { @class = "form-control mandatory" })
+                                <span class="text-danger validation" id="Err_VendorForFile" style="display:none">Please enter vendor name</span>
+                            </div>
+                            <div class="col-md-5">
+                                <label>Upload File <span class="text-danger">*</span></label>
+                                <input type="file" id="FileUpload" class="form-control mandatory" multiple
+                                       accept=".jpg,.jpeg,.png,.xlsx,.xls,.pdf,.doc,.docx,.txt,.csv,.ppt,.pptx" />
+                                <span class="text-danger validation" id="Err_FileUpload" style="display:none">Please select file</span>
+                            </div>
+                            <div class="col-md-2 mt-4">
+                                <button type="button" id="UploadFileData" class="btn btn-success">
+                                    Add
+                                </button>
+                            </div>
+                        </div>
+                        <div class="m-table__main grid_height">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="vendorviewfiles" class="table table-bordered"></table>
+                                <div id="pager_vendorviewfiles"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="pr-dependent-info-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title">
+                    Info
+                    <span class="text-right pl-5 ml-5">
+                        <b>Department: </b>
+                        <span id="info-dept"></span>
+                    </span>
+                    <span class="text-right pl-5 ml-5">
+                        <b>Category: </b>
+                        <span id="info-cat"></span>
+                    </span>
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body ">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <label class="control-label">Project Id</label>
+                        <div class="">
+                            <span class="color_info" id="info-prj-id"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <label class="control-label ">GL Code Description</label>
+                        <div class="">
+                            <span class="color_info" id="info-gl-code-desc"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Material Type</label>
+                        <div class="">
+                            <span class="color_info" id="info-mat-type"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="control-label">Material Code Description</label>
+                        <div class="">
+                            <span class="color_info" id="info-mat-code-desc"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Balance Budget</label>
+                        <div class="">
+                            <span class="color_info" id="info-bal-bud"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">Purchase Group</label>
+                        <div class="">
+                            <span class="color_info" id="info-pur-grp"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-2">
+                        <label class="control-label">HSN Code</label>
+                        <div class="">
+                            <span class="color_info" id="info-hsn-code"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/PRCreation.js")"></script>

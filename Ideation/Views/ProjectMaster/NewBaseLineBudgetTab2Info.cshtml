@@ -1,0 +1,1242 @@
+﻿@{
+    ViewBag.Title = "Baseline Budget ";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    a.color-blue {
+        color: blue !important;
+    }
+
+        a.color-blue:hover {
+            color: #000 !important;
+        }
+
+    .tabs_data .fade:not(.show) {
+        opacity: 1;
+    }
+
+    .tabs_list li a.active, .tabs_list li a:hover {
+        padding: 7px 20px;
+        background: #fd6100;
+        border-radius: 20px 0px;
+        color: #fff;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li a {
+        padding: 7px 20px;
+        background: #dedede;
+        border-radius: 20px 0px;
+        color: #000;
+        margin: 0px 0px;
+        float: left;
+        border-radius: 5px 40px 0 0;
+        clip-path: polygon(0 0%, 0% 0, 90% 0, 95% 30%, 100% 80%, 100% 100%, 10% 100%, 0% 100%, 0% 10%);
+    }
+
+    .tabs_list li, .tabs_list li:hover {
+        padding: 0px;
+        margin: 0px;
+        background: transparent;
+    }
+
+    .list_baseline ul {
+        display: flex;
+        list-style-type: none;
+        justify-content: end;
+        margin-bottom: 0px;
+    }
+
+        .list_baseline ul li {
+            margin-left: 20px;
+            font-size: 10px;
+            color: #ff6b00;
+            font-weight: bold;
+        }
+
+            .list_baseline ul li b {
+                color: #000;
+                font-weight: normal;
+            }
+
+    td input {
+        border: 1px solid #000 !important;
+    }
+
+    .list_badge .m-table__main .table td:nth-child(1) {
+        padding: 5px 8px !important;
+    }
+
+    .list_badge .ui-jqgrid .ui-jqgrid-htable th {
+        padding: 4px 17px !important;
+    }
+
+    .list_badge .jqgfirstrow {
+        display: none
+    }
+
+    .info_popup {
+        background: #01686a !important;
+        border: #01686a !important;
+    }
+
+    .list_baseline {
+        background: #e8e8e8;
+        padding: 5px;
+    }
+</style>
+<section>
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+        <div class="list_baseline pb-1">
+            <ul>
+                <li>
+                    IN-100001251 Cocoa Butter Body Lotion 400 ml
+                </li>
+
+                <li>
+                    <b> Approved Baseline Budget (INR):</b> 2400000
+                </li>
+                <li>
+                    <b> Approved Additional Budget (INR):</b> 800000
+                </li>
+
+                <li>
+                    <b> Total Budget (INR):</b> 3200000
+                </li>
+
+            </ul>
+        </div>
+        <div class="list_baseline pb-1 mt-1">
+            <ul>
+
+                <li>
+                    <b> PD CPD:</b> <i class="fas fa-inr"></i> 200000
+                </li>
+                <li>
+                    <b> R&D (QA):</b> <i class="fas fa-inr"></i> 300000
+                </li>
+
+                <li>
+                    <b> R&D (Analytical -CPD):</b> <i class="fas fa-inr"></i> 200000
+                </li>
+
+            </ul>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            @*<table id="approvedHistory_grid" class="table table-bordered"></table>
+                                <div id="approvedHistory_pager"></div>*@
+                            <table id="list_new1" class="table table-bordered"></table>
+                            <div id="listnew_pager1"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+<script>
+    data = [
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "100000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Mar-24",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "3-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Travel",
+            "BudgetType": "Additional",
+            "ReqBudget": "20000",
+            "L1ApprovedBudget": "20000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Mar-24",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "3-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "50000",
+            "L1ApprovedBudget": "50000",
+            "L2ApprovedBudget": "50000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Feb-244",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "5-Feb-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Feb-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Travel",
+            "BudgetType": "Additional",
+            "ReqBudget": "40000",
+            "L1ApprovedBudget": "40000",
+            "L2ApprovedBudget": "50000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Feb-24",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "5-Feb-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Feb-24",
+        },
+
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Product Development",
+            "BudgetType": "Baseline",
+            "ReqBudget": "200000",
+            "L1ApprovedBudget": "200000",
+            "L2ApprovedBudget": "200000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "4-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Jan-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Travel",
+            "BudgetType": "Baseline",
+            "ReqBudget": "120000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "100000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "4-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Jan-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "60000",
+            "L1ApprovedBudget": "50000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "22-Mar-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "23-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Travel",
+            "BudgetType": "Additional",
+            "ReqBudget": "20000",
+            "L1ApprovedBudget": "10000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "22-Mar-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "23-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "100000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "100000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "12-Feb-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "13-Feb-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "13-Feb-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Product Development",
+            "BudgetType": "Baseline",
+            "ReqBudget": "300000",
+            "L1ApprovedBudget": "300000",
+            "L2ApprovedBudget": "300000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "10-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "11-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "12-Jan-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Travel",
+            "BudgetType": "Baseline",
+            "ReqBudget": "100000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "100000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "10-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "11-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "12-Jan-24",
+        },
+
+
+    ]
+    colmodels = [
+
+        //{
+        //    name: 'Action',
+        //    label: 'Action',
+        //    width: 70,
+        //    search: false,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //    sortable: false,
+        //    formatter: function (cellvalue, options, rowobject) {
+        //        return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+        //            '<a href="#" class="pl-1" title="Approve" > <i class="fas fa-thumbs-up text-success"></i></a> '
+        //    }
+        //},
+
+        {
+            name: 'Year',
+            label: 'Year',
+            width: 180,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Department',
+            label: 'Department',
+            width: 180,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Category',
+            label: 'Category',
+            width: 180,
+            resizable: true,
+            ignoreCase: true,
+
+        },
+        //{
+        //    name: 'ReqBaselineBudget',
+        //    label: 'Req Baseline Budget (INR)',
+        //    width: 140,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //},
+        {
+            name: 'L1ApprovedBudget',
+            label: 'L1 Approved Budget (INR)',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'L2ApprovedBudget',
+            label: 'L2 Approved Budget (INR)',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Status',
+            label: 'Status',
+            width: 180,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                if (rowobject.BaselineApprovalStatus == "L2 Approval Pending") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+                }
+                else if (rowobject.BaselineApprovalStatus == "L2 Approved") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-success">' + cellvalue + '</span></a>'
+                }
+                else if (rowobject.BaselineApprovalStatus == "L1 Approval Pending") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+                }
+                else if (rowobject.BaselineApprovalStatus == "") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+                }
+
+
+            }
+        },
+        {
+            name: 'RequestedBy',
+            label: 'Requested By',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    if (rowobject.BaselineApprovalStatus == "L2 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.BaselineApprovalStatus == "L1 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.BaselineApprovalStatus == "L2 Approved") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-success">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.BaselineApprovalStatus == "") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+
+
+            //}
+        },
+
+        //{
+        //    name: 'ReqAdditionalBudget',
+        //    label: 'Req Additional Budget (INR)',
+        //    width: 140,
+        //    resizable: true,
+        //    ignoreCase: true,
+
+        //},
+        {
+            name: 'RequestedOn',
+            label: 'Requested On',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'RequesterRemarks',
+            label: 'Requester Remarks',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approved") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-success">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "L1 Approval Pending") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+
+
+            //}
+        },
+        {
+            name: 'L1ApprovedBy',
+            label: 'L1 Approved By',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "L1 Approval Pending") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+
+
+            //}
+        },
+        {
+            name: 'L1ApprovedOn',
+            label: 'L1 Approved On',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'L2ApprovedBy',
+            label: 'L2 Approved By',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'L2ApprovedOn',
+            label: 'L2 Approved On',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        }
+    ],
+
+        $("#list_new").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#listnew_pager',
+            rowNum: 30,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#list_new tbody tr");
+                var objHeader = $("#list_new tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#list_new").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+
+</script>
+
+
+
+<script>
+    $(document).ready(function () {
+        var mydata = [
+            {
+                id: "1", Department: "R&D (Analytical -CPD)", Category: "Product Development", BudgetType: "Additional", ReqBudget: "500000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { rowspan: "2" } }
+            },
+            {
+                id: "2", Department: "", Category: "Travel", BudgetType: "Additional", ReqBudget: "500000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { display: "none" } }
+            },
+            {
+                id: "3", Department: "PD CPD", Category: "Product Development", BudgetType: "BaseLine", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { rowspan: "2" } }
+            },
+            {
+                id: "4", Department: "", Category: "Travel", BudgetType: "BaseLine", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { display: "none" } }
+            },
+            {
+                id: "5", Department: "R&D (QA)", Category: "Product Development", BudgetType: "Additional", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { rowspan: "2" } }
+            },
+            {
+                id: "6", Department: "", Category: "Travel", BudgetType: "BaseLine", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { display: "none" } }
+            },
+            {
+                id: "7", Department: "R&D (FD-CP)", Category: "Product Development", BudgetType: "Additional", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { rowspan: "2" } }
+            },
+            {
+                id: "8", Department: "", Category: "Travel", BudgetType: "BaseLine", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { display: "none" } }
+            },
+            {
+                id: "9", Department: "R&D (Clinical)", Category: "Product Development", BudgetType: "Additional", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { rowspan: "2" } }
+            },
+            {
+                id: "10", Department: "", Category: "Travel", BudgetType: "BaseLine", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { display: "none" } }
+            },
+            {
+                id: "11", Department: "R&D (PMT)", Category: "Product Development", BudgetType: "Additional", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { rowspan: "2" } }
+            },
+            {
+                id: "12", Department: "", Category: "Travel", BudgetType: "BaseLine", ReqBudget: "20000", ApprovedBudget: "20000", BudgetRequestedBy: "Manoj", BudgetRequestedOn: "13-Oct-23", BudgetRequestedRemarks: "Please approve Budget", Action: "Approved", ActionBy: "Lakshmi", ActionOn: "14-May-23", ActionRemarks: "Requested Budget Approved", attr: { Department: { display: "none" } }
+            },
+
+        ],
+            arrtSetting = function (rowId, val, rawObject, cm) {
+                var attr = rawObject.attr[cm.name], result;
+                if (attr.rowspan) {
+                    result = ' rowspan=' + '"' + attr.rowspan + '"';
+                } else if (attr.display) {
+                    result = ' style="display:' + attr.display + '"';
+                }
+                return result;
+            };
+
+        $("#approvedHistory_grid").jqGrid({
+            datatype: 'local',
+            data: mydata,
+            colNames: ['Department', 'Category', 'Budget Type', 'Req Budget (INR)', 'Approved Budget (INR)', 'Budget Requested By', 'Budget Requested On', 'Budget Requested Remarks', 'Action', 'Action By', 'Action On', 'Action Remarks'],
+            colModel: [
+                //{
+                //    name: 'Ckb', label: '<input type="checkbox" />', cellattr: arrtSetting, width: 40, search: false, classes: 'ckb1',
+                //    formatter: function (cellvalue, options, rowobject) {
+                //        if (rowobject.AdditionalBudgetApprovalStatus == "L1 Approval Pending") {
+                //            return '';
+                //        }
+                //        else if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approval Pending") {
+                //            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                //                '<input type="checkbox" name="ckbk"/> ' +
+                //                '</div>';
+                //        }
+                //        else if (rowobject.BaselineApprovalStatus == "L2 Approval Pending") {
+                //            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                //                '<input type="checkbox" name="ckbk"/> ' +
+                //                '</div>';
+                //        }
+                //        else if (rowobject.AdditionalBudgetApprovalStatus == "") {
+                //            return '';
+                //        }
+
+
+                //    }
+                //},
+                //{
+                //    name: 'Action', align: 'center', classes: 'trs', cellattr: arrtSetting, width: 90, search: false,
+                //    formatter: function (cellvalue, options, rowobject) {
+                //        if (rowobject.AdditionalBudgetApprovalStatus == "L1 Approval Pending") {
+                //            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                //                /*'<a href="#" class="" title="Request for Additional Budget" data-toggle="modal" data-target="#ViewProjectData"> <img src="../images/money-bag.png" width="22px"/></a> ' +*/
+                //                '<a href="#" class="pl-1" title="Info" data-toggle="modal" data-target="#actionInfo"> <i class="fas fa-info"></i></a > ' +
+                //                //'<a href="#" class="pl-1" title="Approve" > <i class="fas fa-thumbs-up text-success"></i></a> ' +
+                //                //'<a href="#" class="pl-1" title="Reject"> <i class="fas fa-thumbs-down text-danger"></i></a> ' +
+                //                '</div>';
+                //        }
+                //        else if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approval Pending") {
+                //            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                //                '<a href="#" class="" title="Info" data-toggle="modal" data-target="#actionInfo"> <i class="fas fa-info"></i></a>' +
+                //                '<a href="#" class="pl-1" title="Approve" > <i class="fas fa-thumbs-up text-success"></i></a> ' +
+
+                //                /*'<a href="#" class="pl-1" title="Reject"> <i class="fas fa-thumbs-down text-danger"></i></a> ' +*/
+                //                '</div>';
+                //        }
+                //        else if (rowobject.BaselineApprovalStatus == "L2 Approval Pending") {
+                //            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                //                '<a href="#" class="" title="Info" data-toggle="modal" data-target="#actionInfo"> <i class="fas fa-info"></i></a>' +
+                //                '<a href="#" class="pl-1" title="Approve" > <i class="fas fa-thumbs-up text-success"></i></a> ' +
+                //                '</div>';
+                //        }
+                //        else if (rowobject.BaselineApprovalStatus == "L1 Approval Pending") {
+                //            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                //                /*'<a href="#" class="" title="Request for Additional Budget" data-toggle="modal" data-target="#ViewProjectData"> <img src="../images/money-bag.png" width="22px"/></a> ' +*/
+                //                '<a href="#" class="pl-1" title="Info" data-toggle="modal" data-target="#actionInfo"> <i class="fas fa-info"></i></a > ' +
+                //                //'<a href="#" class="pl-1" title="Approve" > <i class="fas fa-thumbs-up text-success"></i></a> ' +
+                //                //'<a href="#" class="pl-1" title="Reject"> <i class="fas fa-thumbs-down text-danger"></i></a> ' +
+                //                '</div>';
+                //        }
+                //        else if (rowobject.BaselineApprovalStatus == "") {
+                //            return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+                //                /*'<a href="#" class="" title="Request for Additional Budget" data-toggle="modal" data-target="#ViewProjectData"> <img src="../images/money-bag.png" width="22px"/></a> ' +*/
+                //                '<a href="#" class="pl-1" title="Info" data-toggle="modal" data-target="#actionInfo"> <i class="fas fa-info"></i></a > ' +
+                //                //'<a href="#" class="pl-1" title="Approve" > <i class="fas fa-thumbs-up text-success"></i></a> ' +
+                //                //'<a href="#" class="pl-1" title="Reject"> <i class="fas fa-thumbs-down text-danger"></i></a> ' +
+                //                '</div>';
+                //        }
+
+
+                //    }
+                //},
+                /*{ name: 'state',  align: 'center', cellattr: arrtSetting },*/
+                //{ name: 'ProjectId', classes: 'trs1', cellattr: arrtSetting, width: 220, },
+                //{ name: 'TemplateName', cellattr: arrtSetting, width: 120 },
+                //{ name: 'ProjectCreatedDate', cellattr: arrtSetting, width: 120 },
+                {
+                    name: 'Department', width: 180, cellattr: arrtSetting
+
+                },
+                {
+                    name: 'Category', width: 180
+
+                },
+                {
+                    name: 'BudgetType',
+                    width: 140,
+                },
+                {
+                    name: 'ReqBudget',
+                    width: 140,
+
+                },
+                {
+                    name: 'ApprovedBudget',
+                    width: 140,
+
+                },
+                {
+                    name: 'BudgetRequestedBy',
+                    width: 140,
+
+                },
+                {
+                    name: 'BudgetRequestedOn',
+                    width: 140,
+
+                },
+                {
+                    name: 'BudgetRequestedRemarks',
+                    width: 140,
+
+                },
+                {
+                    name: 'Action',
+                    width: 140,
+                    formatter: function (cellvalue, options, rowobject) {
+                        if (rowobject.Action == "") {
+                            return ''
+                        }
+                        else if (rowobject.Action == "Approved") {
+                            return '<a href="#" class="task_status value_info"> <span class="text-success">Approved</span></a>'
+                        }
+                    }
+                },
+
+                {
+                    name: 'ActionBy',
+                    width: 140,
+
+                },
+                {
+                    name: 'ActionOn',
+                    width: 140,
+                },
+                {
+                    name: 'ActionRemarks',
+                    width: 140,
+
+                },
+
+
+
+            ],
+            cmTemplate: { sortable: false },
+            loadonce: true,
+            viewrecords: true,
+            pager: '#approvedHistory_pager',
+            rowNum: 20,
+            hoverrows: false,
+            scroll: 1,
+            beforeSelectRow: function () {
+                return false;
+            }
+        });
+
+        $("#approvedHistory_grid").jqGrid('filterToolbar', {
+            autosearch: true,
+            stringResult: false,
+            searchOnEnter: false,
+            defaultSearch: "cn"
+        });
+
+        $('.ui-jqgrid-bdiv').css({ 'max-height': '45vh' });
+        $('.ui-jqgrid-bdiv').children("div").css({ 'min-height': '0vh' });
+        var $TableHeight = $(".ui-jqgrid-bdiv").find("tbody").height();
+        if ($TableHeight > 130) {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "6px");
+        }
+        else {
+            $(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+            $(".-virtual-scroll").find(".ui-jqgrid-hdiv").css("padding-right", "0px")
+        }
+
+
+        $('[data-singleselect]').select2()
+        $('.data-singleselect').select2()
+        $('.data-singleselect').select2({
+            dropdownParent: $('#add_project')
+        });
+    })
+</script>
+
+<script>
+    data = [
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "100000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Mar-24",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "3-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Travel",
+            "BudgetType": "Additional",
+            "ReqBudget": "20000",
+            "L1ApprovedBudget": "20000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Mar-24",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "3-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "50000",
+            "L1ApprovedBudget": "50000",
+            "L2ApprovedBudget": "50000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Feb-244",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "5-Feb-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Feb-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Travel",
+            "BudgetType": "Additional",
+            "ReqBudget": "40000",
+            "L1ApprovedBudget": "40000",
+            "L2ApprovedBudget": "50000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Feb-24",
+            "RequesterRemarks": "Please approve additional",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "5-Feb-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Feb-24",
+        },
+
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Product Development",
+            "BudgetType": "Baseline",
+            "ReqBudget": "200000",
+            "L1ApprovedBudget": "200000",
+            "L2ApprovedBudget": "200000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "4-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Jan-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "PD CPD",
+            "Category": "Travel",
+            "BudgetType": "Baseline",
+            "ReqBudget": "120000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "100000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Anirudh",
+            "RequestedOn": "1-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "4-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "5-Jan-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "60000",
+            "L1ApprovedBudget": "50000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "22-Mar-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "23-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Travel",
+            "BudgetType": "Additional",
+            "ReqBudget": "20000",
+            "L1ApprovedBudget": "10000",
+            "L2ApprovedBudget": "",
+            "Status": "L2 Approval Pending",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "22-Mar-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "23-Mar-24",
+            "L2ApprovedBy": "",
+            "L2ApprovedOn": "",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Product Development",
+            "BudgetType": "Additional",
+            "ReqBudget": "100000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "100000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "12-Feb-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "13-Feb-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "13-Feb-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Product Development",
+            "BudgetType": "Baseline",
+            "ReqBudget": "300000",
+            "L1ApprovedBudget": "300000",
+            "L2ApprovedBudget": "300000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "10-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "11-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "12-Jan-24",
+        },
+        {
+            "Action": "",
+            "Year": "2024",
+            "Department": "R&D (QA)",
+            "Category": "Travel",
+            "BudgetType": "Baseline",
+            "ReqBudget": "100000",
+            "L1ApprovedBudget": "100000",
+            "L2ApprovedBudget": "100000",
+            "Status": "L2 Approved",
+            "RequestedBy": "Bhaskar",
+            "RequestedOn": "10-Jan-24",
+            "RequesterRemarks": "Please approve",
+            "L1ApprovedBy": "Tanmay",
+            "L1ApprovedOn": "11-Jan-24",
+            "L2ApprovedBy": "Lakshmi",
+            "L2ApprovedOn": "12-Jan-24",
+        },
+
+
+    ]
+    colmodels = [
+
+        //{
+        //    name: 'Action',
+        //    label: 'Action',
+        //    width: 70,
+        //    search: false,
+        //    resizable: true,
+        //    ignoreCase: true,
+        //    sortable: false,
+        //    formatter: function (cellvalue, options, rowobject) {
+        //        return '<div class="d-flex action_icons align-items-center justify-content-between" title="">' +
+        //            '<a href="#" class="pl-1" title="Approve" > <i class="fas fa-thumbs-up text-success"></i></a> '
+        //    }
+        //},
+
+        {
+            name: 'Year',
+            label: 'Year',
+            width: 80,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Department',
+            label: 'Department',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Category',
+            label: 'Category',
+            width: 180,
+            resizable: true,
+            ignoreCase: true,
+
+        },
+        {
+            name: 'BudgetType',
+            label: 'Budget Type',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+
+        },
+        {
+            name: 'ReqBudget',
+            label: 'Req Budget (INR)',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'L1ApprovedBudget',
+            label: 'L1 Approved Budget (INR)',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'L2ApprovedBudget',
+            label: 'L2 Approved Budget (INR)',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'Status',
+            label: 'Status',
+            width: 180,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                if (rowobject.Status == "L2 Approval Pending") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+                }
+                else if (rowobject.Status == "L2 Approved") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-success">' + cellvalue + '</span></a>'
+                }
+                else if (rowobject.Status == "L1 Approval Pending") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+                }
+                else if (rowobject.Status == "") {
+                    return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+                }
+
+
+            }
+        },
+        {
+            name: 'RequestedBy',
+            label: 'Requested By',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    if (rowobject.BaselineApprovalStatus == "L2 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.BaselineApprovalStatus == "L1 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.BaselineApprovalStatus == "L2 Approved") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-success">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.BaselineApprovalStatus == "") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+
+
+            //}
+        },
+
+        //{
+        //    name: 'ReqAdditionalBudget',
+        //    label: 'Req Additional Budget (INR)',
+        //    width: 140,
+        //    resizable: true,
+        //    ignoreCase: true,
+
+        //},
+        {
+            name: 'RequestedOn',
+            label: 'Requested On',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'RequesterRemarks',
+            label: 'Requester Remarks',
+            width: 140,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approved") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-success">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "L1 Approval Pending") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+
+
+            //}
+        },
+        {
+            name: 'L1ApprovedBy',
+            label: 'L1 Approved By',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    if (rowobject.AdditionalBudgetApprovalStatus == "L2 Approval Pending") {
+            //        return '<a href="#" class="task_status value_info "> <span class="text-warning">' + cellvalue + '</span></a>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "L1 Approval Pending") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+            //    else if (rowobject.AdditionalBudgetApprovalStatus == "") {
+            //        return ' <span class="text-warning">' + cellvalue + '</span>'
+            //    }
+
+
+            //}
+        },
+        {
+            name: 'L1ApprovedOn',
+            label: 'L1 Approved On',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'L2ApprovedBy',
+            label: 'L2 Approved By',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'L2ApprovedOn',
+            label: 'L2 Approved On',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+        }
+    ],
+
+        $("#list_new1").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#listnew_pager1',
+            rowNum: 30,
+            scroll: 1,
+
+            gridComplete: function () {
+                var objRows = $("#list_new1 tbody tr");
+                var objHeader = $("#list_new1 tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#list_new1").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+
+</script>

@@ -1,0 +1,252 @@
+﻿@model IEnumerable<Ideation.Models.Menu>
+@{
+    var menu_level1 = Model.Where(m => m.ParentMenuId == 0 && m.IsRead == true && m.Relation == "parent").ToList();
+    var submenu_level = Model.Where(m => m.ParentMenuId == 0 && m.IsRead == true && m.Relation == "partialparent").ToList();
+    var AppshortName = Context.Session.GetString("AppShortName");
+}
+
+<li class="dashboard_icon">
+    <a href="#">
+        <i class="fas fa-th-large" style="color: orange; font-size: 15px;"></i>
+    </a>
+    <ul class="home_tiles animate__animated animate__fadeInUp" id="">
+        @{
+            if (AppshortName != null)
+            {
+                var AppshortNameLsit = AppshortName.Split(',');
+
+                foreach (var item in AppshortNameLsit)
+                {
+                    if (item == "IW")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/ideation.png")" />
+                                    <p>Ideation Workflow</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "PB")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/ProjectBrief.png")" />
+                                    <p>Project Brief</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "PT")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/project-tracker.png")" />
+                                    <p>Project Tracker</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "ET")
+                    {
+                        <li>
+
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/effort.png")" />
+                                    <p>Effort Booking</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "MM")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/MasterManagement.png")" />
+                                    <p>Master Management</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "PROT")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/Prototype.png")" />
+                                    <p>Prototype</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "PU")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/project-update.png")" />
+                                    <p>Project Updates</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "CGD")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/claims-grid.png")" />
+                                    <p>Claims Grid Document</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "RR")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/ideation.png")" />
+                                    <p>Risk Register</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "NPDLM")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/NPDLaunchMaster.png")" />
+                                    <p>NPD Launch Master</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "PI")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/ProjectInitiation.png")" />
+                                    <p>Project Initiation</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "RID")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/RID-1.png")" />
+                                    <p>Regulatory Ingredient Datatbase</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "RDMS")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/N_assets/images/project_tiles/diploma.png")" />
+                                    <p>RDMS</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                    if (item == "HGH")
+                    {
+                        <li>
+                            <a href="@Url.Content("~/Landing/Redirection?PageName=" + item)">
+                                <div class="tile_projects">
+                                    <img src="@Url.Content("~/images/digital-transformation.png")" />
+                                    <p>HGH</p>
+                                </div>
+                            </a>
+                        </li>
+                    }
+                }
+            }
+        }
+    </ul>
+</li>
+@foreach (var menulevel1 in menu_level1)
+{
+    <li class="has-submenu">
+        @{
+            var subMenuList = Model.Where(m => m.ParentMenuId == menulevel1.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+            if (subMenuList.Count() > 0)
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)">@menulevel1.DisplayName <i class="flaticon-down-arrow-1 "></i></a>
+                <ul class="submenu" id="main_menu1">
+                    @foreach (var menuLevel2 in subMenuList)
+                    {
+                        <li>
+                            <a href="@Url.Content(menuLevel2.MenuURL)"> @menuLevel2.DisplayName</a>
+                            @{
+                                var childMenuList = Model.Where(m => m.ParentMenuId == menuLevel2.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+                                if (childMenuList.Count() > 0)
+                                {
+                                    <ul class="submenu">
+                                        @foreach (var menuItem in childMenuList)
+                                        {
+                                            <li><a href="@Url.Content(menuItem.MenuURL)">@menuItem.DisplayName</a></li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)">@menulevel1.DisplayName</a>
+            }
+        }
+    </li>
+}
+
+@foreach (var menulevel1 in submenu_level)
+{
+    <li class="has-submenu">
+        @{
+            var subMenuList = Model.Where(m => m.ParentMenuId == menulevel1.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+            if (subMenuList.Count() > 0)
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)">@menulevel1.DisplayName <i class="flaticon-down-arrow-1 "></i></a>
+                <ul class="submenu" id="main_menu1">
+                    @foreach (var menuLevel2 in subMenuList)
+                    {
+                        <li>
+                            <a href="@Url.Content(menuLevel2.MenuURL)"> @menuLevel2.DisplayName</a>
+                            @{
+                                var childMenuList = Model.Where(m => m.ParentMenuId == menuLevel2.MenuId && m.IsRead == true).OrderBy(m => m.DisplayOrder);
+                                if (childMenuList.Count() > 0)
+                                {
+                                    <ul class="submenu">
+                                        @foreach (var menuItem in childMenuList)
+                                        {
+                                            <li><a href="@Url.Content(menuItem.MenuURL)">@menuItem.DisplayName</a></li>
+                                        }
+                                    </ul>
+                                }
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <a href="@Url.Content(menulevel1.MenuURL)"> <i class="@menulevel1.IconClassName"></i> @menulevel1.DisplayName</a>
+            }
+        }
+    </li>
+}

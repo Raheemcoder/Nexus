@@ -1,0 +1,210 @@
+﻿@model Ideation.Models.RID
+
+@{
+    ViewData["Title"] = "Add Ingredients";
+    Layout = "/Views/Shared/RIDLayout.cshtml";
+
+}
+<style>
+    .select2-dropdown.select2-dropdown--below {
+        margin-top: 4px;
+    }
+
+    .pull-right {
+        float: right;
+    }
+</style>
+<link href="@Url.Content("~/assets_rid/css/rid.css")" rel="stylesheet" />
+
+<section class="animate__animated1 slideInUp  ">
+    <div class="-m_pagetitle">
+        <div class="-m_title">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/RID/RIDIndex")" class="RID_PageLink">Cosmetics</a>
+                </span>
+                <label id="title" style="font-size:16px;">/ Add Ingredient</label>
+            </h4>
+        </div>
+    </div>
+</section>
+
+@Html.HiddenFor(m => m.Division_Id)
+@Html.HiddenFor(m => m.IngredientReqId)
+@Html.HiddenFor(m => m.FunctionsId_selected)
+@Html.HiddenFor(m => m.IngredientId)
+@Html.HiddenFor(m => m.Source)
+@Html.HiddenFor(m => m.IngredientNameList)
+
+
+<div id="fullscreen" class="">
+    <section class="animate__animated1 slideInUp">
+        <div class="filter_forms">
+            <div class="col-md-12 mt-2 mb-3 d-flex pl-0 pe-0">
+
+
+                <label class="col-sm-auto col-form-label">Ingredient Name:<span class="color-red">*</span> </label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.IngredientName, new { @class = "form-control alphanumeric textvalid readonly ", @autocomplete = "off" })
+                    <span id="IngredientName_valid" class="text-danger _hide">Please enter Ingredient Name</span>
+
+                </div>
+                <label class="col-sm-auto col-form-label">Synonyms: </label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.Synonyms, new { @class = "form-control alphanumeric noSpacesField", @autocomplete = "off" })
+                    @*                         <span id="Synonyms_valid" class="text-danger _hide">Please enter Synonyms</span>
+                    *@
+                </div>
+                <label class="col-sm-auto col-form-label">CAS Number: </label>
+                <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.CASNumber, new { @class = "form-control", @autocomplete = "off" })
+                    @*                         <span id="CASNumber_valid" class="text-danger _hide">Please enter CAS Number</span>
+                    *@
+                </div>
+                <label class="col-sm-auto col-form-label">Functions:<span class="color-red">*</span></label>
+
+
+                <div class="col-sm-2">
+                    @*                     @Html.DropDownListFor(model => model.FunctionId, new SelectList(Model.FunctionDetails, "Value", "Text", ""), new { @class = "form-control readonly",@multiple="multiple", @data_singleselect = "" })
+                    *@                    @Html.ListBoxFor(m => m.FunctionId_arr, new SelectList(Model.FunctionDetails, "Value", "Text", ""), new { @class = "form-control textvalid", @data_multiselect = "", @multiple = "multiple" })
+                    <span id="FunctionId_arr_valid" class="text-danger _hide ">Please select Functions </span>
+
+                </div>
+
+
+
+                @* else
+                    {
+                    <label class="col-sm-auto col-form-label">Ingredient Name:<span class="color-red">*</span> </label>
+                    <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.IngredientName, new { @class = "form-control alphanumeric", @autocomplete = "off",@readonly="readonly"})
+                    <span id="IngredientName_valid" class="text-danger _hide">Please enter Ingredient Name</span>
+
+                    </div>
+                    <label class="col-sm-auto col-form-label">Synonyms:<span class="color-red">*</span></label>
+                    <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.Synonyms, new { @class = "form-control alphanumeric", @autocomplete = "off",@readonly=""})
+                    <span id="Synonyms_valid" class="text-danger _hide">Please enter Synonyms</span>
+
+                    </div>
+                    <label class="col-sm-auto col-form-label">CAS Number:<span class="color-red">*</span></label>
+                    <div class="col-sm-2">
+                    @Html.TextBoxFor(m => m.CASNumber, new { @class = "form-control", @autocomplete = "off",@readonly="readonly"})
+                    <span id="CASNumber_valid" class="text-danger _hide">Please enter CAS Number</span>
+
+                    </div>
+                    <label class="col-sm-auto col-form-label">Functions:<span class="color-red">*</span></label>
+                    <div class="col-sm-2">
+
+
+                    @Html.DropDownListFor(model => model.FunctionId, new SelectList(Model.FunctionDetails, "Value", "Text", ""), new { @class = "form-control",@multiple="multiple", @data_singleselect = "" ,@readonly="readonly"})
+
+                    <span id="FunctionId_valid" class="text-danger _hide ">Please select Function </span>
+
+                    </div>
+                    } *@
+            </div>
+        </div>
+
+        <div class="m-table__main mt-2 overlap_dropdown" id="">
+            <div class="m-table__responsive -virtual-scroll">
+                @Html.HiddenFor(m => m.DivisionBasedIngredientListJson)
+
+                <table id="list" class="table table-bordered"></table>
+                <div id="pager_expected1"></div>
+            </div>
+        </div>
+
+
+        <div class="float-right mt-2">
+            <div class="text-right">
+                <button type="button" class="btn btn-success mr-1" id="savebtn">Save &amp; Confirm</button>
+                <button type="button" class="btn btn-danger mr-1" id="cancelbtn" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="grid_view listgrid_table" id="grid">
+            <div class="d-none">
+                <div class="list_search">
+                    <ul class="list_grid">
+
+                        <li>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                <i class="flaticon-fullscreen fullscreen_expand fullscreen-btn "></i>
+                                <i class="flaticon-close-1 fullscreen_minimize exitscreen-btn"></i>
+                            </button>
+                        </li>
+                        <li>
+                            <button type="button" class="btn-excel mr-1 ml-1 mt-0" title="Excel Download">
+                                <img src="~/assets/images/excel.png" />
+                            </button>
+                        </li>
+                        @*<li class="table_view" title="Grid View"><i class="flaticon-table-grid"></i></li>
+                            <li class="list" title="List View"><i class="flaticon-list"></i></li>*@
+                        <li>
+                            <input type="text" id="global-search" class="global-search search_filter" placeholder="Search...">
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                <div class="">
+
+                    <div class="col-md-12">
+                        <div class="row">
+                            @*<div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                <table id="claims_grid" class="table table-bordered"></table>
+                                <div id="claims_pager"></div>
+                                </div>
+                                </div>*@
+                            <!--<div class="col-md-12">
+                                <section class="icon_description">
+                                    <div class="status_icons_">-->
+                            @*<i class="fa fa-edit" style="color:blue"></i>&nbsp; Edit IngredientDetails &nbsp;&nbsp; <i class="fa fa-eye" style="color:blue"></i>&nbsp; View IngredientDetails  &nbsp;&nbsp;*@
+                            <!--<i class='blue_circle'></i>&nbsp; HGML approval required &nbsp;<i class='green_circle'></i>&nbsp; Allowed &nbsp;<i class='yellow_circle'></i>&nbsp; Restricted &nbsp; <i class='red_circle'></i>&nbsp; Prohibited &nbsp;
+                                    </div>
+                                </section>
+                            </div>-->
+
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+</div>
+@* <div id="confirmpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="confirmpopupmesssage">Are you sure u want Confirm</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> *@
+
+
+<link href="@Url.Content("~/assets/css/jquery.paginate.css")" rel="stylesheet" />
+<script src="@Url.Content("~/assets/js/jquery.paginate.js")"></script>
+@*<script src="~/js/RID/RIDAddRequest.js"></script>*@
+<script src="@Url.Content("~/js/rid/ridaddrequest.min.js")" asp-append-version="true"></script>
+
+

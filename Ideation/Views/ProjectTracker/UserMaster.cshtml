@@ -1,0 +1,316 @@
+﻿@{
+    ViewData["Title"] = "User Master";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+}
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span>Master/</span> User Master</h4>
+        </div>
+        @*<div class="-m_title-Buttons">
+            <div class=" button button-add">
+                <a href="@Url.Content("~/")" class=" ">
+                    <i class="fas fa-plus color-white"></i> <span class="color-white">User</span>
+                </a>
+            </div>
+            </div>*@
+    </div>
+</section>
+
+<section>
+
+    <div class="animate__animated2 slideInUp mt-2">
+
+        <div class="d-flex justify-content-end align-items-center">
+
+            <div class="d-flex excel_expand align-items-center">
+
+                <div class="images_excel ">
+                    <img src="~/assets/images/excel.png" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="FullScreen"></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="ml-2">
+                    <button type="button" class="btn btn-draft" data-toggle="modal" data-target="#addmilestone">Add User</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="userMaster_grid" class="table table-bordered"></table>
+                            <div id="userMaster_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+<div id="addmilestone" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    User Details
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">User Name</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Email ID</label>
+                            <input type="text" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Designation</label>
+                            <select class="form-control">
+                                <option>Select</option>
+                                <option>1</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="control-label">Status</label>
+                            <div class="">
+                                <input type="radio" name="radio" /> <span>Active</span>
+                                <input type="radio" name="radio" /> <span>InActive</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-md-12">
+                    <div class="text-right">
+
+                        <button type="button" class="btn btn-draft">Submit</button>
+                        <button type="button" class="btn btn-cancel" data-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="versionremarks" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Version Remarks
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="vr_grid" class="table table-bordered"></table>
+                                    <div id="vr_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="products" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md ">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Products
+                </h4>
+                <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>SL.No</th>
+                                <th>
+                                    Product Name
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    Shilajit Resin
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>1</td>
+                                <td>
+                                    Shilajit Capsules
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*user grid 1*@
+<script>
+    data = [
+        {
+            "Action": "",
+            "Name": "Admin",
+            "EmailID": "s123@gmail.com",
+            "Role": "User",
+            "Status": "Active",
+        },
+        {
+            "Action": "",
+            "Name": "Admin User",
+            "EmailID": "niarankar321@gmail.com",
+            "Role": "Admin",
+            "Status": "InActive",
+        },
+    ]
+    colmodels = [
+        {
+            name: 'Action',
+            label: 'Action',
+            resizable: true,
+            width: 40,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                return '<div class="d-flex action_icons align-items-center" title="">' +
+                    '<a class="cursor" data-toggle="modal" data-target="#addmilestone"><i class="fas fa-pen color-eye"></i></a>' +
+
+                    '</div>';
+            }
+
+        },
+        {
+            name: 'Name',
+            label: 'Name',
+            width: 110,
+            resizable: true,
+            ignoreCase: true,
+        },
+        {
+            name: 'EmailID',
+            label: 'Email ID',
+            width: 150,
+            resizable: true,
+            ignoreCase: true,
+            //formatter: function (cellvalue, options, rowobject) {
+            //    return '<div class=" action_icons text-center" title="">' +
+            //        '<a href="#" class="" title=""><i class="fas fa-info pr-1 color-info"></i></a>' +
+            //        '</div>';
+            //}
+        },
+
+        {
+            name: 'Role',
+            label: 'Role',
+            width: 90,
+            resizable: true,
+            ignoreCase: true,
+        },
+       
+        {
+            name: 'Status',
+            label: 'Status',
+            width: 120,
+            resizable: true,
+            ignoreCase: true,
+            formatter: function (cellvalue, options, rowobject) {
+                if (rowobject.Status == "InActive") {
+                    return '<a href="#" class="text-danger"> <span class="color-danger">InActive</span></a>';
+                }
+                else if (rowobject.Status == "Active") {
+                    return '<a href="#" class="text-success"> <span class="color-green">Active</span></a>';
+                }
+                else if (rowobject.Status == "") {
+                    return '<a href="#" class=""> <span class=""></span></a>';
+                }
+
+            }
+        },
+
+    ],
+
+        $("#userMaster_grid").jqGrid({
+            url: '',
+            datatype: 'local',
+            data: data,
+            mtype: 'GET',
+            colModel: colmodels,
+            loadonce: true,
+            viewrecords: true,
+            pager: '#userMaster_pager',
+            rowNum: 30,
+            scroll: 1,
+            //multiselect: true,
+
+
+            gridComplete: function () {
+                var objRows = $("#userMaster_grid tbody tr");
+                var objHeader = $("#userMaster_grid tbody tr td");
+
+                if (objRows.length > 1) {
+                    var objFirstRowColumns = $(objRows[1]).children("td");
+                    for (i = 0; i < objFirstRowColumns.length; i++) {
+                        $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                    }
+                }
+
+            }
+        });
+    $("#userMaster_grid").jqGrid('filterToolbar', {
+        autosearch: true,
+        stringResult: false,
+        searchOnEnter: false,
+        defaultSearch: "cn"
+    });
+
+
+</script>

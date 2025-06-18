@@ -1,0 +1,265 @@
+﻿@model Ideation.Models.RoleCostCenterMaster
+@{
+    ViewBag.Title = "Role Cost Center Master";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+
+}
+<style>
+
+
+    .btn-group.open .multiselect-container.dropdown-menu {
+        display: block;
+        width: 100%;
+        top: 30px;
+        z-index: 999999999999999999 !important;
+        padding: 10px;
+    }
+
+    .tablediv .ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels th {
+        background: lightgray !important;
+    }
+
+    .add_grid__ .m-table__main .ui-jqgrid tr.ui-search-toolbar td > input {
+        height: 22px;
+    }
+
+    .add_grid__ .ui-jqgrid .ui-jqgrid-htable th {
+        padding: 0px 10px !important;
+    }
+    /* .ui-state-highlight, .ui-widget-content .ui-state-highlight, .ui-widget-header .ui-state-highlight {
+                    background: #d7eaee !important;
+                }
+                .Hi{
+                    background: #d7eaee !important;
+                }*/
+    /* .add_grid__ .m-table__main .ui-jqgrid .ui-jqgrid-htable {
+                            padding-right:17px !important;
+                        }*/
+
+    .ui-jqgrid-hdiv table th {
+        padding: 1px 10px !important;
+    }
+
+    .add_grid__ .ui-jqgrid-bdiv table td, .add_grid_ .ui-jqgrid-hdiv table th {
+        padding: 5px 10px !important;
+    }
+
+    .add_grid__ .ui-jqgrid-bdiv table td {
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
+    }
+
+    input.form-control.tags.ui-autocomplete-input {
+        height: 29px;
+    }
+
+    .add_grid__ .jqgfirstrow {
+        display: contents;
+    }
+    /* input.jAuto.form-control.dropdown-toggle{
+                            border: 0px solid #ced4da;
+
+                            height:15px;
+
+                        }*/
+    input.jAuto.form-control.dropdown-toggle {
+        height: 28px;
+    }
+
+    /*  td.ui-sgcollapsed.sgcollapsed {
+                    width: 41px !important;
+                }
+
+                td.ui-sgcollapsed.sgexpanded {
+                    width: 41px !important;
+                }*/
+
+    /* .tablediv .ui-jqgrid.ui-widget.ui-widget-content.ui-corner-all {
+                    width: 75% !important;
+                }
+            */
+    .days_input input.form-control {
+        height: 22px;
+        margin: 2px 4px 3px 0px;
+        border: 1px solid #dedede;
+    }
+
+    /* div#gbox_resource_1_table2 {
+                    width: 50% !important;
+                }*/
+    /* .ui-subgrid.ui-sg-expanded .subgrid-data .tablediv .ui-jqgrid .ui-jqgrid-view table tr td:first-child {
+                    width: 578px;
+                }*/
+
+    div#resource_1 {
+        margin-bottom: 5px;
+    }
+
+    .nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+        color: #000;
+        background-color: lightgray;
+        font-size: 12px;
+        text-transform: none;
+        border-radius: 0px;
+    }
+
+    .nav-pills .nav-link {
+        font-size: 12px;
+        background-color: #f8f9fa;
+        border-radius: 0px;
+        border: 1px solid lightgray;
+    }
+    /* .nav-pills .nav-link:hover{
+                     background-color:#fff;
+                 }*/
+    input.form-control.ser {
+        border: 1px solid lightgray;
+    }
+
+    ::placeholder {
+        color: #212529;
+        opacity: 1;
+    }
+    /*
+        .sg .excel_btn.ex_bt {
+            color: #fff;
+            background-color: #01686a !important;
+            border-color: #01686a !important;
+            padding: 5px 9px !important;
+            font-size: 11px !important;
+            line-height: 1;
+            border-radius: 10px 0px !important;
+        }
+
+       */
+
+    .sg .ex_download {
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .ui-jqgrid .ui-jqgrid-bdiv {
+        display: list-item;
+        position: relative;
+        top: -11px;
+    }
+
+    .ui-jqgrid-hdiv.ui-state-default.ui-corner-top {
+        z-index: 1000;
+    }
+</style>
+
+<div class="card-box mb-1 card_height pb-0 pt-2 sg">
+
+    <div id="SaveDeleteSuccessAlert" class="alert alert-success alert-dismissible fade show" role="alert">
+        <div class="d-flex align-items-center justify-content-center">
+            <strong></strong>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+
+@*Page Search*@
+<div class="row justify-content-between mb-2">
+
+    <div class="col-md-3">
+        <div class="float-left">
+            <div class="page-title">
+                <h4>Role Cost Center Master</h4>
+            </div>
+        </div>
+    </div>
+   
+    <div class="col-md-2">
+        <div class="text-right">
+            <button type="button" id="ExcelDownload" class="btn btn-excel" title="Excel Download"><img src="@Url.Content("~/images/excel.png")"></button>
+            <button type="button" id="saveButton" class="btn-add ex_bt excel_btn">Save</button>
+        </div>
+    </div>
+
+</div>
+
+
+    @*Page jqgrid*@
+    <div class="row">
+        <div class="d-flex align-items-start" style="padding-left:0px;">
+            @*tab*@
+            <div class="nav flex-column nav-pills me-3 col-4" id="v-pills-tab" role="tablist" aria-orientation="vertical">
+                <div class="row">
+                    <div class="col-md-12 mb-1">
+                        <div class="form-group mb-0  ">
+                             <strong>Role Names  </strong>
+                            <input type="text" class="form-control ser" placeholder="Please Search Roles" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*tab content*@
+            <div class="tab-content col-8" id="v-pills-tabContent">
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div class="modal fade" id="SaveConfirmPopup" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <span></span>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="saveResources" class="btn btn-xs btn-add c-btn" data-dismiss="modal">Save</button>
+                <button type="button" id="cancelSaveResources" class="btn btn-xs btn-rej c-btn" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal fade sv hd" id="Deletetemplateresourcename" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cnl" id="deleteResource">Delete</button>
+                <button type="button" class="btn btn-rej" id="cancelDeleteResource">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EmptyAlert" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="alertModalLabel">Alert</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="EmptyAlertbody">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" id="closeEmptyAlert" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+
+    $(document).ready(function () {
+        $('#roleCostCenterLink').click();
+    });
+</script>
+
+
+<script src="@Url.Content("~/assets_eppm/js/app.js")" asp-append-version="true"></script>
+<script src="~/js/projectmaster/rolecostcentermaster.js"></script>

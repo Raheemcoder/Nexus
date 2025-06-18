@@ -1,0 +1,92 @@
+﻿@model EmbedConfig
+@{
+    ViewData["Title"] = "Report";
+    Layout = "~/Views/Shared/EffortBookingLayout.cshtml";
+}
+@inject IHttpContextAccessor HttpContextAccessor
+@using Newtonsoft.Json;
+<style>
+    #reportContainer {
+        /*height: 777px;
+            width: 100%;
+            max-width: 1333px;
+            margin-left: 4px;*/
+        /*top: 5px;
+        bottom: 5px;*/
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #ffffff;
+    }
+
+        #reportContainer iframe {
+            min-height: 88vh !important;
+            width: 100%;
+            max-width: 2000px;
+        }
+</style>
+<script src="https://npmcdn.com/es6-promise@3.2.1"></script>
+<script src="@Url.Content("~/js/powerbi.min.js")"></script>
+
+<section>
+    <div id="reportContainer">
+    </div>
+    <input type="hidden" id="FilterValue" value="@ViewBag.LoginId" />
+</section>
+@*@section scripts {*@
+    <script>
+
+        // Read embed application token from Model
+        var accessToken = "@Model.EmbedToken.Token";
+        console.log(accessToken);
+        // Read embed URL from Model
+        var embedUrl = "@Html.Raw(Model.EmbedUrl)";
+        console.log(embedUrl);
+        // Read report Id from Model
+        var embedReportId = "@Model.Id";
+        console.log(embedReportId);
+        // Get models. models contains enums that can be used.
+        var models = window['powerbi-client'].models;
+
+        var filterValue = $('#FilterValue').val();
+        const filter = {
+            $schema: "http://powerbi.com/product/schema#basic",
+            target: {
+                table: "User_Master",
+                column: "User"
+            },
+            operator: "In",
+            values: [filterValue]
+        };
+
+        // Embed configuration used to describe the what and how to embed.
+        // This object is used when calling powerbi.embed.
+        // This also includes settings and options such as filters.
+        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+
+            var config = {
+            type: 'report',
+            tokenType: models.TokenType.Embed,
+            accessToken: accessToken,
+            embedUrl: embedUrl,
+            id: embedReportId,
+            permissions: models.Permissions.All,
+            filters: [filter],
+            settings: {
+                filterPaneEnabled: true,
+                navContentPaneEnabled: true
+            }
+        }
+
+        $(document).ready(function () {
+
+            // Get a reference to the embedded report HTML element
+            var reportContainer = $('#reportContainer')[0];
+            $('.projectDrop').hide();
+
+            // Embed the report and display it within the div container.
+            powerbi.embed(reportContainer, config);
+        });
+    </script>
+@*}*@
+

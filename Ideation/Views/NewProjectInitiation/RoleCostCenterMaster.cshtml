@@ -1,0 +1,196 @@
+﻿@model Ideation.Models.RoleCostCenterMaster
+@{
+    ViewData["Title"] = "Role Cost Center Master";
+    Layout = "~/Views/Shared/NewProjectInitiationLayout.cshtml";
+    var costcenterlist = Model.CostCenterList;
+    var firstRole = costcenterlist.First().Role;
+}
+<input type="hidden" id="rolename" />
+<input type="hidden" value="@firstRole" id="firstrolename" />
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span><span>Masters/</span> Role Cost Center Master</h4>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="d-flex justify-content-end align-items-center mb-2">
+        <div class="d-flex excel_expand align-items-center">
+            <div class="images_excel ">
+                <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download" />
+            </div>
+            <div>
+                <div class="expand_initiate table_expand">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode" title="Full Screen">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="add_button ml-2">
+                <button type="button" id="savebtn" class="btn btn-success">Save</button>
+            </div>
+            <div class="ml-2 mt-1 right_top">
+                <ul class="d-flex align-item-center">
+                    <li class="preview">
+                        <i class="fa fa-eye"></i> Preview
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="tab-vertical cost_center ">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3 p-0">
+
+                    <div class="resources_tabs">
+                        <p class="mb-0">Role Names</p>
+                        <input type="text" id="global-search" class="global-search search_filter form-control mb-1" placeholder="Search..." />
+                        <ul class="nav nav-tabs tabs_initiation tabs_center" id="myTab3" role="tablist">
+                            <li class="nav-item">
+                                @foreach (var item in costcenterlist)
+                                {
+                                    var isActive = item == costcenterlist.First() ? "active" : "";
+
+                                    <a class="nav-link @isActive" id="home-vertical-tab" onclick="getCostCenterDetails(this)" data-role="@item.Role" data-toggle="tab" href="#home-vertical" role="tab" aria-controls="home" aria-selected="true">
+
+                                        <span class="row">@item.Role</span>
+
+                                    </a>
+                                }
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-9 pr-0">
+                    <div class="tab-content" id="myTabContent3">
+                        <div class="tab-pane fade show active" id="home-vertical" role="tabpanel" aria-labelledby="home-vertical-tab">
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-0 ">
+                                            <div class="">
+                                                <label class="control-label mb-0 p-0">Cost Center : </label>
+                                                <div class="row">
+                                                    <div class="col-md-10 pr-0">
+                                                        <input id="costcenter" class="form-control" placeholder="">
+                                                    </div>
+
+                                                    <div class="col-md-2 pl-0">
+                                                        <button type="button" title="Add" class="btn btn-success ml-2 addgriddata">
+                                                            <i class="fas fa-plus ex_download" title="Add" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="claims-grid-list" class="table table-bordered"></table>
+                                    <div id="claims-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade sv hd" id="confirmationPopUpforSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgforsave">
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade sv hd" id="confirmationPopUpforDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Delete Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgfordelete">
+                   
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmdelete">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*preview of data popup*@
+<div id="preview-modal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Role Cost Center Preview
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="details_section">
+                    <div class="d-flex align-item-center">
+                        <h4 style="width:22%">
+                            Role Name
+                        </h4>
+                        <h4 style="width:78%">
+                            Cost Center Names
+                        </h4>
+                    </div>
+                    <div class="preview-table-div">
+                        <div class="table-responsive" style="border: 1px solid #dee2e6;">
+                            <table class="table table-boardered costcenter-preview-table-body mb-0">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewProjectInitiation/NewCostCenterMaster.js")"></script>
+

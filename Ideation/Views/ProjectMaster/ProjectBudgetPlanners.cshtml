@@ -1,0 +1,278 @@
+﻿@model Ideation.Models.ProjectMasters;
+@{
+    ViewBag.Title = "Project Budget Planners";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    .project_budget li.nav-item {
+        width: 100%;
+        padding: 0px;
+        border: 1px solid #dedede;
+    }
+
+    .project_budget li a {
+        color: #000;
+        width: 100%;
+        float: left;
+        padding: 7px 15px;
+        font-size: 12px;
+    }
+
+    .project_budget li:hover a {
+        background: #dedede !important;
+        border: 0px !important;
+        font-size: 12px;
+        color: #000;
+    }
+
+    .project_budget li.nav-item a.active {
+        background: #dedede;
+        font-size: 12px;
+    }
+
+    .project_budget {
+        box-shadow: 0px 0px 3px 0px #dedede;
+        padding: 8px;
+        height: 380px;
+        width: 100%;
+        max-height: 400px;
+        overflow-y: auto;
+    }
+
+        .project_budget input.form-control {
+            height: 32px;
+            font-size: 12px;
+            border: 1px solid lightgray;
+            margin-bottom: 5px;
+        }
+
+    .budget_responsive .fade:not(.show) {
+        opacity: 1 !important;
+    }
+
+    .budget_responsive .tab-content {
+        box-shadow: 0px 0px 3px 0px #dedede;
+        padding: 8px;
+    }
+
+    .budget_responsive {
+        height: 380px;
+    }
+
+    .ml-3 {
+        margin-left: 30px;
+    }
+
+    input {
+        border: 1px solid #000;
+    }
+
+        input.form-control {
+            border: 1px solid #000;
+        }
+
+    .select2-container--default .select2-selection--single {
+        border: 1px solid #000000 !important;
+    }
+
+    .project_budget .nav li {
+        margin: 0px 2px !important;
+    }
+</style>
+
+<section>
+
+    <div class="alert alert-dismissible d-none" role="alert" id="alertMessage">
+        <strong id="alertText"></strong>
+    </div>
+
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.Product)
+
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+
+        <div class="row justify-content-between mb-2">
+            <div class="col-md-12">
+                <div class="float-left">
+                    <div class="page-title">
+                        <h4>Department Project Planning</h4>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group mb-0">
+                    <label class="control-label">
+                        Project Id
+                    </label>
+                    <input type="text" class="form-control projectid" disabled title="" />
+                </div>
+            </div>
+            <div class="col-md-5">
+            </div>
+            <div class="col-md-4">
+                <div class="text-right">
+                    <button type="button" id="ExcelDownload" class="btn btn-excel" title="Excel Download"><img src="@Url.Content("~/images/excel.png")"></button>
+                    <button type="button" id="save-con-Button" class="btn-add ex_bt excel_btn">Save & Confirm</button>
+                    <button type="button" id="save-draft-Button" class="btn-add ex_bt excel_btn">Save as draft</button>
+                   
+                    <a href="@Url.Content("~/ProjectMaster/ProjectMaster")">
+                        <button type="button" id="Back" class="btn btn-danger m-0 c-add-details waves-light waves-effect">Back</button>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="tab-vertical">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3 p-0">
+                        <div class="resources_tabs project_budget">
+                            <input type="text" id="global-search" class="global-search search_filter form-control" placeholder="Search..." />
+                            <ul class="nav nav-tabs tabs_initiation BasedOnRole" id="myTab3" role="tablist">
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-md-9 pr-0 responsive_padding budget_responsive">
+                        <div class="tab-content tabs_data pt-2">
+                            <div id="home" class="tab-pane fade in active">
+                                <div class="row">
+                                    <div class="row mt-0">
+                                        <div class="col-md-4 mt-3 " style="padding-left: 10px; width: 25%;">
+                                            <div class="form-group mb-0">
+                                                <div class="demo-content">
+                                                    <select class="form-control addUserOption example-dropUp" multiple>
+                                                    </select>
+                                                    <span class="error_user color-red"></span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 mt-3" style="width: 5%; padding: 0 0 0 5px;">
+                                            <div class="form-group mb-0">
+                                                <button type="button" title="Add" class="btn-add ex_bt excel_btn addResourceName">Add</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-2 mb-2">
+                                                <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                                    <table id="ResourceGrid" class="table table-bordered"></table>
+                                                    <div id="pager_ResourceGrid"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="menu1" class="tab-pane fade">
+                                <div class="row">
+                                    <div class="row mt-0">
+                                        <div class="col-md-3 mt-3 " style="padding-left: 10px; width: 25%;">
+                                            <div class="form-group mb-0">
+                                                <div class="demo-content">
+                                                    <input id="tags_" class="form-control tags autocomplete-tags appendValue0" placeholder="Select Resources">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 mt-3" style="width: 5%; padding: 0 0 0 5px;">
+                                            <div class="form-group mb-0">
+                                                <button type="button" title="Add" class="btn-add ex_bt excel_btn addResourceName0"><i class="fas fa-plus ex_download" title="Add" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-2 mb-2">
+                                                <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                                    <table id="claims_grid1" class="table table-bordered"></table>
+                                                    <div id="claims_pager1"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="menu2" class="tab-pane fade">
+                                <div class="row">
+                                    <div class="row mt-0">
+                                        <div class="col-md-3 mt-3 " style="padding-left: 10px; width: 25%;">
+                                            <div class="form-group mb-0">
+                                                <div class="demo-content">
+                                                    <input id="tags_" class="form-control tags autocomplete-tags appendValue0" placeholder="Select Resources">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-1 mt-3" style="width: 5%; padding: 0 0 0 5px;">
+                                            <div class="form-group mb-0">
+                                                <button type="button" title="Add" class="btn-add ex_bt excel_btn addResourceName0"><i class="fas fa-plus ex_download" title="Add" aria-hidden="true"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="">
+                                            <div class="m-table__main mt-2 mb-2">
+                                                <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                                    <table id="claims_grid" class="table table-bordered"></table>
+                                                    <div id="claims_pager"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade sv hd" id="Deletetemplateresourcename" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cnl" id="deleteResource" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn btn-rej" id="cancelDeleteResource" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="SavePopUp" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body save-msg">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveOk" class="btn btn-xs btn-add c-btn" data-bs-dismiss="modal">Save</button>
+                <button type="button" class="btn btn-xs btn-rej c-btn" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectMaster/ProjectBudgetPlanners.js")" asp-append-version="true"></script>

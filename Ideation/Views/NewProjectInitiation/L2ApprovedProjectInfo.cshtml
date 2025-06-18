@@ -1,0 +1,111 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewData["Title"] = "Budget Approval - L1";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+<link rel="stylesheet" href="@Url.Content("~/css/PIStyles.css")" />
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>Project Info</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <strong id="alertText"></strong>
+    </div>
+
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.Role)
+<div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+    <div class="d-flex justify-content-between mb-2">
+        <div class="list_baseline pb-1">
+            <div>
+                <span class="projectName pr-2 colordetails"> </span>
+                <span class="pr-2">
+                    <b>L2 Approved Baseline Budget (INR):</b> <span class="ApprovedBaselineBudgetcolordetails"></span>
+                </span>
+                <span class="pr-2">
+                    <b>L2 Approved Additional Budget (INR):</b> <span class="ApprovedAdditionalBudget colordetails"></span>
+                </span>
+                <span class="pr-2">
+                    <b>L2 Total Budget (INR):</b> <span class="TotalBudget colordetails"></span>
+                </span>
+            </div>
+        </div>
+        <div>
+            <span title="Department Wise Budget" class="GetDepartmentBudgets"><i class="fas fa-info mr-2" aria-hidden="true"></i></span>
+            <button type="button" class="btn btn-excel" title="Excel Download" id="ExcelDownload"><img src="@Url.Content("~/N_assets/images/excel.png")" style="width:100%"></button>
+            <a onclick="BackButton()">
+                <button type="button" id="Back" class="btn btn-danger m-0 c-add-details waves-light waves-effect">
+                    Back
+                </button>
+            </a>
+        </div>
+    </div>
+    @*<div class="list_baseline pb-1 mt-1 hideBar" >
+            <ul class="categoriesandvalues">
+            </ul>
+        </div>*@
+    <div class="row">
+        <div class="col-md-12">
+            <div class="">
+                <div class="m-table__main mt-2 mb-2">
+                    <div class="m-table__responsive -virtual-scroll">
+                        <table id="Info" class="table table-bordered"></table>
+                        <div id="Info_pager"></div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+
+
+<div class="modal fade budget_popup" id="ShowDepartmentList" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="title">Department wise Budget Details</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-12 text-right"><button type="button" class="btn btn-excel mr-2" title="Excel Download" id="DepartmentExcelDownload"><img src="@Url.Content("~/N_assets/images/excel.png")" style="width:100%"></button></div>
+                </div>
+                <div class="">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="list_badge">
+                                <div class="m-table__main mt-2 mb-2 ">
+                                    <div class="m-table__responsive -virtual-scroll -table-hilightrow">
+                                        <input type="text" id="budget_projectid" hidden />
+                                        <table id="DepartmentBudget" class="table table-bordered"></table>
+                                        <div id="pager_DepartmentBudget"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" id="" data-bs-dismiss="modal" class="btn btn-danger m-0 c-add-details waves-light waves-effect">
+                                Back
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/NewL2ApprovedProjectInfo.js")"></script>

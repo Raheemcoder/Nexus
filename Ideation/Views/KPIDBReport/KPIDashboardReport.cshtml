@@ -1,0 +1,111 @@
+﻿
+@model EmbedConfig
+@{
+
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/ProjectTrackerLayout.cshtml";
+}
+
+<style>
+    #reportContainer {
+        top: 5px;
+        bottom: 5px;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        padding-top: 10px;
+        background: #ffffff;
+        align-content: center;
+    }
+
+        #reportContainer iframe {
+            height: 80vh !important;
+            width: 100%;
+            max-width: 2000px;
+        }
+</style>
+
+@*<h6>Report</h6>*@
+
+
+<script src="https://npmcdn.com/es6-promise@3.2.1"></script>
+
+<script src="@Url.Content("~/js/powerbi.min.js")"></script>
+
+<section class="wrapper">
+
+    @*<input type="hidden" value="@ViewBag.UserId" id="UserId" />*@
+
+    <div id="reportContainer"></div>
+
+</section>
+
+
+<script>
+    debugger
+
+        // Read embed application token from Model
+
+        var accessToken = "@Model.EmbedToken.Token";
+
+        debugger;
+
+        console.log(accessToken);
+
+        // Read embed URL from Model
+
+        var embedUrl = "@Model.EmbedUrl";
+
+        console.log(embedUrl);
+
+        // Read report Id from Model
+
+        var embedReportId = "@Model.Id";
+
+        console.log(embedReportId);
+
+        // Get models. models contains enums that can be used.
+
+          var models = window['powerbi-client'].models;
+
+
+        // Embed configuration used to describe the what and how to embed.
+
+        // This object is used when calling powerbi.embed.
+
+        // This also includes settings and options such as filters.
+
+        // You can find more information at https://github.com/Microsoft/PowerBI-JavaScript/wiki/Embed-Configuration-Details.
+
+        var config = {
+            type: 'report',
+            tokenType: models.TokenType.Embed,
+            accessToken: accessToken,
+            embedUrl: embedUrl,
+            id: embedReportId,
+            permissions: models.Permissions.All,
+            settings: {
+                filterPaneEnabled: false,
+                navContentPaneEnabled: true
+            },
+
+        //filters: [
+        //    {
+        //        $schema: "http://powerbi.com/product/schema#basic", target: { table: "Bridge Table", column: "Project ID" },
+        //        operator: "IN", values: [projectId],
+        //    }]
+        };
+        $(document).ready(function() {
+
+            // Get a reference to the embedded report HTML element
+
+            var reportContainer = $('#reportContainer')[0];
+
+            // Embed the report and display it within the div container.
+
+            powerbi.embed(reportContainer, config);
+
+        });
+
+</script>
+

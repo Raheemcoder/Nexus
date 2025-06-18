@@ -1,0 +1,985 @@
+﻿@model Ideation.Models.NPD;
+@{
+    ViewBag.Title = "NewProduction";
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+    var userName = Context.Session.GetString("UserName");
+    var hub = Context.Session.GetString("Hub");
+}
+<script src="@Url.Content("https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js")" asp-append-version="true"></script>
+
+<script src="@Url.Content("~/ckeditor/ckeditor.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/jquery.validate.min.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/jquery.validate.unobtrusive.min.js")" asp-append-version="true"></script>
+
+<style>
+    .btn-group > .btn {
+        border-radius: 5px;
+        border-color: #c6c6c6;
+        height: 36px;
+        text-align: left;
+        font-size: 13px;
+    }
+
+    .multiselect-container.dropdown-menu {
+        top: auto !important;
+        bottom: 36px;
+        max-height: 190px !important;
+    }
+</style>
+
+<div class="card-box mb-0">
+    @using (Html.BeginForm("NewProduction", "NewInitiation", FormMethod.Post, new { id = "Npd_Form_Submit", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        @Html.HiddenFor(model => model.NpdHeaderTableData)
+        @Html.HiddenFor(model => model.ProjectDetailsData)
+        @Html.HiddenFor(model => model.ProductPositionigData)
+        @Html.HiddenFor(model => model.FormulationProfileData)
+        @Html.HiddenFor(model => model.PackagingProfileData)
+        @Html.HiddenFor(model => model.BusinessInformationData)
+        @Html.HiddenFor(model => model.SustainabilityData)
+        @Html.HiddenFor(model => model.Status,new{@id="NpdStatus"})
+        @Html.HiddenFor(model=>model.ApprovalStatus)
+        @Html.HiddenFor(model=>model.IsEdit)
+        @Html.HiddenFor(model => model.CurrentStatusName,new{@id="NpdCurrentStatusName"})
+        @Html.HiddenFor(model => model.ProjectId,new{@id="ProjectId"})
+        @Html.HiddenFor(model=>model.UserName,new{@Value=@userName,@id="UserName"})
+        @Html.HiddenFor(model => model.SupportingDocumentData)
+        @Html.HiddenFor(model => model.DeletedSupportingdocument)
+
+
+        <div class="tb_clr marbt">
+            <h3 class="cen_txt d-grid">
+                NPD<span class="sub_head">(<strong>Note:</strong>  The Project Brief information will be auto saved for every 5 minutes . Please ensure that Project Name is entered to Auto save the data.)</span>
+            </h3>
+            <table id="NPD_Table" class="table table-bordered">
+                <thead>
+                    <tr class="mod_th">
+                        <th scope="col">Hub</th>
+                        <th scope="col">Division<span class="color-red">*</span><span id="Error_Npd_Division" class="color-red" style="display:none"><br />Please select Division</span></th>
+                        <th scope="col">Category<span class="color-red">*</span><span id="Error_Npd_Category" class="color-red" style="display:none"><br />Please select Category</span></th>
+                        <th scope="col">Initiated By</th>
+                        <th scope="col">Initiated Date</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td id="NPD_Hub">@hub</td>
+                        <td id="NPD_Division">
+                            @Html.DropDownListFor(model => model.Division,Model.DivisionList,"--Select--",new { @class = "form-select-sm", @id="Division"})
+                            @Html.ValidationMessageFor(model => model.Division, "", new { @class = "text-danger" })
+                        </td>
+                        <td id="NPD_Category">
+                            <select class="form-select-sm addCategoryOption data-singleselect" id="Npd_Category" name="Category">
+                                <option value="">--Select--</option>
+                                @Html.HiddenFor(model => model.Category, new { @class="form-control form-control-sm", @id="Category"} )
+                            </select>
+                            @Html.ValidationMessageFor(model => model.Category, "", new { @class = "text-danger" })
+                            <span id="Message_Npd_Category" style="display:none"><br />Please select Division First</span>
+                        </td>
+                        <td id="NPD_InitiatedBy">@userName</td>
+                        <td id="NPD_InitiatedDate"></td>
+                        <td id="NPD_Status">New</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <h6 class="pro_det">Project Details</h6>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Project Name <span class="color-red">*</span></label>
+                <div class="col-sm-10 pd">
+                    @Html.TextBoxFor(model => model.ProjectName, new { @class = "form-control form-control-sm", @id="Npd_ProjectName"})
+                    @*                    @Html.ValidationMessageFor(model => model.ProjectName, "", new { @class = "text-danger" })
+                *@                    <span style="color:red; display:none" id="Error_Npd_ProjectName" class="Error_ProjectDetails">Please enter Project Name</span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <lable class="col-sm-2 col-form-label">Business Objective <span class="color-red">*</span></lable>
+                <div class="ckediter_tolbar col-sm-10">
+                    @Html.TextAreaFor(model => model.BusinessObjective, new { @name="editorpds", @class = "form-control", @id="Npd_BusinessObjective", @cols="30" })
+                    @Html.ValidationMessageFor(model => model.BusinessObjective, "", new { @class = "text-danger" })
+                    <span style="color:red; display:none" id="Error_Npd_BusinessObjective" class="Error_ProjectDetails">Please enter Business Objective </span>
+                </div>
+            </div>
+
+            @*Product Positioning*@
+
+            <h6 class="pro_det">Product Positioning</h6>
+            <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Target Consumer <span class="color-red">*</span></label>
+                <div class="col-sm-10 pd">
+                    @Html.TextBoxFor(model => model.ProductPositioningTargetConsumer, new { @class = "form-control form-control-sm", @id="PP_TargetConsumer"})
+                    <span style="color:red; display:none" id="Error_PP_TargetConsumer" class="Error_ProductPositioning">Please enter Target Consumer </span>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <lable class="col-sm-2 col-form-label">Competitive Offerings</lable>
+                <div class="ckediter_tolbar col-sm-10">
+                    @Html.TextAreaFor(model => model.ProductPositioningCompetitiveOfferings, new { @name="editor3", @class = "form-control", @id="PP_CompetitiveOfferings", @cols="30" })
+                </div>
+            </div>
+            <div class="row mb-3">
+                <lable class="col-sm-2 col-form-label">Unmet Need</lable>
+                <div class="ckediter_tolbar col-sm-10">
+                    @Html.TextAreaFor(model => model.ProductPositioningUnmetNeed, new { @name="editor4", @class = "form-control", @id="PP_UnmetNeed", @cols="30" })
+                </div>
+            </div>
+            <span style="color:red;display:none" id="Error_ProductPositioning" class="Error_EmptyGrid">Please enter atleast one data for Product Positioning</span>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <lable class="col-form-label" style="position:relative; top:4px;">Product <span class="color-red">*</span></lable>
+                            <div class="col-sm-12 mt-3">
+                                @Html.TextBoxFor(model => model.ProductPositioningProduct, new { @class = "form-control ProductPositioning", @id="PP_Product", @style="border-color:#d1d1d1" })
+                                <span style="color:red; display:none" id="Error_PP_Product" class="Error_ProductPositioning"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Expected Features <span class="color-red">*</span></label>
+                            <div class="ckediter_tolbar feature_benefits ">
+                                @Html.TextAreaFor(model => model.ProductPositioningExpectedFeatures, new { @name="editor4", @class = "form-control ProductPositioning", @id="PP_ExpectedFeatures", @cols="30" })
+                                <span style="color:red; display:none" id="Error_PP_ExpectedFeatures" class="Error_ProductPositioning">Please enter Expected Features </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="col-form-label">Expected Benefits <span class="color-red">*</span></label>
+                            <div class="ckediter_tolbar feature_benefits">
+                                @Html.TextAreaFor(model => model.ProductPositioningExpectedBenefits, new { @name="editor4", @class = "form-control ProductPositioning", @id="PP_ExpectedBenefits", @cols="30" })
+                                <span style="color:red; display:none" id="Error_PP_ExpectedBenefits" class="Error_ProductPositioning">Please enter Expected Benefits </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <lable class="col-form-label" style="position:relative; top:4px;">SKU <span class="color-red">*</span></lable>
+                            <div class="col-sm-12 mt-3">
+                                @Html.TextBoxFor(model => model.ProductPositioningSku, new { @class = "form-control ProductPositioning", @id="PP_Sku", @style="border-color:#d1d1d1" })
+                                <span style="color:red; display:none" id="Error_PP_Sku" class="Error_ProductPositioning">Please enter SKU</span>
+                                <span style="font-size:10px">(Please enter the SKU values with comma separated (Ex: 50 ml , 100 ml))</span>
+                            </div>
+                        </div>
+                    </div>
+                    @* <div class="col-md-1 pl-0">
+                <button type="button" id="Add_ProductPositioning" class="btn-add margin_top115"> Add</button>
+                </div>*@
+                    <div class="col-md-3">
+                        <div class="float-left text-left mt-3 pt-3">
+                            <button type="button" id="Add_ProductPositioning" class="btn-add mt-1"> Add</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-4">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Product_Positioning" class="table table-bordered"></table>
+                                        <div id="pager_worksheet"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Product Profile: Formulation Profile*@
+
+            <h6 class="pro_det">Product Profile: Formulation Profile</h6>
+            <span style="color:red;display:none" id="Error_FormulationProfile" class="Error_EmptyGrid">Please enter atleast one data for Formulation Profile</span>
+            <div class="row product_profile">
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Product <span class="color-red">*</span></label>
+                        @*<div class="demo-content">
+                    @Html.TextBoxFor(model => model.FormulationProfileProduct, new { @class = "form-control FormulationProfile", @id="FP_Product" })
+                    <span style="color:red; display:none" id="Error_FP_Product" class="Error_FormulationProfile">Please enter Product </span>
+                    </div>*@
+                        <div class="demo-content">
+                            @Html.DropDownListFor(model => model.FormulationProfileProduct, new List<SelectListItem>(), "--Select--",new { @class = "form-control FormulationProfile", @id="FP_Product"})                                <span style="color:red; display:none" id="Error_FP_Product" class="Error_FormulationProfile">Please enter Product </span>
+                            <span style="color:red; display:none" id="Error_FP_Product" class="Error_FormulationProfile"></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Desired Ingredients <span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.FormulationProfileDesiredIngredients, new { @name="editor1", @class = "form-control FormulationProfile", @id="FP_DesiredIngredients", @cols="30" })
+                            <span style="color:red; display:none" id="Error_FP_DesiredIngredients" class="Error_FormulationProfile">Please enter Desired Ingredients  </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Indication / Conditions</label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.FormulationProfileIndicationOrConditions, new { @name="editor1", @class = "form-control FormulationProfile", @id="FP_IndicationOrConditions", @cols="30" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Must have claims<span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.FormulationProfileMustHaveClaims, new { @name="editor1", @class = "form-control FormulationProfile", @id="FP_MustHaveClaims", @cols="30" })
+                            <span style="color:red; display:none" id="Error_FP_MustHaveClaims" class="Error_FormulationProfile">Please enter Must have claims </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Nice to have claims<span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.FormulationProfileNiceToHaveClaims, new { @name="editor1", @class = "form-control FormulationProfile", @id="FP_NiceToHaveClaims", @cols="30" })
+                            <span style="color:red; display:none" id="Error_FP_NiceToHaveClaims" class="Error_FormulationProfile">Please enter Nice to have claims </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Dosage Form</label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.FormulationProfileDosageForm, new { @name="editor1", @class = "form-control FormulationProfile", @id="FP_DosageForm", @cols="30" })
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Benchmark Products <span class="color-red">*</span></label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.FormulationProfileBenchmarkProducts, new { @name="editor1", @class = "form-control FormulationProfile", @id="FP_BenchmarkProducts", @cols="30" })
+                            <span style="color:red; display:none" id="Error_FP_BenchmarkProducts" class="Error_FormulationProfile">Please enter Benchmark Products </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Desired Product Characteristics</label>
+                        <div class="demo-content">
+                            @Html.TextAreaFor(model => model.FormulationProfileDesiredProductCharacteristics, new { @name="editor1", @class = "form-control FormulationProfile", @id="FP_DesiredProductCharacteristics", @cols="30" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="form-group">
+                        <label>Benchmark Products Image</label>
+                        <div class="demo-content">
+                           @* <input type="file" id="FP_BenchmarkProductsImage" class="form-control FormulationProfile" accept=".jpg, .jpeg, .png, .gif, .jfif, .tiff, .bmp, .svg" onchange="return fileValidation()">*@
+                            <input type="file" name="files" id="FP_BenchmarkProductsImage" class="form-control FormulationProfile" accept=".jpg, .jpeg, .png, .gif, .jfif, .tiff, .bmp, .svg" onchange="fileValidation()" multiple>
+                            @*<span id="Display_FP_BenchmarkProductsImage"></span>*@
+                            <span id="Err_InvalidBenchmarkProductsImage" style="color:red;display:none">The image must be a file of type: jpg, jpeg, png, gif, jfif, tiff, bmp, svg</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-lg-3">
+                    <div class="float-left text-left mt-3 pt-3">
+                        <button type="button" id="Add_FormulationProfile" class="btn-add">Add</button>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <span id="Display_FP_BenchmarkProductsImage" class="DisplayImage_Pack"></span>
+                    </div>
+                </div>
+            </div>
+            @*         <div class="add_grid_" style="display:none">
+        <div class="row">
+        <div class="col-md-12">
+        <div class="">
+        <div class="m-table__main mt-2 mb-4">
+        <div class="m-table__responsive -virtual-scroll">
+        <table id="Formulation_Profile" class="table table-bordered"></table>
+        <div id="pager_product"></div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>
+        </div>*@
+
+            <div class="formulation_table" id="Formulation_Profile_Table">
+                @*Formulation Profile table*@
+            </div>
+
+            @*Product Profile: Packaging Profile*@
+
+            <h6 class="pro_det">Product Profile: Packaging Profile</h6>
+            <span style="color:red;display:none" id="Error_PackagingProfile" class="Error_EmptyGrid">Please enter atleast one data for Packaging Profile</span>
+            <span id="Error_PPR_Product_Sku" class="color-red Error_PackagingProfile"></span>
+            <div class="col-md-12">
+                <div class="product_packag product_profile">
+                    <div class="product_title">
+                        <h6>Expected Packaging Material</h6>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Product <span class="color-red">*</span></label>
+                                    @*@Html.TextBoxFor(model => model.PackagingProfileProduct, new { @class = "form-control PackagingProfile", @id="PPR_Product" })*@
+                                    @Html.DropDownListFor(model => model.PackagingProfileProduct, new List<SelectListItem>(), "--Select--",new { @class = "form-control PackagingProfile", @id="PPR_Product"})                                <span style="color:red; display:none" id="Error_FP_Product" class="Error_FormulationProfile">Please enter Product </span>
+                                    <span style="color:red; display:none" id="Error_PPR_Product" class="Error_PackagingProfile"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">SKU <span class="color-red">*</span></label>
+                                    @*@Html.TextBoxFor(model => model.PackagingProfileSku, new { @class = "form-control PackagingProfile", @id="PPR_SKU" })*@
+                                    @Html.DropDownListFor(model => model.PackagingProfileSku, new List<SelectListItem>(),new { @class = "form-control PackagingProfile example-dropUp", @id="PPR_SKU", @multiple = "multiple"})
+                                    <span style="color:red; display:none" id="Error_PPR_SKU" class="Error_PackagingProfile">Please select SKU </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">Mold</label>
+                                    @Html.DropDownListFor(model => model.PackagingProfileMould, Model.MoldList,"--Select--",new {@id="PPR_Mould", @class="form-control PackagingProfile"})
+</div>
+                            </div>
+
+                            @*        <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="control-label">Primary Packaging <span class="color-red">*</span></label>
+                        @Html.TextBoxFor(model => model.PackagingProfilePrimaryPackaging, new { @class = "form-control PackagingProfile", @id="PPR_PrimaryPackaging" })
+                        <span style="color:red; display:none" id="Error_PPR_PrimaryPackaging" class="Error_PackagingProfile">Please enter Primary Packaging </span>
+                        </div>
+                        </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Primary Packaging <span class="color-red">*</span></label>
+                                    <div class="ckediter_tolbar feature_benefits ">
+                                        @Html.TextAreaFor(model => model.PackagingProfilePrimaryPackaging, new { @name="editor1", @class = "form-control PackagingProfile", @id="PPR_PrimaryPackaging", @cols="30" })
+                                        <span style="color:red; display:none" id="Error_PPR_PrimaryPackaging" class="Error_PackagingProfile">Please enter Primary Packaging </span>
+                                    </div>
+                                </div>
+                            </div>
+                            @*           <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="control-label">Secondary Packaging</label>
+                        @Html.TextBoxFor(model => model.PackagingProfileSecondaryPackaging, new { @class = "form-control PackagingProfile", @id="PPR_SecondaryPackaging" })
+                        </div>
+                        </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Secondary Packaging</label>
+                                    <div class="ckediter_tolbar feature_benefits ">
+                                        @Html.TextAreaFor(model => model.PackagingProfileSecondaryPackaging, new { @name="editor1", @class = "form-control PackagingProfile", @id="PPR_SecondaryPackaging", @cols="30" })
+                                    </div>
+                                </div>
+                            </div>
+                            @*   <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="control-label">Tertiary Packaging</label>
+                        @Html.TextBoxFor(model => model.PackagingProfileTertiaryPackaging, new { @class = "form-control PackagingProfile", @id="PPR_TertiaryPackaging" })
+                        </div>
+                        </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Tertiary Packaging</label>
+                                    <div class="ckediter_tolbar feature_benefits ">
+                                        @Html.TextAreaFor(model => model.PackagingProfileTertiaryPackaging, new { @name="editor1", @class = "form-control PackagingProfile", @id="PPR_TertiaryPackaging", @cols="30" })
+                                    </div>
+                                </div>
+                            </div>
+                            @* <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="control-label">Benchmark Products</label>
+                        @Html.TextBoxFor(model => model.PackagingProfileBenchmarkProducts, new { @class = "form-control PackagingProfile", @id="PPR_BenchmarkProducts" })
+                        </div>
+                        </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Benchmark Products</label>
+                                    <div class="ckediter_tolbar feature_benefits ">
+                                        @Html.TextAreaFor(model => model.PackagingProfileBenchmarkProducts, new { @name="editor1", @class = "form-control PackagingProfile", @id="PPR_BenchmarkProducts", @cols="30" })
+                                    </div>
+                                </div>
+                            </div>
+                            @*              <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="control-label">Desired Packaging Characteristics</label>
+                        @Html.TextBoxFor(model => model.PackagingProfileDesiredPackagingCharacteristics, new { @class = "form-control PackagingProfile", @id="PPR_DesiredPackagingCharacteristics" })
+                        </div>
+                        </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Desired Packaging Characteristics</label>
+                                    <div class="ckediter_tolbar feature_benefits ">
+                                        @Html.TextAreaFor(model => model.PackagingProfileDesiredPackagingCharacteristics, new { @name="editor1", @class = "form-control PackagingProfile", @id="PPR_DesiredPackagingCharacteristics", @cols="30" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*   <div class="col-md-3">
+                        <div class="form-group">
+                        <label class="control-label">Others (If any)</label>
+                        @Html.TextBoxFor(model => model.PackagingProfileOthers, new { @class = "form-control PackagingProfile", @id="PPR_Others" })
+                        </div>
+                        </div>*@
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="col-form-label">Others (If any)</label>
+                                    <div class="ckediter_tolbar feature_benefits ">
+                                        @Html.TextAreaFor(model => model.PackagingProfileOthers, new { @name="editor1", @class = "form-control PackagingProfile", @id="PPR_Others", @cols="30" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Image Upload</label>
+                                    @*  <input type="file" name="files" id="PPR_ImagesUpload" class="form-control PackagingProfile" accept=".jpg, .jpeg, .png, .gif, .jfif, .tiff, .bmp, .svg" onchange="return fileValidation()" />*@
+                                    <input type="file" name="files" id="PPR_ImagesUpload" class="form-control PackagingProfile" accept=".jpg, .jpeg, .png, .gif, .jfif, .tiff, .bmp, .svg" onchange="validateFileUpload()" multiple>
+
+                                    @*<span id="Display_PackageImagesUpload"></span>*@
+                                    <span id="Err_Invalid_PPR_ImagesUpload" style="color:red;display:none">The image must be a file of type: jpg, jpeg, png, gif, jfif, tiff, bmp, svg</span>
+                                    @*      <span class="btn-icon -delete" title="Delete" id="deleteSelectedFile" style="margin-left:10px;"><i class="fas fa-trash"></i></span>*@
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="float-left text-left mt-3 pt-3">
+                                    <button type="button" id="Add_PackagingProfile" class="btn-add">Add</button>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <span id="Display_PackageImagesUpload" class="DisplayImage_Pack"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*  <div class="add_grid_"  style="display:none">
+                <div class="row">
+                <div class="col-md-12">
+                <div class="">
+                <div class="m-table__main mt-2 mb-4">
+                <div class="m-table__responsive -virtual-scroll">
+                <table id="Packaging_Profile" class="table table-bordered"></table>
+                <div id="pager_expected"></div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>*@
+                    <div class="formulation_table" id="Packaging_Profile_Table">
+                        @*Packaging Profile table*@
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            @*Sustainability*@
+
+
+            <h6 class="pro_det">Sustainability</h6>
+            <span style="color:red;display:none" id="Error_Sustainability" class="Error_EmptyGrid">Please enter atleast one data for Sustainability</span>
+            <div class="col-md-12">
+                <div class="product_packag product_profile">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Product <span class="color-red">*</span></label>
+                                    @Html.DropDownListFor(model => model.SustainabilityProduct, new List<SelectListItem>(), "--Select--",new { @class = "form-control Sustainability", @id="SUS_Product"})
+                                    <span style="color:red; display:none" id="Error_SUS_Product" class="Error_Sustainability"></span>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="control-label">What sustainability goals are targeted? <span class="color-red">*</span></label>
+                                    @Html.TextAreaFor(model => model.TargetedGoals, new { @class = "form-control Sustainability", @id="SUS_TargetedGoals" })
+                                    <span style="color:red; display:none" id="Error_SUS_TargetedGoals" class="Error_Sustainability">Please enter what sustainability goals are targeted? </span>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Reusable</label>
+                                    @Html.TextBoxFor(model => model.Reusable, new { @class = "form-control Sustainability", @id="SUS_Reusable" })
+                                    @*<span style="color:red; display:none" id="Error_SUS_Reusable" class="Error_Sustainability">Please enter Reusable</span>*@
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Recycle</label>
+                                    @Html.TextBoxFor(model => model.Recycle, new { @class = "form-control Sustainability", @id="SUS_Recycle" })
+                                    @*<span style="color:red; display:none" id="Error_SUS_Recycle" class="Error_Sustainability">Please enter Recycle</span>*@
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Reducing</label>
+                                    @Html.TextBoxFor(model => model.Reducing, new { @class = "form-control Sustainability", @id="SUS_Reducing" })
+                                    @*<span style="color:red; display:none" id="Error_SUS_Reducing" class="Error_Sustainability">Please enter Reducing</span>*@
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="control-label">Recovering</label>
+                                    @Html.TextBoxFor(model => model.Recovering, new { @class = "form-control Sustainability", @id="SUS_Recovering" })
+                                    @*<span style="color:red; display:none" id="Error_SUS_Recovering" class="Error_Sustainability">Please enter Recovering</span>*@
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="text-left mt-4 pt-1">
+                                    <button type="button" id="Add_Sustainability" class="btn-add">Add</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <span id="Error_SUS_Product_Sku" class="color-red Error_Sustainability"></span>
+                    <div class="add_grid_">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="">
+                                    <div class="m-table__main mt-2 mb-4">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="Table_Sustainability" class="table table-bordered"></table>
+                                            <div id="pager_Table_Sustainability"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            @*Business Information*@
+
+            <div class="product_profile">
+                <h6 class="pro_det">Business Information</h6>
+                <span style="color:red;display:none" id="Error_BusinessInformation" class="Error_EmptyGrid">Please enter atleast one data for Business Information</span>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Product <span class="color-red">*</span></label>
+                            @*@Html.TextBoxFor(model => model.BusinessInformationProduct, new { @class = "form-control BusinessInformation", @id="BI_Product" })*@
+                            @Html.DropDownListFor(model => model.BusinessInformationProduct, new List<SelectListItem>(), "--Select--",new { @class = "form-control BusinessInformation", @id="BI_Product"})                                <span style="color:red; display:none" id="Error_FP_Product" class="Error_FormulationProfile">Please enter Product </span>
+                            <span style="color:red; display:none" id="Error_BI_Product"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>SKU <span class="color-red">*</span></label>
+                            @*@Html.TextBoxFor(model => model.BusinessInformationSku, new { @class = "form-control BusinessInformation", @id="BI_SKU" })*@
+                            @Html.DropDownListFor(model => model.BusinessInformationSku, new List<SelectListItem>(),"-Select-",new { @class = "form-control BusinessInformation", @id="BI_SKU"})
+                            <span style="color:red; display:none" id="Error_BI_SKU" class="Error_BusinessInformation">Please select SKU </span>
+                        </div>
+                    </div>
+                    @* <div class="col-md-3">
+                <div class="form-group">
+                <label>Proposed Name's of product <span class="color-red">*</span></label>
+                @Html.TextBoxFor(model => model.BusinessInformationProposedNamesOfProduct, new { @class = "form-control BusinessInformation", @id="BI_ProposedNamesOfProduct" })
+                <span style="color:red; display:none" id="Error_BI_ProposedNamesOfProduct" class="Error_BusinessInformation">Please enter Proposed Name's of product </span>
+                </div>
+                </div>*@
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Proposed launch date<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model=>model.BusinessInformationProposedLaunchDate, new{ @class="form-control BusinessInformation data-datepicker", @id="BI_ProposedLaunchDate",@autocomplete = "off" })
+                            @*<i class="fas fa-calendar-alt calender_icon"></i>*@
+                            <span style="color:red; display:none" id="Error_BI_ProposedLaunchDate" class="Error_BusinessInformation">Please enter Proposed launch date  </span>
+                            <span style="color:red; display:none" id="DateError_ProposedLaunchDate" class="Error_BusinessInformation">Select date which is greater than today's date' </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Proposed Selling Price <span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationProposedSellingPrice, new { @class = "form-control BusinessInformation", @id="BI_ProposedSellingPrice", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_ProposedSellingPrice" class="Error_BusinessInformation">Please enter Proposed Selling Price </span>
+                            <span style="color:red; display:none" id="NotNumber_ProposedSellingPrice" class="Error_BusinessInformation">Please enter Proposed Selling Price in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            @*<label>Proposed TP <span class="color-red">*</span></label>*@
+                            <label>Expected COP<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationProposedTP, new { @class = "form-control BusinessInformation", @id="BI_ProposedTP", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_ProposedTP" class="Error_BusinessInformation">Please enter Expected COP </span>
+                            <span style="color:red; display:none" id="NotNumber_ProposedTP" class="Error_BusinessInformation">Please enter Expected COP in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Proposed MRP <span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationProposedMRP, new { @class = "form-control BusinessInformation", @id="BI_ProposedMRP" })
+                            <span style="color:red; display:none" id="Error_BI_ProposedMRP" class="Error_BusinessInformation">Please enter Proposed MRP </span>
+                            <span style="color:red; display:none" id="NotNumber_ProposedMRP" class="Error_BusinessInformation">Please enter Proposed MRP in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Currency <span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.Currency, Model.CurrencyList,"--Select--",new { @class = "form-control BusinessInformation", @id="BI_Currency"})
+                            <span style="color:red; display:none" id="Error_BI_Currency" class="Error_BusinessInformation">Please select Currency</span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Expected GP % <span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationExpectedGP, new { @class = "form-control BusinessInformation", @id="BI_ExpectedGP", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_ExpectedGP" class="Error_BusinessInformation">Please enter Expected GP % </span>
+                            <span style="color:red; display:none" id="NotNumber_ExpectedGP" class="Error_BusinessInformation">Please enter Expected GP in digits </span>
+                            <span style="color:red; display:none" id="Error_Range_ExpectedGP" class="Error_BusinessInformation">Expected GP should be in between 1 & 100 </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="m1m2">M1 Quantity<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationM1Quantity, new { @class = "form-control BusinessInformation", @id="BI_M1Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_M1Quantity" class="Error_BusinessInformation">Please enter M1 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_M1Quantity" class="Error_BusinessInformation">Please enter M1 Quantity in digits </span>
+                            <span style="color:red; display:none" id="Error_Zero_M1Quantity" class="Error_BusinessInformation">M1 Quantity should not be zero </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label class="m1m2">M2 Quantity<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationM2Quantity, new { @class = "form-control BusinessInformation", @id="BI_M2Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_M2Quantity" class="Error_BusinessInformation">Please enter M2 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_M2Quantity" class="Error_BusinessInformation">Please enter M2 Quantity in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="m1m2">M3 Quantity<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationM3Quantity, new { @class = "form-control BusinessInformation", @id="BI_M3Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_M3Quantity" class="Error_BusinessInformation">Please enter M3 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_M3Quantity" class="Error_BusinessInformation">Please enter M3 Quantity in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="m1m2">M4 Quantity@*<span class="color-red">*</span>*@</label>
+                            @Html.TextBoxFor(model => model.BusinessInformationM4Quantity, new { @class = "form-control BusinessInformation", @id="BI_M4Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_M4Quantity" class="Error_BusinessInformation">Please enter M4 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_M4Quantity" class="Error_BusinessInformation">Please enter M4 Quantity in digits </span>
+                        </div>
+                    </div>
+                     <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="m1m2">M5 Quantity@*<span class="color-red">*</span>*@</label>
+                            @Html.TextBoxFor(model => model.BusinessInformationM5Quantity, new { @class = "form-control BusinessInformation", @id="BI_M5Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_M5Quantity" class="Error_BusinessInformation">Please enter M5 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_M5Quantity" class="Error_BusinessInformation">Please enter M5 Quantity in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-lg-3">
+                        <div class="form-group">
+                            <label class="m1m2">M6 Quantity@*<span class="color-red">*</span>*@</label>
+                            @Html.TextBoxFor(model => model.BusinessInformationM6Quantity, new { @class = "form-control BusinessInformation", @id="BI_M6Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_M6Quantity" class="Error_BusinessInformation">Please enter M6 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_M6Quantity" class="Error_BusinessInformation">Please enter M6 Quantity in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Y1 Quantity<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationY1Quantity, new { @class = "form-control BusinessInformation", @id="BI_Y1Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_Y1Quantity" class="Error_BusinessInformation">Please enter Y1 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_Y1Quantity" class="Error_BusinessInformation">Please enter Y1 Quantity in digits </span>
+                            <span style="color:red; display:none" id="Error_Zero_Y1Quantity" class="Error_BusinessInformation">Y1 Quantity should not be zero </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Y2 Quantity<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationY2Quantity, new { @class = "form-control BusinessInformation", @id="BI_Y2Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_Y2Quantity" class="Error_BusinessInformation">Please enter Y2 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_Y2Quantity" class="Error_BusinessInformation">Please enter Y2 Quantity in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Y3 Quantity<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationY3Quantity, new { @class = "form-control BusinessInformation", @id="BI_Y3Quantity", @onkeypress="return onlyNumbers(this);" })
+                            <span style="color:red; display:none" id="Error_BI_Y3Quantity" class="Error_BusinessInformation">Please enter Y3 Quantity </span>
+                            <span style="color:red; display:none" id="NotNumber_Y3Quantity" class="Error_BusinessInformation">Please enter Y3 Quantity in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Business Value <span class="Bus_val">(Y2 Quantity * Proposed Selling Price)</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationBusinessValue, new { @class = "form-control BusinessInformation", @id="BI_BusinessValue", @readonly = "readonly" })
+                            <span style="color:red; display:none" id="Error_BI_BusinessValue" class="Error_BusinessInformation">Please enter Business Value </span>
+                            <span style="color:red; display:none" id="NotNumber_BusinessValue" class="Error_BusinessInformation">Please enter Business Value in digits </span>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>UOM<span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.BusinessInformationUom, new { @class = "form-control BusinessInformation", @id="BI_UOM", @onkeypress="return restrictSpecialCharacters();"  })
+                            <span style="color:red; display:none" id="Error_BI_UOM" class="Error_BusinessInformation">Please enter UOM </span>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="float-right text-left">
+                            <button type="button" id="Add_BusinessInformation" class="btn-add">Add</button>
+                        </div>
+                    </div>
+                </div>
+                <span id="Error_BI_Product_Sku" class="color-red Error_BusinessInformation"></span>
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Business_Information" class="table table-bordered"></table>
+                                        <div id="pager_businessinfo"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="product_profile">
+                    <h6 class="pro_det mt-4">Supporting Documents</h6>
+                    <div class="row" style="padding-top: 10px;">
+                        <div class="col-md-3">
+                            <label>Supporting Documents</label>
+                            <div class="demo-content SupprotingDoc">
+                                <input type="file" class="form-control file-input" accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.csv" id="Supportingdocuments" name="AttachSpecFile" onchange="return documentFileValidation()" />
+                                <span id="Err_SupportingDocuments" style="color:red;display:none">The file must be of type: .pdf, .doc, .docx, .xls, .xlsx, .ppt, .pptx, .csv</span>
+                                <span id="ErrorMsg_Document" style="color:red;display:none">Please select supporting document</span>
+                                <span id="GetDocName"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-1 mt-4 pt-1 SupprotingDoc">
+                            <div class="float-left text-left">
+                               @*k <i style="font-size:20px;color:blue" id="Add_SupportingDocuments" title="Add" class="fa Add_SupportingDocuments">&#xf067;</i>*@
+                                 <button type="button" id="Add_SupportingDocuments" class="btn-add Add_SupportingDocuments">Add</button> 
+                            </div>
+                        </div>
+                        @* <div class="col-md mt-4 pt-1 SupprotingDoc">
+                    <div class="float-left text-left">
+                    <label id="ViewData" title="View Supporting Documents" class="edit_history ViewData"><i class="fa fa-files-o" aria-hidden="true"></i></label>
+                    </div>
+                    </div>*@
+
+                        <div class="add_grid_">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="">
+                                        <div class="m-table__main mt-3 mb-3">
+                                            <div class="m-table__responsive -virtual-scroll">
+                                                <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                                <div id="pager_Grid_Supporting_Document"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @* <div class="product_profile">
+            <h6 class="pro_det mt-4">Initiator Remarks</h6>*@
+                <div class="row" style="padding-top: 10px;">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <label>Initiator Remarks</label>
+                            @Html.TextAreaFor(model => model.InitiatorRemarks, new { @name="editor2", @class = "form-control form-control-sm", @id="Npd_InitiatorRemarks", @cols="30" })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row sticky-bottom pt-0">
+                <div class="save_buttons float-right text-right">
+                    @if (Model.IsEdit)
+                    {
+                        if (Model.Role != "PMD Team")
+                        {
+                            <button type="button" id="NPD_Save" class="btn-add" data-bs-toggle="modal" data-title="Save" onclick="ValidateSaveForm()">Save</button>
+                            <button type="button" id="NPD_SubmittoManagers" class="btn-back" data-bs-toggle="modal" data-title="Submit" onclick="ValidateSendToManagerForm()">Send For Approval</button>
+                            <button type="button" id="NPD_Submit" class="btn-sb" data-bs-toggle="modal" data-title="Submit" onclick="ValidateSubmitForm()">Send To HGML</button>
+
+
+                        }
+                    }
+                    <button type="button" id="NPD_Cancel" class="btn-cnl" data-bs-toggle="modal" data-bs-target="#CancelModal" data-title="Cancel"> Back</button>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+@*save button*@
+<div class="modal fade sv hd" id="SaveModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Save Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want save the details?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="NPD_Save_Ok" class="btn btn-success">OK</button>
+                <button type="button" class="btn-cnl" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*submit button*@
+<div class="modal fade sv hd" id="SubmitModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Submit Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want Submit the details
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="NPD_Submit_Ok" class="btn btn-success">Ok</button>
+                <button type="button" class="btn-cnl" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*cancel button*@
+<div class="modal fade sv hd" id="CancelModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Confirm Dialog</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to go back?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="location.href = './NewInitiation';">OK</button>
+                <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Delete button in jq grid*@
+<div class="modal fade sv hd" id="jqGridRow_DeleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete Confirmation</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure You want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="jqGridRow_DeleteModal_Ok" class="btn btn-danger" data-bs-dismiss="modal">Delete</button>
+                <button type="button" class="btn-cnl" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+@*images popup*@
+<div class="modal fade hd" id="Images_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Packaging Images</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="uploaded_images_table" class="table table-bordered"></table>
+                                        <div id="pager_uploaded_images_table"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*Formulation multi images popup*@
+<div class="modal fade hd" id="Images_show_popup1" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Formulation Images</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="uploaded_images_table1" class="table table-bordered"></table>
+                                        <div id="pager_uploaded_images_table1"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade hd" id="Document_show_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Supporting Documents</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="Grid_Supporting_Document" class="table table-bordered"></table>
+                                        <div id="pager_Grid_Supporting_Document"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/npd/npd.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/js/npd/NPDAutoSave.js")" asp-append-version="true"></script>

@@ -1,0 +1,249 @@
+﻿@{
+    Layout = "~/Views/Shared/_MMLayout.cshtml";
+}
+@model MMUser
+<style>
+    .dtfh-floatingparenthead {
+        border-bottom-width: 0;
+        display: none !important;
+    }
+
+    .select2-container--default .select2-results__option--highlighted[aria-selected] {
+        background-color: #4680ff;
+        color: #fff;
+    }
+    .has-error .checkbox {
+        color: #7c7c7c;
+    }
+
+    form .has-error .form-control{
+        border-color: #ced4da !important;
+        
+    }
+
+    form .has-error .control-label {
+        color: #7c7c7c !important;
+    }
+
+    .ui-autocomplete {
+        height: auto !important;
+        overflow: auto;
+        max-height: 250px !important;
+    }
+</style>
+
+<link href="@Url.Content("~/autocomplete/autocomplete.css")" asp-append-version="true" rel="stylesheet" />
+<div class="container-fluid p-0">
+    <div class="card-box">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title">
+                    <h4 class="-mb-3">@ViewData["Title"]</h4>
+                </div>
+                <div class="add_form">
+                    <form class="form-horizantal">
+                        @Html.HiddenFor(m => m.ApplicationListData)
+                        <div class="col-md-12 pl-0">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">User Type<span class="color-red"> *</span></label>
+                                        @Html.DropDownListFor(model => model.UserTypeId,Model.UserTypeList,"Select",new {@class = "form-control data-singleselect", @data_singleselect = "" })
+                                        @Html.ValidationMessageFor(model => model.UserTypeId, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            User Name <span class="color-red">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", @placeholder = "Please enter User Name" })
+                                        @Html.ValidationMessageFor(m => m.UserName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Email ID <span class="color-red">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(m => m.EmailId, new { @class = "form-control",@placeholder = "Please enter Email Id" })
+                                        @Html.ValidationMessageFor(m => m.EmailId, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Login ID <span class="color-red">*</span>
+                                        </label>
+                                        @Html.TextBoxFor(m => m.LoginId, new { @class = "form-control", @placeholder = "Please enter LoginId",@autocomplete="off"})
+                                        @Html.ValidationMessageFor(m => m.LoginId, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Manager 
+                                        </label>
+                                       @* @Html.DropDownListFor(m => m.ManagerId, Model.ManagerList, "--Select--", new { @class = "form-control data-singleselect", @data_singleselect = "" })
+                                       *@ 
+                                        @Html.ListBoxFor(m => m.ManagerId, Model.ManagerList, new { @class = "form-control data-multiselect", @multiple = "multiple" })
+                                 
+                              </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            HUB <span class="color-red">*</span>
+                                        </label>
+                                        @Html.DropDownListFor(m => m.HUB, Model.HUBList, "--Select--", new { @class = "form-control data-singleselect", @data_singleselect = "" })
+                                        @Html.ValidationMessageFor(m => m.HUB, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Division <span class="color-red">*</span>
+                                        </label>
+                                        @Html.ListBoxFor(m => m.DivisionId, Model.DivisionList, new { @class = "form-control data-multiselect", @multiple = "multiple" })
+                                        @Html.ValidationMessageFor(m => m.DivisionId, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Profile Name
+                                        </label>
+                                        @Html.ListBoxFor(m => m.ProfileId, Model.ProfileNameList, new { @class = "form-control data-multiselect", @multiple = "multiple" })
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">
+                                            Department
+                                        </label>
+                                        @Html.DropDownListFor(m => m.Department, Model.DepartmentList, "--Select--", new { @class = "form-control data-singleselect", @data_singleselect = "" })
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="control-label">Status <span class="color-red">*</span></label>
+                                        <div class="">
+                                            <div class="radio-list m-radio__list">
+                                                <div class="radio-inline p-0">
+                                                    <div class="radio radio-info">
+                                                        @Html.RadioButtonFor(m => m.IsActive, true, new { @class = "Active", @id = "radio1" })
+                                                        <label for="radio1">Active</label>
+                                                    </div>
+                                                    <div class="radio radio-info mt-3">
+                                                        @Html.RadioButtonFor(m => m.IsActive, false, new { @class = "InActive", @id = "radio2" })
+                                                        <label for="radio2">InActive</label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-12">
+                <span class="text-danger mt-4" style="display:none;" id="Err_ApplicationList">Please select atleast one application</span>
+                <table id="ApplicationList" class="display mt-5" style="width:100%">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Application Name</th>
+                            <th>Role</th>
+                            <th>Category</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ApplicationListTableBody">
+                        @foreach (var item in Model.ApplicationLists.Select((x, i) => new { Data = x, Index = (i + 1) }))
+                        {
+
+
+                            <tr>
+                                <td class="-align-center">
+                                    @if (item.Data.IsMapped)
+                                    {
+                                        <input type="checkbox" id="app_@item.Data.AppId" class="applicationlistcheckbox" checked data-appid="@item.Data.AppId" data-groupid="@item.Data.GroupId" data-selectroleid="" />
+                                    }
+                                    else
+                                    {
+                                        <input type="checkbox" id="app_@item.Data.AppId" class="applicationlistcheckbox uncheck" data-appid="@item.Data.AppId" data-groupid="@item.Data.GroupId" data-selectroleid="" />
+                                    }
+                                </td>
+                                <td>@item.Data.AppName</td>
+                                <td>
+                                    @if (item.Data.IsMapped)
+                                    {
+                                        @Html.DropDownListFor(m => item.Data.RoleId, new SelectList(Model.RoleLists.Where(r => r.AppId == item.Data.AppId), "RoleId", "RoleName"), "--Select--",
+                                                                            new { @class = "form-control data-singleselect role", @id = "Role_" + item.Index, @data_appid = item.Data.AppId, @data_groupid = item.Data.GroupId })
+                                    }
+                                    else
+                                    {
+                                        @Html.DropDownListFor(m => item.Data.RoleId, new SelectList(Model.RoleLists.Where(r => r.AppId == item.Data.AppId), "RoleId", "RoleName"), "--Select--",
+                                                                            new { @class = "form-control data-singleselect role", @id = "Role_" + item.Index, @disabled = "true", @data_appid = item.Data.AppId, @data_groupid = item.Data.GroupId })
+                                    }
+                                    <span class="text-danger errmsgrole" style="display:none">Please select Role</span>
+                                </td>
+                                <td>
+                                    @if (item.Data.AppShortName == "PB")
+                                    {
+                                        @if (!string.IsNullOrEmpty(Model.LoginId))
+                                        {
+                                            item.Data.CategoryId = !string.IsNullOrEmpty(item.Data.Category)? item.Data.Category.Split(","):item.Data.CategoryId;
+                                            @Html.ListBoxFor(m => m.CategoryId, Model.CategoryList, new { @class = "form-control category data-multiselect", @multiple = "multiple", @id = "Category_" + item.Index })
+                                            <span class="text-danger errmsgCategory" style="display:none">Please select Category</span>
+                                        }
+                                        else
+                                        {
+                                            if (item.Data.IsMapped)
+                                            {
+                                                <select class="form-control data-multiselect category" multiple>
+                                                </select>
+                                            }
+                                            else
+                                            {
+                                                <select class="form-control data-multiselect category" multiple disabled>
+                                                </select>
+                                            }
+                                        }
+                                    }
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-12">
+                <div class="save_buttons float-right text-right mt-23">
+                    <button type="submit" class="btn-add" id="userAdd"> Save</button>
+                    <a href="@Url.Content("~/MasterManagement/MMUserMaster")"><button type="button" class="btn-cnl" id=""> Cancel</button></a>
+                </div>
+               @* <div class="float-right text-right mt-4 pt-3">
+                    <button type="button" class="btn btn-xs btn-info c-btn -sudmit" id="userAdd">Submit</button>
+                    <a href="@Url.Content("~/MasterManagement/MMUserMaster")" class="btn btn-xs btn-warning c-btn -cancel ml-0" data-dismiss="modal">Cancel</a>
+                </div>*@
+            </div>
+        </div>
+        
+    </div>
+</div>
+<script>
+
+</script>
+<script src="@Url.Content("~/autocomplete/autocomplete.js")" asp-append-version="true"></script>
+<script src="@Url.Content("~/datatables/jquery.datatables.min.js")"></script>
+<script src="@Url.Content("~/datatables/datatables.fixedheader.min.js")"></script>
+<script src="@Url.Content("~/js/MasterManagement/AddMMUser.js")" asp-append-version="true"></script>
+@*<script src="@Url.Content("~/js/MasterManagement/AddMMUser.js")" asp-append-version="true"></script>*@

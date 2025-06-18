@@ -1,0 +1,855 @@
+﻿@model Ideation.Models.ProjectMasters
+@{
+    ViewData["Title"] = "Project Initiation";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+    var templateList = Model.TemplateMasterForList;
+}
+
+<style>
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+    .fa-user-friends:before {
+        content: "";
+        color: #c7558c;
+    }
+
+    .legacy_color {
+        background-color: #eecfa8 !important;
+    }
+
+    span.btn-icon.-Legacydata {
+        width: 15px;
+        height: 15px;
+        background: #eecfa8 !important;
+        float: left;
+        margin-right: 5px;
+        margin-top: 3px;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border-left: 1px solid #d5d0d0 !important;
+        border-right: 1px solid #d5d0d0 !important;
+    }
+
+    .popup_col .col-width2 .form-group label, .popup_col .col-width3 .form-group label, .popup_col .col-width4 .form-group label {
+        margin-bottom: 0px !important;
+        font-weight: bold;
+    }
+
+        .popup_col .col-width2 .form-group label strong, .popup_col .col-width3 .form-group label strong, .popup_col .col-width4 .form-group label strong {
+            font-weight: normal !important;
+        }
+
+    .popup_col .col-width2 {
+        width: 8%;
+        float: left;
+        margin: 0px 5px;
+        padding: 0px;
+    }
+
+    .popup_col .col-width3 {
+        min-width: 6%;
+        max-width: 20%;
+        width: auto;
+        float: left;
+        margin: 0px 5px;
+        padding: 0px;
+    }
+
+    .popup_col .col-width4 {
+        width: 30%;
+        float: left;
+        margin: 0px 5px;
+        padding: 0px;
+    }
+
+    #ViewProjectData .modal-body {
+        max-height: 80vh;
+        overflow-y: auto;
+    }
+
+    #ViewProjectData .modal-content {
+        max-height: 90vh;
+    }
+</style>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> Project Initiation</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    @Html.HiddenFor(model => model.ProjectMasterHeaderData, new { @id = "ProjectMasterHeaderDataList" })
+    @Html.HiddenFor(model => model.Role)
+    @Html.HiddenFor(model => model.BucketData, new { @id = "BucketList" })
+    @Html.HiddenFor(model => model.PortfolioData, new { @id = "PortfolioList" })
+    @Html.HiddenFor(model => model.ItemTypeData, new { @id = "ItemTypeList" })
+    @Html.HiddenFor(model => model.TemplateData, new { @id = "TemplateList" })
+    @Html.HiddenFor(model => model.UserGrpData, new { @id = "UserGrpList" })
+    @Html.HiddenFor(model => model.D3GrpData, new { @id = "D3GrpList" })
+    @Html.HiddenFor(model => model.D3GrpData, new { @id = "D3GrpList" })
+</section>
+
+<section>
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    }
+    <section>
+        <div id="response-message-div-page" class="m-login__erromsg p-2 mb-0 hide">
+        </div>
+    </section>
+</section>
+
+<section>
+    <div class="prototype_filter">
+        <div class="project_modules ">
+            <input type="text" id="searchedtemplate" hidden />
+            <ul class="nav nav-tabs TemplateDetails">
+                <li><a data-toggle="tab" onclick="getTemplatedetails(this)" data-templateid="" class="active allTemplates">All  <span class="allTemplateTotal template-count"></span></a></li>
+                @foreach (var item in templateList)
+                {
+                    <li><a data-toggle="tab" onclick="getTemplatedetails(this)" data-templateid="@item.TemplateId">@item.TemplateDescription <span class="template-count" id="@(item.TemplateDescription.Replace(" ","").ToLower())"></span></a></li>
+                }
+            </ul>
+        </div>
+        <div class="d-flex justify-content-between mb-1">
+
+            <div class="filter_status prototype_filter">
+                <div class="d-flex">
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">Project Brief Id</label>
+                            @Html.TextBoxFor(m => m.ProjectBriefId,
+                           new { @type = "text", @class = "form-control form-control-sm searchValue", @placeholder = "Enter ProjectBrief ID", @id = "PMSearchBrief" })
+
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">Item Type</label>
+                            @Html.DropDownListFor(model => model.Item, Model.ItemList,
+                           new { @class = "form-control form-control-sm data-singleselect", @id = "PMSearchItemType" })
+
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group">
+                            <label class="control-label">Project Id</label>
+                            @Html.TextBoxFor(m => m.ProjectId,
+                           new { @type = "text", @class = "form-control searchedproject", @placeholder = "Enter Project Id" })
+
+                        </div>
+                    </div>
+                    <div class="col-width2">
+                        <div class="form-group rid_calendericon">
+                            <label class="control-label">Start Date</label>
+                            <input type="text" class="form-control ImpactDates_text_freezed" id="Search_Start_Date" autocomplete="off"
+                                   data-datepicker-startdate1 readonly>
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                    </div>
+
+                    <div class="col-width2">
+                        <div class="form-group rid_calendericon">
+                            <label class="control-label">End Date</label>
+                            <input type="text" class="form-control ImpactDates_text_freezed" id="Search_End_Date" autocomplete="off"
+                                   data-datepicker-enddate1 readonly>
+                            <i class="fas fa-calendar"></i>
+                        </div>
+                    </div>
+                    <div class="col-width1 filter_button mt-3">
+                        <button class="btn btn-search" title="search" id="SearchPMData" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                        <button class="btn btn-refresh" title="refresh" id="refreshdata" type="button">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <div class="d-flex excel_expand align-items-center">
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download" />
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="add_button ml-2">
+                        <button type="button" class="btn btn-success CreateProject" onclick="showAddProjectPopup('',1)">Create Project</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="d-flex justify-content-between align-items-center mt-2 mb-2">
+        <div class="note">
+            <p class="mb-0 text-primary">
+                Note: Please enter Business information for Adhoc Projects.
+            </p>
+        </div>
+        <div class="legends_list">
+            <ul class="d-flex">
+                <li><i class="fas fa-user-friends"></i> Department budget users</li>
+                <li class="edit-color"><i class="fas fa-plus"></i> Add</li>
+                <li class="remarks-color"><i class="fas fa-info"></i> Info</li>
+                <li class="view-color"><i class="fas fa-reply"></i> Retry to get project code from SAP</li>
+                <li class="download-color"><i class="fas fa-users"></i> Link to project resource master</li>
+            </ul>
+        </div>
+    </div>
+
+
+</section>
+
+<section>
+    <div class="animate__animated2 slideInUp mt-1">
+        <div class="">
+            <div class="">
+                <div class="row">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="project-initiation-list" class="table table-bordered"></table>
+                            <div id="project-initiation-list-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div id="add-project" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Add Project
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Project Name <span class="text-danger">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.Product, new { @class = "form-control", @id = "PMPrjName", @autocomplete = "on" })
+                            <span style="display:none" id="Err_PrjName" class="Err_PM color-red">Please Enter Project Name</span>
+                            <span style="display:none" id="Err_PrjName_Exceed" class="Err_PM color-red">Please enter the project name within 40 characters</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Portfolio <span class="text-danger">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.Portfolio, Model.PortfolioList, "Select",
+                           new { @class = "form-control data-singleselect PMPortfolioName", @id = "PMPortfolioName" })
+                            <span style="display:none" id="Err_Portfolio" class="Err_PM color-red">Please Select Portfolio</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Bucket <span class="text-danger">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.BucketName, new SelectList(string.Empty, "Value", "Text"), "Select",
+                           new { @class = "form-control data-singleselect PMBucketName", @id = "PMBucketName" })
+                            <span style="display:none" id="Err_Bucket" class="Err_PM color-red">Please Select Bucket</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Item Type <span class="text-danger">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.ItemTypeName, new SelectList(string.Empty, "Value", "Text"), "Select",
+                           new { @class = "form-control data-singleselect", @id = "PMItemTypeName" })
+                            <span style="display:none" id="Err_ItemType" class="Err_PM color-red">Please Select Item Type</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Template <span class="text-danger">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.Template, new SelectList(string.Empty, "Value", "Text"), "Select",
+                           new { @class = "form-control data-singleselect", @id = "PMTemplateName" })
+                            <span style="display:none" id="Err_Template" class="Err_PM color-red">Please Select Template</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                HUB <span class="text-danger">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.HubName, Model.HubDataList,
+                           new { @class = "form-control", @data_multiselect = "", @id = "PMHubMaster", @multiple = "multiple" })
+                            <span style="display:none" id="Err_Hub" class="Err_PM color-red">Please Select Hub</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Start Date <span class="text-danger">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.StartDate,
+                           new { @class = "form-control date_text_freezed", @id = "PMStartDate", @data_datepicker_startdate_1 = "", @autocomplete = "off", @readonly = "readonly" })
+                            <span style="display:none" id="Err_StartDate" class="Err_PM color-red">Please Select StartDate</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                End Date <span class="text-danger">*</span>
+                            </label>
+                            @Html.TextBoxFor(model => model.EndDate,
+                           new { @class = "form-control date_text_freezed", @id = "PMEndDate", @data_datepicker_enddate_1 = "", @autocomplete = "off", @readonly = "readonly" })
+                            <span style="display:none" id="Err_EndDate" class="Err_PM color-red">Please Select EndDate</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Division <span class="text-danger">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.DivisionName, Model.DivisionList, "Select",
+                            new { @class = "form-control data-singleselect DivisionId", @id = "DivisionId" })
+                            <span style="display:none" id="Err_Division" class="Err_Division Err_PM color-red">Please Select Division</span>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Is Project Planning Required <span class="text-danger">*</span>
+                            </label>
+                            @Html.DropDownListFor(model => model.IsProjectPalanning, Model.IsProjectPlanningList, "Select",
+                            new { @class = "form-control data-singleselect IsProjectPlanning", @id = "IsProjectPlanning" })
+                            <span style="display:none" id="Err_isPlanning" class="Err_isPlanning Err_PM color-red">Please Select Is Project Planning Required</span>
+                        </div>
+                    </div>
+                    @*<div class="col-md-4">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Is HGH Code Required <span class="text-danger">*</span>
+                                </label>
+                                @Html.DropDownListFor(model => model.IsHGHRequired, Model.IsHGHList, "Select",
+                                new { @class = "form-control data-singleselect IsHGHRequired", @id = "IsHGHRequired" })
+                                <span style="display:none" id="Err_isHGH" class="Err_isHGH Err_PM color-red">Please Select Is HGH Code Required</span>
+                            </div>
+                        </div>*@
+                </div>
+                <div class="button_top float-right mt-2">
+                    <button type="button" class="btn btn-success" onclick="validateNewProjectForm()">Save & Confirm</button>
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ViewProjectData" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <section>
+                <div id="response-message-div" class="m-login__erromsg p-2 mb-0 hide">
+                </div>
+            </section>
+            <div class="modal-header">
+                <h6 class="modal-title ProjectId_text" id="exampleModalLabel"></h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row product_profile card_bx popup_col">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Project Name</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_Product">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Template</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_Template">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Item Type</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_Itemtype">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Bucket</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_Bucket">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>HUB</label>
+                                <div class="demo-content">
+                                    <label>
+                                        <strong id="View_Hub">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Start Date</label>
+                                <div class="ckediter_tolbar">
+                                    <label>
+                                        <strong id="View_StartDate">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>End Date</label>
+                                <div class="ckediter_tolbar">
+                                    <label>
+                                        <strong id="View_EndDate">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Created Date</label>
+                                <div class="ckediter_tolbar">
+                                    <label>
+                                        <strong id="View_CreateDate">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <label>Created By</label>
+                                <div class="ckediter_tolbar">
+                                    <label>
+                                        <strong id="View_CreatedBy">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>SAP Remarks</label>
+                                <div class="ckediter_tolbar">
+                                    <label>
+                                        <strong id="View_Remarks">
+                                        </strong>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hideforpartusers">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Division <span class="text-danger">*</span>
+                                </label>
+                                @Html.DropDownListFor(model => model.DivisionName, Model.DivisionList, "Select",
+                                new { @class = "form-control data-singleselect InfoDivisionId", @id = "InfoDivisionId" })
+                                <span style="display:none" id="Err_InfoDivision" class="Err_InfoDivision Err_PM color-red">Please Select Division</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hideforpartusers">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Is Project Planning Required <span class="text-danger">*</span>
+                                </label>
+                                @Html.DropDownListFor(model => model.IsProjectPalanning, Model.IsProjectPlanningList, "Select",
+                                new { @class = "form-control data-singleselect InfoIsProjectPlanning", @id = "InfoIsProjectPlanning" })
+                                <span style="display:none" id="Err_InfoIsPlanning" class="Err_InfoIsPlanning Err_PM color-red">Please Select Is Project Planning Required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hide hideforpartusers" id="hgh-required-select-div">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Is HGH Code Required <span class="text-danger">*</span>
+                                </label>
+                                @Html.DropDownListFor(model => model.IsHGHRequired, Model.IsHGHList, "Select",
+                                new { @class = "form-control data-singleselect InfoIsHGHRequired", @id = "InfoIsHGHRequired" })
+                                <span style="display:none" id="Err_InfoIsHGH" class="Err_InfoIsHGH Err_PM color-red">Please Select Is HGH Code Required</span>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hide hideforpartusers" id="hgh-required-view-div">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    Is HGH Code Required
+                                </label>
+                                <div class="mt-1">
+                                    <b id="IsHGHReqSpan"></b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 hide hideforpartusers" id="hgh-supp-doc-add-div">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    HGH Supporting Document
+                                </label>
+                                <input type="file" id="hgh-supp-doc-FileUpload" class="form-control mandatory" multiple
+                                       accept=".jpg,.jpeg,.png,.xlsx,.xls,.pdf,.doc,.docx,.txt,.csv,.ppt,.pptx,.pst,.msg,.eml" />
+                                <b class="text-danger hide file-format-err">Files must be of type .jpg, .jpeg, .png, .xlsx, .xls, .pdf, .doc, .docx, .txt, .csv, .ppt, .pptx, .psg, .msg, .eml</b>
+                                <b class="text-danger hide file-exceed-err">Each file size should be less than 10 MB</b>
+                            </div>
+                        </div>
+                        <div class="col-md-2 hide hideforpartusers" id="hgh-supp-doc-view-div">
+                            <div class="form-group">
+                                <label class="control-label">
+                                    HGH Supporting Document
+                                </label>
+                                <div class="action_icons mt-1">
+                                    <i class="fas fa-history color-info" title="HGH Supporting Document" onclick="OpenHGHDocPopup()" role="button"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12 pt-4">
+                        <div class="float-right text-right">
+                            <button type="button" class="btn btn-draft" id="Save_ViewDivisionInfo"> Save & Send HGH Mail</button>
+                        </div>
+                    </div>
+                    <div class="business-info-fields">
+                        <div class="ship_to" id="ship_location">
+                            <div class="details_section">
+                                <h4>Business Information</h4>
+                                <input type="text" hidden id="Business_Project">
+                                <span style="color:red;display:none" id="Error_BusinessInformation" class="Error_EmptyGrid">Please enter atleast one data for Business Information</span>
+                                <span id="Error_BI_Product_Sku" class="color-red Error_BusinessInformation"></span>
+                                <div class="form_section">
+                                    <div class="adhocproject_view">
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Product <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_Product" class="form-control trim validation" readonly />
+                                                    <span style="color:red; display:none" id="Error_Business_Product" class="Error_BusinessInformation"></span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">SKU <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_SKU" class="form-control trim validation" onkeypress="return restrictSpecialCharacters();" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_SKU" class="Error_BusinessInformation">Please select SKU </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">
+                                                        HUB <span class="text-danger">*</span>
+                                                    </label>
+                                                    @Html.DropDownListFor(model => model.HubName, Model.HubDataList, "--Select--", new { @class = "form-control form-control-sm validation data-singleselect", @id = "Business_HUB" })
+                                                    <span style="color:red; display:none" id="Error_Business_HUB" class="Error_BusinessInformation">Please Select Hub</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">Proposed Selling Price <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_ProposedSP" class="form-control trim validation" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_ProposedSP" class="Error_BusinessInformation">Please enter Proposed Selling Price </span>
+                                                    <span style="color:red; display:none" id="NotNumber_ProposedSellingPrice" class="Error_BusinessInformation">Please enter Proposed Selling Price in digits </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">Currency <span class="color-red">*</span></label>
+                                                    @Html.DropDownListFor(model => model.Currency, Model.CurrencyDataList, "--Select--", new { @class = "form-control BusinessInformation validation data-singleselect", @id = "Business_Currency" })
+                                                    <span style="color:red; display:none" id="Error_Business_Currency" class="Error_BusinessInformation">Please select Currency</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">M1 Quantity <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_M1" class="form-control trim validation" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_M1" class="Error_BusinessInformation">Please enter M1 Quantity </span>
+                                                    <span style="color:red; display:none" id="NotNumber_M1Quantity" class="Error_BusinessInformation">Please enter M1 Quantity in digits </span>
+                                                    <span style="color:red; display:none" id="Error_Zero_Business_M1" class="Error_BusinessInformation">M1 Quantity should not be zero </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">M2 Quantity <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_M2" class="form-control trim validation" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_M2" class="Error_BusinessInformation">Please enter M2 Quantity </span>
+                                                    <span style="color:red; display:none" id="NotNumber_M2Quantity" class="Error_BusinessInformation">Please enter M2 Quantity in digits </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">M3 Quantity <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_M3" class="form-control trim validation" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_M3" class="Error_BusinessInformation">Please enter M3 Quantity </span>
+                                                    <span style="color:red; display:none" id="NotNumber_M3Quantity" class="Error_BusinessInformation">Please enter M3 Quantity in digits </span>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">M4 Quantity</label>
+                                                    <input type="text" id="Business_M4" class="form-control trim" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">M5 Quantity</label>
+                                                    <input type="text" id="Business_M5" class="form-control trim" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">M6 Quantity</label>
+                                                    <input type="text" id="Business_M6" class="form-control trim" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">Y1 Quantity <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_Y1" class="form-control trim validation" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_Y1" class="Error_BusinessInformation">Please enter Y1 Quantity </span>
+                                                    <span style="color:red; display:none" id="NotNumber_Y1Quantity" class="Error_BusinessInformation">Please enter Y1 Quantity in digits </span>
+                                                    <span style="color:red; display:none" id="Error_Zero_Business_Y1" class="Error_BusinessInformation">Y1 Quantity should not be zero </span>
+                                                    <span style="color:red; display:none" id="Error_Sum_Business_Y1" class="Error_BusinessInformation">Please enter Y1 value in digits that should Greater than or equal to M1+M2+M3+M4+M5+M6</span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">Y2 Quantity <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_Y2" class="form-control trim validation" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_Y2" class="Error_BusinessInformation">Please enter Y2 Quantity </span>
+                                                    <span style="color:red; display:none" id="NotNumber_Y2Quantity" class="Error_BusinessInformation">Please enter Y2 Quantity in digits </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">Y3 Quantity <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_Y3" class="form-control trim validation" onkeypress="return onlyNumbers(this);" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_Y3" class="Error_BusinessInformation">Please enter Y3 Quantity </span>
+                                                    <span style="color:red; display:none" id="NotNumber_Y3Quantity" class="Error_BusinessInformation">Please enter Y3 Quantity in digits </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <div class="form-group">
+                                                    <label class="control-label">Business Value <span class="sku_note">(Y2 Quantity * Proposed Selling Price)</span></label>
+                                                    <input type="text" id="Business_BV" class="form-control trim" readonly />
+                                                    <span style="color:red; display:none" id="NotNumber_BusinessValue" class="Error_BusinessInformation">Please enter Business Value in digits </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <div class="form-group">
+                                                    <label class="control-label">UOM <span class="color-red">*</span></label>
+                                                    <input type="text" id="Business_UOM" class="form-control trim validation" onkeypress="return restrictSpecialCharacters();" onpaste="return false" />
+                                                    <span style="color:red; display:none" id="Error_Business_UOM" class="Error_BusinessInformation">Please enter UOM </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group mb-0 mt-2 float-right">
+                                                    <button type="button" id="Add_BusinessInformation" class="btn btn-draft mb-2">Add</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <div class="">
+                                            <div class="row">
+                                                <div class="m-table__main grid_height">
+                                                    <div class="m-table__responsive -virtual-scroll">
+                                                        <table id="Business_Information" class="table table-bordered"></table>
+                                                        <div id="pager_businessinfo"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="float-right text-right mt-2" style="margin-right:22px;">
+                            <button type="button" class="btn btn-draft adhocproject_view business-info-savebtn" id="Save_BusinessInformation"> Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mb-2">
+                <div class="float-right text-right">
+                    <button type="button" class="btn btn-cancel" data-bs-dismiss="modal"> Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="ViewFileModal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="hgh-doc-popup-name">
+                    HGH Supporting Document
+                </h6>
+                <button type="button" class="close" id="closebtn" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="HGHviewfiles" class="table table-bordered"></table>
+                            <div id="pager_HGHviewfiles"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="SaveAddProjectModal" class="modal fade sv hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1 hide">Do you want to create the project for project brief <strong id="prj-brief-id"></strong>?</span>
+                <span class="msg-2 hide"> Do you want to create the project?</span>
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="SaveNewProject">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="product-already-exists-popup" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Alter Box</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span>There is already a adhoc project created on the same product name, Please confirm to map the project brief to that product ?</span>
+                <div class="animate__animated2 slideInUp mt-1">
+                    <div class="">
+                        <div class="">
+                            <div class="row">
+                                <div class="m-table__main grid_height">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="duplicate-product-grid" class="table table-bordered"></table>
+                                        <div id="duplicate-product-grid-pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirm-to-map-brief">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="confirmationPopUpforSave" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgforsave">
+                </span>
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="DeleteModal" class="modal fade hd" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Delete Confirmation</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are you sure you want to delete?
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="DeleteRecord" class="btn btn-draft" data-bs-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/NewProjectInitiation/ProjectInitiationList.js")"></script>

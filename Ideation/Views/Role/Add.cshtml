@@ -1,0 +1,78 @@
+﻿@model Ideation.Models.Role
+@{
+    ViewBag.Title = @ViewBag.PageTitle;
+    Layout = "~/Views/Shared/_PBLayout.cshtml";
+}
+<div class="row">
+    <div class="col-md-12">
+        <div id="message">
+            @if (TempData["message"] != null)
+            {
+                <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible" role="alert">
+                    <span class="alert-text">@Html.Raw(Convert.ToString(TempData["message"]))</span>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="card-box mb-0">
+    <h4 class="pt-3">@ViewBag.PageTitle</h4>
+    @using (Html.BeginForm("Add", "Role", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        <div class="row">
+            @Html.HiddenFor(m => m.RoleId)
+
+            <div class="row product_profile">
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="form-label">Role Name<span class="color-red"> *</span></label>
+                        @Html.TextBoxFor(model => model.RoleName,new { @class = "form-control form-control-sm"})
+                        @Html.ValidationMessageFor(model => model.RoleName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="form-group">
+                        <label class="form-label">Status<span class="color-red"> *</span></label>
+                        <div class="status_rd_btns">
+                            <div class="custom-control custom-radio custom-control-inline">
+
+                                @Html.RadioButtonFor(m => m.Status, "1", new { @id = "IsReplacingRadio1", @class = "custom-control-input", @type = "radio" })
+
+                                <label class="custom-control-label" for="IsReplacingRadio1">Active</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+
+
+
+                                @Html.RadioButtonFor(m => m.Status, "0", new { @id = "IsReplacingRadio2", @class = "custom-control-input", @type = "radio" })
+
+                                <label class="custom-control-label" for="IsReplacingRadio2">In Active</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="save_buttons float-right text-right">
+                    @if (Model.IsEdit)
+                    {
+
+                        <button type="submit" class="btn-add"> Save</button>
+                    }
+                  
+                    
+                    <a href="@Url.Content("~/Role/RoleList")">
+                        <button type="button" class="btn-cnl"> Back</button></a>
+               </div>
+            </div>
+
+        </div>
+    }
+</div>
+
+<script src="@Url.Content("~/js/role/addrole.js")" asp-append-version="true"></script>

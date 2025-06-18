@@ -1,0 +1,220 @@
+﻿@model Ideation.Models.PMUMapping
+@{
+    ViewBag.Title = "Summary";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+}
+<div class="card-box">
+    <div class="row" style=" display: flex; align-items: center;">
+        <div class="col-md-2">
+            <div class="page-title">
+                <h4>Summary</h4>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+        </div>
+
+        <div class="col-md-1 text-right">
+            <div class="float-right save_approve refresh_approve mt-2">
+                <button type="button" id="ExcelDownload" onclick="GetExcelData()" title="Excel Download" class="btn-excel mr-1 ml-1 mt-0"><img src="@Url.Content("~/NewAssets/assets/images/excel.png")"></button>
+            </div>
+        </div>
+
+
+        <div class="col-md-1 text-left">
+            <div class="float-right save_approve refresh_approve">
+                <button type="button" id="DisplayVersionRemarks" class="btn btn-warning btn_refresh mt-2" data-toggle="tooltip" data-placement="bottom" title="Version Remarks"><i class="fa fa-info-circle" aria-hidden="true"></i></button>
+            </div>
+        </div>
+        <div class="col-md-2 version-div" id="dispVersion">
+            <div class="form-group">
+                <label class="control-label">Versions:</label>
+                @Html.DropDownListFor(m => m.Version, new SelectList(Model.ProjectVersionList, "Value", "Text"), new { @class = "form-control dropdown projectDrop dropdown-singleselect" })
+            </div>
+        </div>
+
+    </div>
+
+    @if (Context.Session.GetString("projectName") != null)
+    {
+        var projectName = Context.Session.GetString("projectName");
+        var projectId = Context.Session.GetString("projectId");
+        <input type="hidden" id="selectedProjectName" value="@projectName" />
+        <input type="hidden" id="selectedProjectId" value="@projectId" />
+
+
+    }
+    @if (Context.Session.GetString("HubId") != null)
+    {
+        var hubId = Context.Session.GetString("HubId");
+        var hubName = Context.Session.GetString("HubName");
+        <input type="hidden" id="selectedHubId" value="@hubId" />
+        <input type="hidden" id="selectedHubName" value="@hubName"/>
+
+    }
+    <div class="form-horizontal m-form" id="displayveriosnremarksDiv" hidden>
+        <div class="m-form__container">
+            <div class="row">
+
+                <div class="col-md-2">
+                    <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                        <div class="save_buttons float-right text-right">
+                            <button type="button" class="btn-add" hidden>Version Remarks List</button>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+
+            <div class="m-table__main table_action Summary_grid">
+                <div class="m-table__responsive -virtual-scroll summary_table">
+                    <table id="jqgrid" class="table table-bordered"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="HistoryModal" class="modal fade m-modal -table-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl" style="margin-top:80px">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">History</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal-info__text">
+                                <h4 class="modal-info__label" id="projectNameId"></h4>
+                            </div>
+                            <div class="m-table__main history_table">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="HistoryGrid" class="table table-bordered"></table>
+                                    <div id="HistoryGridPager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="dependentMilestones" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">File Upload Details</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+
+                            <div class="row">
+
+                                <div class="">
+
+                                    <div class="m-table__main">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="FileUploadjqgrid" class="table table-bordered"></table>
+                                            <div id="FileUploadpager"></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                    <div class="save_buttons float-right text-right">
+                                        <button type="button" class="btn-add" id="uploadedbtnok">Ok</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="VersionRemarkspop" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title"><b>Version Remarks</b></h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+
+                            <div class="row">
+
+                                <div class="">
+
+                                    <div class="m-table__main">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="Versionremarksdisplay" class="table table-bordered"></table>
+                                            <div id="Versionremarksdisplaypager"></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                    <div class="save_buttons float-right text-right">
+                                        <button type="button" class="btn-add" data-dismiss="modal">Ok</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/Home/HomeSummary.min.js")" asp-append-version="true"></script>

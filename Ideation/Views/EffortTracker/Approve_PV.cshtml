@@ -1,0 +1,221 @@
+﻿@model Ideation.Models.Approve
+
+<div class="modal-content">
+    <div class="modal-header">
+        <h5 class="modal-title">Efforts Based On Project</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="tab-content" id="nav-tabContent">
+        <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
+            <div class="effort_tracker table-responsive">
+                <table class="table table-bordered" id="TEffortTrackerPopUp">
+                    <thead style="background: #d8d8d8;" class="@Model.UserName">
+                        <tr class="week_select">
+
+                            @{
+                                var WeekDetails = Model.WeeklyEffortsuser;
+                                var WeekApportionDetails = Model.WeeklyApportionEffortsforUser;
+
+
+                                var WeekHeadings = ((IDictionary<string, object>)WeekDetails[0]).Keys.ToArray();
+
+                                double[] colTotalsWeakEffort1 = new double[WeekHeadings.Count() - 2];
+
+                                for (int index = 0; index < WeekHeadings.Count(); index++)
+                                {
+                                    if (index > 1)
+                                    {
+
+                                        <th class='week_header'>
+                                            @(Convert.ToDateTime(WeekHeadings[index]).ToString("ddd")) <br />
+                                            @(Convert.ToDateTime(WeekHeadings[index]).ToString("dd MMM"))
+                                        </th>
+                                    }
+                                    else
+                                    {
+                                        if (WeekHeadings[index] != "ProjectName")
+                                        {
+                                            <th class='week_header'> Project Name</th>
+                                        }
+                                    }
+                                }
+                            }
+                            <th class="week_header ">Total</th>
+                        </tr>
+
+                    </thead>
+                    <tbody class="tr_padding" id="table_body">
+                        @{
+                            var ProjectDetails = new Object();
+                            var ProjectApportionDetails = new Object();
+                            double rowTotal1 = 0.0;
+
+                        }
+                        @for (int index = 0; index < WeekDetails.Count(); index++)//Rows
+                        {
+                            var DayIndex = 1;
+                            rowTotal1 = 0;
+                            ProjectDetails = (((IDictionary<string, object>)WeekDetails[index])[WeekHeadings[0]]);
+
+                            @if (ProjectDetails != "" && ProjectDetails != null)
+                            {
+                                <tr class="valu">
+
+                                    @for (int index1 = 0; index1 < WeekHeadings.Count(); index1++)
+                                    {
+
+                                        @if (WeekHeadings[index1] == "ProjectId")
+                                        {
+
+                                            @if (ProjectDetails != "" && ProjectDetails != null)
+                                            {
+
+                                                <td style="padding:0px; background-color: #e6e6e8a1;">
+
+                                                    <select class="form-control projectid" id="data-singleselect">
+                                                        @foreach (var item in Model.ProjectList)
+                                                        {
+                                                            if (ProjectDetails.ToString() == item.ProjectCode)
+                                                            {
+                                                                <option value="@item.ProjectCode" selected style="display:none">@item.ProjectName</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </td>
+                                            }
+                                        }
+                                        else
+                                        {
+
+                                            if (WeekHeadings[index1] != "ProjectName" && ProjectDetails != "" && ProjectDetails != null)
+                                            {
+
+                                                var Dayid = "day" + DayIndex + "val";
+                                                var ApportionDayid = "dayApportion" + DayIndex;
+
+                                                object manual = null;
+                                                object apportion = null;
+
+                                                manual = (((IDictionary<string, object>)WeekDetails[index])[WeekHeadings[index1]]);
+
+                                                var val = Convert.ToString(manual) + '+' + Convert.ToString(apportion);
+                                                <td style="padding:0px;">
+                                                    <div style="display: flex;">
+
+                                                        @if(manual==null)
+                                                        {
+                                                            <input type="text" class="form-control EfDay number @Dayid" value="0.0" style="padding:7px" disabled/>
+                                                        }
+                                                        else
+                                                        {
+                                                            <input type="text" class="form-control EfDay number @Dayid" value="@manual" style="padding:7px" disabled />
+                                                        }
+
+                                                        @for (int i = 0; i < WeekApportionDetails.Count(); i++)
+                                                        {
+                                                            apportion = (((IDictionary<string, object>)WeekApportionDetails[i])[WeekHeadings[index1]]);
+                                                            var ApportionProjectId = (((IDictionary<string, object>)WeekApportionDetails[i])[WeekHeadings[0]]);
+                                                            string ProjAppId = Convert.ToString(ApportionProjectId);
+                                                            string ProjectDetailsId = Convert.ToString(ProjectDetails);
+
+                                                            
+                                                            if ((ProjectDetailsId == ProjAppId) && apportion != null && apportion != "")
+                                                            {
+                                                                <input type="text" class="form-control EfDay number @Dayid @ApportionDayid" style="padding:5px 2px;color:#800000" value="(@apportion)" disabled />
+                                                               
+                                                            }
+                                                        }
+
+                                                    </div>
+
+                                                </td>
+
+
+                                                DayIndex = DayIndex + 1;
+
+
+
+                                                rowTotal1 = rowTotal1 + Convert.ToDouble((((IDictionary
+                                                <string, object>
+                                                )WeekDetails[index])[WeekHeadings[index1]]));
+
+                                                colTotalsWeakEffort1[index1 - 2] = colTotalsWeakEffort1[index1 - 2] +
+                                                Convert.ToDouble((((IDictionary<string, object>
+                                                )WeekDetails[index])[WeekHeadings[index1]]));
+                                            }
+                                            else
+                                            {
+                                                if (WeekHeadings[index1] != "ProjectName")
+                                                {
+                                                    var Dayid = "day" + DayIndex;
+                                                    <td style="padding:0px;">
+                                                        <input type="text" class="form-control EfDay number @Dayid" />
+                                                        <span class="@(Dayid+"errormsg") text-danger" style="display:none">Please select Efforts</span>
+                                                    </td>
+                                                    DayIndex = DayIndex + 1;
+                                                }
+                                            }
+
+                                        }
+                                    }
+                                    <td style="padding: 0;vertical-align: middle;text-align: center;color: blue;background: #e7ecf7;" class="righttotal">@Math.Round(rowTotal1, 2)</td>
+
+                                </tr>
+                            }
+                        }
+                    </tbody>
+                    <tfoot style="background: #e7ecf7;">
+                        <tr class="tr_padding value_ value1_">
+
+                          
+                            <td class="tf_td">Total Efforts</td>
+                            @{
+                                double Finaltotal1 = 0.0;
+                                @for (int index2 = 0; index2 < colTotalsWeakEffort1.Count(); index2++)
+                                {
+                                    var ColTotalId = "day" + (index2 + 1) + "totalval";
+
+                                    <td class="tf_td"><label id="@ColTotalId">@Math.Round(colTotalsWeakEffort1[index2], 2)</label></td>
+
+                                    Finaltotal1 = Finaltotal1 + Convert.ToDouble(colTotalsWeakEffort1[index2]);
+                                }
+                            }
+
+                            <td class="tf_td"><label id="FinalTotal">@Math.Round(Finaltotal1, 2)</label></td>
+                        </tr>
+                    </tfoot>
+
+                    
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@*
+to get the tasks based on efforts*@
+
+
+@*<div id="showlist" class="modal fade EffortsOntask" role="dialog">
+    <div class="modal-dialog modal-s">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Efforts Based On Task</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="modalClose()"></button>
+            </div>
+            <div class="modal-body show_listvalues">
+
+                <table class="table table-bordered" id="EffortsBasedOnTask">
+                    <thead style="background: #d8d8d8;">
+                    </thead>
+                    <tbody class="tr_padding" id="ViewTasks">
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>*@
+<script src="@Url.Content("~/js/approve_pv.js")" asp-append-version="true"></script>

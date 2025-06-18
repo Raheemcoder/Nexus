@@ -1,0 +1,105 @@
+﻿@model Ideation.Models.ProjectMaster
+
+@{
+    ViewBag.Title = "Baseline Budget ";
+    Layout = "~/Views/Shared/ProjectMaster_Layout.cshtml";
+}
+
+<style>
+    a.color-blue {
+        color: blue !important;
+    }
+
+        a.color-blue:hover {
+            color: #000 !important;
+        }
+
+    .status_dropdown .select2-container.select2 {
+        width: 170px !important;
+    }
+
+    .status_dropdown .ml-3 {
+        margin-left: 20px;
+    }
+
+    .width_float {
+        float: left;
+        width: 100%;
+    }
+
+    .Project_Id_col a, .Project_Id_col {
+        white-space: nowrap !important;
+        word-break: break-all;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+</style>
+<section>
+    <div class="card-box mb-1 card_height pb-3 sg pt-1 test123">
+        <div class="width_float">
+            <div class="float-left" style="float: left">
+                <div class="page-title">
+                    <h4>Budget Approval</h4>
+                </div>
+            </div>
+            <div class="status_dropdown" style="float: right">
+                <div class="d-flex">
+                    <div class="">
+                        <select class="form-control status" data-singleselect>
+                            <option value="1">All</option>
+                            <option selected value="2">Pending For Approval</option>
+                        </select>
+                    </div>
+                    @*<div class="ml-3">
+                        <button type="button" id="SearchData" class="btn btn-info c-add-details waves-light waves-effect" title="Search">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>*@
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="">
+                    <div class="m-table__main mt-2 mb-2">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="BudgetRequest" class="table table-bordered"></table>
+                            <div id="BudgetRequest_pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="modal fade budget_popup" id="approvedInfo" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Baseline Budget Approved Info</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="approved_grid" class="table table-bordered"></table>
+                                        <div id="approved_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectMaster/BudgetApprovalPhase1.js")"></script>

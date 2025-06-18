@@ -1,0 +1,1844 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.SessionOptions> SessionOptions
+@{
+    var timeout = SessionOptions.Value.IdleTimeout.TotalMinutes;
+    var userName = Context.Session.GetString("UserName");
+    var role = Context.Session.GetString("Role");
+    var Email = Context.Session.GetString("EmailId");
+    var loggedUser = Context.Session.GetString("LoggedUserName");
+    var AppshortName = Context.Session.GetString("AppShortName");
+    var divisionId = Context.Session.GetInt32("DivisionId");
+    var firstLetter = userName?.Substring(0, 1);
+    var UserApprovalLevel = Context.Session.GetString("UserApprovalLevel");
+}
+
+<input type="hidden" value="@role" id="userrole" />
+
+<!DOCTYPE html>
+<html lang="en" class="skew">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISpace</title>
+
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/N_assets/images/leaf.ico")" />
+    <link href="@Url.Content("~/N_assets/css/layout.min.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link href="@Url.Content("~/N_assets/css/animate.min.css")" rel="stylesheet" />
+
+    <style>
+        .datepicker .datepicker-days tr:hover td {
+            background: transparent;
+        }
+
+            .datepicker .datepicker-days tr:hover td:hover {
+                background: #e5e2e3;
+            }
+
+        td.disabled.day {
+            background: transparent !important;
+            color: #9c9c9c !important;
+        }
+
+        .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+            border-left: 1px solid #d5d0d0 !important;
+            border-right: 1px solid #d5d0d0 !important;
+        }
+
+        .modal-header-align .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+            text-align: left !important;
+            padding: 5px !important;
+        }
+
+        .ui-jqgrid .ui-jqgrid-htable th {
+            padding: 5px 5px !important;
+        }
+
+        .warning {
+            background: #ff9221 !important;
+            color: #fff !important;
+        }
+
+            .warning.fa-arrow-right {
+                background: #dedede !important;
+                color: #ff9221 !important;
+            }
+
+        .fa-arrow-right.warning.important {
+            background: #dedede !important;
+            color: #ff9221 !important;
+        }
+
+        .flaticon-download {
+            font-style: normal !important;
+        }
+    </style>
+
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/popper.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/bootstrap.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/grid.locale-en.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery.jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery-ui.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/select2/select2.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/app.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/jquery.fullscreen-min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/Moment/moment.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqGrid/jqzip/jszip.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/ckeditor/ckeditor.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/aes.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/ridlayout.min.js")" asp-append-version="true"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        var ROOT = "@Url.Content("~/")";
+    </script>
+
+</head>
+
+<body class="new_layout rid_layout" id="jquery-script-menu">
+
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container">
+            <div class="c-loader__inner">
+            </div>
+            <div class="c-loader__outer">
+            </div>
+            <div class="c-loader__img">
+            </div>
+        </div>
+    </div>
+
+    <header id="topnav" class="header_section">
+
+        <div class="ispace-logo">
+            <a href="@Url.Content("~/Landing/Index")">
+                <img src="~/N_assets/images/ispace-logo.png" alt="ispace" height="30px" />
+            </a>
+        </div>
+
+        <div>
+            <div class="d-flex">
+
+                @*dashboard all modules link and page links*@
+                <div>
+                    <div class="header_nav">
+                        <div id="navigation">
+                            <ul class="navigation-menu" id="main_menu">
+
+                                @await Component.InvokeAsync("MainMenu")
+
+                                @if (role?.ToUpper() == "ADMIN")
+                                {
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/CosmeticsRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/IngredientsRegulation")" data-suburl1="@Url.Content("~/NewRID/AddIngredient")" data-suburl2="@Url.Content("~/NewRID/AddIngredientRequest")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,4)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/ComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRWCList")" data-suburl1="@Url.Content("~/NewRID/FoodSupplementAddEdit")" data-suburl2="@Url.Content("~/NewRID/FoodSupplementAddEdit")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,5)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/ComplianceHeaderMaster")">Region Complaince Header Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                                else if (role?.ToUpper() == "IRA GLOBAL")
+                                {
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/IngredientsRegulation")" data-suburl1="@Url.Content("~/NewRID/AddIngredient")" data-suburl2="@Url.Content("~/NewRID/AddIngredientRequest")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,4)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/ComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRWCList")" data-suburl1="@Url.Content("~/NewRID/FoodSupplementAddEdit")" data-suburl2="@Url.Content("~/NewRID/FoodSupplementAddEdit")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,5)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/ComplianceHeaderMaster")">Region Compliance Header Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                    }
+                                }
+                                else if (role?.ToUpper() == "IRA INDIA")
+                                {
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/IngredientsRegulation")" data-suburl1="@Url.Content("~/NewRID/AddIngredient")" data-suburl2="@Url.Content("~/NewRID/AddIngredientRequest")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,4)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/ComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRWCList")" data-suburl1="@Url.Content("~/NewRID/FoodSupplementAddEdit")" data-suburl2="@Url.Content("~/NewRID/FoodSupplementAddEdit")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,5)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/ComplianceHeaderMaster")">Region Compliance Header Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                }
+                                else if (role?.ToUpper() == "IRA GLOBAL - CS")
+                                {
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/IngredientsRegulation")" data-suburl1="@Url.Content("~/NewRID/AddIngredient")" data-suburl2="@Url.Content("~/NewRID/AddIngredientRequest")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,4)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/ComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                    }
+                                }
+                                else if (role?.ToUpper() == "IRA GLOBAL - FS")
+                                {
+                                    @if (divisionId == 5)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRWCList")" data-suburl1="@Url.Content("~/NewRID/FoodSupplementAddEdit")" data-suburl2="@Url.Content("~/NewRID/FoodSupplementAddEdit")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,5)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/ComplianceHeaderMaster")">Region Compliance Header Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/CosmeticsRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                    }
+                                }
+                                else if (role?.ToUpper() == "IRA INDIA - CS")
+                                {
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/IngredientsRegulation")" data-suburl1="@Url.Content("~/NewRID/FoodSupplementAddEdit")" data-suburl2="@Url.Content("~/NewRID/FoodSupplementAddEdit")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,4)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,4)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,4)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/ComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/FunctionMaster")">Function Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                    }
+                                }
+                                else if (role?.ToUpper() == "IRA INDIA - FS")
+                                {
+                                    @if (divisionId == 5)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRWCList")" data-suburl1="@Url.Content("~/NewRID/FoodSupplementAddEdit")" data-suburl2="@Url.Content("~/NewRID/FoodSupplementAddEdit")">Region-Wise Compliance</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            @if (UserApprovalLevel != "")
+                                            {
+                                                <a href="#">Global Compliance<i class="flaticon-down-arrow-1"></i></a>
+                                                <ul class="submenu" id="main_menu1">
+                                                    @if (UserApprovalLevel.Contains("&"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("1"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(1,5)">Level 1 Approval</a>
+                                                        </li>
+                                                    }
+                                                    else if (UserApprovalLevel.Contains("2"))
+                                                    {
+                                                        <li class="">
+                                                            <a href="#" onclick="GetApprovalPageLink(2,5)">Level 2 Approval</a>
+                                                        </li>
+                                                    }
+                                                </ul>
+                                            }
+                                            else
+                                            {
+                                                <a href="#" onclick="GetApprovalPageLink(3,5)">Global Compliance</a>
+                                            }
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementComplianceRequest")">Compliance Request</a>
+                                        </li>
+                                        <li class="has-submenu ">
+                                            <a href="#">Masters<i class="flaticon-down-arrow-1"></i></a>
+                                            <ul class="submenu" id="main_menu1">
+                                                <li class="">
+                                                    <a href="@Url.Content("~/NewRID/ComplianceHeaderMaster")">Region Compliance Header Master</a>
+                                                </li>
+                                            </ul>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/CosmeticsRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                    }
+                                }
+                                else if (role?.ToUpper() == "RND")
+                                {
+                                    @if (divisionId == 4)
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/CosmeticsRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                    }
+                                    else
+                                    {
+                                        <li class="has-submenu ">
+                                            <a href="@Url.Content("~/NewRID/FoodSupplementRIDList")">Regulatory Ingredient Database</a>
+                                        </li>
+                                    }
+                                }
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                @*Logout*@
+                <div>
+                    <div class="d-flex align-items-center user_info top_position">
+                        <div class="d-flex user_name_ cursor">
+                            <span class="circular_icon" style="cursor: pointer">@firstLetter</span>
+                            <label class="mb-0" style="cursor: pointer">@userName</label>
+                            <span style="cursor: pointer">
+                                <img src="@Url.Content("~/N_assets/images/himalaya_leaf logo.png")" width="22px" />
+                            </span>
+                            <div class="logout">
+                                <ul>
+                                    <li><a href="@Url.Content("~/Login/Logout")"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </header>
+
+    <div class="container-fluid body-content element " id="element">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted ">
+        &copy; @DateTime.Now.Year - Himalaya Wellness Company. All rights reserved
+    </footer>
+
+    @*Life cycle history popup*@
+    <div id="auditTrail" class="modal fade budget_popup" tabindex="-1" aria-labelledby="exampleModalLabel" aria-modal="true" role="dialog">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel">Ingredient Life Cycle History <b class="lc-ing-Name"></b></h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="row text-center">
+                        <div class="lifecycle_list clims_history list_status">
+
+                        </div>
+                    </div>
+
+                    <div class="row mt-2">
+                        <div class="d-flex justify-content-end">
+                            <div class="images_excel">
+                                <img src="@Url.Content("~/N_assets/images/excel.png")" id="HistoryExcel" title="Excel Download">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2 mb-2">
+                                    <div class="m-table__responsive -virtual-scroll">
+                                        <table id="audit_trail" class="table table-bordered jqgrid-table"></table>
+                                        <div id="audit_pager"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-right">
+                                <button type="button" data-bs-dismiss="modal" class="btn btn-cancel">
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Particular ingredient popup*@
+    <div id="ParticularIngredientModal-fs-pdf-download" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        View Ingredients Remarks
+                    </h4>
+                    <div class="mr-4">
+                        <i class="flaticon-download color-blue" role="button"
+                           id="download-ing-com-rem-pdf" title="Ingredient's compliance remarks pdf"> Pdf Download</i>
+                    </div>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+
+                <div class="modal-body">
+                    <input type="hidden" id="IngredientIdForCompliance" />
+                    <div class="filter_forms">
+                        <div class="row">
+                            <div class="col-md-3 mb-4 hidebotanicalname">
+                                <span> Botanical Name : <b class="control-label ing-bot-name"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hideingnamesforinactives">
+                                <span> Ingredient Name: <b class="control-label ing-name"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hideingnamesforactives">
+                                <span>Ingredient Name (Sanskrit/English): <b class="control-label ing-name"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4">
+                                <span> Synonyms : <b class="control-label ing-sys"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hidecas">
+                                <span> CAS Number : <b class="control-label ing-cas-no"></b></span>
+                            </div>
+                            <div class="col-md-3 mb-4 hideenumber">
+                                <span> E Number : <b class="control-label ing-e-no"></b></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="d-flex justify-content-end align-items-center">
+                            <div class="legends_list circle_list ">
+                                <ul class="d-flex ">
+                                    <li><span class="purple_circle"></span> Higher Management/HUB Decision Required</li>
+                                    <li><span class="green_circle"></span> Allowed</li>
+                                    <li><span class="yellow_circle"></span> Allowed With Restrictions</li>
+                                    <li><span class="red_circle"></span> Prohibited</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row add_ingradient">
+                        <div class="m-table__main mt-2">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="particular-ingredient-details-fs-pdf-download" class="table table-bordered"></table>
+                                <div id="particular-ingredient-details-pager-fs-pdf-download"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <div class="pull-right mt-2">
+                            <div class="pull-right">
+                                <button type="button" class="btn  btn-cancel" data-bs-dismiss="modal" id="Approve_cancel">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*compliance remarks popup*@
+    <div id="complianceremarkspopup-fs-pdf-download" class="modal fade preview_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Compliance Remarks
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name :</b> <span id="Compliance_Ingredient"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <input type="hidden" id="Compliance_RegionId" />
+                            <b>Region:</b> <span id="Compliance_Region"></span>
+                        </span>
+                    </h4>
+                    <div class="mr-4">
+                        <i class="flaticon-download color-blue" role="button"
+                           id="download-com-rem-pdf" title="Region compliance remarks pdf"> Pdf Download</i>
+                    </div>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body grid-scroll" style="max-height:460px;">
+                    <div class="table-responsive">
+                        <input type="hidden" id="IngredientTypeId" />
+                        <table class="table table-boardered">
+                            <tbody></tbody>
+                        </table>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 p-0">
+                            <div class="recomandation_title">Additional Information</div>
+                            <div id="richeditordata" class="table richediter p-2"></div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12 p-0">
+                            <div class="recomandation_title" id="recommendationforregion"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">In Medicine</label>
+                                <textarea class="form-control" rows="3" id="InMedicineForClaims" disabled></textarea>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">In Food Supplement</label>
+                                <textarea class="form-control" rows="3" id="InfoodSupplementsForClaims" disabled></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="float-right">
+                                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*claims info popup*@
+    <div id="claimsinfopopup" class="modal fade preview_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Claims Info
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name :</b> <span id="Claims_Ingredient"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Region:</b> <span id="Claims_Region"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Category:</b> <span id="Claims_Category"></span>
+                        </span>
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-3">
+                        <div class="col-md-12 p-0 grid-scroll">
+                            <div id="richeditordata_claims" class="table richediter p-2"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="float-right">
+                                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*compliance remarks popup inactives*@
+    <div id="complianceremarksinactivespopup" class="modal fade preview_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">
+                        Compliance Remarks
+                        <span class="text-right pl-5 ml-5">
+                            <b>Ingredient Name :</b> <span id="ComplianceInactives_Ingredient"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Region:</b> <span id="ComplianceInactives_Region"></span>
+                        </span>
+                        <span class="text-right pl-5 ml-5">
+                            <b>Category:</b> <span id="ComplianceInactives_Category"></span>
+                        </span>
+                    </h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-3">
+                        <div class="col-md-12 p-0 grid-scroll">
+                            <div id="richeditordata_complianceinactives" class="table richediter p-2"></div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="float-right">
+                                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Confirm modal popup*@
+    <div id="confirmpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="confirmpopupmesssage"></span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" id="ConfirmOKbutton" data-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Alert modal popup*@
+    <div id="alertpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Alert Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="popupmesssage">Are you sure u want Cancel</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Unsaved changes popup*@
+    <div id="UnsavedChangesAlert" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Alert</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal" id="unsavedchangesclose"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <span id="unsavedmessage">
+                    </span>
+                    <div class="col-md-12 mt-3 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="saveunsavedchanges">Save</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="continueunsavedchanges">Continue Anyway</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Save with Remarks popup*@
+    <div id="save-with-remarks-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Confirm Box</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="save-with-remarks-msg"></span>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-md-12">
+                            <label class="control-label">Remarks <span class="text-danger">*</span></label>
+                            <textarea id="with-remarks-data" class="form-control"></textarea>
+                            <span class="text-danger hide">Please enter Remarks</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-3 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-draft" id="save-confirm">Save</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Alter Session time out popup*@
+    <div id="ReloginPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Session Expiry</h4>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span>Your Session is about to expire in <span id="timeoutin" style="font-weight: bold;"></span>. Please click <span style="font-weight: bold;">OK</span> to keep alive</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" id="ReloginPopUpOKbutton" data-bs-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-cancel" id="ReloginPopUpCanclebutton" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="GenerateFSPdf" hidden></div>
+
+    <script>
+
+        function Encrypt(str) {
+            var key = CryptoJS.enc.Utf8.parse('8080808080808080');
+            var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+            var enString = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(str), key,
+                {
+                    keySize: 128 / 8,
+                    iv: iv,
+                    mode: CryptoJS.mode.CBC,
+                    padding: CryptoJS.pad.Pkcs7
+                });
+            return enString;
+        }
+
+        $(function () {
+            var time = ((@timeout * 1000 * 60) - (2 * 1000 * 60));
+            var timeout;
+            var isLogout = false;
+            timeout = setTimeout(function () {
+                OpenInputDialog();
+                var d = Date(Date.now());
+                console.log(d.toString());
+                isLogout = true;
+            }, time);
+            $(document).on('click', function () {
+                if (!isLogout) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        OpenInputDialog();
+                        isLogout = true;
+                    }, time);
+                }
+            });
+        });
+
+        var myInterval = 0;
+
+        function OpenInputDialog() {
+
+                $('#ReloginPopUp').modal('show');
+                var seconds = 600;
+                myInterval = setInterval(function () {
+                    if (seconds === 0) {
+                        clearInterval(myInterval);
+                        $('#ReloginPopUpCanclebutton').click();
+                    }
+                    else {
+                        var time = moment().startOf('day')
+                            .seconds(seconds)
+                            .format('mm:ss');
+                        $('#timeoutin').text(time)
+                    }
+                    seconds = seconds - 1
+                }, 1000);
+        };
+
+        $('#ReloginPopUpOKbutton').click(function () {
+            clearInterval(myInterval);
+            $.ajax({
+                type: 'GET',
+                url: ROOT + "Login/AutoLogin",
+                data: "",
+                datatype: "text",
+                success: function (data) {
+                    isLogout = false;
+                    console.log("Auto logged in successfully");
+                    alert(data);
+                }, error: function (res) {
+                    console.log("Error occured, please relogin again.");
+                    window.location = ROOT + "Login/LogOff"
+                },
+            });
+        });
+
+        $('#ReloginPopUpCanclebutton').click(function () {
+            window.location = ROOT + "Login/LogOff"
+        });
+
+        function setNavigation() {
+
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "#");
+            path = decodeURIComponent(path);
+
+            $("#main_menu li a, #main_menu1 li a").each(function () {
+
+                var href = $(this).attr('href');
+                var subURL1 = $(this).attr('data-suburl1');
+                var subURL2 = $(this).attr('data-suburl2');
+                var URLs = [];
+
+                if (subURL1 !== undefined) {
+                    URLs = URLs.concat(subURL1.split(';'));
+                }
+                if (subURL2 !== undefined) {
+                    URLs = URLs.concat(subURL2.split(';'));
+                }
+
+                if (path === href || URLs.indexOf(path) >= 0) {
+                    if ($(this).parents('#main_menu, #main_menu1').length >= 1) {
+                        $(this).parents('li').addClass('active');
+                    }
+                    else {
+                        $(this).addClass('activeparents');
+                        $(this).parents('li').addClass('activeparents');
+                    }
+                }
+
+            });
+        }
+
+        setNavigation();
+
+        $(".fullscreen-btn").on("click", function () {
+            $("#fullscreen").addClass("m-table__full-screen");
+        });
+        $(".exitscreen-btn").on("click", function () {
+            $("#fullscreen").removeClass("m-table__full-screen");
+        });
+
+        function toggleFullScreen(elem) {
+            if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+                if (elem.requestFullScreen) {
+                    elem.requestFullScreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullScreen) {
+                    elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        $(".tile_projects a").click(function () {
+            $(this).closest("li").addClass("active");
+        });
+
+        $(".menuhamburger a").click(function () {
+            $(this).toggleClass("active");
+            $(".main-menu").toggleClass("menu_left");
+        });
+
+        $(".navigation-menu li").click(function () {
+            $(this).toggleClass("submenu_open");
+            $(".navigation-menu li").not(this).removeClass("submenu_open");
+        });
+
+        $(function () {
+
+            $(".fullscreen-supported").toggle($(document).fullScreen() != null);
+            $(".fullscreen-not-supported").toggle($(document).fullScreen() == null);
+
+            $(document).on("fullscreenchange", function (e) {
+                console.log("Full screen changed.");
+                $("#jquery-script-menu").toggleClass("fullscreen_btn");
+            });
+
+            $(document).on("fullscreenerror", function (e) {
+            });
+
+        });
+
+        $(document).ready(function () {
+
+            $('#loader').hide();
+
+            $(document)
+                .ajaxStart(function () {
+                    $('#loader').show();
+                    $("#loader").css("visibility", "visible");
+                })
+                .ajaxStop(function () {
+                    $('#loader').hide();
+                    $("#loader").css("visibility", "hidden");
+                })
+                .ajaxComplete(function () {
+                    $('#loader').hide();
+                    $("#loader").css("visibility", "hidden");
+                });
+
+            document.addEventListener('DOMContentLoaded', function () {
+                const inputs = document.querySelectorAll('.form-control');
+                inputs.forEach(input => {
+                    input.addEventListener('focus', function () {
+                        this.setAttribute('value', this.value);
+                    });
+                    input.addEventListener('blur', function () {
+                        this.setAttribute('value', this.value);
+                    });
+                });
+            });
+
+        });
+
+        window.onload = function () {
+            $("#loader").css("visibility", "hidden");
+            $('#loader').hide();
+        }
+
+        function GetAddEditFSDetails(ingredientORRequestId, from, ingredientTypeId = 0) {
+            // since if coming from ingredient com req page then ingredientTypeId will be passed
+            if (ingredientTypeId == 0) {
+                 ingredientTypeId = $(".nav-tabs li a").filter(function () {
+                    return $(this).hasClass('active');
+                }).attr('IngredientTypeId');
+            }
+            window.location.href = ROOT + "NewRID/FoodSupplementAddEdit" + '?q=' + Encrypt("IngredientORRequestId=" + ingredientORRequestId + "&IngredientType=" + ingredientTypeId + "&From=" + from);
+        }
+
+        function GetSelectedTypeName() {
+            var belongsTo = "";
+            $(".nav-tabs li a").each(function () {
+                if ($(this).hasClass('active')) {
+                    var result = ($(this).attr('IngredientTypeId')).split(",");
+                    if (result.length > 1) {
+                        belongsTo = "actives";
+                    }
+                    else if (result.length == 1) {
+                        belongsTo = "inactives";
+                    }
+                }
+            });
+            return belongsTo;
+        }
+
+        function CRRegionGroupData(regionGroupArray) {
+
+            var html = `<div>`;
+
+            regionGroupArray.forEach(function (obj) {
+                if (obj.RegionGroupId != 0) {
+                    html += `
+                            <tr>
+                                <th>${obj.RegionGroupLabel}</th>
+                                <td>
+                                    <div>
+                                        ${obj.RegionGroupData}
+                                    </div>
+                                </td>
+                            </tr>
+                    `;
+                }
+            });
+
+            html += `</div>`
+
+            return html;
+        }
+
+        function CRCkEditorData(ckEditorData) {
+
+            var html = `<div>`;
+
+            html += ckEditorData;
+
+            html += `</div>`
+
+            return html;
+
+        }
+
+        function handelConfirmPopup(msg, func) {
+            $('#confirmpopupmesssage').empty().html(msg);
+            $('#confirmpopup').modal('show');
+            if (func) {
+                $("#ConfirmOKbutton").unbind("click");
+                $('#ConfirmOKbutton').on("click", func);
+            }
+        }
+
+        function UnsavedDataAlert(msg, func, func1) {
+            $('#unsavedmessage').empty().html(msg);
+            $('#UnsavedChangesAlert').modal('show');
+            if (func) {
+                $("#saveunsavedchanges").unbind("click");
+                $('#saveunsavedchanges').on("click", func);
+            }
+            if (func1) {
+                $("#continueunsavedchanges").unbind("click");
+                $('#continueunsavedchanges').on("click", func1);
+            }
+        }
+
+        function handelConfirmRemarksPopup(msg, func) {
+
+            $("#with-remarks-data").val('');
+            $("#with-remarks-data").siblings('span').addClass('hide');
+
+            $("#save-with-remarks-msg").html(msg);
+
+            $('#save-with-remarks-popup').modal('show');
+            if (func) {
+                $("#save-confirm").unbind("click");
+                $('#save-confirm').on("click", func);
+            }
+        }
+
+        function IsValidData(data) {
+
+            data = data.trim();
+            if (data != "" && data != null && data != undefined) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+
+        function GetApprovalPageLink(pageCode, division) {
+            if (division == 4) {
+                window.location.href = ROOT + "NewRID/CosmeticsRIDApproval" + '?q=' + Encrypt("pageCode=" + pageCode);
+            }
+            else {
+                window.location.href = ROOT + "NewRID/FoodSupplementRIDApproval" + '?q=' + Encrypt("pageCode=" + pageCode);
+            }
+        }
+
+        //-----------------------------------------------------------Ingredient wise compliance remarks download
+
+        var generatePDFData = [];
+
+        $('#download-com-rem-pdf').on('click', function () {
+
+            var regionId = $('#Compliance_RegionId').val();
+            var ingredientId = $('#IngredientIdForCompliance').val();
+            var ingredientTypeId = $('#IngredientTypeId').val() == "" ? ingredienttypeid : $('#IngredientTypeId').val();
+            var region = $('#Compliance_Region').text();
+            var ingredientname = ingredientnameforpopup;
+
+            $.ajax({
+                type: "GET",
+                url: ROOT + "NewRID/GetFoodSupplementComplianceRemarks",
+                data: {
+                    ingredientTypeId: ingredientTypeId,
+                    ingredientId: ingredientId,
+                    regionId: regionId
+                },
+                success: function (result) {
+
+                    var regionData = result.HeaderData.map(item => ({
+                        RegionGroupLabel: item.RegionGroupName,
+                        RegionGroupData: item.RegionGroupData
+                    }));
+
+                    generatePDFData = [];
+
+                    generatePDFData.push({
+                        "Region": $('#Compliance_Region').text(),
+                        "IngredientName": $('#Compliance_Ingredient').text(),
+                        "RegionGroupData": regionData,
+                        "RegionRecommendation": $('#recommendationforregion').text(),
+                        "AdditionalInformation": $("#richeditordata").html(),
+                        "InMedicine": $('#InMedicineForClaims').val(),
+                        "InFoodSupplement": $('#InfoodSupplementsForClaims').val()
+                    });
+
+                    var fd = new FormData();
+                    $.ajax({
+                        url: ROOT + "NewRID/FoodSupplementPdf",
+                        type: 'POST',
+                        dataType: 'HTML',
+                        cache: false,
+                        contentType: "application/json",
+                        data: JSON.stringify(generatePDFData),
+                        success: function (result) {
+
+                            $('.GenerateFSPdf').html(result);
+                            var htmldata = $(".GenerateFSPdf").html();
+                            fd.append('JsonString', htmldata);
+
+                            $.ajax({
+                                url: ROOT + 'NewRID/GeneratePdfHtml',
+                                type: 'POST',
+                                dataType: 'HTML',
+                                data: fd,
+                                contentType: false,
+                                processData: false,
+                                success: function (result) {
+                                    window.location = window.location.origin + ROOT + 'NewRID/GeneratePdfForAddIngredient?Region=' + region + '&IngredientName=' + ingredientname
+                                }
+                            });
+                        }
+                    });
+                }
+            });
+        });
+
+        $('#download-ing-com-rem-pdf').on('click', function () {
+
+            var ingredientId = $('#IngredientIdForCompliance').val();
+            var ingredientTypeId = $('#IngredientTypeId').val() == "" ? ingredienttypeid : $('#IngredientTypeId').val();
+            var ingredientname = ingredientnameforpopup;
+
+            $.ajax({
+                type: "GET",
+                url: ROOT + "NewRID/GetFoodSupplementComplianceRemarks",
+                data: {
+                    ingredientTypeId: ingredientTypeId,
+                    ingredientId: ingredientId,
+                    regionId: 0
+                },
+                success: function (result) {
+
+                    if (result) {
+
+                        var regionIds = [];
+                        generatePDFData = [];
+
+                        result.CRemarksData.forEach(function (item) {
+                            if (!regionIds.includes(item.RegionId)) {
+                                regionIds.push(item.RegionId);
+                            }
+                        });
+
+                        regionIds.forEach(function (RegionId) {
+
+                            var comRemarksData = result.CRemarksData.filter(item => item.RegionId == RegionId)[0];
+
+                            var regionData = result.HeaderData.filter(item => item.RegionId == RegionId).map(item => ({
+                                RegionGroupLabel: item.RegionGroupName,
+                                RegionGroupData: item.RegionGroupData
+                            }));
+
+                            generatePDFData.push({
+                                "Region": comRemarksData.Region,
+                                "IngredientName": $(".hideingnamesforinactives .ing-name").text().trim(),
+                                "RegionGroupData": regionData,
+                                "RegionRecommendation": comRemarksData.RegionRecommendation,
+                                "AdditionalInformation": comRemarksData.AdditionalInfo,
+                                "InMedicine": comRemarksData.MedRecommendation,
+                                "InFoodSupplement": comRemarksData.FSRecommendation
+                            });
+
+                        });
+
+                        var fd = new FormData();
+                        $.ajax({
+                            url: ROOT + "NewRID/FoodSupplementPdf",
+                            type: 'POST',
+                            dataType: 'HTML',
+                            contentType: "application/json",
+                            cache: false,
+                            data: JSON.stringify(generatePDFData),
+                            success: function (result) {
+
+                                $('.GenerateFSPdf').html(result);
+                                var htmldata = $(".GenerateFSPdf").html();
+                                fd.append('JsonString', htmldata);
+
+                                $.ajax({
+                                    url: ROOT + 'NewRID/GeneratePdfHtml',
+                                    type: 'POST',
+                                    dataType: 'HTML',
+                                    data: fd,
+                                    contentType: false,
+                                    processData: false,
+                                    success: function (result) {
+                                        window.location = window.location.origin + ROOT + 'NewRID/GeneratePdfForAddIngredient?Region=' + "" + '&IngredientName=' + ingredientname
+                                    }
+                                });
+
+                            }
+                        });
+                    }
+                }
+            });
+        });
+
+        //-----------------------------------------------------------Ingredient History Grid
+        function ShowHistory(IngId, obj) {
+
+            var ingName = $(obj).attr("data-ingName");
+
+            $.ajax({
+                type: "GET",
+                url: ROOT + "NewRID/GetIngHistoryData",
+                dataType: "JSON",
+                data: {
+                    ingredientId: IngId
+                },
+                success: function (result) {
+                    if (result) {
+                        CreateHistoryFlow(result.Header);
+                        if (result.Details.length > 0) {
+                            UpdateHistoryFlowClass(result);
+                        }
+                        CreateAuditJQGrid(result.Details, ingName);
+                    }
+                    else {
+                        alert("Error Occured:" + result)
+                    }
+                },
+                error: function (xhr, status, error) {
+                    alert("Error Occured: " + error);
+                }
+            });
+
+        }
+        function CreateHistoryFlow(result) {
+
+            var ulElement = `<ul class="history-flow-ul">`
+            var count = result.length - 1;
+            result.forEach(function (item, index) {
+
+                ulElement += `
+            <li data-stageid = ${item.id} class="mt-2">${item.value}</li>
+        `;
+
+                if (index < count) {
+                    ulElement += `
+            <li data-stageid = ${item.id} class="fas fa-arrow-right mt-2"></li>
+        `;
+                }
+
+            });
+            ulElement += `</ul>`
+            $(".lifecycle_list").html(ulElement);
+
+        }
+        function UpdateHistoryFlowClass(result) {
+
+            var currentStageId = result.Details[0].ToStageId;
+
+            $(".history-flow-ul li").each(function () {
+
+                var uiLiId = $(this).attr('data-stageid');
+
+                if (uiLiId == currentStageId) {
+                    if (uiLiId == 4) {
+                        $(this).addClass("completed");
+                    }
+                    else {
+                        $(this).addClass("warning important");
+                    }
+                }
+                else if (uiLiId < currentStageId) {
+                    $(this).addClass("completed");
+                }
+                else if (uiLiId > currentStageId) {
+                    $(this).addClass("yet-tocomplete");
+                }
+
+            });
+
+        }
+        var audit_colmodels = [
+            {
+                name: 'FromStage',
+                label: 'From Stage',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 120,
+            },
+            {
+                name: 'ToStage',
+                label: 'To Stage',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 120,
+            },
+            {
+                name: 'AssingedTo',
+                label: 'Assigned To',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 150,
+            },
+            {
+                name: 'ReceivedOn',
+                label: 'Received On',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 80,
+            },
+            {
+                name: 'SubmittedBy',
+                label: 'Submitted By',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 120,
+            },
+            {
+                name: 'SubmittedOn',
+                label: 'Submitted On',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 80,
+            },
+            {
+                name: 'NoOfDaysTaken',
+                label: 'No of Days taken',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 80,
+            },
+            {
+                name: 'Remarks',
+                label: 'Remarks',
+                resizable: true,
+                ignoreCase: true,
+                sortable: false,
+                width: 200,
+            },
+        ];
+        function CreateAuditJQGrid(data, ingName) {
+
+            $.jgrid.gridUnload('#audit_trail');
+
+            $("#audit_trail").jqGrid({
+                url: '',
+                datatype: 'local',
+                data: data,
+                mtype: 'GET',
+                colModel: audit_colmodels,
+                loadonce: true,
+                viewrecords: true,
+                pager: '#audit_pager',
+                rowNum: 1000,
+                scroll: 1,
+
+                gridComplete: function () {
+                    var objRows = $("#audit_trail tbody tr");
+                    var objHeader = $("#audit_trail tbody tr td");
+
+                    if (objRows.length > 1) {
+                        var objFirstRowColumns = $(objRows[1]).children("td");
+                        for (i = 0; i < objFirstRowColumns.length; i++) {
+                            $(objFirstRowColumns[i]).css("width", $(objHeader[i]).css("width"));
+                        }
+                    }
+                }
+            });
+
+            $('#audit_trail').closest('.ui-jqgrid-bdiv').css({ 'max-height': 'calc(-350px + 100vh)' });
+            $('#audit_trail').closest('.ui-jqgrid-bdiv').children("div").css({ 'height': 'auto' });
+            var $TableHeight = $('#audit_trail').closest(".ui-jqgrid-bdiv").find("tbody").height();
+            if ($TableHeight > 130) {
+                $('#audit_trail').closest(".ui-jqgrid").find(".ui-jqgrid-bdiv").css("overflow", "auto");
+                $('#audit_trail').closest(".m-table__responsive").find(".ui-jqgrid-sdiv").css("padding-right", "8px");
+            }
+            else {
+                $('#audit_trail').closest(".m-table__responsive").find(".ui-jqgrid-sdiv").css("padding-right", "0px");
+            }
+
+            if (ingName != "") {
+                $(".lc-ing-Name").text(': ' + ingName);
+            }
+
+            $("#audit_trail").jqGrid('filterToolbar', {
+                autosearch: true,
+                stringResult: false,
+                searchOnEnter: false,
+                defaultSearch: "cn"
+            });
+
+            $("#auditTrail").modal("show");
+
+        }
+        $(document).on('click', '#HistoryExcel', function () {
+
+            var isValid = true;
+            var data = $('#audit_trail').jqGrid('getGridParam', 'data');
+
+            if (data.length == 0) {
+                alert("There is no data present in the grid");
+                isValid = false;
+            }
+            if (isValid) {
+
+                var fileName = $(".lc-ing-Name").text().trim() != "" ?
+                    "Ingredient Life Cycle History " + $(".lc-ing-Name").text().trim() + ".xlsx" :
+                    "Ingredient Life Cycle History.xlsx";
+
+                $("#audit_trail").jqGrid("exportToExcel", {
+                    includeLabels: true,
+                    includeGroupHeader: true,
+                    includeFooter: true,
+                    exportcol: false,
+                    fileName: fileName,
+                    maxlength: 100000,
+                });
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>

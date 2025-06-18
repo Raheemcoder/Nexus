@@ -1,0 +1,297 @@
+﻿@model Ideation.Models.ProjectMasters;
+@{
+    ViewData["Title"] = "Department Budget User Mappings";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+
+    var tabCount = Model.ActiveDepartments != null ? Model.ActiveDepartments.Count() : 0;
+    var isActiveAdded = false;
+    int activeRoleId = 0;
+    var activeRoleName = "";
+}
+
+<style>
+    .multi-select-depart-div .btn-group {
+        width: 200px !important;
+    }
+
+    .table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 2; 
+        background-color: #fff; 
+        box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+    }
+    .preview-table-div1 {
+        max-height: 400px;
+         overflow-y: auto; 
+    }
+
+</style>
+
+@*header link*@
+<section>
+    <div>
+        <div class="-m_title_">
+            <h4>
+                <span>
+                    <a href="@Url.Content("~/Landing/Index")">Home/</a>
+                </span>
+                <span>
+                    <a onclick="NavigateToList()">Project Initiation/</a>
+                </span>
+                DBU Mappings
+            </h4>
+        </div>
+    </div>
+</section>
+
+@*hidden Fields*@
+<section>
+    @Html.HiddenFor(model => model.ProjectId)
+    @Html.HiddenFor(model => model.NoOfDepartmentResources)
+    <input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.ActiveDepartments)" id="ActiveDepartments" />
+</section>
+
+@*To show saved response message*@
+@if (TempData["Message"] != null)
+{
+    <div id="message" class="m-login__erromsg">
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    </div>
+}
+
+@*To show deleted response message*@
+<section>
+    <div id="response-message-div" class="m-login__erromsg hide">
+
+    </div>
+</section>
+
+@*page headers & tabs*@
+<section>
+
+    <div class="d-flex justify-content-between align-items-center mb-2">
+
+        <div class="multi-select-depart-div">
+            <label>Project Name : </label>
+            <b class="project-name mr-2">@Model.Product</b>
+            <label>Departments : </label>
+            @Html.DropDownListFor(m => m.ActiveDepartments, new SelectList(Model.ActiveDepartments, "RoleId", "Role"),
+            new { @class = "form-control", @id = "header-dept", @data_multiselect = "", @multiple = "multiple" })
+            <div class="prototype_filter d-inline">
+                <button class="btn btn-search" title="Search" type="button" id="search-btn">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="d-flex excel_expand align-items-center">
+            <div class="images_excel">
+                <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download" />
+            </div>
+            <div>
+                <div class="expand_initiate table_expand">
+                    <div>
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                            <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="add_button ml-2">
+                <button type="button" id="save-draft-Button" class="btn btn-success">Save as draft</button>
+            </div>
+            <div class="add_button ml-2">
+                <button type="button" id="save-con-Button" class="btn btn-success">Save & Confirm</button>
+            </div>
+            <div class="ml-2 mt-1 right_top">
+                <ul class="d-flex align-item-center">
+                    <li class="preview">
+                        <i class="fa fa-eye"></i> Preview
+                    </li>
+                    <li>
+                        <a href="javascript:void(0)" onclick="NavigateToList()">
+                            <i class="fas fa-arrow-left"></i> Back
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="tab-vertical cost_center">
+        <div class="col-md-12">
+            <div class="row">
+
+                <div class="col-md-3 p-0">
+                    <div class="resources_tabs">
+                        <p class="mb-0">Roles</p>
+                        <input type="text" id="global-search" class="global-search search_filter form-control mb-1" placeholder="Search..." autocomplete="off" />
+                        <ul class="nav nav-tabs tabs_initiation tabs_center roles-list" role="tablist">
+
+                            @if (tabCount > 0)
+                            {
+                                foreach (var item in Model.ActiveDepartments)
+                                {
+                                    if (isActiveAdded == false)
+                                    {
+                                        <li class="nav-item" onclick="switchRole(@item.RoleId,this)" role="button">
+                                            <a class="nav-link active">
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <div class="form-group mb-0">
+                                                            <span>Department Name : </span>
+                                                            <span><strong>@item.Role</strong></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <div class="form-group mb-0">
+                                                            <span>HOD : </span>
+                                                            <span><strong>@item.HOD</strong></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        activeRoleId = @item.RoleId;
+                                        activeRoleName = @item.Role;
+                                        isActiveAdded = true;
+                                    }
+                                    else
+                                    {
+                                        <li class="nav-item" onclick="switchRole(@item.RoleId,this)" role="button">
+                                            <a class="nav-link">
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <div class="form-group mb-0">
+                                                            <span>Department Name : </span>
+                                                            <span><strong>@item.Role</strong></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-auto">
+                                                        <div class="form-group mb-0">
+                                                            <span>HOD : </span>
+                                                            <span><strong>@item.HOD</strong></span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    }
+                                }
+                            }
+
+                        </ul>
+                    </div>
+                </div>
+
+                @*note: since it is taken in above div added here*@
+                <input type="hidden" value="@activeRoleId" id="active-role-id" />
+                <input type="hidden" value="@activeRoleName" id="active-role-name" />
+
+                <div class="col-md-9 pr-0">
+                    <div class="tab-content">
+                        <div class="tab-pane fade show active" id="home-vertical" role="tabpanel" aria-labelledby="home-vertical-tab">
+
+                            <div>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="form-group mb-0 ">
+                                            <div class="">
+                                                <label class="control-label mb-0 p-0">Resources</label>
+                                                <div class="row">
+                                                    <div class="col-md-10 pr-0">
+                                                        <select class="form-control multiselect-users" multiple></select>
+                                                        <span class="hide text-danger">Please select the resource to add</span>
+                                                        <span class="hide text-danger resource-exists">Resource already exists</span>
+                                                    </div>
+                                                    <div class="col-md-2 pl-0">
+                                                        <button type="button" title="Add" class="btn btn-success ml-2 plus_add addResourceName">
+                                                            <i class="fas fa-plus ex_download" title="Add" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="resources-grid" class="table table-bordered"></table>
+                                    <div id="resources-grid-pager"></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</section>
+
+@*preview of data popup*@
+<div id="preview-modal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">DBU Mappings Preview</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="details_section">
+                    <div>
+                        <label>Project Name : </label>
+                        <b class="project-name">@Model.Product</b>
+                    </div>
+                    <div class="preview-table-div1">
+                        <!-- This div controls the scrollable table -->
+                        <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="tablewidth1 text-center">
+                                            Role
+                                            <input type="text" id="roleFilter" placeholder="Please select Role" class="form-control form-control-sm mt-1">
+                                        </th>
+                                        <th class="text-center">
+                                            Resources
+                                            <input type="text" id="resourceFilter" placeholder="Please select Resource" class="form-control form-control-sm mt-1">
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody class="resource-preview-table-body">
+                                    <!-- Data rows will be dynamically inserted here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+<script src="~/js/NewProjectInitiation/DBUMappings.js"></script>

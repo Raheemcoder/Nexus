@@ -1,0 +1,121 @@
+﻿@model Ideation.Models.MilestoneMaster
+@{
+    ViewBag.Title = "PMUMapping";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+}
+
+<link href="~/assets/plugins/datepicker/bootstrap-datepicker.min.css" rel="stylesheet" />
+<div class="card-box">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title">
+                <h4 class="-m-3 mb-2">Template</h4>
+            </div>
+        </div>
+        <div id="message" class="m-login__erromsg">
+            @if (TempData["MessagePMU"] != null)
+            {
+                <div class="alert @Convert.ToString(TempData["MessageClassPMU"]) alert-dismissible" role="alert" id="message_alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                    </button>
+                    @Convert.ToString(TempData["MessagePMU"])
+                </div>
+            }
+        </div>
+
+    </div>
+
+    @*<div class="row">
+            <div class="col-md-3">
+                <label class="control-label">Template Name :</label>
+                @Html.TextBoxFor(m => m.TemplateName, new { @id = "Name", @class = "form-control" })
+                <span id="ErrorMeassage" style="color:red"></span>
+            </div>
+        </div>*@
+
+
+    <div class="m-form -filter-form" id="milestonedropdown">
+        <div class="m-form__container">
+            <div class="m-form__List">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label class="control-label">Template Name :</label>
+                        @Html.TextBoxFor(m => m.TemplateName, new { @id = "Name", @class = "form-control" })
+                        <span id="ErrorMeassage" style="color:red"></span>
+                    </div>
+                    <div class="col-md-3 Mistonelistdiv project_list">
+                        <label class="control-label">Milestone List</label>
+                        <select class="form-control projectDrop custmscroll" multiple="multiple" data-multiselect id="multipleSelect">
+
+                            @if (ViewBag.MilestoneList != null)
+                            {
+                                foreach (var item in ViewBag.MilestoneList)
+                                {
+                                    <option id="@item.Value" name="MilestoneList" value="@item.Value">@item.Text</option>
+                                }
+                            }
+                        </select>
+                        <span id="MilestoneList_ErrorMilestoneList_Error" style="color:red"></span>
+                    </div>
+
+                    <div class="col-md-2 Mistonelistdiv mt-25">
+                        <button type="button" class="btn-add" id="btnAdd">Add</button>
+                    </div>
+                    <div class="col align-self-end Mistonelistdiv refresh-approve">
+                        <div class="float-right save_approve refresh_approve">
+
+                            <button type="button" id="SaveModel" class="btn-add mt-0">Save</button>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="m-table__main">
+                <div class="m-table__responsive -virtual-scroll">
+                    <table id="jqgrid" class="table table-bordered"></table>
+                    <div id="pager"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+<input type="hidden" id="LoggedinUser" value="Context.Session.GetString(" UserName").ToString()" />
+@if (Context.Session.GetString("projectName") != null)
+{
+    var projectName = Context.Session.GetString("projectName");
+    var projectId = Context.Session.GetString("projectId");
+    <input type="hidden" id="selectedProjectName" value="@projectName" />
+    <input type="hidden" id="selectedProjectId" value="@projectId" />
+}
+
+<!-- Modal for date changes -->
+@*<div class="modal" tabindex="-1" id="UserConfirmationAlert">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Alert</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <span id="meassage"></span>
+                </div>
+                <div class="modal-footer">
+
+                    <button type="button" id="insertData" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                    <button type="button" id="CancelDate" class="btn btn-xs btn-success c-btn" data-dismiss="modal">No</button>
+
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+@*<script src="~/js/Master/Template.js"></script>*@
+<script src="@Url.Content("~/js/Master/Template.min.js")" asp-append-version="true"></script>

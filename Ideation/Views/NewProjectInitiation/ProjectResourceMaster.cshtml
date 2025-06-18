@@ -1,0 +1,275 @@
+﻿@model Ideation.Models.ProjectResourceData
+@{
+    ViewData["Title"] = "Project Resources Master";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+}
+
+@*header link*@
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a></span> Project Resources Master</h4>
+        </div>
+    </div>
+</section>
+
+@*hidden fields*@
+<section>
+    @Html.HiddenFor(model => model.SearchedProjectId)
+    <input type="hidden" value="@Newtonsoft.Json.JsonConvert.SerializeObject(Model.ResourcesList)" id="ResourcesList" />
+</section>
+
+@*To show saved response message*@
+@if (TempData["Message"] != null)
+{
+    <div id="message" class="m-login__erromsg">
+        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+        </div>
+    </div>
+}
+
+@*To show deleted response message*@
+<section>
+    <div id="response-message-div" class="m-login__erromsg hide">
+
+    </div>
+</section>
+
+@*Header fields*@
+<section>
+    <div class="d-flex justify-content-between mb-3">
+        <div class="prototype_filter">
+            <div class="d-flex align-items-center">
+                <div class="col-width2">
+                    <div class="form-group project_drop">
+                        <label class="control-label">Project Id </label>
+                        @Html.DropDownListFor(m => m.ProjectsList, new SelectList(Model.ProjectsList, "ProjectId", "ProjectName"), "Select",
+                        new { @class = "form-control data-singleselect", @id = "PRMProjectId" })
+                        <span class="hide text-danger prj-err">Please select project id</span>
+                    </div>
+                </div>
+                <div class="col-width1 pt-1">
+                    <button class="btn btn-refresh" title="Refresh" type="button" id="refresh">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+                <div class="col-width1 ml-4">
+                    <div class="form-group ">
+                        <label class="control-label">Template Name </label>
+                        <div>
+                            <span><b id="prj-template-name"></b></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width2 ml-4 ">
+                    <div class="form-group ">
+                        <label class="control-label">
+                            Total Planned Budget (INR)
+                        </label>
+                        <div>
+                            <span><b id="prj-budget"></b></span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-width2">
+                    <div class="form-group ">
+                        <label class="control-label">
+                            Total Duration in Days
+                        </label>
+                        <div>
+                            <span><b id="prj-duration"></b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+            <div class="d-flex excel_expand align-items-center">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_button ml-2">
+                    <button type="button" class="btn btn-success" id="save-prj">Save</button>
+                </div>
+                <div class="ml-2 mt-1 right_top">
+                    <ul class="d-flex align-item-center">
+                        <li class="preview">
+                            <i class="fa fa-eye"></i> Preview
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@*tabs and list grid*@
+<section>
+    <div class="tab-vertical cost_center role-resources-div hide">
+        <div class="col-md-12">
+
+            <div class="row">
+
+                <div class="col-md-3 p-0">
+                    <div class="resources_tabs">
+                        <label class="control-label mb-0">Roles </label>
+                        <input type="text" id="global-search" class="global-search search_filter form-control mb-1" autocomplete="off" placeholder="Search..." />
+                        <div class="roles-list">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-9 pr-0">
+                    <div class="tab-content">
+
+                        <div class="add-resource-section">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group mb-0 ">
+                                        <div class="">
+                                            <label class="control-label mb-0">Resources </label>
+                                            <div class="row">
+                                                <div class="col-md-10 pr-0">
+                                                    <input id="role-resources" class="form-control" placeholder="Please Select Resources" data-resources>
+                                                    <span class="text-danger hide select-user">Please select user </span>
+                                                    <span class="text-danger hide already-selected">user has been already selected</span>
+                                                    <span class="text-danger hide not-valid-user">Please select a valid user</span>
+                                                </div>
+                                                <div class="col-md-2 pl-0">
+                                                    <button type="button" title="Add" class="btn btn-success ml-2 plus_add add-resources-to-grid">
+                                                        <i class="fas fa-plus ex_download" title="Add" aria-hidden="true"></i>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group mb-0 ">
+                                        <div class="">
+                                            <label class="control-label mb-0 ">Planned Budget (INR) </label>
+                                            <div class="">
+                                                <input id="role-budget" class="form-control" placeholder="0" autocomplete="off"
+                                                       type="number" min="0" onkeydown="return MoneyValue(event)" onchange="addEditRolePlannedBudget(this)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group mb-0 ">
+                                        <div class="">
+                                            <label class="control-label mb-0">Duration in Days </label>
+                                            <div class="">
+                                                <input id="role-duration" class="form-control" placeholder="0" autocomplete="off"
+                                                       type="number" min="0" onkeydown="return DayValue(event)" onchange="addEditRolePlannedDuration(this)"
+                                                       onpaste="handlePaste(event)">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group mb-0 ">
+                                        <div class="">
+                                            <label class="control-label mb-0">Allocated Days </label>
+                                            <div class="">
+                                                <span class="allocated_days"><b id="role-allo-days"></b></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-group mb-0 ">
+                                        <div class="">
+                                            <label class="control-label mb-0 ">Planned Manpower </label>
+                                            <div class="">
+                                                <input id="role-man-power" class="form-control" readonly>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="m-table__main grid_height mt-2 add-resource-grid-section">
+                            <div class="m-table__responsive -virtual-scroll">
+                                <table id="role-resource-grid" class="table table-bordered"></table>
+                                <div id="role-resource-grid-pager"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
+
+@*preview of data popup*@
+<div id="preview-modal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Project Resource Master Preview
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="details_section">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <label>Project Id : </label>
+                            <b class="project-name"></b>
+                        </div>
+                        <div>
+                            <label>Template :</label>
+                            <b class="template-name"></b>
+                        </div>
+
+                    </div>
+                    <div class="preview-table-div">
+                        <div class="table-responsive">
+                            <table class="table table-bordered mb-0">
+                                <thead>
+                                    <tr>
+                                        <th class="tablewidth1">Role</th>
+                                        <th class="tablewidth3">HOD</th>
+                                        <th class="tablewidth2">Planned Budget (INR)</th>
+                                        <th class="tablewidth2">Duration in days</th>
+                                        <th class="tablewidth3">Resource</th>
+                                        <th class="tablewidth2">Days</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="resource-preview-table-body">
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script src="~/js/NewProjectInitiation/ProjectResourceMaster.js"></script>

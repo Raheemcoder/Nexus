@@ -1,0 +1,919 @@
+﻿@using Microsoft.AspNetCore.Http;
+@inject IHttpContextAccessor HttpContextAccessor
+@inject Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.SessionOptions> SessionOptions
+@{
+    var jsonData = Context.Session.GetString("getProjectList");
+    var getProjectList = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Ideation.Models.PMUMapping>>(jsonData);
+
+    var hubData = Context.Session.GetString("HubList");
+    var getHubList = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Ideation.Models.HubListData>>(hubData);
+
+    var userName = Context.Session.GetString("UserName");
+    var firstLetter = userName.Substring(0, 1);
+    var AppshortName = Context.Session.GetString("AppShortName");
+    var IsFromPU = Context.Session.GetString("IsFromPU");
+
+    var SearchedHub = Convert.ToString(Context.Session.GetString("HubId")) == "" ? 0 : Convert.ToInt32(Context.Session.GetString("HubId"));
+    var SearchedProjectId = Convert.ToString(Context.Session.GetString("projectId")) == "" ? 0 : Convert.ToInt32(Context.Session.GetString("projectId"));
+    var userRole = Context.Session.GetString("RoleId");
+    var timeout = SessionOptions.Value.IdleTimeout.TotalMinutes;
+}
+
+<!DOCTYPE html>
+<html lang="en" class="skew">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ISpace</title>
+
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/N_assets/images/leaf.ico")" />
+    <link href="@Url.Content("~/N_assets/css/layout.min.css")" rel="stylesheet" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/N_assets/css/animate.min.css")" />
+
+    <link href="@Url.Content("~/Datatables/fixedHeader.dataTables.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Datatables/jquery.dataTables.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/ProjectTracker.css")" rel="stylesheet" />
+
+    <script src="@Url.Content("~/N_assets/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/jquery.fullscreen-min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/popper.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/js/jqgrid.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/N_assets/js/app.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/Datatables/dataTables.fixedHeader.min.js")"></script>
+    <script src="@Url.Content("~/Datatables/jquery.dataTables.min.js")"></script>
+
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/grid.locale-en.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/select2/select2.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")"></script>
+    <script src="@Url.Content("~/N_assets/plugins/Moment/moment.js")"></script>
+
+    @* <script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+        Need to Comment to get yearpicker in KPI DashBoard (added link in all pages)*@
+    <script src="@Url.Content("~/assets_eppm/plugins/jqgrid/js/jszip.min.js")"></script>
+    <script src="@Url.Content("~/assets_EPPM/plugins/jqGrid/js/jquery.jqGrid.min.js")"></script>
+    <script src="@Url.Content("~/assets_EPPM/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")"></script>
+
+    <script src="@Url.Content("~/js/Layout.min.js")" asp-append-version="true"></script>
+    <script src="@Url.Content("~/js/aes.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/jquery.validate.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.validate.unobtrusive.min.js")"></script>
+
+    @await RenderSectionAsync("Scripts", required: false)
+
+    <script>
+        var ROOT = "@Url.Content("~/")";
+    </script>
+
+</head>
+<body class="new_layout project_eppm hilighted_" id="jquery-script-menu">
+
+    <div class="c-loader" id="loader">
+        <div class="c-loader__container">
+            <div class="c-loader__inner">
+            </div>
+            <div class="c-loader__outer">
+            </div>
+            <div class="c-loader__img">
+            </div>
+        </div>
+    </div>
+
+    @if (IsFromPU != "1")
+    {
+        <header id="topnav" class="header_section">
+
+            <div class="ispace-logo">
+                <a href="@Url.Content("~/Landing/Index")"><img src="~/N_assets/images/ispace-logo.png" alt="ispace" height="30px" /></a>
+            </div>
+
+            <div>
+                <div class="d-flex align-items-center">
+
+                    @if (@ViewData["Title"].ToString() == "PMU Mappings" || @ViewData["Title"].ToString() == "Summary" ||
+                @ViewData["Title"].ToString() == "My Milestone" || @ViewData["Title"].ToString() == "Approval Milestone" ||
+                @ViewData["Title"].ToString() == "Gantt Chart" || @ViewData["Title"].ToString() == "Issue Tracker" ||
+                @ViewData["Title"].ToString() == "Issue Tracker" || @ViewData["Title"].ToString() == "Change Log" ||
+                @ViewData["Title"].ToString() == "Risk Register")
+                    {
+                        @if (@ViewData["Title"].ToString() == "PMU Mappings")
+                        {
+                            @*radio buttons for project*@
+                            <div class="list_approved">
+                                <ul>
+                                    <li class="approved"><input type="radio" name="checkedfilter" id="savedbtn" />&nbsp;Approved</li>
+                                    <li class="saved"><input type="radio" name="checkedfilter" id="approvedbtn" />&nbsp;Saved</li>
+                                    <li class="noaction"><input type="radio" name="checkedfilter" id="noactionbtn" />&nbsp;No Action</li>
+                                </ul>
+                            </div>
+                        }
+
+                        @if (@ViewData["Title"].ToString() == "PMU Mappings" || @ViewData["Title"].ToString() == "Summary" ||
+                    @ViewData["Title"].ToString() == "Gantt Chart" || @ViewData["Title"].ToString() == "Issue Tracker"
+                    || @ViewData["Title"].ToString() == "Change Log" || @ViewData["Title"].ToString() == "Risk Register")
+                        {
+                            @if (@ViewData["Title"].ToString() == "Gantt Chart")
+                            {
+                                <input type="hidden" id="gannchartprojectjsondata" value="@jsonData" />
+                            }
+
+                            @*Project's*@
+                            <div class="select_project">
+                                <select class="form-control projectDrop" data-singleselect id="ProjectId">
+                                    <option value="0">Select Project Name</option>
+                                    @foreach (var item in getProjectList)
+                                    {
+                                        @if (@item.PMUMappingStatus == null)
+                                        {
+                                            if (SearchedProjectId == item.ProjectId)
+                                            {
+                                                <option value="@item.ProjectId" selected>@item.ProjectName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.ProjectId">@item.ProjectName</option>
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            if (SearchedProjectId == item.ProjectId)
+                                            {
+                                                <option value="@item.ProjectId" data-bgcolor="#358375;" selected>@item.ProjectName</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item.ProjectId" data-bgcolor="#358375;">@item.ProjectName</option>
+                                            }
+
+                                        }
+                                    }
+                                </select>
+                                <div class="error_top">
+                                    <span class="text-danger projectName_error ml-3"></span>
+                                </div>
+                            </div>
+
+                            @if (@ViewData["Title"].ToString() == "PMU Mappings" || @ViewData["Title"].ToString() == "Summary" ||
+                         @ViewData["Title"].ToString() == "Gantt Chart")
+                            {
+                                @*Hubs*@
+                                <div class="select_hub">
+                                    <select class="form-control" data-singleselect id="Hub">
+                                        <option value="0">Select HUB</option>
+                                        @foreach (var item in getHubList)
+                                        {
+                                            if (@item.HubApproved == "1")
+                                            {
+                                                if (SearchedHub == item.HubId)
+                                                {
+                                                    <option value="@item.HubId" data-bgcolor="#358375 !important;" selected>@item.HubName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.HubId" data-bgcolor="#358375 !important;">@item.HubName</option>
+                                                }
+                                            }
+                                            else if (@item.HubApproved == "0" && @item.HubSaved == "1")
+                                            {
+                                                if (SearchedHub == item.HubId)
+                                                {
+                                                    <option value="@item.HubId" data-bgcolor="#358375 !important;" selected>@item.HubName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.HubId" data-bgcolor="#358375 !important;">@item.HubName</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (SearchedHub == item.HubId)
+                                                {
+                                                    <option value="@item.HubId" selected>@item.HubName</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@item.HubId">@item.HubName</option>
+                                                }
+
+                                            }
+                                        }
+                                    </select>
+                                    <div class="error_top">
+                                        <span class="text-danger hubName_error ml-2"></span>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+
+                    @*All tiles, milestone and masters buttons*@
+                    <div>
+                        <div class="header_nav ">
+                            <div id="navigation">
+                                <ul class="navigation-menu" id="main_menu">
+                                    @await Component.InvokeAsync("MainMenu")
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    @*Logout*@
+                    <div>
+                        <div class="d-flex align-items-center user_info top_position">
+                            <div class="d-flex user_name_ cursor">
+                                <span class="circular_icon" style="cursor: pointer">@firstLetter</span>
+                                <label class="mb-0" style="cursor: pointer">@userName</label>
+                                <span style="cursor: pointer">
+                                    <img src="@Url.Content("~/N_assets/images/himalaya_leaf logo.png")" width="22px" />
+                                </span>
+                                <div class="logout">
+                                    <ul>
+                                        <li><a href="@Url.Content("~/Login/Logout")"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </header>
+
+        <section class="">
+            <div class="d-flex second_header align-items-center justify-content-between">
+                <div class="projectname_hub">
+                    @if (@ViewData["Title"].ToString() == "Summary" || @ViewData["Title"].ToString() == "My Milestone" || @ViewData["Title"].ToString() == "Approval Milestone")
+                    {
+                        <p class="mb-0 projname">Project Name: <span><b id="projhub"></b></span></p>
+                    }
+                </div>
+                <div class="d-flex">
+                    <ul class="d-flex second-menu" id="main_menu">
+                        @await Component.InvokeAsync("SubMenu")
+                    </ul>
+                </div>
+            </div>
+        </section>
+    }
+    else
+    {
+        <header id="topnav" class="header_section">
+            <div class="ispace-logo">
+                <a href="@Url.Content("~/Landing/Index")"><img src="~/N_assets/images/ispace-logo.png" alt="ispace" height="30px" /></a>
+            </div>
+            <div>
+                <div class="d-flex align-items-center">
+                    @if (@ViewData["Title"].ToString() == "Gantt Chart")
+                    {
+                        <input type="hidden" id="gannchartprojectjsondata" value="@jsonData" />
+                    }
+                    <div class="select_project">
+                        <select class="form-control projectDrop" data-singleselect id="ProjectId">
+                            <option value="0">Select Project Name</option>
+                            @foreach (var item in getProjectList)
+                            {
+                                @if (@item.PMUMappingStatus == null)
+                                {
+                                    if (SearchedProjectId == item.ProjectId)
+                                    {
+                                        <option value="@item.ProjectId" selected>@item.ProjectName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ProjectId">@item.ProjectName</option>
+                                    }
+                                }
+                                else
+                                {
+                                    if (SearchedProjectId == item.ProjectId)
+                                    {
+                                        <option value="@item.ProjectId" data-bgcolor="#358375;" selected>@item.ProjectName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.ProjectId" data-bgcolor="#358375;">@item.ProjectName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        <div class="error_top">
+                            <span class="text-danger projectName_error ml-3"></span>
+                        </div>
+                    </div>
+
+                    @*Hubs*@
+                    <div class="select_hub">
+                        <select class="form-control" data-singleselect id="Hub">
+                            <option value="0">Select HUB</option>
+                            @foreach (var item in getHubList)
+                            {
+                                if (@item.HubApproved == "1")
+                                {
+                                    if (SearchedHub == item.HubId)
+                                    {
+                                        <option value="@item.HubId" data-bgcolor="#358375 !important;" selected>@item.HubName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.HubId" data-bgcolor="#358375 !important;">@item.HubName</option>
+                                    }
+                                }
+                                else if (@item.HubApproved == "0" && @item.HubSaved == "1")
+                                {
+                                    if (SearchedHub == item.HubId)
+                                    {
+                                        <option value="@item.HubId" data-bgcolor="#358375 !important;" selected>@item.HubName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.HubId" data-bgcolor="#358375 !important;">@item.HubName</option>
+                                    }
+                                }
+                                else
+                                {
+                                    if (SearchedHub == item.HubId)
+                                    {
+                                        <option value="@item.HubId" selected>@item.HubName</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.HubId">@item.HubName</option>
+                                    }
+                                }
+                            }
+                        </select>
+                        <div class="error_top">
+                            <span class="text-danger hubName_error ml-2"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="has-menu prototype_2 back_btn_ ml-3 text-right p-1 mr-2">
+            <a href="@Url.Content("~/ProjectUpdates/ProjectUpdates")" data-subURL="@Url.Content("~/ProjectUpdates/EditProjectUpdates")">
+                <i class="fas fa-arrow-left pr-2"></i> Back
+            </a>
+        </div>
+    }
+
+    <div class="container-fluid body-content element " id="element">
+        <main role="main" class="">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted ">
+        &copy; @DateTime.Now.Year - Himalaya Wellness Company. All rights reserved
+    </footer>
+
+    @*Confirm modal popup*@
+    <div id="confirmpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="confirmpopupmesssage">Are you sure u want Confirm</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-draft" id="ConfirmOKbutton" data-bs-dismiss="modal">Ok</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="Confirmcancelbutton">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Confirm modal popup 1*@
+    <div id="confirmpopup1" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Confirm Box</h4>
+                    <button type="button" class="close ConfirmCancelbutton1" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="confirmpopupmesssage1"></span>
+                    </div>
+                    <div class="row mt-2 resource-required-div">
+                        <div class="col-md-4 mt-1">
+                            <label class="control-label">
+                                Is Resources Required:
+                            </label>
+                        </div>
+                        <div class="col-md-3">
+                            <select id="resource-req-scope-change" class="form-control dropdown projectDrop dropdown-singleselect">
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mt-2">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-draft" id="ConfirmYesbutton1" data-bs-dismiss="modal">Yes</button>
+                            <button type="button" class="btn btn-cancel" id="ConfirmNobutton1" data-bs-dismiss="modal">No</button>
+                            <button type="button" class="btn btn-cancel ConfirmCancelbutton1" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Alert modal popup*@
+    <div id="alertpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Alert Box</h4>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="popupmesssage">Are you sure u want Cancel</span>
+                    </div>
+                    <div class="col-md-12 mt-2 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-success" data-bs-dismiss="modal">Ok</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Alter Session time out popup*@
+    <div id="ReloginPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title">Session Expiry</h4>
+                    @*<button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>*@
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span>Your Session is about to expire in <span id="timeoutin" style="font-weight: bold;"></span>. Please click <span style="font-weight: bold;">OK</span> to keep alive</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-draft" id="ReloginPopUpOKbutton" data-bs-dismiss="modal">Ok</button>
+                    <button type="button" class="btn btn-cancel" id="ReloginPopUpCanclebutton" data-bs-dismiss="modal">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Unsaved changes popup*@
+    <div id="UnsavedChangesAlert" class="modal fade tracker-support" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-md">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Alert</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal" id="unsavedchangesclose"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <span id="unsavedmessage">
+                    </span>
+                    <div class="col-md-12 mt-3 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="saveunsavedchanges">Save</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="continueunsavedchanges">Continue Anyway</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @*Save with Remarks popup*@
+    <div id="save-with-remarks-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+        <div class="modal-dialog modal-xs">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Confirm Box</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <span id="save-with-remarks-msg"></span>
+                    </div>
+                    <div class="row mt-2 hide-remarks-div">
+                        <div class="col-md-12">
+                            <label class="control-label">Remarks <span class="text-danger star">*</span></label>
+                            <textarea id="with-remarks-data" class="form-control"></textarea>
+                            <span class="text-danger hide">Please enter Remarks</span>
+                        </div>
+                    </div>
+                    <div class="col-md-12 mt-3 p-0">
+                        <div class="pull-right">
+                            <button type="button" class="btn btn-draft" id="save-confirm">Save</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            var time = ((@timeout * 1000 * 60) - (2 * 1000 * 60));
+            var timeout;
+            var isLogout = false;
+            timeout = setTimeout(function () {
+                OpenInputDialog();
+                var d = Date(Date.now());
+                console.log(d.toString());
+                isLogout = true;
+            }, time);
+            $(document).on('click', function () {
+                if (!isLogout) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(function () {
+                        OpenInputDialog();
+                        isLogout = true;
+                    }, time);
+                }
+            });
+        })
+        var myInterval = 0;
+        function OpenInputDialog() {
+            $('#ReloginPopUp').modal('show');
+            var seconds = 600;
+            myInterval = setInterval(function () {
+                if (seconds === 0) {
+                    clearInterval(myInterval);
+                    $('#ReloginPopUpCanclebutton').click();
+                }
+                else {
+                    var time = moment().startOf('day')
+                        .seconds(seconds)
+                        .format('mm:ss');
+                    $('#timeoutin').text(time)
+                }
+                seconds = seconds - 1
+            }, 1000);
+        };
+        $('#ReloginPopUpOKbutton').click(function () {
+            clearInterval(myInterval);
+            $.ajax({
+                type: 'GET',
+                url: ROOT + "Login/AutoLogin",
+                data: "",
+                datatype: "text",
+                success: function (data) {
+                    isLogout = false;
+                    console.log("Auto logged in successfully");
+                    alert(data);
+                }, error: function (res) {
+                    console.log("Error occured, please relogin again.");
+                    window.location = ROOT + "Login/LogOff"
+                },
+            });
+        });
+        $('#ReloginPopUpCanclebutton').click(function () {
+            window.location = ROOT + "Login/LogOff"
+        })
+
+        $(document).ready(function () {
+            $('#ProjectId').select2({
+                templateResult: function (data) {
+                    if (!data.id) {
+                        return data.text;
+                    }
+                    var option = $(data.element);
+                    var bgColor = option.data('bgcolor') || 'block';
+                    var text = option.text();
+                    return $('<span style="color: ' + bgColor + ';font-weight: bold;">' + text + '</span>');
+                }
+            });
+            GetHubList($('#ProjectId').val());
+        });
+
+        function setNavigation() {
+            var path = window.location.pathname;
+            path = path.replace(/\/$/, "#");
+            path = decodeURIComponent(path);
+            $("#main_menu li a, #main_menu1 li a").each(function () {
+                var href = $(this).attr('href');
+                var subURL = $(this).attr('data-subURL');
+                var URLs = '';
+                if (subURL != undefined) {
+                    URLs = subURL.split(';');
+                }
+
+                if (path === href || URLs.indexOf(path) >= 0) {
+                    if ($(this).parents('#main_menu, #main_menu1').length >= 1) {
+                        $(this).parents('li').addClass('active');
+                    }
+                    else {
+                        $(this).addClass('activeparents');
+                        $(this).parents('li').addClass('activeparents');
+                    }
+                }
+            });
+        }
+
+        setNavigation();
+
+        $(".fullscreen-btn").on("click", function () {
+            $("#fullscreen").addClass("m-table__full-screen");
+        });
+        $(".exitscreen-btn").on("click", function () {
+            $("#fullscreen").removeClass("m-table__full-screen");
+        });
+
+        function toggleFullScreen(elem) {
+            if ((document.fullScreenElement !== undefined && document.fullScreenElement === null) || (document.msFullscreenElement !== undefined && document.msFullscreenElement === null) || (document.mozFullScreen !== undefined && !document.mozFullScreen) || (document.webkitIsFullScreen !== undefined && !document.webkitIsFullScreen)) {
+                if (elem.requestFullScreen) {
+                    elem.requestFullScreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.webkitRequestFullScreen) {
+                    elem.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.cancelFullScreen) {
+                    document.cancelFullScreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.webkitCancelFullScreen) {
+                    document.webkitCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+
+        $(".logout").click(function () {
+            $(".theme-light").addClass("switch");
+            $(".dark").addClass("switch");
+            $(".switch_login").addClass("switch1");
+        });
+        $(".tile_projects a").click(function () {
+            $(this).closest("li").addClass("active");
+        });
+        $(".menuhamburger a").click(function () {
+            $(this).toggleClass("active");
+            $(".main-menu").toggleClass("menu_left");
+        });
+        $(".navigation-menu li").click(function () {
+            $(this).toggleClass("submenu_open");
+            $(".navigation-menu li").not(this).removeClass("submenu_open");
+        });
+        $(function () {
+            $(".fullscreen-supported").toggle($(document).fullScreen() != null);
+            $(".fullscreen-not-supported").toggle($(document).fullScreen() == null);
+            $(document).on("fullscreenchange", function (e) {
+                $("#jquery-script-menu").toggleClass("fullscreen_btn");
+            });
+            $(document).on("fullscreenerror", function (e) {
+            });
+        });
+
+        function GetHubList(projectId) {
+            $.ajax({
+                dataType: 'JSON',
+                url: ROOT + "ProjectTracker/GetHubBasedOnProjectId",
+                method: "GET",
+                async: false,
+                data: {
+                    projectId: projectId
+                },
+                success: function (data) {
+                    var hubDrop = '';
+                    var PriousHub = $("#Hub").val();
+                    if (data.length > 0) {
+                        $("#Hub").html("");
+                        hubDrop += '<option  value="0">Select HUB</option>';
+
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].HubApproved === "1") {
+                                hubDrop += '<option  data-bgcolor="#358375 !important;" class="approvedHub" value="' + data[i].HubId + '">' + data[i].HubName + '</option>';
+                            }
+                            else if (data[i].HubApproved === "0" && data[i].HubSaved === "1") {
+                                hubDrop += '<option  data-bgcolor="#db8c44 !important;" class="savedHub" value="' + data[i].HubId + '">' + data[i].HubName + '</option>';
+                            }
+                            else {
+                                hubDrop += '<option value="' + data[i].HubId + '">' + data[i].HubName + '</option>';
+                            }
+                        }
+                        $("#Hub").html(hubDrop);
+                        $("#Hub").val(PriousHub);
+                        $('#Hub').select2({
+                            templateResult: function (data) {
+                                if (!data.id) {
+                                    return data.text;
+                                }
+                                var option = $(data.element);
+                                var bgColor = option.data('bgcolor') || 'block';
+                                var text = option.text();
+                                return $('<span style="color: ' + bgColor + ';  font-weight: bold;">' + text + '</span>');
+                            }
+                        });
+                    }
+                }
+            });
+        }
+
+        function slNoSortingArray(myData) {
+
+            var succesorslno = [];
+            var SlNoDependency = [];
+            var SortedData = [];
+            var HeaderCount = [];
+            var countt = 0;
+
+            for (var i = 0; i < myData.length; i++) {
+
+                if (myData[i].WBSHeaderId != 0) {
+                    HeaderCount.push(myData[i].SlNo);
+                }
+
+                if (myData[i].TaskId != 0) {
+
+                    countt++
+                    var arrayslno = {}
+                    var depend = myData[i].Dependency?.split(',');
+                    var highestLetterBefore = 0;
+                    $.each(depend, function (j, dep) {
+                        var relationindex = dep.indexOf('F') > -1 ? dep.indexOf('F') : dep.indexOf('S');
+                        var letterBefore = dep.substr(0, relationindex);
+                        if (parseInt(letterBefore) > highestLetterBefore) {
+                            highestLetterBefore = parseInt(letterBefore);
+                        }
+                    });
+                    if (highestLetterBefore != 0) {
+                        if (!SlNoDependency.includes(highestLetterBefore)) {
+                            succesorslno.push({
+                                SlNo: myData[i].SlNo,
+                                HighestDependentNo: highestLetterBefore,
+                                AllData: myData[i]
+                            });
+                        }
+                        else if (SlNoDependency.includes(highestLetterBefore)) {
+                            SlNoDependency.push(myData[i].SlNo);
+                            SortedData.push(myData[i]);
+                            var found = false;
+                            for (var j = 0; j < succesorslno.length; j++) {
+                                if (succesorslno[j].HighestDependentNo == myData[i].SlNo) {
+                                    found = true;
+                                    SlNoDependency.push(succesorslno[j].SlNo);
+                                    SortedData.push(succesorslno[j].AllData);
+                                    for (var k = 0; k < succesorslno.length; k++) {
+                                        if (succesorslno[k].HighestDependentNo == succesorslno[j].SlNo) {
+                                            SlNoDependency.push(succesorslno[k].SlNo);
+                                            SortedData.push(succesorslno[k].AllData);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    else {
+                        SlNoDependency.push(myData[i].SlNo);
+                        SortedData.push(myData[i]);
+                        for (var k = 0; k < succesorslno.length; k++) {
+                            if (succesorslno[k].HighestDependentNo == myData[i].SlNo) {
+                                SlNoDependency.push(succesorslno[k].SlNo);
+                                SortedData.push(succesorslno[k].AllData);
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            var count = 0;
+            while (countt != SortedData.length) {
+                count++
+                if (succesorslno.length > 0) {
+                    for (var q = 0; q < succesorslno.length; q++) {
+                        if (!SlNoDependency.includes(succesorslno[q].SlNo) && SlNoDependency.includes(succesorslno[q].HighestDependentNo)) {
+                            SlNoDependency.push(succesorslno[q].SlNo);
+                            SortedData.push(succesorslno[q].AllData);
+                        }
+                        else if (succesorslno[q].SlNo == succesorslno[q].HighestDependentNo) {
+                            return SlNoDependency.join(', ');
+                        }
+                        else if (HeaderCount.includes(succesorslno[q].SlNo) || HeaderCount.includes(succesorslno[q].HighestDependentNo)) {
+                            return SlNoDependency.join(', ');
+                        }
+                    }
+                }
+                if (count > countt) {
+                    return SlNoDependency.join(', ');
+                }
+            }
+
+            return SlNoDependency.join(', ');
+        }
+
+        function dependencyDependentSlNo(dependencyArray) {
+
+            var dependencyDependentSlNo = [];
+
+            $.each(dependencyArray, function (i, obj) {
+                var pattern = /^\d*(?:FS|SS)[+-]\d+$/;
+                if (obj !== null && obj !== '' && typeof (obj) !== "undefined") {
+                    var lastTwoCharacters = obj.slice(-2)
+                    var testValue = lastTwoCharacters === 'FS' || lastTwoCharacters === 'SS' ? obj + "+0" : obj;
+                    if (pattern.test(testValue)) {
+                        var index = testValue.indexOf('F') > -1 ? testValue.indexOf('F') : testValue.indexOf('S');
+                        var dependencyRowNo = testValue.substr(0, index);
+                        dependencyDependentSlNo.push(Number(dependencyRowNo));
+                    }
+                }
+            });
+
+            return dependencyDependentSlNo;
+        }
+
+        //var sortedSlNoArray = [];
+        //var unsortedArray = [];
+        //var unsortedSlNo = [];
+
+        //function slNoSortingArray(myData) {
+        //    unsortedArray = [];
+        //    sortedSlNoArray = [];
+
+        //    myData.forEach(function (e) {
+        //        if (e.TaskId != 0) {
+        //            unsortedArray.push({
+        //                slNo: e.SlNo,
+        //                dependency: dependencyDependentSlNo(e.Dependency.split(','))
+        //            });
+        //        }
+        //    });
+
+        //    unsortedArray.forEach(function (e) {
+        //        if (e.dependency.length === 0) {
+        //            sortedSlNoArray.push(e.slNo);
+        //        }
+        //    });
+
+        //    function processUnsorted() {
+
+        //        unsortedSlNo = unsortedArray.filter(e => !sortedSlNoArray.includes(e.slNo)).map(e => e.slNo);
+
+        //        if (unsortedSlNo.length > 0) {
+        //            var newlySorted = false;
+
+        //            unsortedSlNo.forEach(function (slNo) {
+        //                var element = unsortedArray.find(e => e.slNo === slNo);
+        //                var allDependenciesAvaliable = element.dependency.every(dep => sortedSlNoArray.includes(dep));
+
+        //                if (allDependenciesAvaliable) {
+        //                    sortedSlNoArray.push(element.slNo);
+        //                    newlySorted = true;
+        //                }
+        //            });
+
+        //            if (newlySorted) {
+        //                processUnsorted();
+        //            }
+        //        }
+        //    }
+
+        //    processUnsorted();
+
+        //    return sortedSlNoArray.toString();
+        //}
+
+        $(document).ready(function () {
+
+            $(".select_project, .select_hub").click(function (event) {
+                $("body").addClass("select_drop");
+                event.stopPropagation();
+            });
+
+            $(document).click(function (event) {
+                if (!$(event.target).closest('.select_project').length && !$(event.target).closest('.select_hub').length) {
+                    $("body").removeClass("select_drop");
+                }
+            });
+
+        });
+
+    </script>
+
+</body>
+</html>

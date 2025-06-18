@@ -1,0 +1,527 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+@model Ideation.Models.ClaimsPdf
+@{
+    Layout = null;
+}
+<html>
+<head>
+    @*<link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
+    *@
+    <link href="https://leap.himalayawellness.com/Logo_Font/css/PDFStyle.css" rel="stylesheet">
+
+    <style>
+        .him_logo {
+            float: right;
+            width: 100%;
+            text-align: right
+        }
+
+        .report-container td {
+            font-family: 'rotis_semisans_stdregular';
+            font-size: 14px !important;
+            vertical-align: top;
+        }
+
+        .report-container p {
+            font-family: 'rotis_semisans_stdregular';
+            font-size: 14px;
+            vertical-align: top;
+        }
+
+        .report-container b, .report-container strong {
+            font-family: 'rotis_semisans_stdextrabold';
+            font-weight: 700;
+        }
+
+        label {
+            font-size: 14px;
+        }
+
+
+        .image_td img {
+            width: 90%;
+        }
+
+        .image_td table td:nth-child(1) {
+            min-width: 100px;
+        }
+
+        .image_td table td:nth-child(2) {
+            width: 100px;
+        }
+
+        .image_td table td:nth-child(3) {
+            width: 100px;
+        }
+
+        .image_td table td:nth-child(4) {
+            width: 100px;
+        }
+
+        .image_td table td:nth-child(5) {
+            width: 100px;
+        }
+
+        .image_td table td:nth-child(6) {
+            width: 100px;
+        }
+
+        .image_td table td {
+            white-space: break-spaces !important;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        table td {
+        }
+
+        table th {
+            word-wrap: anywhere;
+        }
+
+        thead.report-header {
+            display: table-header-group;
+        }
+
+        tfoot.report-footer {
+            display: table-footer-group;
+        }
+
+        table.report-container tr td, table.report-container tr th {
+            page-break-inside: avoid;
+            word-wrap: anywhere;
+            margin: 4px 0 4px 0;
+        }
+
+        .formulation_table table thead th {
+            font-size: 12px;
+            font-weight: 400;
+            border: 1px solid #000 !important;
+            padding: 5px;
+        }
+
+        .d-flex {
+            display: flex;
+            justify-content: end;
+        }
+
+        .gap-10 {
+            gap: 10px;
+        }
+
+        #packlabel_claims table {
+            border-collapse: collapse;
+            color: black;
+        }
+
+            #packlabel_claims table tbody td, #communication_claims table tbody td {
+                font-size: 12px;
+                font-weight: 400;
+                border: 1px solid #000 !important;
+                vertical-align: baseline;
+            }
+
+            #packlabel_claims table thead tr, #communication_claims table thead tr {
+                text-align: left;
+                padding: 5px !important;
+                /*background: #e2f3f0 !important;*/
+            }
+
+            #packlabel_claims table thead th, #communication_claims table thead th {
+                border: none !important;
+                padding: 5px !important;
+            }
+
+            #packlabel_claims table tbody td, #communication_claims table tbody td {
+                font-size: 12px;
+                font-weight: 400;
+                border: 1px solid #000 !important;
+                vertical-align: baseline;
+                word-break: break-word;
+            }
+
+        #packlabel_claims table, #communication_claims table {
+            margin-bottom: 5px
+        }
+
+        #packlabel_claims button, #communication_claims button {
+            background: transparent;
+            border: none;
+        }
+
+        .justify-center_1 {
+            display: flex;
+            float: right;
+        }
+
+        .remarks {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 5px;
+        }
+    </style>
+</head>
+
+<body style="width:900px; margin: 0px">
+    <table class="report-container" style="width:100%;page-break-after:auto;overflow-wrap: break-word;page-break-inside:auto;">
+        <thead class="report-header">
+            <tr>
+                <th>
+                    <table style="width:100%;border: 1px solid #000;border-collapse: collapse;page-break-after:auto;display:block;overflow-wrap: break-word;">
+
+                        <tr>
+                            <td colspan="8" style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word; position:relative; height:50px">
+                                <img src="https://leap.himalayawellness.com/Logo_Font/img/logohmnew.png" style="height:30px; position:absolute;top:2px; left:2px;" />
+                                <br /> <strong>
+                                    CLAIMS GRID DOCUMENT
+                                </strong><br />
+                                <span>(A DOCUMENT WHICH WILL CONTINUOUSLY BE USER THROUGHOUT THE PROJECT)</span><br />
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <th style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: left; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label>
+                                    <strong>
+                                        HGL Approval Number & <br />
+                                        Product Name
+                                    </strong>
+                                </label>
+                            </th>
+                            <th style="font-weight:400">
+                                <label>@Model.HGLApprovalNumber [@Model.ProductName]</label>
+                            </th>
+                            <th style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: left; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label>
+                                    <strong>
+                                        Project Number
+                                    </strong>
+                                </label>
+                            </th>
+                            <th style="width:100px;font-weight:400">
+                                <label> @Model.ProjectNumber</label>
+                            </th>
+                            <th style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: left; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label><strong>Date</strong></label>
+                            </th>
+                            <th style="width:100px;font-weight:400">
+                                <label>@Model.CreatedDate</label>
+                            </th>
+                            @*<th style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: left; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label><strong> Version No.</strong></label>
+                                </th>
+                                <th style="width:20px;font-weight:400">
+                                <label>@Model.VersionNo</label>
+                                </th>*@
+                        </tr>
+                    </table>
+
+                </th>
+            </tr>
+
+        </thead>
+        <tfoot class="report-footer">
+            <tr>
+                <td class="report-footer-cell">
+                    <div class="footer-info">
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+        <tbody class="report-content">
+            <tr>
+                <td>
+                    <h3 style="font-weight:700; font-size:14px"><strong>NAME OF THE PRODUCT:</strong> <span class="fw-normal">@Model.ProductName</span></h3>
+                    <h3 style="font-weight:700;font-size:14px"><strong>PRODUCT POSITIONING STATEMENT:</strong> <span class="fw-normal">@Model.ProductPositionStatement</span></h3>
+                    <h2 style="font-weight:700;font-size:14px"><strong>Division:</strong> <span class="fw-normal">@Model.DivisionName</span></h2>
+                    <h3 style="font-weight:700;font-size:14px"><strong>Product description: (includes formula, package, product):</strong></h3>
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                        <tbody>
+                            @if (Model.ProductDescrtionDetails != null)
+                            {
+                                foreach (var item in Model.ProductDescrtionDetails)
+                                {
+                                    if (item.LabelName != "TargetCustomer")
+                                    {
+                                        <tr>
+                                            <td style="border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 700;text-align:left">
+                                                @Html.Raw(item.LabelName)
+                                            </td>
+                                            <td style="border: 1px solid black;width: 80%;padding: 5px 0px 5px 10px;font-weight: 600">
+                                                @Html.Raw(item.Description)
+                                            </td>
+                                        </tr>
+                                    }
+                                }
+                            }
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td class="report-content-cell">
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;display:block;overflow-wrap: break-word;">
+                        <tbody>
+                            <tr>
+                                <td class="image_td" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;overflow-wrap: break-word;word-break:break-word; page-break-inside: avoid;">
+                                    <span style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"><b>Rephrased Claims</b></span> <br />
+                                    @Html.Raw(Model.RephraseClaims)
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            <tr>
+                <td id="packlabel_claims">
+
+                    @if (Model.OnPackLabelClaimsDetails != null)
+                    {
+                        <div style="padding-bottom:10px">
+                            <h3 style="font-size:14px">
+                                <span style="font-weight:700;">
+                                    <strong>  TARGET CUSTOMER: </strong>
+                                </span> @Model.TargetCustomer
+                            </h3>
+                        </div>
+
+                        <div>
+                            <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;">ON PACK  / LABEL CLAIMS</p>
+                        </div>
+
+                        int indexCounter = 1;
+
+                        @foreach (var item in Model.OnPackLabelClaimsDetails)
+                        {
+                            <table style="width:100%;">
+                                <thead>
+                                    <tr style="border: 1px solid black; text-align:left">
+                                        <td style="border: 1px solid black;padding:5px;background-color:lightgray;width:20px">@indexCounter</td>
+                                        <td colspan="4" style="border: 1px solid black;padding:5px;background-color:lightgray"><b>Claims: </b><span> @Html.Raw(item.Claims) </span></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (item.SubClaimsDetails != null)
+                                    {
+                                        @for (int i = 0; i < item.SubClaimsDetails.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td colspan="4" style="padding:5px"><b style="color:black; display:block">Supporting technical statements from R&D:</b><br /><span style="font-size: 12px;">@Html.Raw(item.SubClaimsDetails.ElementAt(i).SupportingStatement)</span></td>
+                                                <td colspan="1" style="width:20%;padding:5px">
+                                                    <b style="color:black; display:block">Measured By:</b><br />
+
+                                                    <span style="font-size: 12px;">@Html.Raw(item.SubClaimsDetails.ElementAt(i).MeasuredBy)</span>
+
+
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td colspan="4" style="padding:5px"> <b style="color:black; display:block">Remarks / Restrictions: </b><br /><span>@Html.Raw(item.OnPackRemarks)</span></td>
+                                        <td colspan="1" style="width:20%;padding:5px"><b style="color:black; display:block;">Feasibility of Achieving claims:</b><br /><span>@Html.Raw(item.Feasibility)</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            indexCounter++;
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td id="packlabel_claims">
+                    @if (Model.ClaimsForCommunication != null)
+                    {
+                        <div>
+                            <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;">CLAIMS FOR COMMUNICATIONS OTHER THAN LABEL</p>
+                        </div>
+                        int indexCounter = 1;
+                        foreach (var item1 in Model.ClaimsForCommunication)
+                        {
+                            <table style="width:100%;">
+                                <thead>
+                                    <tr style="border: 1px solid black; text-align:left">
+                                        <td colspan="1" style="border: 1px solid black;padding:5px;background-color:lightgray;width:20px">@indexCounter</td>
+                                        <td colspan="4" style="border: 1px solid black;padding:5px;background-color:lightgray"><b>Claims: </b><span> @Html.Raw(item1.Claims) </span></td>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    @if (item1.SubClaimsDetails != null)
+                                    {
+                                        @for (int i = 0; i < item1.SubClaimsDetails.Count(); i++)
+                                        {
+                                            <tr>
+                                                <td colspan="4" style="padding:5px"><b style="color:black; display:block">Supporting technical statements from R&D:</b><br /><span style="font-size: 12px;">@Html.Raw(item1.SubClaimsDetails.ElementAt(i).SupportingStatement)</span></td>
+                                                <td colspan="1" style="width:20%;padding:5px">
+                                                    <b style="color:black; display:block">Measured By:</b><br />
+
+                                                    <span style="font-size: 12px;">@Html.Raw(item1.SubClaimsDetails.ElementAt(i).MeasuredBy)</span>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                    <tr>
+                                        <td colspan="4" style="padding:5px"> <b style="color:black; display:block">Remarks / Restrictions: </b><br /><span>@Html.Raw(item1.OnPackRemarks)</span></td>
+                                        <td colspan="1" style="width:20%;padding:5px"><b style="color:black; display:block;">Feasibility of Achieving claims:</b><br /><span>@Html.Raw(item1.Feasibility)</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            indexCounter++;
+                        }
+                    }
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <br />
+    <br />
+
+    <table class="report-container" width="100%" style="border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+        <thead>
+
+            <tr>
+                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Approvals</b></td>
+                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Name</b></td>
+                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Date</b></td>
+            </tr>
+        </thead>
+        <tbody>
+
+            @if (Model.DSGTeamApprovalData.Count() != 0)
+            {
+                foreach (var item in Model.DSGTeamApprovalData)
+                {
+                    <tr>
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Initiated By (DSG Initiator)</b></td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.DSGTeamCreatedBy)
+                        </td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.DSGTeamCreatedOn)
+                        </td>
+                    </tr>
+                }
+            }
+            @if (Model.CFTTeamApprovalData != null)
+            {
+                foreach (var item1 in Model.CFTTeamApprovalData)
+                {
+                    <tr>
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;">
+                            <b>Reviewed By (@Html.Raw(item1.CFTDepartments))</b>
+                        </td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item1.CFTTeamCreatedBy)
+                        </td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item1.CFTTeamCreatedOn)
+                        </td>
+                    </tr>
+
+                }
+            }
+            @if (Model.DSGReviewTeamApprovalData != null)
+            {
+                foreach (var item in Model.DSGReviewTeamApprovalData)
+                {
+                    <tr>
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Reviewed By (DSG) </b></td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.DSGReviewBy)
+                        </td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.DSGReviewOn)
+                        </td>
+                    </tr>
+                }
+            }
+            @if (Model.DSGManagerApprovalData != null)
+            {
+                foreach (var item in Model.DSGManagerApprovalData)
+                {
+                    <tr>
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Approved By (DSG Manager)</b></td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.DSGManager)
+                        </td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.DSGManagerApprovedOn)
+                        </td>
+                    </tr>
+                }
+            }
+
+            @if (Model.DSGManagerApprovalData != null)
+            {
+                foreach (var item in Model.DSGManagerApprovalData)
+                {
+                    <tr>
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Approved By (DSG-CEC COP leader)</b></td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">Dr.Rafiq's</td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;"> @Html.Raw(item.DSGManagerApprovedOn)</td>
+                    </tr>
+                }
+            }
+
+            @if (Model.DSGSignOffApprovalData != null)
+            {
+                foreach (var item in Model.DSGSignOffApprovalData)
+                {
+                    <tr>
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Sign Off By (DSG Initiator)</b></td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">  @Html.Raw(item.DSGSignOffBy)</td>
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;"> @Html.Raw(item.DSGSingOffOn)</td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <br />
+    <br />
+
+    @if (Model.AddendumRemarks.Count() != 0)
+    {
+
+        <table class="report-container" width="100%" style="border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+            <thead>
+
+                <tr>
+                    <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Addendum No</b></td>
+                    <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Reason for Addendum</b></td>
+                    <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Date</b></td>
+                </tr>
+            </thead>
+            <tbody>
+
+                @if (Model.AddendumRemarks.Count() != 0)
+                {
+                    foreach (var item in Model.AddendumRemarks)
+                    {
+                        <tr>
+                            <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;">@Html.Raw(item.AddendumNo)</td>
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.Reason)
+                            </td>
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.Date)
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</body>
+</html>

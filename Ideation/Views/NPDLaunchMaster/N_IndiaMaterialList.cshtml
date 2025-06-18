@@ -1,0 +1,169 @@
+﻿@model Ideation.Models.NPDLaunchMaster
+
+@{
+    ViewBag.Title = "NPD Launch Master";
+    Layout = "~/Views/Shared/N_NPDLMLayout.cshtml";
+    var DivisionList = Model.NpdHGMLDivisionList;
+}
+<style>
+    .upload-download-btn {
+        border: 1px solid #dedede;
+        border-radius: 50px;
+        padding: 4px;
+        width: 23px;
+        height: 23px;
+        line-height: 0;
+        margin: 0px 7px;
+        cursor: pointer;
+    }
+
+        .upload-download-btn i {
+            width: 100%;
+            font-size: 13px;
+        }
+
+    button.btn.btn-warn {
+        line-height: 1 !important;
+        background: #f37d1f !important;
+        padding: 5px 13px;
+        color: #fff;
+        font-size: 12px;
+    }
+</style>
+
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a></span>India & Dubai Material List</h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    @using (Html.BeginForm("SaveProductHierarchyData", "NPDLaunchMaster", FormMethod.Post, new { id = "ProductHierarchy_Form_Submit", enctype = "multipart/form-data" }))
+    {
+        <div>
+            <div class="">
+
+                @Html.HiddenFor(model => model.NPDLaunchMasterHeaderData, new { @id = "NPDLaunchMasterDetailsHeaderData" })
+                @Html.HiddenFor(model => model.NpdListData, new { @id = "NpdListData" })
+                @Html.HiddenFor(model => model.UserName, new { @id = "UserName" })
+
+                <div class="project_modules ">
+                    <ul class="nav nav-tabs DivisionDetails">
+                        <li><a data-toggle="tab" onclick="getDivisiondetails(this)" class="active allDivisions">All  <span class="allDivisionTotal division-count"></span></a></li>
+                        @foreach (var item in DivisionList)
+                        {
+                            <li><a data-toggle="tab" onclick="getDivisiondetails(this)">@item.DivisionName <span class="division-count" id="@(item.DivisionName.Replace(" ","").ToLower())"></span></a></li>
+                        }
+                    </ul>
+                </div>
+                <div class="filter_status prototype_filter d-flex justify-content-end">
+                    <div class="d-flex excel_expand align-items-center ">
+                        <div class="images_excel">
+                            <img src="/N_assets/images/excel.png" id="ExcelDownload" title="Excel Download">
+                        </div>
+                        <button type="button" class="btn btn-warn mr-1" id="temp_exceldownload">Template Download</button>
+                        <div class="form-group mb-0 mb-3">
+                            <label class="control-label mb-0 p-0">
+                                File Upload
+                            </label>
+                            <input type="file" class="form-control" id="Excel_file">
+                            <span class="color-red hide" id="E_Excel_file">Please select file</span>
+                        </div>
+                        <button type="button" class="btn btn-draft ml-1" id="Excel-Upload-File">Save &amp; Preview</button>
+                        <span><i class="ml-2 mr-2 fa fa-info-circle" id="Error_Preview" title="Preview" aria-hidden="true"></i></span>
+                        <div>
+                            <div class="expand_initiate table_expand" title="Full Screen">
+                                <div>
+                                    <div onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                                        <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                        <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="button" class="btn btn-cancel" onclick="location.href ='@Url.Content("~/NPDLaunchMaster/N_NPDList")';" data-title="Cancel"> Back</button>
+                    </div>
+                </div>
+
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height mt-2">
+                                <div class="m-table__responsive -virtual-scroll -scroll_hierarchy">
+                                    <table id="NPDlist_Grid" class="table table-bordered"></table>
+                                    <div id="pager_NPDlist_Grid"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</section>
+
+<div class="modal fade hd" id="ExcelUpload_Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width:1320px">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="exampleModalLabel">Preview</h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="text-right">
+                    <button type="button" class="btn btn-warn mr-1" id="Error_exceldownload">Error Excel Download</button>
+                </div>
+                <div class="add_grid_">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="">
+                                <div class="m-table__main mt-2">
+                                    <div class="m-table__responsive sd_documents">
+                                        <table id="Show_InvalidData" class="table table-bordered"></table>
+                                        <div id="pager_Show_InvalidData"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="MaterialModificationHistoryPopUp" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header ">
+                <h4 class="modal-title">
+                    Material Modification History : <span><b id="mat-code-desc"></b></span>
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="MaterialModificationHistoryGrid" class="table table-bordered"></table>
+                                    <div id="MaterialModificationHistoryGrid_pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/npdlaunchmaster/N_IndiaMaterialList.js")" asp-append-version="true"></script>

@@ -1,0 +1,1682 @@
+﻿@model Ideation.Models.PdfData
+@{
+    Layout = null;
+}
+<html>
+<head>
+    <link href="https://leap.himalayawellness.com/Logo_Font/css/PDFStyle.css" rel="stylesheet" />
+    <style>
+
+        .him_logo {
+            float: right;
+            width: 100%;
+            text-align: right
+        }
+
+
+        .report-container td {
+            font-family: 'rotis_semisans_stdregular';
+            font-size: 14px !important;
+            vertical-align: top;
+        }
+
+        /* .p {
+                                    font-family: 'rotis_semisans_stdregular';
+                                    font-size: 16px;
+                                    vertical-align: top;
+                                }*/
+
+        .report-container b, .report-container strong {
+            font-family: 'rotis_semisans_stdextrabold';
+            font-weight: 700;
+        }
+
+        .page-break {
+            page-break-before: always;
+        }
+
+        .image_td img {
+            min-width: auto;
+            max-width: 650px !important;
+        }
+
+        .image_td table {
+            min-width: auto;
+            max-width: 650px !important;
+        }
+
+            .image_td table td img {
+                min-width: 100px !important;
+                max-width: 100px !important;
+            }
+
+            .image_td table td:nth-child(1) {
+                width: 100px;
+            }
+
+            .image_td table td:nth-child(2) {
+                width: 100px;
+            }
+
+            .image_td table td:nth-child(3) {
+                width: 100px;
+            }
+
+            .image_td table td:nth-child(4) {
+                width: 100px;
+            }
+
+            .image_td table td:nth-child(5) {
+                width: 100px;
+            }
+
+            .image_td table td:nth-child(6) {
+                width: 100px;
+            }
+
+        .text_table img {
+            width: 80% !important;
+        }
+
+        .text_table table {
+            width: 98% !important;
+        }
+
+        .image_td table {
+            max-width: 650px !important;
+        }
+
+            .image_td table td {
+                white-space: break-spaces !important;
+            }
+
+        table td {
+        }
+
+        table th {
+            word-wrap: anywhere;
+        }
+
+        thead.report-header {
+            display: table-header-group;
+        }
+
+        tfoot.report-footer {
+            display: table-footer-group;
+        }
+
+        table.report-container tr td, table.report-container tr th {
+            page-break-inside: avoid;
+            word-wrap: anywhere;
+            margin: 4px 0 4px 0;
+        }
+
+        .Data_size span {
+            font-family: 'rotis_semisans_stdregular';
+            font-size: 12px;
+            vertical-align: top;
+        }
+    </style>
+
+</head>
+
+<body style="width:100%; margin: 0px">
+    <table class="report-container" style="width:100%;page-break-after:auto;overflow-wrap: break-word;page-break-inside:auto;">
+        <thead class="report-header">
+            <tr>
+                <th>
+                    <table style="width:100%;border: 1px solid #000;border-collapse: collapse;page-break-after:auto;display:block;overflow-wrap: break-word;">
+                        <tr>
+                            <td colspan="4" style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <strong>PROJECT BRIEF : @ViewBag.ProjectType - @ViewBag.ProjectId &nbsp;&nbsp; </strong>
+                            </td>
+                            <td rowspan="2" style="width:20%;word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <img src="https://leap.himalayawellness.com/Logo_Font/img/logohmnew.png" style="height:60px;" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4" style="width:80%;word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label><strong>Project Name :</strong> </label><label>@Model.ProjectName</label>
+                            </td>
+                            @* <td colspan="1" style="width:20%;word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                    <label><strong>Date :</strong> </label><label>@Model.Date</label>
+                                </td>*@
+                        </tr>
+                        <tr>
+                            <td style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label><strong> Hub : </strong></label> &nbsp;<label>@Model.Hub</label>
+                            </td>
+                            <td style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label> <strong>Division :</strong> </label> &nbsp;<label>@Model.Division</label>
+                            </td>
+                            <td style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label><strong> Category : </strong></label> &nbsp;<label>@Model.Category</label>
+                            </td>
+                            <td style="word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label><strong> Initiated By : </strong></label> &nbsp;<label>@Model.InitiatedBy</label>
+                            </td>
+                            <td style="width:20%;word-wrap: anywhere; border: 1px solid black;padding: 5px 0px 5px 5px;text-align: center; page-break-inside: avoid;overflow-wrap: break-word;">
+                                <label><strong>Initiated Date : </strong></label> <br /><label>@Model.InitiatedDate</label>
+                            </td>
+                        </tr>
+                    </table>
+
+                </th>
+            </tr>
+
+        </thead>
+        <tfoot class="report-footer">
+            <tr>
+                <td class="report-footer-cell">
+                    <div class="footer-info">
+                    </div>
+                </td>
+            </tr>
+        </tfoot>
+
+        <tbody class="report-content">
+
+            <tr>
+                <td class="report-content-cell">
+
+
+
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;display:block;overflow-wrap: break-word;">
+
+
+                        <tbody>
+                            <tr>
+                                <td class="image_td" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;overflow-wrap: break-word;word-break:break-word; page-break-inside: avoid;">
+                                    <span style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"><b>Business Objective </b></span> <br />
+                                    @Html.Raw(Model.BusinessObjective)
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+
+                    @if (ViewBag.Status == "2" || ViewBag.Status == "3" || ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (Model.ProjectDetailsHgmlRemark != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>HGML Remarks</b></td>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">
+                                            @*@Model.ProjectDetailsHgmlRemark*@
+                                            @Html.Raw(Model.ProjectDetailsHgmlRemark)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+
+                    }
+
+
+
+                    @if (ViewBag.Status == "6" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "12")
+                    {
+                        @if (Model.ProjectDetailsPmdRemarks != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>Fine Screening Remarks</b></td>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">
+                                            @Html.Raw(Model.ProjectDetailsPmdRemarks)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+
+
+                </td>
+            </tr>
+            @*    Project Details HUB remarks
+            *@
+            <tr>
+                <td>
+
+                    @if (ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (ViewBag.IssenttoHUB == "YES")
+                        {
+
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HUB Remarks </p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                <thead>
+                                    <tr>
+                                        <td style="font-family:rotis_semisans_stdextrabold;word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>HUB Name<b></b></td>
+                                        <td style="font-family:rotis_semisans_stdextrabold;word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Remarks</b> </td>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.ProjectDetailsHubRemarksList != null)
+                                    {
+                                        foreach (var item in Model.ProjectDetailsHubRemarksList)
+                                        {
+
+                                            <tr>
+                                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Hub)</td>
+                                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Remarks)</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    <div>
+                        <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">Product Positioning </p>
+                    </div>
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                        <tbody>
+
+                            <tr>
+                                <td scope="col" style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;">Target Consumer</td>
+                                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere; page-break-inside: avoid;overflow-wrap: break-word;">@Html.Raw(Model.TargetConsumer)</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+
+                        <tbody>
+                            <tr>
+                                <td scope="col" class="image_td" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere; page-break-inside: avoid;overflow-wrap: break-word;">
+                                    <span style="font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"><b>Competitive Offerings  </b></span>
+                                    @Html.Raw(Model.CompetitiveOfferings)
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                        <tbody>
+                            <tr>
+                                <td scope="col" class="image_td" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;">
+                                    <span style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"> Unmet Need </span>
+                                    @Html.Raw(Model.UnmetNeed)
+                                </td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                        <thead>
+                            <tr>
+                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Product</b></td>
+                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Expected Features </b></td>
+                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Expected Benefits </b></td>
+                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>SKU </b></td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (Model.ProductPositioning != null)
+                            {
+                                foreach (var item in Model.ProductPositioning)
+                                {
+
+                                    <tr>
+                                        <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;"><p>@Html.Raw(item.Product)</p></td>
+                                        <td class="image_td" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.ExpectedFeatures)</td>
+                                        <td class="image_td" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.ExpectedBenefits)</td>
+                                        <td class="image_td" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.SKU)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    @if (ViewBag.Status == "2" || ViewBag.Status == "3" || ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (Model.ProductPositioningHgmlRemark != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="word-wrap: anywhere; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>HGML Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;">
+                                            @Html.Raw(Model.ProductPositioningHgmlRemark)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+                    @if (ViewBag.Status == "6" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "12")
+                    {
+                        @if (Model.ProductPositioningPmdRemarks != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>Fine Screening Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;">
+                                            @Html.Raw(Model.ProductPositioningPmdRemarks)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @*   Product Posiioning HUB remarks*@
+
+
+                    @if (ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+
+                        @if (ViewBag.IssenttoHUB == "YES")
+                        {
+
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"><b>HUB Remarks </b></p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    @if (Model.ProductPositioningHubRemarksList != null)
+                                    {
+                                        foreach (var item in Model.ProductPositioningHubRemarksList)
+                                        {
+
+                                            <tr>
+                                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;"><b>HUB Name </b></td>
+                                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Hub) </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="image_td" colspan="2" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 5px 5px 5px;">
+                                                    <span style="font-weight: 700;padding: 0px 5px 5px 10px;"><b>Remarks </b></span>
+                                                    @Html.Raw(item.Remarks)
+                                                </td>
+                                            </tr>
+
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+                    <div>
+                        <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"> Product Profile</p>
+                    </div>
+                    <div>
+                        <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"> Formulation Profile</p>
+                    </div>
+
+                    @if (Model.ProductProfile != null)
+                    {
+
+
+                        foreach (var item in Model.ProductProfile)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+
+                                        <td colspan="4" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Product :</b> @item.Product</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Benchmark Products :</b><br />@item.BenchmarkProducts</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Desired Ingredients :</b><br />@item.DesiredIngredients</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Indication / Conditions :</b><br />@item.IndicationOrConditions</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Dosage Form :</b><br />@item.DosageForm</td>
+
+
+
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Nice to have claims :</b><br />@item.NiceToHaveClaims</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Must have claims :</b><br />@item.MustHaveClaims</td>
+                                        <td colspan="2" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Desired Product Characteristics :</b><br />@item.DesiredProductCharacteristics</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                            @if (Model.PackagingProfileFieldRemarks != null)
+                            {
+                                foreach (var values in Model.PackagingProfileFieldRemarks)
+                                {
+                                    @if (item.Product == values.Product && values.SKU == "")
+                                    {
+                                        foreach (var id in Model.packagingMasterList)
+                                        {
+                                            @if (id.PackageId == values.PackageId)
+                                            {
+
+                                                <table width="100%" style="border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>@Html.Raw(id.PackageName) Remarks by HGML:</b><br /> @Html.Raw(values.Remarks)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            }
+
+                                        }
+
+                                    }
+                                }
+
+                            }
+                            <br />
+
+                        }
+                    }
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @{
+                        int NoofImages = 0;
+                    }
+                    @if (Model.ProductProfile != null)
+                    {
+                        foreach (var item in Model.ProductProfile)
+                        {
+                            if (item.Imagecontent != null)
+                            {
+                                NoofImages++;
+                            }
+                        }
+                    }
+
+
+                    @if (NoofImages > 0)
+                    {
+
+                        <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                            <tbody>
+                                <tr>
+                                    <td scope="col" style="border: none;padding: 5px 0px 5px 5px;font-size: 14px;font-weight: 600;"><b>Benchmark Products Image(s)</b></td>
+                                </tr>
+                                @if (Model.ProductProfile != null)
+                                {
+                                    foreach (var item in Model.ProductProfile)
+                                    {
+                                        if (item.Imagecontent != null)
+                                        {
+                                            // var imagecontent = item.Imagecontent.Split(',');
+                                            //foreach (var image in imagecontent)
+                                            // {
+                                            <tr>
+                                                <td scope="col" style="border: none;padding: 5px 0px 5px 5px;font-size: 14px;font-weight: 600;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><img src="@item.Imagecontent" width="400" height="300" /></td>
+                                            </tr>
+                                            // }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @if (ViewBag.Status == "2" || ViewBag.Status == "3" || ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (Model.FormulationProfileHgmlRemark != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+
+
+                                    <tr>
+                                        <td scope="col" style="font-family:rotis_semisans_stdextrabold;word-wrap: anywhere; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>HGML Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">
+                                            @Html.Raw(Model.FormulationProfileHgmlRemark)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+                    @if (ViewBag.Status == "6" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "12")
+                    {
+                        @if (Model.FormulationProfilePmdRemarks != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>Fine Screening Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">
+                                            @Html.Raw(@Model.FormulationProfilePmdRemarks)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @*   Formulation Profile HUB remarks  *@
+                    @if (ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (ViewBag.IssenttoHUB == "YES")
+                        {
+
+
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HUB Remarks </p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                <thead>
+                                    <tr>
+                                        <td style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center">HUB Name</td>
+                                        <td style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center">Remarks </td>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.FormulationProfileHubRemarksList != null)
+                                    {
+                                        foreach (var item in Model.FormulationProfileHubRemarksList)
+                                        {
+
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.Hub</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.Remarks</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+                    <div>
+                        <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"> Packaging Profile</p>
+                    </div>
+
+                    @if (Model.PackagingProfiledata != null)
+                    {
+
+                        foreach (var item in Model.PackagingProfiledata)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+
+                                    <tr>
+                                        <td colspan="3" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Product : </b>@Html.Raw(item.Product)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>SKU : </b>@Html.Raw(item.SKU)</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Primary Packaging : </b><br />@Html.Raw(item.PrimaryPackaging)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Secondary Packaging : </b><br />@Html.Raw(item.SecondaryPackaging)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Tertiary Packaging : </b><br />@Html.Raw(item.TertiaryPackaging)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Mold : </b>@Html.Raw(item.Mould)</td>
+                                    </tr>
+
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Benchmark Products : </b><br />@Html.Raw(item.BenchmarkProducts)</td>
+                                        <td colspan="2" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Desired Packaging Characteristics : </b><br />@Html.Raw(item.DesiredPackagingCharacteristics)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Others (If any) : </b><br />@Html.Raw(item.Others)</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                            @if (Model.PackagingProfileFieldRemarks != null)
+                            {
+                                foreach (var values in Model.PackagingProfileFieldRemarks)
+                                {
+                                    @if (item.Product == values.Product && item.SKU == values.SKU)
+                                    {
+                                        foreach (var id in Model.packagingMasterList)
+                                        {
+                                            @if (id.PackageId == values.PackageId)
+                                            {
+
+                                                <table width="100%" style="border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                                    <tbody>
+                                                        <tr>
+                                                            <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>@Html.Raw(id.PackageName) Remarks by HGML:</b><br /> @Html.Raw(values.Remarks)</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
+                                            }
+
+                                        }
+
+                                    }
+                                }
+
+                            }
+                            <br />
+
+                        }
+                    }
+
+
+
+                </td>
+            </tr>
+
+
+
+
+
+
+            <tr>
+                <td>
+
+
+
+                    @{
+                        int ImagesNo = 0;
+                    }
+                    @if (Model.PackagingProfiledata != null)
+                    {
+                        foreach (var item in Model.PackagingProfiledata)
+                        {
+                            if (item.Imagecontent != null)
+                            {
+                                ImagesNo++;
+                            }
+                        }
+                    }
+                    @if (ImagesNo > 0)
+                    {
+
+                        <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                            <tbody>
+
+                                <tr>
+                                    <td scope="col" style="border: none;padding: 5px 0px 5px 5px;font-size: 14px;font-weight: 600;">Image(s) Upload</td>
+                                </tr>
+                                @if (Model.PackagingProfiledata != null)
+                                {
+                                    foreach (var item in Model.PackagingProfiledata)
+                                    {
+                                        if (item.Imagecontent != null)
+                                        {
+                                            var imagecontent = item.Imagecontent.Split(',');
+                                            foreach (var image in imagecontent)
+                                            {
+                                                <tr>
+                                                    <td scope="col" style="border: none;padding: 5px 0px 5px 5px;font-size: 14px;font-weight: 600;"><img src="@image" width="400" height="300" /></td>
+                                                </tr>
+                                            }
+                                        }
+                                    }
+                                }
+                            </tbody>
+                        </table>
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @if (ViewBag.Status == "2" || ViewBag.Status == "3" || ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (Model.PackagingProfileHgmlRemark != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="font-family:rotis_semisans_stdextrabold;word-wrap: anywhere; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>HGML Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">
+                                            @Html.Raw(Model.PackagingProfileHgmlRemark)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+                    @if (ViewBag.Status == "6" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "12")
+                    {
+                        @if (Model.PackagingProfilePmdRemarks != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>Fine Screening Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">
+                                            @Html.Raw(@Model.PackagingProfilePmdRemarks)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @*   Packaging Profile HUB remarks  *@
+                    @if (ViewBag.IssenttoHUB == "YES")
+                    {
+
+                        @if (ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                        {
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HUB Remarks </p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                <thead>
+                                    <tr>
+                                        <td style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center">HUB Name</td>
+                                        <td style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center">Remarks </td>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.PackagingProfileHubRemarksList != null)
+                                    {
+                                        foreach (var item in Model.PackagingProfileHubRemarksList)
+                                        {
+
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.Hub</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.Remarks;</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+
+            @*Sustainibility BEGIN*@
+            <tr>
+                <td>
+                    <div>
+
+                        <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"> Sustainability  </p>
+
+                    </div>
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                        <thead>
+                            <tr>
+                                <td style="border: 1px solid black;width: 35%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Product</b></td>
+                                <td style="border: 1px solid black;width: 35%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>What sustainability goals are targeted?  </b></td>
+                                <td style="border: 1px solid black;width: 15%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Reusable </b></td>
+                                <td style="border: 1px solid black;width: 15%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Recycle</b></td>
+                                <td style="border: 1px solid black;width: 15%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Reducing</b></td>
+                                <td style="border: 1px solid black;width: 15%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Recovering</b></td>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @if (Model.Sustainabilitydata != null)
+                            {
+                                foreach (var item in Model.Sustainabilitydata)
+                                {
+
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Product)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.TargetedGoals)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Reusable)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Recycle)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Reducing)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Recovering)</td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+
+                </td>
+            </tr>
+
+            <tr>
+                <td>
+
+
+                    @if (ViewBag.Status == "2" || ViewBag.Status == "3" || ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "14" || ViewBag.Status == "12")
+                    {
+                        @if (Model.HGMLSusatinabilityRemark != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>HGML Remarks</b></td>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">
+                                            @Html.Raw(Model.HGMLSusatinabilityRemark)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        }
+                    }
+
+
+
+                    @if (ViewBag.Status == "6" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "12")
+                    {
+                        @if (Model.SustainabilityPmdRemarks != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>Fine Screening Remarks</b></td>
+                                        <td scope="col" style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">
+                                            @Html.Raw(Model.SustainabilityPmdRemarks)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+
+
+                </td>
+            </tr>
+            @*    Sustainability HUB remarks *@
+            <tr>
+                <td>
+
+                    @if (ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "14" || ViewBag.Status == "12")
+                    {
+                        @if (ViewBag.IssenttoHUB == "YES")
+                        {
+
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HUB Remarks </p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                <thead>
+                                    <tr>
+                                        <td style="font-family:rotis_semisans_stdextrabold;word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>HUB Name<b></b></td>
+                                        <td style="font-family:rotis_semisans_stdextrabold;word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Remarks</b> </td>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.SustainabilityHubRemarksList != null)
+                                    {
+                                        foreach (var item in Model.SustainabilityHubRemarksList)
+                                        {
+
+                                            <tr>
+                                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Hub)</td>
+                                                <td style="word-wrap: anywhere;overflow-wrap: break-word; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Remarks)</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+            @*Sustainibility END*@
+            <tr>
+                <td>
+                    <div>
+
+                        <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px"> Business Information  </p>
+                    </div>
+
+                    @if (ViewBag.Status != "3")
+                    {
+                        <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                            <tr>
+                                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b><b> Y1 Total Business value (USD)</b></b></td>
+                                <td style="border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:left">@Model.TotalBusinessValue_Y1</td>
+                            </tr>
+                        </table>
+                        <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                            <tr>
+                                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b><b> Y2 Total Business value (USD)</b></b></td>
+                                <td style="border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:left">@Model.TotalBusinessValue_Y2</td>
+                            </tr>
+                        </table>
+                        <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                            <tr>
+                                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b><b> Y3 Total Business value (USD)</b></b></td>
+                                <td style="border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:left">@Model.TotalBusinessValue_Y3</td>
+                            </tr>
+                        </table>
+                    }
+                    <br />
+                    @if (Model.BusinessInformationdata != null)
+                    {
+                        foreach (var item in Model.BusinessInformationdata)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;">
+
+                                <tbody>
+                                    <tr>
+                                        <td colspan="4" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;"><b>Product : </b> @Html.Raw(item.Product)</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b> SKU :</b><br /> @Html.Raw(item.SKU)</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b> Proposed launch date :</b><br /> @Html.Raw(item.ProposedLaunchDate)</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b> Proposed SP :</b><br /> @Html.Raw(item.ProposedSellingPrice)</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Expected COP :</b><br /> @Html.Raw(item.ProposedTP)</td>
+
+                                    </tr>
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Proposed MRP :</b><br /> @Html.Raw(item.ProposedMRP)</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Currency :</b><br /> @Html.Raw(item.Currency)</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Expected GP % :</b><br />@Html.Raw(item.ExpectedGP)</td>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Business Value(Y2*PSP) :</b><br />@Html.Raw(item.BusinessValue)</td>
+
+                                    </tr>
+
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M1 : </b> @Html.Raw(item.M1Quantity)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M2 : </b> @Html.Raw(item.M2Quantity)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M3 : </b> @Html.Raw(item.M3Quantity)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M4 : </b> @Html.Raw(item.M4Quantity)</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M5 : </b> @Html.Raw(item.M5Quantity)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M6 : </b> @Html.Raw(item.M6Quantity)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Y1 : </b> @Html.Raw(item.Y1Quantity)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Y2 : </b>@Html.Raw(item.Y2Quantity)</td>
+                                    </tr>
+                                    <tr>
+
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Y3 : </b>@Html.Raw(item.Y3Quantity)</td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>UOM : </b> @Html.Raw(item.UOM)</td>
+
+
+                                    </tr>
+
+
+
+                                </tbody>
+                            </table>
+
+                        }
+                        <br />
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+                    @*//other HUB BI*@
+
+                    @if (ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "14" || ViewBag.Status == "12")
+                    {
+                        @if (ViewBag.IssenttoHUB == "YES")
+                        {
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">Other HUB's Business Information</p>
+                            </div>
+
+                            @if (Model.HgmlApproveBusinessInformationData != null)
+                            {
+                                foreach (var item in Model.HgmlApproveBusinessInformationData)
+                                {
+                                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;">
+
+                                        <tbody>
+                                            <tr>
+                                                <td colspan="4" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;"><b>Product : </b> @Html.Raw(item.Product)</td>
+                                            </tr>
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b> HUB :</b><br /> @Html.Raw(item.FromHubName)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b> SKU :</b><br /> @Html.Raw(item.SKU)</td>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b> Proposed launch date :</b><br /> @Html.Raw(item.ProposedLaunchDate)</td>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b> Proposed SP :</b><br /> @Html.Raw(item.ProposedSellingPrice)</td>
+
+
+                                            </tr>
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Expected COP :</b><br /> @Html.Raw(item.ProposedTP)</td>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Proposed MRP :</b><br /> @Html.Raw(item.ProposedMRP)</td>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Currency :</b><br /> @Html.Raw(item.Currency)</td>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Expected GP % :</b><br /> @Html.Raw(item.ExpectedGP)</td>
+
+
+                                            </tr>
+
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Business Value(Y2*PSP) :</b><br /> @Html.Raw(item.BusinessValue)</td>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M1 : </b> @Html.Raw(item.M1Quantity)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M2 : </b> @Html.Raw(item.M2Quantity)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M3 : </b> @Html.Raw(item.M3Quantity)</td>
+                                            </tr>
+                                            <tr>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M4 : </b> @Html.Raw(item.M4Quantity)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M5 : </b> @Html.Raw(item.M5Quantity)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>M6 : </b> @Html.Raw(item.M6Quantity)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Y1 :</b> @Html.Raw(item.Y1Quantity)</td>
+                                            </tr>
+                                            <tr>
+
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Y2 : </b>@Html.Raw(item.Y2Quantity)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Y3 : </b> @Html.Raw(item.Y3Quantity)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>UOM : </b>@Html.Raw(item.UOM)</td>
+
+
+                                            </tr>
+
+
+
+                                        </tbody>
+                                    </table>
+                                }
+
+
+                            }
+
+
+
+                        }
+
+                    }
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+
+                    @if (ViewBag.Status == "2" || ViewBag.Status == "3" || ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (Model.BusinessInformationHgmlRemark != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+
+                                    <tr>
+                                        <td scope="col" style="font-family:rotis_semisans_stdextrabold;word-wrap: anywhere; page-break-inside: avoid;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>HGML Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">
+                                            @Html.Raw(Model.BusinessInformationHgmlRemark)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+                    @if (ViewBag.Status == "6" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "12")
+                    {
+                        @if (Model.BusinessInformationPmdRemarks != null)
+                        {
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    <tr>
+                                        <td scope="col" style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;padding: 5px 0px 5px 5px;width:25%;font-size: 16px;font-weight: 700;"><b>Fine Screening Remarks</b></td>
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">
+                                            @Html.Raw(Model.BusinessInformationPmdRemarks)
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        }
+                    }
+
+
+                </td>
+            </tr>
+            <tr>
+                <td>
+
+
+
+                    @if (ViewBag.Status == "4" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12" || ViewBag.Status == "14")
+                    {
+                        @if (ViewBag.IssenttoHUB == "YES")
+                        {
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HUB Remarks </p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                <thead>
+                                    <tr>
+                                        <td style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center">HUB Name</td>
+                                        <td style="font-family:rotis_semisans_stdextrabold;border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center">Remarks </td>
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.BusinessInformationHubRemarksList != null)
+                                    {
+                                        foreach (var item in Model.BusinessInformationHubRemarksList)
+                                        {
+
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@item.Hub</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.Remarks</td>
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+            @* HUB Status*@
+            @if (ViewBag.Status == "4" || ViewBag.Status == "14")
+            {
+                @if (Model.NPDHubStatus?.Count() != 0)
+                {
+
+                    <tr>
+                        <td>
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HUB Status </p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <thead>
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>HUB</b></td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Participating Markets</b></td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Remarks</b></td>
+
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @if (Model.NPDHubStatus != null)
+                                    {
+                                        foreach (var item in Model.NPDHubStatus)
+                                        {
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@Html.Raw(item.HubName)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@Html.Raw(item.ParticipatingMarkets)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@Html.Raw(item.HgmlOrHubDataHubRemarks)</td>
+
+
+                                            </tr>
+
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        </td>
+                    </tr>
+
+                }
+            }
+
+
+
+            <tr>
+                <td>
+                    @if (ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12")
+                    {
+                        @if (Model.HgmlDataList != null && Model.HgmlDataList.GetEnumerator().MoveNext())
+                        {
+
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HGML Data </p>
+                            </div>
+
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+                                <thead>
+                                    <tr>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Product Name</b></td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Participating Markets</b></td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Project Priority</b></td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Project Categorization</b></td>
+                                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Remarks</b></td>
+
+
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    @if (Model.HgmlDataList != null)
+                                    {
+                                        foreach (var item in Model.HgmlDataList)
+                                        {
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.ProductName</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.ParticipatingMarkets</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.ProjectPriority</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.ProjectCategorization</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.Remarks</td>
+
+
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @if (ViewBag.Status == "6" || ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "12")
+                    {
+                        @if (Model.PmdDataList?.Count() != 0)
+                        {
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">Fine Screening Data</p>
+                            </div>
+
+                            <table widht="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+                                    @if (Model.PmdDataList != null)
+                                    {
+                                        foreach (var item in Model.PmdDataList)
+                                        {
+                                            <tr>
+                                                <td colspan="9" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Product Name:</b> @item.ProductName</td>
+                                            </tr>
+                                            @* <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Project Categorization:</b><br /> @item.ProjectCategorization</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Complexity to be Assigned:</b><br />@item.ComplexityToBeAssigned</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>R&D Name:</b><br /> @item.RandDName</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Project lead:</b><br /> @item.ProjectLead</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Target 1st Prototype submission date:</b><br /> @item.TargetFirstPrototypeSubmissionDate</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Target TTD completion date:</b><br /> @item.TargetTTDCompletionDate</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Target production date:</b><br /> @item.TargetProductionDate</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Major Risk if any:</b><br /> @item.MajorRiskIfAny</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Remarks:</b> @item.Remarks</td>
+
+                                                </tr>*@
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Complexity to be Assigned</b></td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>R&D Name</b></td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Project lead</b></td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Target 1st Prototype submission date</b></td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Target TTD completion date</b></td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Target production date</b></td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Major Risk if any</b></td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;"><b>Remarks</b></td>
+
+                                            </tr>
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.ComplexityToBeAssigned</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.RandDName</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.ProjectLead</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.TargetFirstPrototypeSubmissionDate</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.TargetTTDCompletionDate</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.TargetProductionDate</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.MajorRiskIfAny</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@item.Remarks</td>
+
+                                            </tr>
+                                        }
+                                    }
+
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @if (ViewBag.Status == "3")
+                    {
+                        @if (ViewBag.IssenttoHUB == "YES")
+                        {
+                            <div>
+                                <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">HGML To HUB Remarks </p>
+                            </div>
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <tbody>
+
+                                    <tr>
+
+                                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">@Model.HGMLtoHubRemarks</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>
+                        }
+                    }
+                </td>
+            </tr>
+
+            @*            Target cost  *@
+
+            <tr>
+                <td>
+                    @if (ViewBag.Status == "5" || ViewBag.Status == "16" || ViewBag.Status == "6" || ViewBag.Status == "12")
+                    {
+                        @if (Model.NPDTargetCostDataList != null && Model.NPDTargetCostDataList.GetEnumerator().MoveNext())
+                        {
+                            <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 5px 5px;font-size: 16px">Target Cost </p>
+
+                            <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                                <thead>
+
+
+
+                                    <tr>
+                                        <td style="border: 1px solid black;width: 40%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Product</b></td>
+                                        <td style="border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>SKU</b></td>
+                                        <td style="border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Currency</b></td>
+                                        <td style="border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Accepted Target Cost</b></td>
+                                        <td style="border: 1px solid black;width: 20%;padding: 5px 0px 5px 10px;font-weight: 600;text-align:center"><b>Remarks</b></td>
+
+                                    </tr>
+
+                                </thead>
+                                <tbody>
+                                    @if (Model.NPDTargetCostDataList != null)
+                                    {
+                                        foreach (var item in Model.NPDTargetCostDataList)
+                                        {
+                                            <tr>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.ProductName)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Sku)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.Currency)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.TargetCost)</td>
+                                                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;">@Html.Raw(item.TargetCostRemarks)</td>
+
+                                            </tr>
+                                        }
+                                    }
+                                </tbody>
+                            </table>
+                        }
+
+                    }
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <p style="font-family:rotis_semisans_stdextrabold;font-weight: 700;padding: 5px 5px 0px 5px;font-size: 16px">Initiator Remarks </p>
+
+                    <table width="100%" style="border: 1px solid #000;border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+
+                        <tbody>
+
+                            <tr>
+                                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;word-wrap: anywhere;page-break-inside: avoid;overflow-wrap: break-word;">
+                                    @Html.Raw(Model.InitiatorRemarks)
+                                </td>
+
+                            </tr>
+
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br />
+    <br />
+
+    <table class="report-container" width="100%" style="border-collapse: collapse;page-break-after:auto;table-layout:fixed;display:block;overflow-wrap: break-word;">
+        <thead>
+            <tr>
+                @if (Model.MarketingTeamApprovalData != null)
+                {
+
+                    <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Initiated By (Marketing)</b></td>
+                    @if (Model.HGMLReviewTeamApprovalData != null)
+                    {
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Approved By (HGML)</b></td>
+                    }
+                    @if (Model.HUBReviewTeamApprovalData != null)
+                    {
+                        foreach (var item1 in Model.HUBReviewTeamApprovalData)
+                        {
+                            <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;">
+                                <b>Accepted By (@Html.Raw(item1.hubnames))</b>
+                            </td>
+                        }
+                    }
+
+                    @if (Model.FinescreeningTeamApprovalData != null)
+                    {
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Accepted By (R & D)</b></td>
+                    }
+                    @if (Model.AcceptedTeamApprovalData != null)
+                    {
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Accepted By (R & D)</b></td>
+                    }
+                    @if (Model.UpdatedTeamApprovalData != null)
+                    {
+                        foreach (var item1 in Model.UpdatedTeamApprovalData)
+                        {
+                            <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Updated By (R & D)</b></td>
+                        }
+                    }
+                }
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                @*  Created BY *@
+                @if (Model.MarketingTeamApprovalData != null)
+                {
+                    foreach (var item in Model.MarketingTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.MareketingTeamCreatedBy)
+                        </td>
+                    }
+                }
+                @if (Model.HGMLReviewTeamApprovalData != null)
+                {
+                    foreach (var item in Model.HGMLReviewTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.HGMLReviewTeamCreatedBy)
+                        </td>
+                    }
+                }
+                @if (Model.HUBReviewTeamApprovalData != null)
+                {
+                    foreach (var item1 in Model.HUBReviewTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item1.hubcreatedby)
+                        </td>
+                    }
+                }
+
+                @if (Model.FinescreeningTeamApprovalData != null)
+                {
+                    foreach (var item in Model.FinescreeningTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.FineScreeningTeamCreatedBy)
+                        </td>
+                    }
+                }
+                @if (Model.AcceptedTeamApprovalData != null)
+                {
+                    foreach (var item in Model.AcceptedTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.AcceptedTeamCreatedBy)
+                        </td>
+                    }
+                }
+                @if (Model.UpdatedTeamApprovalData != null)
+                {
+                    foreach (var item in Model.UpdatedTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.UpdatedTeamCreatedBy)
+                        </td>
+                    }
+                }
+
+            </tr>
+            <tr>
+                @if (Model.MarketingTeamApprovalData != null)
+                {
+                    foreach (var item in Model.MarketingTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.MareketingTeamCreatedOn)
+                        </td>
+                    }
+                }
+                @if (Model.HGMLReviewTeamApprovalData != null)
+                {
+                    foreach (var item in Model.HGMLReviewTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.HGMLReviewTeamCreatedOn)
+                        </td>
+                    }
+                }
+                @if (Model.HUBReviewTeamApprovalData != null)
+                {
+                    foreach (var item1 in Model.HUBReviewTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item1.hubApprovedDate)
+                        </td>
+                    }
+                }
+
+                @if (Model.FinescreeningTeamApprovalData != null)
+                {
+                    foreach (var item in Model.FinescreeningTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.FineScreeningTeamCreatedOn)
+                        </td>
+                    }
+                }
+                @if (Model.AcceptedTeamApprovalData != null)
+                {
+                    foreach (var item in Model.AcceptedTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.AcceptedTeamCreatedOn)
+                        </td>
+                    }
+                }
+                @if (Model.UpdatedTeamApprovalData != null)
+                {
+                    foreach (var item in Model.UpdatedTeamApprovalData)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item.UpdatedTeamCreatedOn)
+                        </td>
+                    }
+                }
+            </tr>
+        </tbody>
+    </table>
+    <br />
+    <br />
+    <div class="Data_size"><span style="font-weight:200">@ViewBag.DownloadedBy</span></div>
+    <div class="Data_size"><span style="font-weight:200">@Model.Date</span></div>
+</body>
+</html>

@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/img/favicon.png">
+    <title>@ViewBag.Title - EPPM_NM</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/plugins/bootstrap-extension/bootstrap-extension.css" rel="stylesheet" />
+    <link href="~/assets/css/animate.css" rel="stylesheet"  asp-append-version="true"/>
+    <link href="~/assets/css/style.css" rel="stylesheet"  asp-append-version="true"/>
+    <link href="~/assets/css/blue-dark.css" id="theme" rel="stylesheet"  asp-append-version="true"/>
+    <link href="~/assets/css/icons/fontawesome/css/fontawesome.min.css" rel="stylesheet" />
+    <!-- jQuery -->
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+</head>
+<body>
+    <!-- Preloader -->
+    <div class="preloader">
+        <div class="cssload-speeding-wheel"></div>
+    </div>
+    <div id="wrapper">
+        <!-- Top Navigation -->
+        <nav class="navbar navbar-default navbar-static-top m-b-0">
+            <div class="navbar-header">
+                <!-- Toggle icon for mobile view -->
+                <a class="navbar-toggle hidden-sm hidden-md hidden-lg " href="javascript:void(0)" data-toggle="collapse" data-target=".navbar-collapse"><i class="fas fa-bars"></i></a>
+                <!-- Logo -->
+                <div class="top-left-part">
+                    <a class="logo" href="#">
+                        <b><img src="~/assets/img/himalaya_logo.png" alt="Himalaya" /></b>
+                    </a>
+                </div>
+                <!-- /Logo -->
+            </div>
+            <!-- /.navbar-header -->
+            <!-- /.navbar-top-links -->
+            <!-- /.navbar-static-side -->
+        </nav>
+        <!-- End Top Navigation -->
+        <!-- Page Content -->
+        <div id="page-wrapper">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="page-icons">
+                            <div class="page-icons__item">
+                                <a href="javascript: void(0);">
+                                    <span>
+                                        <?xml version="1.0" encoding="iso-8859-1" ?>
+                                        <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50" height="50" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <path style="fill:#408BAF;" d="M395.636,512H23.273C10.418,512,0,501.578,0,488.727V116.364c0-12.853,10.418-23.273,23.273-23.273 H256c12.851,0,23.273,10.42,23.273,23.273S268.851,139.636,256,139.636H46.545v325.818h325.818V256 c0-12.853,10.418-23.273,23.273-23.273c12.851,0,23.273,10.42,23.273,23.273v232.727C418.909,501.578,408.488,512,395.636,512z" /> <path style="fill:#E68842;" d="M488.727,0H302.545c-12.854,0-23.273,10.42-23.273,23.273s10.418,23.273,23.273,23.273h129.997 L192.998,286.089c-9.087,9.089-9.087,23.827,0,32.914c4.546,4.546,10.501,6.817,16.457,6.817c5.955,0,11.913-2.271,16.454-6.817 L465.455,79.458v129.997c0,12.851,10.418,23.273,23.273,23.273c12.851,0,23.273-10.422,23.273-23.273V23.273 C512,10.42,501.578,0,488.727,0z" /> <path style="fill:#387896;" d="M395.636,232.727c-12.854,0-23.273,10.42-23.273,23.273v209.455H209.455V512h186.182 c12.851,0,23.273-10.422,23.273-23.273V256C418.909,243.147,408.488,232.727,395.636,232.727z" /> <path style="fill:#DD4C42;" d="M192.998,319.001c4.546,4.546,10.501,6.817,16.457,6.817c5.955,0,11.913-2.271,16.454-6.817 L465.455,79.458v129.997c0,12.851,10.418,23.273,23.273,23.273c12.851,0,23.273-10.422,23.273-23.273V23.273 c0-6.426-2.607-12.245-6.819-16.455L192.998,319.001z" /> </svg>
+                                    </span>
+                                    <label>EPPM</label>
+                                </a>
+                            </div>
+                            <div class="page-icons__item">
+                                <a href="@Url.Content("~/Login/Login")">
+                                    <span>
+                                        <?xml version="1.0" encoding="iso-8859-1" ?>
+                                        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="50" height="50" viewBox="0 0 512 512" style="enable-background:new 0 0 512 512;" xml:space="preserve"> <path style="fill:#4A696F;" d="M341.495,341.492l48.581-73.615l-48.581-12.517c-6.364-19.092-17.185-37.126-32.459-52.4 c-15.063-15.063-32.882-26.095-52.4-32.459l-0.637,0.637l-59.188-2.334l-26.307,1.697c-19.517,6.364-37.337,17.396-52.4,32.459 l-78.646,78.646c-52.612,52.612-52.612,138.12,0,190.732c54.097,54.097,139.593,51.34,190.932,0l78.646-78.446 C324.312,378.616,335.132,360.585,341.495,341.492z M177.354,419.3c-23.761,23.761-61.734,23.125-84.859,0 c-23.336-23.336-23.336-61.523,0-84.859l78.009-77.809l42.642,42.217L256,340.854L177.354,419.3z" /> <path style="fill:#384949;" d="M309.037,393.891l-78.646,78.446c-51.34,51.34-136.835,54.097-190.932,0L92.495,419.3 c23.125,23.125,61.098,23.761,84.859,0L256,340.855l-42.853-42.006l95.89-95.89c15.274,15.274,26.095,33.307,32.459,52.4 l48.581,12.517l-48.581,73.615C335.132,360.585,324.312,378.616,309.037,393.891z" /> <path style="fill:#D2C5C2;" d="M415.11,436.321l-21.215-21.215c-5.863-5.863-5.863-15.352,0-21.215 c5.863-5.862,15.352-5.863,21.215,0l21.215,21.215c5.863,5.863,5.863,15.352,0,21.215 C430.461,442.184,420.973,442.184,415.11,436.321z" /> <path style="fill:#DFD7D5;" d="M96.89,118.101L75.674,96.886c-5.863-5.863-5.863-15.352,0-21.214s15.352-5.863,21.214,0 l21.214,21.214c5.863,5.863,5.863,15.352,0,21.214S102.752,123.963,96.89,118.101z" /> <path style="fill:#D2C5C2;" d="M444.363,306.464c2.144-8.008,10.369-12.752,18.376-10.608l28.984,7.769 c8.008,2.103,12.731,10.369,10.608,18.376c-2.144,8.008-10.369,12.752-18.376,10.608l-28.984-7.769 C447.016,322.711,442.217,314.519,444.363,306.464z" /> <path style="fill:#DFD7D5;" d="M9.669,189.99c2.144-8.008,10.369-12.752,18.376-10.608l28.984,7.77 c7.977,2.092,12.741,10.359,10.608,18.376c-2.144,8.008-10.369,12.752-18.376,10.608l-28.984-7.77 C12.322,206.237,7.522,198.045,9.669,189.99z" /> <path style="fill:#D2C5C2;" d="M303.629,491.719l-7.77-28.984c-2.144-8.008,2.6-16.232,10.608-18.376s16.222,2.569,18.376,10.608 l7.769,28.984c2.144,8.008-2.6,16.232-10.608,18.376C313.951,504.473,305.758,499.674,303.629,491.719z" /> <path style="fill:#DFD7D5;" d="M187.155,57.026l-7.77-28.984c-2.144-8.008,2.6-16.232,10.608-18.376 c8.008-2.123,16.242,2.569,18.376,10.608l7.77,28.984c2.144,8.008-2.6,16.232-10.608,18.376 C197.477,69.778,189.285,64.979,187.155,57.026z" /> <path style="fill:#FFD400;" d="M472.54,39.655c-52.612-52.612-138.108-52.825-190.932,0l-78.646,78.446 c-15.274,15.274-26.094,33.306-32.459,52.4c-9.335,28.004-9.334,58.128,0.001,86.132c6.364,19.092,17.184,37.127,32.458,52.401 c14.851,14.851,32.671,25.881,52.401,32.458l0.636-0.636c23.337-23.337,23.336-61.523,0-84.859s-23.336-61.523,0-84.859 l78.646-78.446c11.457-11.457,26.307-17.396,42.431-17.396c0.423-0.423,4.029-0.212,4.879,0.212 c11.456-0.001,26.517,6.151,37.549,17.184c23.336,23.336,23.337,61.522,0,84.859l-78.008,77.808c9.335,28.004,9.335,58.129,0,86.133 c19.304-6.576,37.55-17.608,52.4-32.459l78.646-78.446C525.154,177.974,525.152,92.267,472.54,39.655z" /> <g> <path style="fill:#FF9F00;" d="M256,340.854l-0.636,0.636c-19.729-6.576-37.551-17.607-52.401-32.458L256,255.995 C279.336,279.332,279.337,317.518,256,340.854z" /> <path style="fill:#FF9F00;" d="M472.54,230.588l-78.646,78.446c-14.85,14.851-33.095,25.883-52.4,32.459 c9.335-28.004,9.335-58.129,0-86.133l78.008-77.808c23.337-23.337,23.336-61.523,0-84.859l53.037-53.037 C525.152,92.267,525.154,177.974,472.54,230.588z" /> </g> </svg>
+                                    </span>
+                                    <label>Milestones</label>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /.container-fluid -->
+            <footer class="footer"> @DateTime.Now.Year &copy; Himalaya. All rights reserved </footer>
+        </div>
+        <!-- /#page-wrapper -->
+    </div>
+    <!-- /#wrapper -->
+    @if (Context.Session.GetString("projectName") != null)
+    {
+        <input type="hidden" id="selectedProjectName" value="Context.Session.GetString("projectName")" />
+        <input type="hidden" id="selectedProjectId" value="Context.Session.GetString("projectId")" />
+    }
+
+    <script src="~/Scripts/bootstrap.min.js">
+    </script>
+    <script src="~/assets/plugins/bootstrap-extension/bootstrap-extension.min.js">
+    </script>
+    <script src="~/assets/js/sidebar-nav.min.js">
+    </script>
+    <!--Slimscroll JavaScript For custom scroll-->
+    <script src="~/assets/js/jquery.slimscroll.js">
+    </script>
+    <!--Wave Effects -->
+    <script src="~/assets/js/waves.js">
+    </script>
+    <!-- Custom Theme JavaScript -->
+    <script src="~/assets/js/custom.js"  asp-append-version="true">
+    </script>
+</body>
+</html>
+

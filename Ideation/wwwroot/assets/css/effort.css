@@ -1,0 +1,289 @@
+﻿
+.effort_tracker .table-bordered th {
+    border: 1px solid #ededed !important;
+    font-size: 10px;
+    font-weight: 700;
+    /*  padding: 5px 5px;*/
+}
+
+.effort_tracker .table-bordered tr {
+    border-color: #ededed !important;
+}
+
+.effort_tracker th {
+    height: 0px !important;
+}
+
+.effort_tracker .form-control:disabled, .form-control[readonly] {
+    background-color: #e6e6e6;
+    opacity: 1;
+}
+
+.effort_tracker .tr_padding tr {
+    font-size: 10px;
+}
+
+    .effort_tracker .tr_padding tr > td {
+        padding: 0px;
+        vertical-align:middle;
+    }
+
+.effort_tracker .project_width {
+    width: 20% !important;
+    /* padding: 5px 5px !important;*/
+}
+
+.effort_tracker .project_width1 {
+    width: 40% !important;
+    /* padding: 5px 5px !important;*/
+    vertical-align: middle !important;
+    position: sticky;
+    left: 50px;
+    z-index: 1;
+    background: #d8d8d8 !important;
+}
+.project_width_apportion {
+    width: 25% !important;
+    /* padding: 5px 5px !important;*/
+    vertical-align: middle !important;
+    position: sticky;
+    left: 50px;
+    z-index: 1;
+    background: #d8d8d8 !important;
+}
+.effort_tracker .select2-container .select2-selection--single {
+    height: 29px !important;
+}
+
+.effort_tracker .nav-tabs .nav-link.active {
+    color: #000;
+    background: #d8d8d8;
+    border: 1px solid #d8d8d8;
+    border-radius: 0px;
+}
+
+.effort_tracker .nav-tabs {
+    border: 1px solid #dee2e6;
+    border-radius: 0px;
+}
+
+.effort_tracker .nav-link {
+    padding: 5px 15px;
+    color: #000;
+    font-size: 10px;
+}
+
+.effort_tracker .nav-tabs .nav-link:hover {
+    border-radius: 0px;
+}
+
+.effort_tracker .input_calendar {
+    float: right;
+    position: relative;
+    bottom: 20px;
+    color: #7047ee;
+    right: 5px;
+}
+
+.effort_tracker button.plus.btn-primary {
+    border: 0px;
+    padding: 3px 7px 3px 7px;
+    border-radius: 5px;
+}
+
+.effort_tracker .table th {
+    font-size: 10px !important;
+}
+
+.effort_tracker input.bck_color.form-control {
+    background-color: #e7ecf7;
+}
+
+.effort_tracker .datepicker .datepicker-days tr td.active ~ td,
+.datepicker .datepicker-days tr td.active {
+    color: #af1623 !important;
+    background: transparent !important;
+}
+
+.effort_tracker
+.datepicker .datepicker-days tr:hover td {
+    color: #000;
+    background: #e5e2e3;
+    border-radius: 0;
+}
+
+.effort_tracker .week_header {
+    width: 60px !important;
+    text-align: center !important;
+    padding: 10px !important;
+    vertical-align: middle !important;
+}
+
+.effort_tracker .week_header1 {
+    width: 60px !important;
+    text-align: center !important;
+    padding: 5px 10px !important;
+    vertical-align: middle !important;
+}
+
+.effort_tracker input.form-control {
+    padding: 5px 5px;
+}
+
+.effort_tracker .value_ .form-control {
+    height: 26px;
+    border-radius: 0px;
+    font-size: 10px;
+    text-align: center;
+}
+
+.effort_tracker .value_ input {
+    color: blue;
+    border: 0;
+}
+
+.effort_tracker .value1_ input {
+    color: #f613a5;
+}
+
+.effort_tracker .table > :not(:first-child) {
+    border-top: 1px solid;
+}
+
+.effort_tracker .total_effort {
+    text-align: right;
+    font-size: 10px;
+    font-weight: 700;
+    position: sticky !important;
+    left: 50px !important;
+    z-index: 1 !important;
+    background: #e7ecf7 !important;
+}
+
+.effort_tracker .tf_td {
+    font-size: 10px;
+    text-align: center;
+}
+
+.effort_tracker .table > :not(caption) > * > * {
+    padding: 0.3rem 0.5rem;
+}
+
+.effort_tracker .value_ label {
+    margin-bottom: 0px;
+    color: #f613a5;
+}
+
+.effort_tracker .select2-container--default .select2-selection--single {
+    border: 1px solid #e6e6e6;
+    margin: 3px;
+    border-radius: 0px;
+}
+
+.effort_tracker .fixed_col {
+    position: sticky;
+    left: 0px;
+    z-index: 1;
+    background: #d8d8d8;
+    border-right-color: #d8d8d8 !important
+}
+
+.effort_tracker .fixed_col1 {
+    position: sticky;
+    right: 0px;
+    z-index: 1;
+    background: #e7ecf7;
+}
+/* .fixed_col11 {
+       position: sticky;
+      right: 0px;
+      z-index: 1;
+       background:#fff !important;
+     }*/
+.effort_tracker .fixed_col2 {
+    position: sticky;
+    left: 50px;
+    z-index: 1;
+    background: #fff !important;
+}
+
+body {
+    background: #fff !important;
+}
+
+.body-content {
+    padding-top: 2px;
+    background: #fff;
+    margin: 15px;
+}
+
+.effort_tracker .select2-container .select2-selection:focus {
+    border-color: #e6e6e6 !important;
+}
+
+.effort_tracker .select2-dropdown--below span.select2-search.select2-search--dropdown {
+    position: absolute;
+    top: -38px;
+    width: 98%;
+    border: 1px solid #8a8a8a;
+    height: auto;
+    font-size: 10px;
+    padding: 0px;
+    margin: 5px;
+}
+
+.effort_tracker .select2-dropdown--above span.select2-search.select2-search--dropdown {
+    position: absolute;
+    top: auto !important;
+    bottom: -38px;
+    width: 99%;
+    border: 1px solid #8a8a8a;
+    height: auto;
+    font-size: 10px;
+    padding: 0px 0px 0 0px;
+    margin: 2px 5px 5px 6px;
+    left: -3px;
+}
+
+.effort_tracker textarea.form-control-sm :focus-visible {
+    outline: 0;
+}
+
+.valu input {
+     border: 0;
+    color: blue;
+    font-size: 10px;
+    text-align: center;
+    height: 35px;
+    border-radius: 0px;
+}
+
+.effort_tracker span.select2-results {
+    font-size: 10px;
+}
+
+textarea.form-control-sm {
+    border: 0;
+}
+
+textarea:focus-visible {
+    outline: none;
+}
+span.select2-results {
+    font-size: 10px;
+}
+.week_total_ {
+    vertical-align: middle;
+    text-align: center;
+    color: blue;
+    background: #e7ecf7!important;
+}
+.month_tl {
+    background: #d8d8d8 !important;
+}
+.tf00t_bck {
+    background: #e7ecf7 !important;
+}
+.thead_bck{
+    background:#d8d8d8;
+}

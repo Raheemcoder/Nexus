@@ -1,0 +1,799 @@
+﻿@model PMUMapping
+@{
+    ViewData["Title"] = "PMU Mappings";
+    Layout = "/Views/Shared/ProjectTrackerLayout.cshtml";
+    var userRole = Context.Session.GetString("RoleId");
+}
+<script src="@Url.Content("~/assets_EPPM/js/jquery-ui.js")"></script>
+<style>
+    .pd-8 {
+        padding-top: 8px !important
+    }
+</style>
+
+<input type="hidden" id="selectedProjectId" value="@Model.ProjectId" />
+<input type="hidden" id="selectedHubId" value="@Model.HubId" />
+<input type="hidden" id="selectedTemplate" value="@Model.Template_Id" />
+<input type="hidden" id="ApprovalSlNo" value="@Model.ApprovalSlNo" />
+<input type="hidden" id="ApprovalVersion" value="@Model.ApprovalVersion" />
+<input type="hidden" id="ApprovalStartDate" value="@Model.ApprovalStartDate" />
+<input type="hidden" id="ApprovalEndDate" value="@Model.ApprovalEndDate" />
+<input type="hidden" id="userRole" value="@userRole" />
+
+<section class="pmumappins">
+
+    <section>
+        <div class="">
+            <div class="-m_title_ ">
+                <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span>PMU Mappings</h4>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <div class="project_percentage">
+            <ul>
+                <li>Overall Start Date: <span id="OverAllStartDate"></span></li>
+                <li>Overall End Date: <span id="OverAllEndDate"></span></li>
+                <li>Overall Project Percentage: <span id="OverAllProjectPercentage">0</span>%</li>
+            </ul>
+        </div>
+    </section>
+
+    <section class="animate__animated1 slideInUp">
+        <div class="newPmu" id="">
+            <div id="message" class="m-login__erromsg">
+                @if (TempData["Message"] != null)
+                {
+                    <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
+                        @TempData["Message"].ToString()
+                        <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
+                    </div>
+                }
+            </div>
+
+            <div class="field_buttons d-flex justify-content-between align-items-center">
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div class="version-div width-dd-60 mr-2" style="display:none;">
+                        <div class="form-group">
+                            <div class="">
+                                <label class="control-label  p-0">Versions: </label>
+                                <div class=" p-0">
+                                    <select id="Version" class="form-control" data-singleselect>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="template-div width-dd-60 mr-2" style="display:none;">
+                        <div class="form-group">
+                            <div class="">
+                                <label class="control-label  p-0">Template: </label>
+                                <div class=" p-0">
+                                    <select id="fromtemplate" class="form-control" data-singleselect>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weekend-switching-div width-dd-60 mr-2" style="display:none;">
+                        <div class="form-group">
+                            <div class="">
+                                <label class="control-label  p-0">Weekend: </label>
+                                <div class=" p-0">
+                                    <select id="weekend-switching" class="form-control" data-singleselect>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="weekend-selected-span width-dd-60 pd-8 mr-2" style="display:none;">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <label class="control-label p-0 mr-2">Weekend: </label>
+                                <div class="p-0">
+                                    <b id="weekend-selected" style="font-size:12px"></b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-selected width-dd-60 mr-2" style="display:none;">
+                        <div class="form-group">
+                            <div class="">
+                                <label class="control-label p-0">KPI:</label>
+                                <div class="p-0">
+                                    @Html.DropDownListFor(model => model.YesOrNoKPI, new List<SelectListItem>
+                                     {
+                                         new SelectListItem { Text = "Yes", Value = "1" },
+                                         new SelectListItem { Text = "No", Value = "0" }
+                                     }, new { @class = "form-control data-singleselect", @data_singleselect = "" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kpi-selected-span width-dd-60 pd-8" style="display:none;">
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <label class="control-label p-0 mr-2">KPI: </label>
+                                <div class="p-0">
+                                    <b id="kpi-selected" style="font-size:12px"></b>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="button_top float-right d-flex align-items-center justify-content-end">
+                        <div role="button" id="DisplayVersionRemarks" class="mr-2 remarks-color">
+                            <i class="fas fa-info" title="Remarks"></i>
+                        </div>
+                        <button type="button" class="btn btn-success mr-1 critical-path" onclick="GetCriticalPath()" data-toggle="modal">Critical Path</button>
+                        <button type="button" class="btn btn-success mr-1" onclick="GetNotesData()" data-toggle="modal">Note</button>
+                        <button type="button" class="btn btn-success mr-1" onclick="GetCloneData()" id="btn-clone">Clone</button>
+                        <button type="button" class="btn btn-success mr-1" data-toggle="modal" id="wbsheader">WBS Header</button>
+                        <button type="button" class="btn btn-success mr-1" data-toggle="modal" id="task"> Task</button>
+                        <button type="button" class="btn btn-success mr-1" id="save-template" style="display:none;">Save as Template</button>
+                        <button type="button" class="btn btn-success mr-1" id="btn-save" style="display:none;">Save</button>
+                        <button type="button" class="btn btn-draft mr-1" id="btn-approve" style="display:none;">Approve</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="note_savedata_ mb-1 pmu_note ">
+                    <span id="Marquee_span">(Note: The New PMU Mappings information will be auto saved for every 5 minutes. Please ensure that WBS Header, Task, Duration, Start Date, End Date is entered to Auto save the data.)</span>
+                </div>
+            </div>
+
+            <div class="">
+                <div class="grid_view listgrid_table without_filter width_100" id="grid">
+                    <div class="animate__animated2 slideInUp table-Grid grid_table body_expand">
+                        <div class="">
+                            <div class="table-responsive" id="pmumappingtablediv">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+</section>
+
+@*wbs Header popup*@
+<div id="wbsheader-modal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    WBS Header
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row filter_status prototype_filter">
+                    <div class="col-md-6">
+                        <span class="text-success alt-saved-wbsheader" style="display:none;">WBS Header is saved successfully</span>
+                        <span class="text-success alt-delete-wbsheader" style="display:none;">WBS Header is deleted successfully</span>
+                        <div class="form-group">
+                            <label class="control-label">WBS Header</label>
+                            <input type="text" class="form-control noSpacesField" id="new-wbsheader" placeholder="Enter WBS Header" />
+                            <span class="text-danger Err-empty-wbsheader" style="display:none;">Please enter WBS Header</span>
+                            <span class="text-danger Err-exists-wbsheader" style="display:none;">WBS Header already exists</span>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3 mt-3">
+                        <button class="btn btn-search" id="add-new-wbsheader" title="search" type="button">
+                            Add
+                        </button>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="wbsheader-grid" class="table table-bordered"></table>
+                                    <div id="wbsheadergrid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*task popup*@
+<div id="task-modal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Task
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body pt-0">
+                <div class="row filter_status prototype_filter">
+                    <div class="col-md-12">
+                        <span class="text-success alt-saved-task" style="display:none;">Task is saved successfully</span>
+                        <span class="text-success alt-delete-task" style="display:none;">Task is deleted successfully</span>
+                    </div>
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label class="control-label">Task</label>
+                            <input type="text" id="new-task" class="form-control noSpacesField" placeholder="Enter the Task" />
+                            <span class="text-danger Err-empty-task" style="display:none;">Please enter task</span>
+                            <span class="text-danger Err-exists-task" style="display:none;">Task already exists</span>
+                        </div>
+                    </div>
+                    @if (userRole == "1")
+                    {
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="control-label">KPI task</label>
+                                @Html.DropDownListFor(model => model.YesNoProperty, new List<SelectListItem>
+                                {
+                                    new SelectListItem { Text = "--Select--", Value = "" },
+                                    new SelectListItem { Text = "Yes", Value = "1" },
+                                    new SelectListItem { Text = "No", Value = "0" }
+                                }, new { @class = "form-control", @data_singleselect = "data-singleselect" })
+                                <span class="text-danger Err-kpi-task" style="display:none;">Please select KPI Task</span>
+                            </div>
+                        </div>
+                    }
+                    <div class="col-md-2">
+                        <div class="form-group mg-17">
+                            <button class="btn btn-search" id="add-new-task" title="search" type="button">
+                                Add
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="task-grid" class="table table-bordered"></table>
+                                    <div id="taskgrid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*note popup*@
+<div id="notesmodal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Add Notes
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="">
+                        <strong> <span class="" id="notes_msg"></span></strong>
+                    </div>
+                    <div class="">
+                        <p class="mb-0">Project Name: <b id="project_text"></b></p>
+                        <p class="">HUB Name: <b id="Hub_text"></b></p>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Notes
+                            </label>
+                            <textarea class="form-control noSpacesField" rows="2" id="Notes"></textarea>
+                            <span id="btnRemarks" style="color: red;">Please enter Notes</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-12 mb-2">
+                        <div class="text-right">
+                            <button type="button" class="btn btn-draft" id="btnAdd">Add</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="viewlist" class="table table-bordered"></table>
+                                    <div id="pager_expected1"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*confirm Delete popup*@
+<div id="ConfirmDelete" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Confirm Delete</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span>Are you sure want to Delete ?</span>
+
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="deleteok">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Edit Dependency popup*@
+<div id="dependency" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Edit Predecessors</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span class="d-none">S No: <span id="SelectedRow"></span></span>
+                    <strong>Task: <strong id="SelectedTask"></strong></strong>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-boarderd" id="dependencyTable">
+                        <thead>
+                            <tr>
+                                <th>Row</th>
+                                <th class="-width250">Task</th>
+                                <th class="-width250">Type</th>
+                                <th>Lead/Lag</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-draft" id="dependencypopupOk">Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Show Document popup*@
+<div id="documents" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Documents History</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <strong class="documents-label"></strong><strong id="documentsSelectedRow"></strong>
+                <div class="table-responsive">
+                    <table class="table table-boarderd" id="documentsTable">
+                        <thead>
+                            <tr>
+                                <th class="-width250">Document Name</th>
+                                <th>Submitted By</th>
+                                <th>Submitted On</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Show Remarks popup*@
+<div id="remarks" class="modal fade layout_popup dependecy_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Remarks History</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <strong class="remarks-label"></strong><strong id="remarksSelectedRow"></strong>
+                <div class="table-responsive">
+                    <table class="table table-boarderd" id="remarksTable">
+                        <thead>
+                            <tr>
+                                <th class="-width250">Remarks</th>
+                                <th>Submitted By</th>
+                                <th class="submitontd">Submitted On</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Save version popup*@
+<div id="versionpopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xs">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Confirm Box</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <span id="VersionPopupMessage">Do you want to save it as a new Version?</span>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-md-12">
+                        <textarea id="VersionRemarks" class="form-control" placeholder="Version Remarks*"></textarea>
+                        <span class="text-danger hide">Please enter Remarks</span>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-3 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-draft" id="VersionPopupNewVersion">Yes</button>
+                        <button type="button" class="btn btn-draft" style="display:none;" id="VersionPopupSave">Save</button>
+                        <button type="button" class="btn btn-cancel" id="VersionPopupNoVersion" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Dependent Milestone changes popup*@
+<div id="dependentMilestonesAlert" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Dependent Task Details</h6>
+            </div>
+            <div class="modal-body">
+                <strong>
+                    Are you sure you want to update the Start date & End date for the dependent tasks?
+                </strong>
+                <div class="dependent-modal-max-height">
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>Sl No</th>
+                                <th>Task</th>
+                                <th>Dependency</th>
+                                <th>Duration</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                                <th>Revised Start Date</th>
+                                <th>Revised End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dependentAlertTable">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="dependentMilestonesAlertYes">Ok</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="dependentMilestonesAlertNo">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*save template popup*@
+<div id="save-as-template-popup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Template
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="">
+                        <div class="form-group">
+                            <label class="control-label">
+                                Do you want to save it as a new template?
+                            </label>
+                            <input type="text" class="form-control" id="new-template-name" placeholder="Template Name*" autocomplete="off" />
+                            <span class="text-danger err-need-template" style="display:none;">Please Enter Template Name</span>
+                            <span class="text-danger err-exists-template" style="display:none;">Template Name Already Exists</span>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="col-md-12">
+                        <div class="text-right">
+                            <button type="button" class="btn btn-draft" id="save-as-template">Save</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Clone Project popup*@
+<div id="cloneModal" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">
+                    Clone Project
+                </h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="control-label">
+                                        From Project:
+                                    </label>
+                                </div>
+                                <div class="col-md-9">
+                                    @Html.DropDownListFor(
+                                       m => m.MappedProjectId,
+                                       new SelectList(Model.MappedprojectList, "Value", "Text"),
+                                       "--Select the Project--",
+                                       new
+                                            {
+                                           @class = "form-control dropdown projectDrop dropdown-singleselect",
+                                           @data_singleselect = "data-singleselect"
+                                       }
+                                    )
+                                    <span class="text-danger FromProjectId_error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="control-label">
+                                        From HUB:
+                                    </label>
+                                </div>
+                                <div class="col-md-8">
+                                    @Html.DropDownListFor(
+                                        m => m.MappedHubId,
+                                        new SelectList(Model.MappedhubList, "Value", "Text"),
+                                        "--Select the HUB--",
+                                        new
+                                             {
+                                            @class = "form-control dropdown projectDrop dropdown-singleselect",
+                                            @data_singleselect = "data-singleselect"
+                                        }
+                                    )
+                                    <span class="text-danger FromHubId_error"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <label class="control-label">
+                                        Is Resources Required:
+                                    </label>
+                                </div>
+                                <div class="col-md-6">
+                                    <select id="resource-req" class="form-control dropdown projectDrop dropdown-singleselect">
+                                        <option value="1">Yes</option>
+                                        <option value="0">No</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 mt-2">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <label class="control-label">
+                                        To Project:
+                                    </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <span><strong id="To_Project"></strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mt-2">
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <label class="control-label">
+                                        To HUB:
+                                    </label>
+                                </div>
+                                <div class="col-md-8">
+                                    <span><strong id="To_Hub"></strong></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div>
+                    <div class="col-md-12 mt-2">
+                        <div class="text-right">
+                            <button type="button" value="Clone" class="btn btn-draft c-btn" id="Clone-Submit">Clone</button>
+                            <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*KPI Task popup*@
+<div id="pendingkpimodal" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h6 class="modal-title">Pending KPI Tasks</h6>
+                    <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <span id="displaySpanmsg"></span>
+                            <div class="row">
+                                <div class="">
+                                    <div class="m-table__main">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="kpigrid" class="table table-bordered"></table>
+                                            <div id="kpipager"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons mt-2">
+                                    <div class="save_buttons float-right text-right">
+                                        <button type="button" class="btn btn-cancel approvekpi" data-bs-dismiss="modal">Ok</button>
+                                        <button type="button" class="btn btn-draft savekpi" data-bs-dismiss="modal" id="KPIConfirm">Ok</button>
+                                        <button type="button" class="btn btn-cancel savekpi" data-bs-dismiss="modal">Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Unsaved changes popup*@
+<div id="UnsavedChangesAlert" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">Alert</h6>
+                <button type="button" class="close" data-bs-dismiss="modal" id="unsavedchangesclose"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span id="unsavedmessage">
+                </span>
+                <div class="col-md-12 mt-3 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-draft" data-bs-dismiss="modal" id="saveunsavedchanges">Save</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal" id="continueunsavedchanges">Continue Anyway</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Version remarks popup*@
+<div id="VersionRemarksPopup" class="modal fade layout_popup" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Remarks
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <div class="">
+                    <div class="">
+                        <div class="row">
+                            <div class="m-table__main grid_height">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="Versionremarksdisplay" class="table table-bordered"></table>
+                                    <div id="Versionremarksdisplaypager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12 mt-2 p-0">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="@Url.Content("~/js/ProjectTracker/PMUMappings.js")"></script>

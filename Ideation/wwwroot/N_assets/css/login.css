@@ -1,0 +1,149 @@
+﻿
+@font-face {
+    font-family: 'robotoitalic';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-italic-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_lightregular';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-light-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_lightitalic';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-lightitalic-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-lightitalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_mediumregular';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-medium-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-medium-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_mediumitalic';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-mediumitalic-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-mediumitalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'robotoregular';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-regular-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_thinregular';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-thin-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-thin-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_thinitalic';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-thinitalic-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-thinitalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_blackregular';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-black-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-black-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'roboto_blackitalic';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-blackitalic-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-blackitalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'robotobold';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-bold-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'robotobold_italic';
+    src: url('../Fonts/Fonts-Roboto/Roboto/roboto-bolditalic-webfont.woff2') format('woff2'), url('../Fonts/Fonts-Roboto/Roboto/roboto-bolditalic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    padding: 0px;
+    margin: 0px;
+    font-family: 'robotoregular';
+    color: #000;
+    font-size: 12px;
+}
+
+h1, h2, h3, h4, h5, h6, p, span, label, div {
+    font-family: 'robotoregular';
+    font-weight: normal;
+    color: #121212;
+}
+
+.bg_login {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    background: url(/assets/images/login.png) no-repeat;
+    background-position: right;
+}
+
+.login_form {
+    padding-top: 30px;
+}
+
+.login_logo h4 {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 9px;
+}
+
+.login_logo p {
+    font-size: 14px;
+}
+
+.form-control {
+    color: #000;
+}
+
+    .form-control:focus {
+        color: #000;
+        background-color: #fff;
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: none;
+    }
+
+.btn-primary {
+    width: 100%;
+}
+
+.icons_login {
+    position: absolute;
+    right: 10px;
+    font-size: 15px;
+    color: #7b7b7b;
+    top: 37px;
+    cursor: pointer;
+}
+
+.form-group {
+    position: relative;
+}

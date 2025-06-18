@@ -1,0 +1,272 @@
+﻿@model Ideation.Models.AppMappingDetails
+@{
+
+    Layout = null;
+    var userName = Context.Session.GetString("UserName");
+    //List<AppMappingDetails> details = ViewBag.mappings;
+}
+<!DOCTYPE html>
+<html>
+<head>
+
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewData["Title"] - Project Nexus</title>
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/N_assets/images/TP/Small_ICON_TP Logo_Transparent.png")" />
+    <script src="https://kit.fontawesome.com/ce2a6a1038.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @*<link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">*@
+    <link href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/animate.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/main.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/Style.css")" rel="stylesheet" asp-append-version="true" />
+    <link href="@Url.Content("~/css/Dashboard.css")" rel="stylesheet" asp-append-version="true" />
+    <style>
+    </style>
+</head>
+<body class="login_bg">
+    <div>
+        <div id="wrapper">
+
+            <!-- top navbar -->
+            <nav class="navbar navbar-fixed-top pl-0 pr-0">
+                <div class="container-fluid align-items-center pt-2">
+                    <div class="navbar-brand ps-2 ">
+                        <a href="@Url.Content("~/Landing/Index")">
+                            <img src="~/N_assets/images/TP/Large_TP_Logo_Transparent.png"  alt="Icon" width="195px" />
+                        </a>
+                    </div>
+                    <div class="ispace_logo" role="navigation">
+                         <p>Project Nexus</p>
+                    </div>
+
+                    <div class="right_header">
+                        <div class="d-flex justify-content-end align-items-center">
+
+                            <ul class="navbar-nav admin_nav">
+                                <li class="dropdown admin_dropdown">
+
+                                    <a class="dropdown-toggle icon-menu" href="@Url.Content("#")" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <span b-8ao9xi5n6c="" class="usr_nmr">@userName</span>
+                                        <img b-ikyrktfwkp="" src="@Url.Content("~/images/user.png")" alt="user" class="usr_img">
+
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end p-2 shadow ">
+                                        <li><a class="dropdown-item" href="@Url.Content("~/Login/Login")"><i class="fa fa-sign-out"></i> <span>Logout</span></a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row dash">
+            @foreach (var details in ViewBag.mappings)
+            {
+                @if (@details.AppShortName == "IW")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=IW")">
+                            <div class="box one">
+                                <img src="@Url.Content("~/images/icon-1.png")" class="img_align ">
+                                <div>
+                                    <h4 class="ani">IDEATION WORKFLOW</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "PB")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=PB")" id="PB">
+                            <div class="box one">
+                                <img src="@Url.Content("~/images/icon-3.png")" class="img_align ">
+                                <div>
+                                    <h4 class="ani">PROJECT BRIEF</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "PT")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=PT")">
+                            <div class="box one">
+                                <img src="@Url.Content("~/images/project-tracker.png")" class="img_align ">
+                                <div>
+                                    <h4 class="ani">PROJECT TRACKER</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "ET")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=ET")">
+                            <div class="box one">
+                                <img src="@Url.Content("~/images/effort.png")" class="img_align ">
+                                <div>
+                                    <h4 class="ani">EFFORT BOOKING</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "MM")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=MM")">
+                            <div class="box two">
+                                <img src="@Url.Content("~/images/icon-2.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">MASTER MANAGEMENT</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "PROT")
+                {
+
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=PROT")">
+                            <div class="box one">
+                                <img src="@Url.Content("~/images/icon-4.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">PROTOTYPE</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "PU")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=PU")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/project-update.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">PROJECT UPDATES</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                }
+
+                @if (@details.AppShortName == "CGD")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=CGD")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/bank-claim-2.png")" class="img_align ">
+                                <div>
+                                    <h4 class="ani">CLAIMS GRID DOCUMENT</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "RR")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=RR")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/risk-register.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">RISK REGISTER</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "NPDLM")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=NPDLM")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/npd_latest.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">NPD Launch Master</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "PI")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=PI")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/pi.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">PROJECT INITIATION</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+
+                @if (@details.AppShortName == "RID")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=RID")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/RID-1.png")" class="img_align" style="width:56%;">
+                                <div>
+                                    <h4 class="ani">REGULATORY INGREDIENT DATABASE</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+                @if (@details.AppShortName == "RDMS")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=RDMS")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/DMS.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">RDMS</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+                @if (@details.AppShortName == "HGH")
+                {
+                    <div class="col-auto">
+                        <a href="@Url.Content("~/Landing/Redirection?PageName=HGH")">
+                            <div class="box animate fadeInDown two">
+                                <img src="@Url.Content("~/images/digital-transformation.png")" class="img_align">
+                                <div>
+                                    <h4 class="ani">HGH</h4>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                 }
+             }
+
+        </div>
+    </div>
+
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.js")"></script>
+</body>
+</html>

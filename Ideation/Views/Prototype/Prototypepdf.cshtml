@@ -1,0 +1,457 @@
+﻿@model Ideation.Models.PrototypeReport
+@{
+    Layout = null;
+}
+
+<html>
+<head>
+
+    <link href="https://leap.himalayawellness.com/Logo_Font/css/PDFStyle.css" rel="stylesheet" />
+
+
+    <style>
+        .him_logo {
+            float: right;
+            width: 100%;
+            text-align: right
+        }
+
+        .form-control {
+            width: 100%;
+            border: 1px solid #dedede;
+            padding: 5px 10px;
+            height: 30px;
+        }
+
+        .pdf_body td {
+            font-family: 'rotis_semisans_stdregular' !important;
+            font-size: 12px;
+            vertical-align: top;
+            font-weight: 600;
+        }
+
+        .pdf_body p {
+            font-family: 'rotis_semisans_stdregular' !important;
+            font-size: 16px;
+            vertical-align: top;
+        }
+
+        .page-break {
+            display: block;
+            page-break-before: always;
+        }
+
+        .table .td_pad .td {
+            padding: 0px 0px 0px 0px;
+        }
+
+        b, strong {
+            font-family: 'rotis_semisans_stdextrabold';
+            font-weight: 700;
+        }
+        
+    </style>
+</head>
+
+<body class="pdf_body">
+    <table class="pdf_body" width="95%" style="border: 1px solid black; border-collapse: collapse;margin:0px auto;">
+
+        <tbody>
+           
+            <tr>
+                <td scope="colgroup" style="font-size:16px;padding: 5px 0px 5px 10px;width:90%;text-align: center;font-weight: 700;"><strong>Project Prototype Report</strong></td> <!-- merge four columns -->
+                <td style="text-align: center;">
+                    <img src="http://tpfloxi-001-site86.atempurl.com/images/logohmnew.png" style="height:30px;" />
+                </td> <!-- merge two rows -->
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="pdf_body" width="95%" style="border: 0px 1px solid black; border-collapse: collapse;margin:0px auto;border-top:0px;">
+        <tbody>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;width:38.5%;border-top:0px;">
+                    <label><b>Product Name :</b></label>
+                </td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;border-top:0px;">
+                                @Html.Raw(item.ProductName)
+                            </td>
+                        }
+                    }
+                }
+
+            </tr>
+        </tbody>
+    </table>
+
+    <table width="95%" class="pdf_body"  style="border: 1px solid black; border-collapse: collapse;margin:0px auto;border-top:0px">
+
+        <tbody>
+
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;border-top:0px;">
+                    <b>Prototype No.</b>
+                </td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;border-top:0px;">
+                                @Html.Raw(item.PrototypeNo)
+                            </td>
+                        }
+                    }
+                }
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;border-top:0px;">
+                    <b>Version</b>
+                </td>
+
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;border-top:0px;">
+                                @Html.Raw(item.NoOfSubmissions)
+                            </td>
+                        }
+                    }
+                }
+              
+
+
+            </tr>
+        </tbody>
+    </table>
+
+
+    <br />
+    <h4 style="text-align:center;" class="pdf_body">Project Prototype Details</h4>
+    <table width="60%" class="pdf_body" style="border: 1px solid black; border-collapse: collapse;margin:5px auto;">
+
+        <tbody>
+
+            <tr>
+
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; width:50%;"><b>Name</b></td>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>Details</b></td>
+                @*                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;">&nbsp;</td>
+                *@
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>Project No.</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.ProjectNo)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>HGH Code</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.HghCode)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>Product Name</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.ProductName)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>Provisional Claim</b></td> @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.ProvisionalClaim)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>Dosage Form</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.DosageForm)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>First submission date to HUB</b></td>
+
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.FirstSubmissionDate)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>Final approval date (by HGML)</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.FinalApproveDate)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>No.of days taken for completion</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.NoOfDaysTaken)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>Approved Batch No.</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.ApprovedBatchNo)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+
+            <tr>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;"><b>No.of Submission</b></td>
+                @if (Model.headerdata != null)
+                {
+                    foreach (var item in Model.headerdata)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.NoOfSubmissions.TrimStart('0'))
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        </tbody>
+    </table>
+    <div>
+
+        <div style="margin:20px auto;width: 95%;" class="pdf_body">
+            <p style="font-weight: 500;">Note: NA- Not Applicable/Not part of document approval. </p>
+        </div>
+
+
+
+    </div>
+
+
+
+
+    <table width="95%" class="pdf_body"  style="border-collapse: collapse;margin: -6px auto;">
+        <thead>
+        <tr>
+
+                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Initiated By</b></td>
+                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Reviewed By</b></td>
+                @if (Model.stagehubdata != null)
+                {
+                    foreach (var item1 in Model.stagehubdata)
+                    {
+                        <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;">
+                            <b>Approved By</b>
+                        </td>
+                    }
+                }
+                <td style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight: 600;"><b>Approved By</b></td>
+            </tr>
+        </thead>
+        <tbody>
+
+            <tr>
+
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">F&D</td>
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">PMD</td>
+             
+                @if (Model.stagehubdata != null)
+                {
+                    foreach (var item1 in Model.stagehubdata)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item1.hubnames)
+                        </td>
+                    }
+                }
+                <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">HGML</td>
+
+            </tr>
+            <tr>
+                @*  Created BY *@
+                @if (Model.stage2data != null)
+                {
+                    foreach (var item in Model.stage2data)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.Stage2Createdby)
+                            </td>
+                        }
+                    }
+                }
+                else if (Model.stage2data == null)
+                {
+                    <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight:400"></td>
+                }
+
+                @if (Model.stage3data != null)
+                {
+                    @foreach (var item in Model.stage3data)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.Stage3Createdby)
+                            </td>
+                        }
+                    }
+                }
+                else if (Model.stage3data == null)
+                {
+                    <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight:400"></td>
+                }
+
+                @*  for different hubs*@
+
+                @if (Model.stagehubdata != null)
+                {
+                    foreach (var item1 in Model.stagehubdata)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item1.hubcreatedby)
+                        </td>
+                    }
+                }
+
+                @if (Model.stage5data != null)
+                {
+                    @foreach (var item in Model.stage5data)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.Stage5Createdby)
+                            </td>
+                        }
+                    }
+                }
+                else if (Model.stage5data == null)
+                {
+                    <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px;font-weight:400"></td>
+                }
+            </tr>
+            @*Approved Date*@
+            <tr>
+
+                @if (Model.stage2data != null)
+                {
+                    foreach (var item in Model.stage2data)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.ApprovedDate2)
+                            </td>
+                        }
+                    }
+                }
+
+                @if (Model.stage3data != null)
+                {
+                    foreach (var item in Model.stage3data)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.ApprovedDate3)
+                            </td>
+                        }
+                    }
+                }
+                @*  for different hubs*@
+                @if (Model.stagehubdata != null)
+                {
+                    foreach (var item1 in Model.stagehubdata)
+                    {
+                        <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                            @Html.Raw(item1.ApprovedDatehub)
+                        </td>
+                    }
+                }
+                @if (Model.stage5data != null)
+                {
+                    foreach (var item in Model.stage5data)
+                    {
+                        {
+                            <td scope="col" style="border: 1px solid black;padding: 5px 0px 5px 10px; font-weight:400;">
+                                @Html.Raw(item.ApprovedDate5)
+                            </td>
+                        }
+                    }
+                }
+            </tr>
+        </tbody>
+    </table>
+    <div style="margin:20px auto;width: 95%;" class="pdf_body">
+        <p style="font-weight: 500;">Note: This document has been generated electronically and is valid without signature.<br />RD118/F01-00 </p>
+    </div>
+
+</body>
+</html>

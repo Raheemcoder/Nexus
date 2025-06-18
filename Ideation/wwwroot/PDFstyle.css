@@ -1,0 +1,55 @@
+﻿
+@font-face {
+    font-family: 'rotis_semisans_stdbold';
+    src: url('roti-sans/rotissemisansstd-bold-webfont.woff2') format('woff2'), url('roti-sans/rotissemisansstd-bold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'rotis_semisans_stdextrabold';
+    src: url('roti-sans/rotissemisansstd-extrabold-webfont.woff2') format('woff2'), url('roti-sans/rotissemisansstd-extrabold-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+@font-face {
+    font-family: 'rotis_semisans_stditalic';
+    src: url('roti-sans/rotissemisansstd-italic-webfont.woff2') format('woff2'), url('roti-sans/rotissemisansstd-italic-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+@font-face {
+    font-family: 'rotis_semisans_stdlight';
+    src: url('roti-sans/rotissemisansstd-light-webfont.woff2') format('woff2'), url('roti-sans/rotissemisansstd-light-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+@font-face {
+    font-family: 'rotis_semisans_stdLtIt';
+    src: url('roti-sans/rotissemisansstd-lightit-webfont.woff2') format('woff2'), url('roti-sans/rotissemisansstd-lightit-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+
+
+@font-face {
+    font-family: 'rotis_semisans_stdregular';
+    src: url('roti-sans/rotissemisansstd-regular-webfont.woff2') format('woff2'), url('roti-sans/rotissemisansstd-regular-webfont.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}

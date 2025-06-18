@@ -1,0 +1,82 @@
+﻿@model Ideation.Models.RID
+@{
+    Layout = null;
+    var userName = Context.Session.GetString("UserName");
+
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Index</title>
+    <link href="@Url.Content("~/assets_RID/assets/css/bootstrap.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/assets_RID/assets/flaticons-font/flaticon_ispace.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/assets_RID/assets/js/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/assets_RID/assets/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/js/aes.js")"></script>
+</head>
+
+<link href="@Url.Content("~/assets_rid/css/rid.css")" rel="stylesheet" />
+
+<body style="padding: 10px;">
+    <div class="header_section d-flex justify-content-between align-items-center">
+        <div>
+            <img src="@Url.Content("~/assets_RID/assets/images/logohmnew.png")" width="60px" />
+        </div>
+        <div>
+            
+            <a href="@Url.Content("~/Landing/index")" class="RID_ispaceicon"><img src="@Url.Content("~/assets_RID/assets/images/ispace-logo.png")" width="120px" /></a>
+        </div>
+        <div>
+            <div>
+                <span>@userName</span>
+            </div> 
+        </div>
+    </div>
+
+    <div class="card-list">
+        <div class="RID_Division animate__fadeInUp">
+            <ul>
+                @foreach (var division in Model.DivisionList)
+                {
+                    <li>
+                        <div class="tile_projects">
+                            <a href="javascript:void(0)" class="IngredientCategory" onclick="GetIngredient('@division.DivisionId', '@division.DivisionName')">
+                                <h5>@division.DivisionName</h5>
+                            </a>
+                        </div>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+
+<script>
+    var ROOT = "@Url.Content("~/")";
+
+    function GetIngredient(divisionId, divisionName) {
+        debugger;
+        window.location.href = ROOT + "RID/SearchRID" + '?q=' + Encrypt("DivisionId=" + divisionId + "&DivisionName=" + divisionName)
+
+    }
+
+    function Encrypt(str) {
+        var key = CryptoJS.enc.Utf8.parse('8080808080808080');
+        var iv = CryptoJS.enc.Utf8.parse('8080808080808080');
+        var enString = CryptoJS.AES.encrypt(CryptoJS.enc.Utf8.parse(str), key,
+            {
+                keySize: 128 / 8,
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            });
+        return enString;
+    }
+</script>

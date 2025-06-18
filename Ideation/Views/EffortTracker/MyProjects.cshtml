@@ -1,0 +1,24 @@
+﻿
+@{
+    ViewBag.Title = "EffortTracker";
+    Layout = "~/Views/Shared/_ETLayout.cshtml";
+}
+<div class="card-box myProject">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="page-title">
+                <h4 class="-mb-3">My Projects</h4>
+            </div>
+
+            <div class="m-table__main mmproject">
+                <div class="m-table__responsive -virtual-scroll m-table__responsivemaster">
+                    <div>
+                        <table id="myProjectsJqgrid" class="table table-bordered"></table>
+                        <div id="pager"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/MyProjects.js")" asp-append-version="true"></script>

@@ -1,0 +1,742 @@
+﻿
+@model Ideation.Models.PMUMapping
+@{
+    ViewBag.Title = "PMUMapping";
+    Layout = "~/Views/Shared/_EPPMLayout.cshtml";
+
+}
+
+
+<style>
+    .select2-container--open .select2-dropdown {
+        left: 0;
+        width: 380px !important;
+    }
+
+    .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444 !important;
+    }
+
+    i.fas.fa-trash {
+        font-size: 11px;
+        line-height: 2;
+        color: #fff !important;
+    }
+
+    a.grid-icon-only.Rejecticon {
+        height: 20px;
+        width: 20px;
+        justify-content: center;
+        display: -webkit-inline-flex;
+        border-radius: 50%;
+        margin: 0 1px;
+        color: #fff;
+        background-color: #1e78ff;
+    }
+
+    .deletemsg {
+        color: black;
+        font-size: 13px !important;
+    }
+
+    .m-table__full-screen .ui-jqgrid-bdiv {
+        max-height: 520px !important;
+    }
+</style>
+<div class="card-box" id="">
+    <div class="row align-items-center ">
+        <div class="col-md-2">
+            <div class="page-title left_title">
+                <h4 class="-mb-3">PMU Mappings</h4>
+            </div>
+            </div>
+        <div class="col-md-3">
+            <div class="row mt-2" id="TemplateListdiv">
+                <div class="col-md-9 p-0">
+            @Html.DropDownListFor(m => m.TemplateId, new SelectList(Model.TemplateList, "Value", "Text"), "-- Select Template List--", new { @class = "form-control dropdown projectDrop dropdown-singleselect", @id = "TemplateList" })
+
+            <span id="TemplateList_ErrorMilestoneList_Error" style="color:red"></span>
+            </div>
+                <div class="col-md-3 Mistonelistdiv ">
+                    <button type="button" class="btn-add" id="btnTemplateAdd"><i class="fas fa-search"></i></button>
+                </div>
+        </div>
+        </div>
+        <div class="col-md-7 pr-0">
+        <div class="page-add__button mb-0 mt-3 ">
+            <div class="col align-self-end">
+                <div class="float-right save_approve refresh_approve">
+                 @*   <div class="c-filter__search--icon" id="Search_btn">
+                            <i class="fa fa-refresh" aria-hidden="true"></i>
+                        </div>*@
+                        <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode">
+                            <i class="fas fa-expand fullscreen_expand fullscreen-btn " data-toggle="tooltip" data-placement="bottom" title="Full Screen Mode" ></i>
+                            <i class="fas fa-close fullscreen_minimize exitscreen-btn" data-toggle="tooltip" data-placement="bottom" title="Exit Full Screen Mode"></i>
+                        </button>
+                       @* <button onclick="$(document).toggleFullScreen()">Toggle Fullscreen mode (Document)</button>*@
+                    <button type="button" id="BtnClone" class="btn btn-xs  c-btn mt-0">Clone</button>
+
+                    <button type="button" id="btnRefresh" class="btn btn-warning btn_refresh mt-0" data-toggle="tooltip" data-placement="bottom" title="Rearrange"><i class="fas fa-sync" aria-hidden="true"></i></button>
+                    <button type="button" style="display:none" id="ApproveModal" class="btn-add approve_btn mt-0">Approve</button>
+                    <button type="button" id="SaveModel" class="btn-add mt-0 submit_btn">Save</button>
+
+                </div>
+            </div>
+        </div>
+        @*<div class="alert alert-warning d-flex align-items-center" role="alert" id="detailscard" style="display:none;">
+                <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:"><use xlink:href="#exclamation-triangle-fill" /></svg>
+                <div>
+                    Details about this project can be found in the New PMU mapping page
+
+                </div>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                </button>
+            </div>*@
+
+    </div>
+    </div>
+
+    <div class="m-form -filter-form mb-0">
+        <div class="m-form__container">
+            <div class="m-form__List">
+                <div class="row">
+
+                    <div class="col-md-3">
+                        <div id="message" class="m-login__erromsg">
+                            @if (TempData["MessagePMU"] != null)
+                            {
+                                <div class="alert @TempData["MessageClassPMU"].ToString() alert-dismissible" role="alert" id="message_alert">
+                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                        <span aria-hidden="true" class="l_err_msg_close">&times;</span>
+                                    </button>
+                                    @TempData["MessagePMU"].ToString()
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row" id="TemplateListdiv">
+                    @*<div class="col-md-12">
+                        <div class="row align-items-center">
+                            <div class="col-md-5">
+                                <div class="row row align-items-center">
+                                    <div class="col-md-4">
+                                        <label class="control-label">Templates List</label>
+                                    </div>
+                                    <div class="col-md-8">
+                                        <select class="form-control projectDrop custmscroll" data-singleselect id="TemplateList">
+                                        <option>Select the template</option>
+                                        @if (ViewBag.TemplateList != null)
+                                        {
+                                        foreach (var item in ViewBag.TemplateList)
+                                        {
+                                        <option id="@item.Value"  value="@item.Value">@item.Text</option>
+                                        }
+                                        }
+                                        </select>
+                                        @Html.DropDownListFor(m => m.TemplateId, new SelectList(Model.TemplateList, "Value", "Text"), "-- Select --", new { @class = "form-control dropdown projectDrop dropdown-singleselect", @id = "TemplateList" })
+
+                                        <span id="TemplateList_ErrorMilestoneList_Error" style="color:red"></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-2 Mistonelistdiv ">
+                                <button type="button" class="btn-add" id="btnTemplateAdd">Display</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 Mistonelistdiv project_list">
+                        <label class="control-label">Templates List</label>
+                        
+                        @Html.DropDownListFor(m => m.TemplateId, new SelectList(Model.TemplateList, "Value", "Text"), "-- Select --", new { @class = "form-control dropdown projectDrop dropdown-singleselect", @id = "TemplateList" })
+
+                        <span id="TemplateList_ErrorMilestoneList_Error" style="color:red"></span>
+                    </div>
+                    <div class="col-md-2 Mistonelistdiv mt-25">
+                        <button type="button" class="btn-add" id="btnTemplateAdd">Display</button>
+                    </div>
+                    </div>*@
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row pmu_grid mt-2">
+        <div class="col-md-12">
+            <div class="m-table__main submain_grid">
+                <div class="m-table__responsive -virtual-scroll">
+                    <table id="jqgrid" class="table table-bordered"></table>
+                    <div id="pager"></div>
+                </div>
+
+
+            </div>
+            @*<div class="row">
+                    <div class="col-md-12">
+                <div class="float-right save_approve mt-4 mb-0 text-right">
+                    <button type="button" hidden class="btn-add approve_btn">Approve</button>
+                    <button type="button" id="SaveModel1" class="btn-add submit_btn">Save</button>
+                    @*<button type="button" class="btn btn-xs btn-info c-btn save_btn">Save</button>*@
+
+        </div>
+
+        <div class="col-md-12 mt-2">
+            <div class="form-group checkboxpmu pb-0 text-left float-left_PMU p-0">
+                @Html.CheckBoxFor(m => m.AccepptVersionCreation, new { @class = "displaycheck" })
+                <b> Do you want to create the new version for this changes</b>
+            </div>
+
+
+            <div class="">
+               @* <div class="save_approve mb-0 text-right">
+                    <button type="button" hidden class="btn-add">Approve</button>
+                    <button type="button" id="SaveModel1" class="btn-add submit_btn">Save</button>
+                    <button type="button" class="btn btn-xs btn-info c-btn save_btn">Save</button>
+                </div>*@
+            </div>
+        </div>
+        @*<div class="row" id="Versionchange">
+            <div class="col-md-12">
+                <label class="control-label">Version*</label>
+
+                @Html.TextBoxFor(model => model.Version, new { @id = "Version", @class = "form-control" })
+                <span id="VersionError" style="color:red;"></span>
+            </div>
+        </div>*@
+    </div>
+</div>
+
+</div>
+</div>
+@*var UserName=Context.Session.GetString("UserName").ToString();*@
+<input type="hidden" id="LoggedinUser" value="@Model.UserName" />
+
+
+@if (Context.Session.GetString("projectName") != null)
+{
+    var projectName = Context.Session.GetString("projectName");
+    var projectId = Context.Session.GetString("projectId");
+    <input type="hidden" id="selectedProjectName" value="@projectName" />
+    <input type="hidden" id="selectedProjectId" value="@projectId" />
+}
+<!-- Modal -->
+<div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content confirmationpop">
+
+            <div class="modal-body text-center confirmationpop">
+                <h4>Are you sure you want to Approve the Project?</h4>
+                <button type="button" id="OkApproval" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                <button type="button" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Modal for date changes -->
+<!--<div class="modal fade" id="UserConfirmationforStartDate" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog">-->
+
+        <!-- Modal content-->
+        <!--<div class="modal-content confirmationpop">
+
+            <div class="modal-body text-center confirmationpop">
+                <h4>Are you sure you want to update the Start date & End date for the dependent milestones ?</h4>
+                <button type="button" id="ChangeDate" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                <button type="button" id="CancelDate" class="btn btn-xs btn-success c-btn CancelDate" data-dismiss="modal">No</button>
+                <button type="button" id="NoButton" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>-->
+
+
+
+<div id="UserConfirmationforStartDate" class="modal fade" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Dependent Milestone Details</h5>
+                </div>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <h4>Are you sure you want to update the Start date & End date for the dependent milestones ?</h4>
+
+                            <div class="row">
+
+                                <div class="">
+
+                                    <div class="m-table__main">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="Dependentjqgrid" class="table table-bordered"></table>
+                                            <div id="Dependentjqgrid"></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                    <div class="save_buttons float-right text-right">
+                                      
+                                            <button type="button" id="ChangeDate" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                                            <button type="button" id="CancelDate" class="btn btn-xs btn-success c-btn CancelDate" data-dismiss="modal">No</button>
+                                            <button type="button" id="NoButton" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Modal for end date changes -->
+<!--<div class="modal fade" id="UserConfirmationforenddate" tabindex="-1" data-backdrop="static" data-keyboard="false" role="dialog">
+    <div class="modal-dialog">-->
+
+        <!-- Modal content-->
+        <!--<div class="modal-content confirmationpop">
+
+            <div class="modal-body text-center confirmationpop">
+                <h4>Are you sure you want to update the Start date & End date for the dependent milestones ?</h4>
+                <button type="button" id="endChangeDate" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                <button type="button" id="CancelDate" class="btn btn-xs btn-success c-btn CancelDate" data-dismiss="modal">No</button>
+                <button type="button" id="EndNoButton" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+
+    </div>
+</div>-->
+
+<div id="UserConfirmationforenddate" class="modal fade" role="dialog" tabindex="-1" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">Dependent Milestone Details</h5>
+                </div>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+                            <h4>Are you sure you want to update the Start date & End date for the dependent milestones ?</h4>
+
+                            <div class="row">
+
+                                <div class="">
+
+                                    <div class="m-table__main">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="Dependentjqgridend" class="table table-bordered"></table>
+                                            <div id="Dependentjqgr"></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                    <div class="save_buttons float-right text-right">
+
+                                        <button type="button" id="endChangeDate" class="btn btn-xs btn-info c-btn" data-dismiss="modal">Ok</button>
+                                        <button type="button" id="CancelDate" class="btn btn-xs btn-success c-btn CancelDate" data-dismiss="modal">No</button>
+                                        <button type="button" id="EndNoButton" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="addModal" class="modal fade m-modal -table-modal" data-backdrop="static" role="dialog">
+    <div class="modal-dialog modal-lg lg_width">
+        <div class="modal-content width_100">
+            <div class="modal-header">
+                <div class="m-modal__header--center">
+                    <h5 class="modal-title">Clone Project Detail</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+
+                            <form class="m-form__form">
+                                <div class="row">
+                                    <div class="col-md-12 col-lg-12 col-xl-12 -auto-margin">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-4">From Projects*</label>
+                                                    <div class="col-md-8">
+                                                        <div class="">
+                                                            <div class="">
+
+                                                                @*<input type="text" class="form-control datepicker" />*@
+                                                                <select class="form-control projectDrop" data-singleselect id="FromProjectId">
+                                                                    <option value="0">Select Project Name</option>
+                                                                    @foreach (var item in Model.ProjectsmappedList)
+                                                                    {
+                                                                        <option value="@item.ProjectId">@item.ProjectName</option>
+
+                                                                    }
+                                                                </select>
+                                                                <span class="text-danger  FromProjectId_error"></span>
+
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            @*<div class="form-control__inline--control -flex">*@
+                                            <div class="col-md-6">
+                                                <div class="form-group row">
+                                                    <label class="control-label col-md-4">To Projects*</label>
+                                                    <div class="col-md-8">
+                                                        <div class="">
+                                                            <div class="">
+                                                                <select class="form-control projectDrop " data-singleselect id="ToProjectId">
+                                                                    <option value="0">Select Project Name</option>
+                                                                    @foreach (var item in Model.ProjectsunmappedList)
+                                                                    {
+                                                                        <option value="@item.ProjectId">@item.ProjectName</option>
+
+                                                                    }
+                                                                </select>
+                                                                <span class="text-danger  ToProjectId_error"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                            <input type="button" value="Save" class="btn btn-xs btn-info c-btn " id="btnSubmit" />
+                                            <button type="button" class="btn btn-xs btn-warning c-btn -cancel ml-2" data-dismiss="modal">Cancel</button>
+                                            @*<button type="submit" class="btn btn-xs btn-info c-btn -sudmit">Submit</button>*@
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<div class="modal" tabindex="-1" id="pendingApprovalmodel" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>The following milestone(s) have received requests to extend the end date and these milestone(s) are currently on "Pending for Approval" status. Milestone(s) details cannot be updated until these requests have been addressed. </p>
+                <div id="Pendingapprovalmilestones"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="pendingforApprovalbtn" class="btn btn-xs  c-btn mt-0">OK</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="dependentMilestones" class="modal fade" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h5 class="modal-title">File Upload Details</h5>
+                </div>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span>
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+
+                            <div class="row">
+
+                                <div class="">
+
+                                    <div class="m-table__main">
+                                        <div class="m-table__responsive -virtual-scroll">
+                                            <table id="FileUploadjqgrid" class="table table-bordered"></table>
+                                            <div id="FileUploadpager"></div>
+                                        </div>
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-12 col-lg-12 -auto-margin m-form__page--buttons">
+                                    <div class="save_buttons float-right text-right">
+                                        <button type="button" class="btn-add" id="btnok">Ok</button>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" role="dialog" id="ToDeleteTheSelectedGridRow">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p> Are you sure you want to delete the uploaded file?</p>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="ToDeleteTheSelectedGridRow_Ok" class="btn btn-xs btn-info c-btn">Ok</button>
+                <button type="button" id="CancelVersion" class="btn btn-xs btn-success c-btn" data-bs-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+@*pop for adding subMilestone*@
+
+<div id="addSubMilestoneModal" class="modal fade m-modal -table-modal" data-backdrop="static" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header -bg-green">
+                <div class="">
+                    <h4 id="Addelement" class="modal-title"></h4>
+                </div>
+                <button type="button" class="close cancelSubMilestone" id="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="fas fa-times"></i>
+                    </span>
+                </button>
+            </div>
+            <div class="modal-body milestone">
+                <div class="m-modal__container">
+                    <div class="form-horizontal m-form">
+                        <div class="m-form__container">
+
+                            <div class="row">
+                                <div class="col-md-12 col-lg-12">
+                                    <div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Sequence No <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.HiddenFor(m => m.MilestoneId)
+                                                    @*@Html.HiddenFor(m => m.count, new { @class = "form-control" })*@
+
+
+                                                    @Html.TextBoxFor(m => m.SequenceNo, new { @id = "SequenceNo", @class = "form-control input-disabled", disabled = "disabled" })
+                                                    @Html.ValidationMessageFor(m => m.SequenceNo, null, new { @class = "text-danger" })
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Sub Milestone Name <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.TextBoxFor(m => m.MilestoneName, new { @id = "Name", @class = "form-control" })
+                                                    @Html.ValidationMessageFor(m => m.MilestoneName, null, new { @class = "text-danger" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group  relationTypeDiv" style="display:none">
+                                                <label class="control-label">Relation Type <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.DropDownListFor(m => m.RelationType, new List<SelectListItem>{
+                                                     new SelectListItem{ Text="FS ( Sequence)",Value="FS ( Sequence)" },
+                                                      new SelectListItem{ Text="SS ( Parallel )",Value="SS ( Parallel )"}
+                                                      }, "--select--", new { @class = "form-control input-disabled", @id = "relationtype" })
+                                                    @Html.ValidationMessageFor(m => m.RelationType, null, new { @class = "text-danger" })
+
+
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4" id="SpecialSet">
+                                            <div class="form-group">
+                                                <label class="control-label">Set Relation <span class="color-red">*</span></label>
+                                                <div class="">
+
+                                                    <select class="form-control" id="SubSetrelation">
+                                                        <option value="0">--Select--</option>
+
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="form-group">
+                                                <label class="control-label">Duration <span class="color-red">*</span></label>
+                                                <div class="">
+                                                    @Html.TextBoxFor(m => m.Duration, new { @id = "Duration", @class = "form-control allownumericwithdecimal" })
+
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-md-12 m-form__page--buttons">
+
+                                    <div class="save_buttons float-right text-right">
+                                        <input type="button" class="btn-add" id="AddSubMilestone" value="Add" />
+                                        <button type="button" class="btn-cnl cancelSubMilestone" id="btnCancel" data-dismiss="modal"> Cancel</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal" role="dialog" id="ToDeleteTheSelectedSubGridRow" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Alert</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h6 id="Deletelement" class="modal-title deletemsg"> </h6>
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="ToDeleteTheSelectedSubGridRow_Ok" class="btn btn-xs btn-info c-btn">Ok</button>
+                <button type="button" id="CancelSubGrid" class="btn btn-xs btn-success c-btn" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" role="dialog" id="VersionRemarkspop" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Version Change Remarks</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="row" id="Versionchange">
+                    <div class="col-md-12">
+                        <h6 class="modal-title deletemsg"><b>Version</b> <span style="color:red">*</span>  </h6>
+
+                        @Html.TextBoxFor(model => model.Version, new { @id = "Version", @class = "form-control" })
+                        <span id="VersionError" style="color:red;"></span>
+                    </div>
+                </div>
+                <h6 id="Deletelement" class="modal-title deletemsg"><b> Remarks</b> <span style="color:red">*</span></h6>
+                <textarea rows="3" id="VersionRemarks" class="form-control -auto"></textarea>
+
+            <span id="VersionRemarksError" style="color:red;"></span>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="SaveVerionRemarks" class="btn btn-xs btn-info c-btn">Ok</button>
+                <button type="button" id="CancelVerionRemarks" class="btn btn-xs btn-success c-btn">Cancel</button>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<script src="@Url.Content("~/js/Master/PMUMapping.js")" asp-append-version="true"></script>*@
+@*<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>*@
+
+<script src="@Url.Content("~/js/Master/PMUMapping.min.js")" asp-append-version="true"></script>
+
+

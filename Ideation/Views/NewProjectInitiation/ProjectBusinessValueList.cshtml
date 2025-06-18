@@ -1,0 +1,139 @@
+﻿
+@model Ideation.Models.ProjectMasters
+@{
+    ViewData["Title"] = "Project Business Information";
+    Layout = "/Views/Shared/NewProjectInitiationLayout.cshtml";
+    var projectId = Context.Session.GetString("ProjectIdForBusiness");
+}
+<style>
+    .ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels th {
+        background: #fff1e9;
+        border: 1px solid #9d9d9d !important;
+        border-left: 0px !important;
+        border-top: 0px !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td {
+        border: 1px solid #9d9d9d !important;
+        border-left: 0px !important;
+        border-top: 0px !important;
+    }
+
+    .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr:first-child {
+        border-left: 1px solid #9d9d9d !important;
+    }
+
+    .ui-jqgrid .ui-jqgrid-btable tr.jqgrow td:first-child {
+        border-left: 1px solid #9d9d9d;
+    }
+
+    .ui-th-ltr, .ui-jqgrid .ui-jqgrid-htable th.ui-th-ltr {
+        border: 1px solid #9d9d9d !important;
+        border-left: 0px !important;
+        border-top: 0px !important;
+    }
+
+    .jqgfirstrow {
+        display: contents;
+    }
+
+    .m-table__main .table .jqgfirstrow td {
+        padding: 0px !important;
+        height: auto !important;
+    }
+    .ui-jqgrid tr.footrow-ltr td {
+        border: 1px solid #9d9d9d !important;
+        border-top: 0px !important;
+        border-right: 0px !important;
+    }
+    .ui-jqgrid tr.footrow-ltr td:last-child {
+            border-right: 1px solid #9d9d9d !important;
+    }
+</style>
+<input type="hidden" value="@projectId" id="ProjectIdForBusiness" />
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/ </a></span> Project Business Information </h4>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="prototype_filter">
+        <div class="d-flex justify-content-between mb-1">
+            <div class="d-flex">
+                <div class="col-width3">
+                    <div class="form-group">
+                        <label class="control-label">Project Id</label>
+                        @Html.DropDownListFor(m => m.ProjectId, new SelectList(Model.ProjectsList, "ProjectId", "ProjectName"),
+                        new { @class = "form-control  data-singleselect", @id = "prj-id", @data_singleselect = "" })
+                    </div>
+                </div>
+
+                <div class="col-width1 mt-4">
+                    <button class="btn btn-search" title="search" type="button" id="search-btn">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh" title="refresh" type="button" id="refresh-btn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="d-flex justify-content-end align-items-center">
+                <div class="d-flex excel_expand align-items-center">
+                    <div class="text-right">
+                        <a class="text-primary" id="BackToBudgetApprove">
+                            Budget Approval
+                        </a>
+                    </div>
+                    <div class="images_excel ">
+                        <img src="@Url.Content("~/N_assets/images/excel.png")" title="Excel download" id="exceldownload" />
+                    </div>
+                    <div>
+                        <div class="expand_initiate table_expand">
+                            <div>
+                                <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn">
+                                    <i class="fas fa-expand fullscreen_expand fullscreen-btn" title="Enter FullScreen Mode"></i>
+                                    <i class="fas fa-times fullscreen_minimize exitscreen-btn" title="Exit FullScreen Mode"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="d-flex justify-content-end align-items-center mt-2 mb-2">
+        <div class="legends_list">
+            <ul class="d-flex">
+                <li><span class="font-weight-bold">PSP :</span> Proposed selling price</li>
+                <li><span class="font-weight-bold">IRR :</span> Internal rate of return</li>
+                <li><span class="font-weight-bold">NPV :</span> Net present value</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section>
+    <div class="animate__animated2 slideInUp">
+        <div class="">
+            <div class="">
+                <div class="">
+                    <div class="m-table__main grid_height">
+                        <div class="m-table__responsive -virtual-scroll">
+                            <table id="prj-budget-buss-list" class="table table-bordered"></table>
+                            <div id="prj-budget-buss-list-pager"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script src="~/js/NewProjectInitiation/ProjectBusinessValueList.js"></script>

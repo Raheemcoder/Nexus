@@ -1,0 +1,300 @@
+﻿@model Ideation.Models.TemplateData
+@{
+    ViewData["Title"] = "Template Resource Master";
+    Layout = "~/Views/Shared/NewProjectInitiationLayout.cshtml";
+
+}
+<style>
+    .filter_status button.btn, .prototype_filter button.btn {
+        padding: 4px;
+        line-height: 1;
+        background: #00d546;
+        color: #fff;
+        font-size: 12px;
+        border-radius: 2px;
+        border: 0;
+    }
+
+    .prototype_filter .select2-container--default .select2-selection--single .select2-selection__rendered {
+        color: #444;
+        line-height: 29px;
+    }
+
+    .previewduration {
+        width: 8%;
+    }
+    .previewhod {
+        width: 27%;
+    }
+    .previewresourcename {
+        width: 40%;
+    }
+    .tablewidth1 {
+        width: 18% !important;
+        background-color: #fae5d9 !important;
+    }
+</style>
+<div class="alert alert-dismissible" role="alert" id="alertMessage" style="display:none;">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    <strong id="alertText"></strong>
+</div>
+@if (Convert.ToString(Context.Session.GetString("TemplateId")) != "")
+{
+    var templateId = Context.Session.GetString("TemplateId");
+    <input type="hidden" id="selectedTemplateId" value="@templateId" />
+}
+<input type="hidden" id="selectedrole" />
+<input type="hidden" id="selectedrolename" />
+<section>
+    <div class="">
+        <div class="-m_title_ ">
+            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span> Template Resource Master</h4>
+        </div>
+    </div>
+</section>
+<section>
+    <div class="d-flex justify-content-between mb-3">
+        <div class="prototype_filter">
+            <div class="d-flex">
+                <div class="col-width3">
+                    <div class="form-group ">
+                        <label class="control-label">Template Name </label>
+                        @Html.DropDownListFor(model => model.Description, new SelectList(Model.TemplateList, "Value", "Text", ""), "Please Select Template Name", new { @class = "form-control form-control-sm  data-singleselect", @id = "TMTemplateName" })
+
+                    </div>
+                </div>
+                <div class="col-width1 mt-4 ml-2">
+                    <button class="btn btn-search" title="Search" type="button" id="SearchTMData">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-refresh" title="Refresh" type="button" id="refreshbtn">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-end align-items-center">
+
+            <div class="d-flex excel_expand align-items-center">
+                <div class="images_excel ">
+                    <img src="@Url.Content("~/N_assets/images/excel.png")" id="excel-download" title="Excel Download" />
+                </div>
+                <div>
+                    <div class="expand_initiate table_expand">
+                        <div>
+                            <button onclick="$(document).toggleFullScreen()" class="js-toggle-fullscreen-btn toggle-fullscreen-btn" aria-label="Enter fullscreen mode" title="Full Screen">
+                                <i class="fas fa-expand fullscreen_expand fullscreen-btn "></i>
+                                <i class="fas fa-times fullscreen_minimize exitscreen-btn"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="add_button ml-2">
+                    <button type="button" class="btn btn-success" id="savebtn">Save</button>
+                </div>
+                <div class="ml-2 mt-1 right_top">
+                    <ul class="d-flex align-item-center">
+                        <li class="preview">
+                            <i class="fa fa-eye"></i> Preview
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section>
+
+    <div class="tab-vertical cost_center ">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-3 p-0">
+
+                    <div class="resources_tabs">
+                        <input type="text" id="global-search" class="global-search search_filter form-control mb-1" placeholder="Search..." />
+                        <ul class="nav nav-tabs tabs_initiation tabs_center" id="templatetab" role="tablist">
+
+                            <!-- Template Row (hidden) -->
+                            <li class="nav-item template-row" style="display:none;">
+                                <a class="nav-link" data-toggle="tab" href="#home-vertical" role="tab" aria-controls="home" aria-selected="true" onclick="gettemplatedata(this)" data-role="" data-hod="" data-unit="" data-duration="" data-rolename="">
+                                    <div class="row" style="row-gap:0px;">
+                                        <div class="col-auto">
+                                            <div class="form-group mb-0">
+                                                <span>Role Name : </span>
+                                                <span><strong class="role-name"></strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="form-group mb-0" style="text-align:left;">
+                                                <span>HOD : </span>
+                                                <span><strong class="hod"></strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-auto">
+                                            <div class="form-group mb-0">
+                                                <span>Duration : </span>
+                                                <span><strong class="duration"></strong></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="form-group mb-0">
+                                                <span>Unit : </span>
+                                                <span><strong class="unit"></strong></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+
+                </div>
+                <div class="col-md-9 pr-0">
+                    <div class="tab-content" id="myTabContent3">
+                        <div class="tab-pane fade show active" id="home-vertical" role="tabpanel" aria-labelledby="home-vertical-tab">
+                            <div>
+                                <div class="row" style="display:none;" id="showresourcesduration">
+                                    <div class="col-md-6">
+                                        <div class="form-group mb-0 ">
+                                            <div class="">
+                                                <label class="control-label mb-0  p-0">Select Resources : </label>
+
+                                                <div class="row">
+                                                    <div class="col-md-10 pr-0">
+                                                        <input id="resource" class="form-control" placeholder="Please Select Resources">
+                                                    </div>
+
+                                                    <div class="col-md-2 pl-2">
+                                                        <button type="button" title="Add" class="btn btn-success ml-2 plus_add" id="resoureadd">
+                                                            <i class="fas fa-plus ex_download" title="Add" aria-hidden="true"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group mb-0 ">
+                                            <div class="">
+                                                <label class="control-label mb-0  p-0">Duration: </label>
+                                                <div class="">
+                                                    <input type="number" id="duration" class="form-control" oninput="preventMinusInput(event)" onpaste="handlePaste(event)">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="m-table__main grid_height mt-2" id="resourcegrid">
+                                <div class="m-table__responsive -virtual-scroll">
+                                    <table id="resource-grid-list" class="table table-bordered"></table>
+                                    <div id="resource-grid-pager"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal fade sv hd" id="confirmationPopUpforSave" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Save Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgforsave">
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmsave">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade sv hd" id="confirmationPopUpforDelete" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title" id="exampleModalLabel">Delete Confirmation</h6>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+            <div class="modal-body">
+                <span class="msg-1" id="confirmationmsgfordelete">
+
+                </span>
+
+                <div class="col-md-12">
+                    <div class="float-right text-right">
+                        <button type="button" class="btn btn-success" id="confirmdelete">Yes</button>
+                        <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">No</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*preview of data popup*@
+<div id="preview-modal" class="modal fade" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <div class="modal-header">
+                <h4 class="modal-title">
+                    Template Resource Master Preview
+                </h4>
+                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
+            </div>
+
+            <div class="modal-body">
+                <div class="details_section">
+                    <div class="d-flex align-item-center">
+                        <h4 style="width:20%">
+                            Roles
+                        </h4>
+                        <h4 style="width:32%">
+                            HOD
+                        </h4>
+                        <h4 style="width:43%">
+                            Resources
+                        </h4>
+                        <h4 style="width:12%">
+                            Duration
+                        </h4>
+                        <h4 style="width:9%">
+                            Unit
+                        </h4>
+
+                    </div>
+                    <div class="preview-table-div">
+                        <div class="table-responsive" style="border: 1px solid #dee2e6;">
+                            <table class="table table-boardered templateresourcemaster-preview-table-body mb-0">
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="@Url.Content("~/js/NewProjectInitiation/TemplateResourceMaster.js")"></script>
+
+
+
