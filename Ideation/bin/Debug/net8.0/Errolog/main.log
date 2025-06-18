@@ -899,3 +899,47 @@ System.ArgumentNullException: Value cannot be null. (Parameter 'attribute')
 2025-06-18 16:09:51,839 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
 2025-06-18 16:09:54,332 [.NET TP Worker] WARN Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.?[?] - MESSAGE: Unable to configure Browser Link script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
 2025-06-18 16:09:54,338 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:34,130 [1] INFO Microsoft.Hosting.Lifetime.OnApplicationStarted[0] - MESSAGE: Application started. Press Ctrl+C to shut down.
+2025-06-18 17:39:34,321 [1] INFO Microsoft.Hosting.Lifetime.OnApplicationStarted[0] - MESSAGE: Hosting environment: Development
+2025-06-18 17:39:34,332 [1] INFO Microsoft.Hosting.Lifetime.Invoke[0] - MESSAGE: Content root path: D:\Project-Nexus\Ideation
+2025-06-18 17:39:34,782 [.NET TP Worker] WARN Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.?[?] - MESSAGE: Unable to configure Browser Link script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:34,793 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:42,728 [.NET TP Worker] WARN Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.?[?] - MESSAGE: Unable to configure Browser Link script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:42,733 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:49,934 [.NET TP Worker] WARN Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.?[?] - MESSAGE: Unable to configure Browser Link script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:49,945 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:52,814 [.NET TP Worker] WARN Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.?[?] - MESSAGE: Unable to configure Browser Link script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:39:52,823 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:40:01,158 [.NET TP Worker] WARN Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.?[?] - MESSAGE: Unable to configure Browser Link script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:40:01,163 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:40:17,183 [.NET TP Worker] ERROR Ideation.CustomAttributes.OnExceptionAttribute.OnException[19] - MESSAGE: { Controller = EffortBooking, Action = EffortBooking, Exception = System.Data.SqlClient.SqlException (0x80131904): Could not find stored procedure 'EffortBooking_GetLeaves_HolidaysList'.
+   at System.Data.SqlClient.SqlConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.SqlInternalConnection.OnError(SqlException exception, Boolean breakConnection, Action`1 wrapCloseInAction)
+   at System.Data.SqlClient.TdsParser.ThrowExceptionAndWarning(TdsParserStateObject stateObj, Boolean callerHasConnectionLock, Boolean asyncClose)
+   at System.Data.SqlClient.TdsParser.TryRun(RunBehavior runBehavior, SqlCommand cmdHandler, SqlDataReader dataStream, BulkCopySimpleResultSet bulkCopyHandler, TdsParserStateObject stateObj, Boolean& dataReady)
+   at System.Data.SqlClient.SqlDataReader.TryConsumeMetaData()
+   at System.Data.SqlClient.SqlDataReader.get_MetaData()
+   at System.Data.SqlClient.SqlCommand.FinishExecuteReader(SqlDataReader ds, RunBehavior runBehavior, String resetOptionsString)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReaderTds(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, Boolean async, Int32 timeout, Task& task, Boolean asyncWrite, SqlDataReader ds)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, TaskCompletionSource`1 completion, Int32 timeout, Task& task, Boolean asyncWrite, String method)
+   at System.Data.SqlClient.SqlCommand.RunExecuteReader(CommandBehavior cmdBehavior, RunBehavior runBehavior, Boolean returnStream, String method)
+   at System.Data.SqlClient.SqlCommand.ExecuteReader(CommandBehavior behavior)
+   at System.Data.SqlClient.SqlCommand.ExecuteDbDataReader(CommandBehavior behavior)
+   at Dapper.SqlMapper.ExecuteReaderWithFlagsFallback(IDbCommand cmd, Boolean wasClosed, CommandBehavior behavior) in /_/Dapper/SqlMapper.cs:line 1156
+   at Dapper.SqlMapper.QueryMultipleImpl(IDbConnection cnn, CommandDefinition& command) in /_/Dapper/SqlMapper.cs:line 1123
+   at Dapper.SqlMapper.QueryMultiple(IDbConnection cnn, String sql, Object param, IDbTransaction transaction, Nullable`1 commandTimeout, Nullable`1 commandType) in /_/Dapper/SqlMapper.cs:line 1099
+   at Ideation.Data.EffortRepository.GetLeaves_HolidaysList(String UserId) in D:\Project-Nexus\Ideation\Data\EffortRepository.cs:line 104
+   at Ideation.Controllers.EffortBookingController.EffortBooking(String StartDate, String EndDate) in D:\Project-Nexus\Ideation\Controllers\EffortBookingController.cs:line 67
+   at lambda_method965(Closure, Object, Object[])
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ActionMethodExecutor.SyncActionResultExecutor.Execute(ActionContext actionContext, IActionResultTypeMapper mapper, ObjectMethodExecutor executor, Object controller, Object[] arguments)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeActionMethodAsync>g__Logged|12_1(ControllerActionInvoker invoker)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.<InvokeNextActionFilterAsync>g__Awaited|10_0(ControllerActionInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Rethrow(ActionExecutedContextSealed context)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.Next(State& next, Scope& scope, Object& state, Boolean& isCompleted)
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ControllerActionInvoker.InvokeInnerFilterAsync()
+--- End of stack trace from previous location ---
+   at Microsoft.AspNetCore.Mvc.Infrastructure.ResourceInvoker.<InvokeNextExceptionFilterAsync>g__Awaited|26_0(ResourceInvoker invoker, Task lastTask, State next, Scope scope, Object state, Boolean isCompleted)
+ClientConnectionId:376cda2b-72b4-45aa-a242-2401b26a42c6
+Error Number:2812,State:62,Class:16 }
+2025-06-18 17:40:17,270 [.NET TP Worker] WARN Microsoft.WebTools.BrowserLink.Net.BrowserLinkMiddleware.?[?] - MESSAGE: Unable to configure Browser Link script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.
+2025-06-18 17:40:17,274 [.NET TP Worker] WARN Microsoft.AspNetCore.Watch.BrowserRefresh.BrowserRefreshMiddleware.?[?] - MESSAGE: Unable to configure browser refresh script injection on the response. This may have been caused by the response's Content-Encoding: 'br'. Consider disabling response compression.

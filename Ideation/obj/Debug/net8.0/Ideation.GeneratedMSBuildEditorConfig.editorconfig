@@ -17,1141 +17,1141 @@ build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Ideation
 build_property.RootNamespace = Ideation
-build_property.ProjectDir = D:\Project-Nexus\Project-Nexus\Ideation\
+build_property.ProjectDir = D:\Project-Nexus\Ideation\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = 
-build_property.MSBuildProjectDirectory = D:\Project-Nexus\Project-Nexus\Ideation
+build_property.MSBuildProjectDirectory = D:\Project-Nexus\Ideation
 build_property._RazorSourceGeneratorDebug = 
 build_property.EffectiveAnalysisLevelStyle = 8.0
 build_property.EnableCodeStyleSeverity = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Account/Login.cshtml]
+[D:/Project-Nexus/Ideation/Views/Account/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWNjb3VudFxMb2dpbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/AddGridDocumentStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/AddGridDocumentStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xBZGRHcmlkRG9jdW1lbnRTdGF0aWMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/ArtworkReviewStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/ArtworkReviewStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xBcnR3b3JrUmV2aWV3U3RhdGljLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/CFTReviewStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/CFTReviewStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xDRlRSZXZpZXdTdGF0aWMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/ClaimsGridDocumentStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/ClaimsGridDocumentStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xDbGFpbXNHcmlkRG9jdW1lbnRTdGF0aWMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/CompletedStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/CompletedStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xDb21wbGV0ZWRTdGF0aWMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/DSGReviewStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/DSGReviewStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xEU0dSZXZpZXdTdGF0aWMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/EditGridDocumentStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/EditGridDocumentStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xFZGl0R3JpZERvY3VtZW50U3RhdGljLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/HGMLReviewStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/HGMLReviewStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xIR01MUmV2aWV3U3RhdGljLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGridStatic/SendBacktoDSGStatic.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGridStatic/SendBacktoDSGStatic.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFN0YXRpY1xTZW5kQmFja3RvRFNHU3RhdGljLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/AddGridDocument.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/AddGridDocument.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxBZGRHcmlkRG9jdW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/AddGridDocumentV2.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/AddGridDocumentV2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxBZGRHcmlkRG9jdW1lbnRWMi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/ClaimsGridDocument.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/ClaimsGridDocument.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxDbGFpbXNHcmlkRG9jdW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/ClaimsGridDocumentV2.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/ClaimsGridDocumentV2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxDbGFpbXNHcmlkRG9jdW1lbnRWMi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/ClaimsGrid_PV.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/ClaimsGrid_PV.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxDbGFpbXNHcmlkX1BWLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/EditGridDocument.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/EditGridDocument.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxFZGl0R3JpZERvY3VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/EditGridDocumentV2.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/EditGridDocumentV2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxFZGl0R3JpZERvY3VtZW50VjIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ClaimsGrid/GenerateClaimsPdf.cshtml]
+[D:/Project-Nexus/Ideation/Views/ClaimsGrid/GenerateClaimsPdf.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQ2xhaW1zR3JpZFxHZW5lcmF0ZUNsYWltc1BkZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Dashboard/Dashboard.cshtml]
+[D:/Project-Nexus/Ideation/Views/Dashboard/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRGFzaGJvYXJkXERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortBooking/Apportion.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortBooking/Apportion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0Qm9va2luZ1xBcHBvcnRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortBooking/EffortBooking.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortBooking/EffortBooking.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0Qm9va2luZ1xFZmZvcnRCb29raW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortBooking/EffortReport.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortBooking/EffortReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0Qm9va2luZ1xFZmZvcnRSZXBvcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortBooking/MyProjects.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortBooking/MyProjects.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0Qm9va2luZ1xNeVByb2plY3RzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortBooking/ProjectRemarks.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortBooking/ProjectRemarks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0Qm9va2luZ1xQcm9qZWN0UmVtYXJrcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortBooking/ProjectResourceMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortBooking/ProjectResourceMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0Qm9va2luZ1xQcm9qZWN0UmVzb3VyY2VNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/Apportion.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/Apportion.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxBcHBvcnRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/Approve.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/Approve.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxBcHByb3ZlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/Approve_PV.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/Approve_PV.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxBcHByb3ZlX1BWLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/EffortTracker.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/EffortTracker.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxFZmZvcnRUcmFja2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/Index.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/MyProjects.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/MyProjects.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxNeVByb2plY3RzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/ProjectRemarks.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/ProjectRemarks.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxQcm9qZWN0UmVtYXJrcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/EffortTracker/ProjectResourceMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/EffortTracker/ProjectResourceMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcRWZmb3J0VHJhY2tlclxQcm9qZWN0UmVzb3VyY2VNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/GanttChart/GanttChart.cshtml]
+[D:/Project-Nexus/Ideation/Views/GanttChart/GanttChart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2FudHRDaGFydFxHYW50dENoYXJ0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/GanttChart/GetDetails.cshtml]
+[D:/Project-Nexus/Ideation/Views/GanttChart/GetDetails.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2FudHRDaGFydFxHZXREZXRhaWxzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/GanttChart/Index.cshtml]
+[D:/Project-Nexus/Ideation/Views/GanttChart/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcR2FudHRDaGFydFxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/HGH/AddHGHCode.cshtml]
+[D:/Project-Nexus/Ideation/Views/HGH/AddHGHCode.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSEdIXEFkZEhHSENvZGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/HGH/EditHGHCode.cshtml]
+[D:/Project-Nexus/Ideation/Views/HGH/EditHGHCode.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSEdIXEVkaXRIR0hDb2RlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/HGH/HGHCodeList.cshtml]
+[D:/Project-Nexus/Ideation/Views/HGH/HGHCodeList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSEdIXEhHSENvZGVMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Home/ErrorPage.cshtml]
+[D:/Project-Nexus/Ideation/Views/Home/ErrorPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxFcnJvclBhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Home/Index.cshtml]
+[D:/Project-Nexus/Ideation/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Home/Summary.cshtml]
+[D:/Project-Nexus/Ideation/Views/Home/Summary.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxTdW1tYXJ5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Ideation/Ideation.cshtml]
+[D:/Project-Nexus/Ideation/Views/Ideation/Ideation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSWRlYXRpb25cSWRlYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Innovation/YourInnovation.cshtml]
+[D:/Project-Nexus/Ideation/Views/Innovation/YourInnovation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSW5ub3ZhdGlvblxZb3VySW5ub3ZhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/KPIDashBoard/KPIDashBoard.cshtml]
+[D:/Project-Nexus/Ideation/Views/KPIDashBoard/KPIDashBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJRGFzaEJvYXJkXEtQSURhc2hCb2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/KPIDBReport/KPIDashboardReport.cshtml]
+[D:/Project-Nexus/Ideation/Views/KPIDBReport/KPIDashboardReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcS1BJREJSZXBvcnRcS1BJRGFzaGJvYXJkUmVwb3J0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Landing/ErrorPage.cshtml]
+[D:/Project-Nexus/Ideation/Views/Landing/ErrorPage.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFuZGluZ1xFcnJvclBhZ2UuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Landing/Index.cshtml]
+[D:/Project-Nexus/Ideation/Views/Landing/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFuZGluZ1xJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Landing/UnauthorizedUser.cshtml]
+[D:/Project-Nexus/Ideation/Views/Landing/UnauthorizedUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTGFuZGluZ1xVbmF1dGhvcml6ZWRVc2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Login/Login.cshtml]
+[D:/Project-Nexus/Ideation/Views/Login/Login.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTG9naW5cTG9naW4uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/MasterManagement/EditMMProjectMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/MasterManagement/EditMMProjectMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyTWFuYWdlbWVudFxFZGl0TU1Qcm9qZWN0TWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/MasterManagement/MMAddUser.cshtml]
+[D:/Project-Nexus/Ideation/Views/MasterManagement/MMAddUser.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyTWFuYWdlbWVudFxNTUFkZFVzZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/MasterManagement/MMProjectMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/MasterManagement/MMProjectMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyTWFuYWdlbWVudFxNTVByb2plY3RNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/MasterManagement/MMUserMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/MasterManagement/MMUserMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyTWFuYWdlbWVudFxNTVVzZXJNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/ApproveProject.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/ApproveProject.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXEFwcHJvdmVQcm9qZWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/MilestoneMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/MilestoneMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXE1pbGVzdG9uZU1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/NewPMUMapping.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/NewPMUMapping.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXE5ld1BNVU1hcHBpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/NewPmuMappings.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/NewPmuMappings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXE5ld1BtdU1hcHBpbmdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/PMUMapping.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/PMUMapping.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXFBNVU1hcHBpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/ProjectMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/ProjectMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXFByb2plY3RNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/PV_CloneNewPMUMappings.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/PV_CloneNewPMUMappings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXFBWX0Nsb25lTmV3UE1VTWFwcGluZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/PV_NewPMUMappings.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/PV_NewPMUMappings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXFBWX05ld1BNVU1hcHBpbmdzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/SubMilestone.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/SubMilestone.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXFN1Yk1pbGVzdG9uZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/Template.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/Template.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXFRlbXBsYXRlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Master/UserMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/Master/UserMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWFzdGVyXFVzZXJNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Milestone/ApproveUserRequestMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/Milestone/ApproveUserRequestMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWlsZXN0b25lXEFwcHJvdmVVc2VyUmVxdWVzdE1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Milestone/Index.cshtml]
+[D:/Project-Nexus/Ideation/Views/Milestone/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWlsZXN0b25lXEluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Milestone/MyMilestoneApproval.cshtml]
+[D:/Project-Nexus/Ideation/Views/Milestone/MyMilestoneApproval.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWlsZXN0b25lXE15TWlsZXN0b25lQXBwcm92YWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Milestone/MyMilestoneMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/Milestone/MyMilestoneMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTWlsZXN0b25lXE15TWlsZXN0b25lTWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewClaimsGrid/AddGridDocument.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewClaimsGrid/AddGridDocument.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Q2xhaW1zR3JpZFxBZGRHcmlkRG9jdW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewClaimsGrid/ClaimsGridDocument.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewClaimsGrid/ClaimsGridDocument.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Q2xhaW1zR3JpZFxDbGFpbXNHcmlkRG9jdW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewClaimsGrid/ClaimsGrid_PV.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewClaimsGrid/ClaimsGrid_PV.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Q2xhaW1zR3JpZFxDbGFpbXNHcmlkX1BWLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewClaimsGrid/EditGridDocument.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewClaimsGrid/EditGridDocument.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Q2xhaW1zR3JpZFxFZGl0R3JpZERvY3VtZW50LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewClaimsGrid/GenerateClaimsPdf.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewClaimsGrid/GenerateClaimsPdf.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Q2xhaW1zR3JpZFxHZW5lcmF0ZUNsYWltc1BkZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewClaimsGrid/GenerateClaimsPdfForAdd.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewClaimsGrid/GenerateClaimsPdfForAdd.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Q2xhaW1zR3JpZFxHZW5lcmF0ZUNsYWltc1BkZkZvckFkZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewClaimsGrid/GenerateClaimsPdfForEdit.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewClaimsGrid/GenerateClaimsPdfForEdit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3Q2xhaW1zR3JpZFxHZW5lcmF0ZUNsYWltc1BkZkZvckVkaXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewDashboard/Dashboard.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewDashboard/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3RGFzaGJvYXJkXERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewIdeation/Ideation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewIdeation/Ideation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SWRlYXRpb25cSWRlYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/Approved.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/Approved.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxBcHByb3ZlZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/EditPackageIntiatives.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/EditPackageIntiatives.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxFZGl0UGFja2FnZUludGlhdGl2ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/EditProduction.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/EditProduction.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxFZGl0UHJvZHVjdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/EditReformulation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/EditReformulation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxFZGl0UmVmb3JtdWxhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/Header.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/Header.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxIZWFkZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/HGMLReview.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/HGMLReview.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxIR01MUmV2aWV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/HUBAcceptancetoHGML.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/HUBAcceptancetoHGML.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxIVUJBY2NlcHRhbmNldG9IR01MLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/NewInitiation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/NewInitiation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxOZXdJbml0aWF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/NewProduction.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/NewProduction.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxOZXdQcm9kdWN0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PackageIntiatives.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PackageIntiatives.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQYWNrYWdlSW50aWF0aXZlcy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PDFHGML_To_HUB.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PDFHGML_To_HUB.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQREZIR01MX1RvX0hVQi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PDFHGML_To_PMD.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PDFHGML_To_PMD.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQREZIR01MX1RvX1BNRC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PDFNPD.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PDFNPD.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQREZOUEQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PendingWithCFT.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PendingWithCFT.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQZW5kaW5nV2l0aENGVC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PendingWithHGML.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PendingWithHGML.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQZW5kaW5nV2l0aEhHTUwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PendingWithHub.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PendingWithHub.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQZW5kaW5nV2l0aEh1Yi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PendingWithPMD.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PendingWithPMD.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQZW5kaW5nV2l0aFBNRC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PendingWithPMD1.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PendingWithPMD1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQZW5kaW5nV2l0aFBNRDEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PIDraft.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PIDraft.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQSURyYWZ0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/PMDToStakeholder.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/PMDToStakeholder.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxQTURUb1N0YWtlaG9sZGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/Reformulation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/Reformulation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxSZWZvcm11bGF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/ReformulationDraft.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/ReformulationDraft.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxSZWZvcm11bGF0aW9uRHJhZnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/Rejected.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/Rejected.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxSZWplY3RlZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/SentBackToInitiator.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/SentBackToInitiator.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxTZW50QmFja1RvSW5pdGlhdG9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInitiation/Test.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInitiation/Test.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5pdGlhdGlvblxUZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInnovation/Dashboard.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInnovation/Dashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5ub3ZhdGlvblxEYXNoYm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInnovation/Ideation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInnovation/Ideation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5ub3ZhdGlvblxJZGVhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewInnovation/YourInnovation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewInnovation/YourInnovation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3SW5ub3ZhdGlvblxZb3VySW5ub3ZhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectBudgetReport/BudgetPBReport.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectBudgetReport/BudgetPBReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEJ1ZGdldFJlcG9ydFxCdWRnZXRQQlJlcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectBudgetReport/ProjectBudgetPBReport.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectBudgetReport/ProjectBudgetPBReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEJ1ZGdldFJlcG9ydFxQcm9qZWN0QnVkZ2V0UEJSZXBvcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/AddExpensesRequest.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/AddExpensesRequest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQWRkRXhwZW5zZXNSZXF1ZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BaseLineBudgetApprovalPhase1.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BaseLineBudgetApprovalPhase1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQmFzZUxpbmVCdWRnZXRBcHByb3ZhbFBoYXNlMS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BaseLineBudgetApprovalPhase2.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BaseLineBudgetApprovalPhase2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQmFzZUxpbmVCdWRnZXRBcHByb3ZhbFBoYXNlMi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetApprovalPhase1.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetApprovalPhase1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQnVkZ2V0QXBwcm92YWxQaGFzZTEuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetApprovalPhase2.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetApprovalPhase2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQnVkZ2V0QXBwcm92YWxQaGFzZTIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetDetailsReport.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetDetailsReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQnVkZ2V0RGV0YWlsc1JlcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetPlanning.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetPlanning.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQnVkZ2V0UGxhbm5pbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetRequestList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetRequestList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQnVkZ2V0UmVxdWVzdExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetTransferList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/BudgetTransferList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cQnVkZ2V0VHJhbnNmZXJMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/DepartmentBudgetUserMappings.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/DepartmentBudgetUserMappings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cRGVwYXJ0bWVudEJ1ZGdldFVzZXJNYXBwaW5ncy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/EditExpensesRequest.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/EditExpensesRequest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cRWRpdEV4cGVuc2VzUmVxdWVzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/ExpensesRequestList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/ExpensesRequestList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cRXhwZW5zZXNSZXF1ZXN0TGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/L2ApprovedProjectInfo.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/L2ApprovedProjectInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cTDJBcHByb3ZlZFByb2plY3RJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/MaterialMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/MaterialMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cTWF0ZXJpYWxNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/PRCreation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/PRCreation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUFJDcmVhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/PRList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/PRList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUFJMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBaselineBudget.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBaselineBudget.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUHJvamVjdEJhc2VsaW5lQnVkZ2V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBudgetDetailsList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBudgetDetailsList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUHJvamVjdEJ1ZGdldERldGFpbHNMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBudgetTransfer.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBudgetTransfer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUHJvamVjdEJ1ZGdldFRyYW5zZmVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBusinessValueList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectBusinessValueList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUHJvamVjdEJ1c2luZXNzVmFsdWVMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectInitiationList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectInitiationList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUHJvamVjdEluaXRpYXRpb25MaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectResourceMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/ProjectResourceMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUHJvamVjdFJlc291cmNlTWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/PRTeamMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/PRTeamMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUFJUZWFtTWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/RoleCostCenterMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/RoleCostCenterMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUm9sZUNvc3RDZW50ZXJNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/RoleHODMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/RoleHODMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUm9sZUhPRE1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/RoleTeamMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/RoleTeamMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cUm9sZVRlYW1NYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewProjectInitiation/TemplateResourceMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewProjectInitiation/TemplateResourceMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UHJvamVjdEluaXRpYXRpb25cVGVtcGxhdGVSZXNvdXJjZU1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/AddIngredient.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/AddIngredient.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEFkZEluZ3JlZGllbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/AddIngredientRequest.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/AddIngredientRequest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEFkZEluZ3JlZGllbnRSZXF1ZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/ComplianceHeaderMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/ComplianceHeaderMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXENvbXBsaWFuY2VIZWFkZXJNYXN0ZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/ComplianceRequest.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/ComplianceRequest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXENvbXBsaWFuY2VSZXF1ZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/CosmeticsRIDApproval.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/CosmeticsRIDApproval.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXENvc21ldGljc1JJREFwcHJvdmFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/CosmeticsRIDList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/CosmeticsRIDList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXENvc21ldGljc1JJRExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/FoodSupplementAddEdit.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/FoodSupplementAddEdit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEZvb2RTdXBwbGVtZW50QWRkRWRpdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/FoodSupplementComplianceRequest.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/FoodSupplementComplianceRequest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEZvb2RTdXBwbGVtZW50Q29tcGxpYW5jZVJlcXVlc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/FoodSupplementPdf.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/FoodSupplementPdf.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEZvb2RTdXBwbGVtZW50UGRmLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/FoodSupplementRIDApproval.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/FoodSupplementRIDApproval.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEZvb2RTdXBwbGVtZW50UklEQXBwcm92YWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/FoodSupplementRIDList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/FoodSupplementRIDList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEZvb2RTdXBwbGVtZW50UklETGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/FoodSupplementRWCList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/FoodSupplementRWCList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEZvb2RTdXBwbGVtZW50UldDTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/FunctionMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/FunctionMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEZ1bmN0aW9uTWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/IngredientsRegulation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/IngredientsRegulation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXEluZ3JlZGllbnRzUmVndWxhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NewRID/RIDIndex.cshtml]
+[D:/Project-Nexus/Ideation/Views/NewRID/RIDIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTmV3UklEXFJJREluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/MyApprovalPending.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/MyApprovalPending.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXE15QXBwcm92YWxQZW5kaW5nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/NPDList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/NPDList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXE5QRExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_IndiaMaterialList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_IndiaMaterialList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXE5fSW5kaWFNYXRlcmlhbExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_MyApprovalPending.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_MyApprovalPending.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXE5fTXlBcHByb3ZhbFBlbmRpbmcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_NPDList.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_NPDList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXE5fTlBETGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_ProductHierarchy.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_ProductHierarchy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXE5fUHJvZHVjdEhpZXJhcmNoeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_ProductLaunchInformation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/N_ProductLaunchInformation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXE5fUHJvZHVjdExhdW5jaEluZm9ybWF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/ProductHierarchy.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/ProductHierarchy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXFByb2R1Y3RIaWVyYXJjaHkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/NPDLaunchMaster/ProductLaunchInformation.cshtml]
+[D:/Project-Nexus/Ideation/Views/NPDLaunchMaster/ProductLaunchInformation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcTlBETGF1bmNoTWFzdGVyXFByb2R1Y3RMYXVuY2hJbmZvcm1hdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/EditNpd.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/EditNpd.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXEVkaXROcGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/EditPackagingInitiative.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/EditPackagingInitiative.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXEVkaXRQYWNrYWdpbmdJbml0aWF0aXZlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/Header.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/Header.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXEhlYWRlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/NewEditReformulation.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/NewEditReformulation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXE5ld0VkaXRSZWZvcm11bGF0aW9uLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/NewReformulation.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/NewReformulation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXE5ld1JlZm9ybXVsYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/NPD.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/NPD.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXE5QRC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/PackagingInitiative.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/PackagingInitiative.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXFBhY2thZ2luZ0luaXRpYXRpdmUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/PDFNPD.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/PDFNPD.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXFBERk5QRC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/PDFReformulation.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/PDFReformulation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXFBERlJlZm9ybXVsYXRpb24uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/PIDraft.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/PIDraft.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXFBJRHJhZnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBrief/ProjectBrief.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBrief/ProjectBrief.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJyaWVmXFByb2plY3RCcmllZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBudgetReport/BudgetPBReport.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBudgetReport/BudgetPBReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJ1ZGdldFJlcG9ydFxCdWRnZXRQQlJlcG9ydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectBudgetReport/ProjectBudgetPBReport.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectBudgetReport/ProjectBudgetPBReport.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdEJ1ZGdldFJlcG9ydFxQcm9qZWN0QnVkZ2V0UEJSZXBvcnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/AdditionalBudgetApproval.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/AdditionalBudgetApproval.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxBZGRpdGlvbmFsQnVkZ2V0QXBwcm92YWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/AddProject.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/AddProject.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxBZGRQcm9qZWN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BaselineBudget.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BaselineBudget.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCYXNlbGluZUJ1ZGdldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BaselineBudgetApproval.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BaselineBudgetApproval.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCYXNlbGluZUJ1ZGdldEFwcHJvdmFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BaseLineBudgetApprovalPhase1.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BaseLineBudgetApprovalPhase1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCYXNlTGluZUJ1ZGdldEFwcHJvdmFsUGhhc2UxLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BaseLineBudgetApprovalPhase2.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BaseLineBudgetApprovalPhase2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCYXNlTGluZUJ1ZGdldEFwcHJvdmFsUGhhc2UyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BaselineBudgetNew.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BaselineBudgetNew.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCYXNlbGluZUJ1ZGdldE5ldy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BaseLineBudgetTab.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BaseLineBudgetTab.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCYXNlTGluZUJ1ZGdldFRhYi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BudgetApprovalPhase1.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BudgetApprovalPhase1.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCdWRnZXRBcHByb3ZhbFBoYXNlMS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BudgetApprovalPhase2.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BudgetApprovalPhase2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCdWRnZXRBcHByb3ZhbFBoYXNlMi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BudgetPlanning.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BudgetPlanning.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCdWRnZXRQbGFubmluZy5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BudgetRequestList.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BudgetRequestList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCdWRnZXRSZXF1ZXN0TGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/BudgetTransferList.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/BudgetTransferList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxCdWRnZXRUcmFuc2Zlckxpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/DepartmentBudgetUsers.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/DepartmentBudgetUsers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxEZXBhcnRtZW50QnVkZ2V0VXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/L2ApprovedProjectInfo.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/L2ApprovedProjectInfo.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxMMkFwcHJvdmVkUHJvamVjdEluZm8uY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/Masters.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/Masters.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxNYXN0ZXJzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/N2BaselineBudgetNew.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/N2BaselineBudgetNew.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOMkJhc2VsaW5lQnVkZ2V0TmV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/NBaselineBudget.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/NBaselineBudget.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOQmFzZWxpbmVCdWRnZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/NBaselineBudgetNew.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/NBaselineBudgetNew.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOQmFzZWxpbmVCdWRnZXROZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/NBaseLineBudgetTab.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/NBaseLineBudgetTab.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOQmFzZUxpbmVCdWRnZXRUYWIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/NewBaselineBudget.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/NewBaselineBudget.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOZXdCYXNlbGluZUJ1ZGdldC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/NewBaselineBudget2.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/NewBaselineBudget2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOZXdCYXNlbGluZUJ1ZGdldDIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/NewBaseLineBudgetTab2.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/NewBaseLineBudgetTab2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOZXdCYXNlTGluZUJ1ZGdldFRhYjIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/NewBaseLineBudgetTab2Info.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/NewBaseLineBudgetTab2Info.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxOZXdCYXNlTGluZUJ1ZGdldFRhYjJJbmZvLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBaselineBudget.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBaselineBudget.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxQcm9qZWN0QmFzZWxpbmVCdWRnZXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetDetailsList.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetDetailsList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxQcm9qZWN0QnVkZ2V0RGV0YWlsc0xpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetNew.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetNew.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxQcm9qZWN0QnVkZ2V0TmV3LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetPlanners.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetPlanners.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxQcm9qZWN0QnVkZ2V0UGxhbm5lcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetTransfer.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/ProjectBudgetTransfer.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxQcm9qZWN0QnVkZ2V0VHJhbnNmZXIuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/ProjectMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/ProjectMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxQcm9qZWN0TWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/ProjectResources.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/ProjectResources.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxQcm9qZWN0UmVzb3VyY2VzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/RoleCostCenterMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/RoleCostCenterMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxSb2xlQ29zdENlbnRlck1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/RoleHODMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/RoleHODMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxSb2xlSE9ETWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/RoleTeamMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/RoleTeamMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxSb2xlVGVhbU1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectMaster/TemplateMasters.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectMaster/TemplateMasters.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdE1hc3RlclxUZW1wbGF0ZU1hc3RlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/ApprovalMilestoneBoard.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/ApprovalMilestoneBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcQXBwcm92YWxNaWxlc3RvbmVCb2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/ApprovalMilestoneList.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/ApprovalMilestoneList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcQXBwcm92YWxNaWxlc3RvbmVMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/ChangeLog.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/ChangeLog.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcQ2hhbmdlTG9nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/MilestoneBoard.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/MilestoneBoard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcTWlsZXN0b25lQm9hcmQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/MilestoneList.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/MilestoneList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcTWlsZXN0b25lTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/MilestoneMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/MilestoneMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcTWlsZXN0b25lTWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/PMUMappings.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/PMUMappings.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcUE1VTWFwcGluZ3MuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/ProjectMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/ProjectMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcUHJvamVjdE1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/PV_PMUmappingTable.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/PV_PMUmappingTable.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcUFZfUE1VbWFwcGluZ1RhYmxlLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/PV_PMUmappingTableClone.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/PV_PMUmappingTableClone.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcUFZfUE1VbWFwcGluZ1RhYmxlQ2xvbmUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/Summary.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/Summary.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcU3VtbWFyeS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectTracker/UserMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectTracker/UserMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFRyYWNrZXJcVXNlck1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectUpdates/EditProjectUpdates.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectUpdates/EditProjectUpdates.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFVwZGF0ZXNcRWRpdFByb2plY3RVcGRhdGVzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectUpdates/ProjectUpdates.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectUpdates/ProjectUpdates.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFVwZGF0ZXNcUHJvamVjdFVwZGF0ZXMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/ProjectUpdates/Project_Updates_History.cshtml]
+[D:/Project-Nexus/Ideation/Views/ProjectUpdates/Project_Updates_History.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvamVjdFVwZGF0ZXNcUHJvamVjdF9VcGRhdGVzX0hpc3RvcnkuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Prototype/AddPrototype.cshtml]
+[D:/Project-Nexus/Ideation/Views/Prototype/AddPrototype.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdG90eXBlXEFkZFByb3RvdHlwZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Prototype/EditAddPrototype.cshtml]
+[D:/Project-Nexus/Ideation/Views/Prototype/EditAddPrototype.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdG90eXBlXEVkaXRBZGRQcm90b3R5cGUuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Prototype/Prototype.cshtml]
+[D:/Project-Nexus/Ideation/Views/Prototype/Prototype.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdG90eXBlXFByb3RvdHlwZS5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Prototype/Prototypepdf.cshtml]
+[D:/Project-Nexus/Ideation/Views/Prototype/Prototypepdf.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUHJvdG90eXBlXFByb3RvdHlwZXBkZi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RDMS/AddLicenseManagement.cshtml]
+[D:/Project-Nexus/Ideation/Views/RDMS/AddLicenseManagement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUkRNU1xBZGRMaWNlbnNlTWFuYWdlbWVudC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RDMS/EditLicenseManagement.cshtml]
+[D:/Project-Nexus/Ideation/Views/RDMS/EditLicenseManagement.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUkRNU1xFZGl0TGljZW5zZU1hbmFnZW1lbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RDMS/LicenseManagementList.cshtml]
+[D:/Project-Nexus/Ideation/Views/RDMS/LicenseManagementList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUkRNU1xMaWNlbnNlTWFuYWdlbWVudExpc3QuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RDMS/PlantMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/RDMS/PlantMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUkRNU1xQbGFudE1hc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/AddIngredient.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/AddIngredient.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXEFkZEluZ3JlZGllbnQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/AddIngredientRequest.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/AddIngredientRequest.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXEFkZEluZ3JlZGllbnRSZXF1ZXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/ApproveRID.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/ApproveRID.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXEFwcHJvdmVSSUQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/FunctionMaster.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/FunctionMaster.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXEZ1bmN0aW9uTWFzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/IngredientsRegulation.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/IngredientsRegulation.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXEluZ3JlZGllbnRzUmVndWxhdGlvbi5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/RIDIndex.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/RIDIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXFJJREluZGV4LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/RIDViewEdit.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/RIDViewEdit.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXFJJRFZpZXdFZGl0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RID/SearchRID.cshtml]
+[D:/Project-Nexus/Ideation/Views/RID/SearchRID.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUklEXFNlYXJjaFJJRC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RiskRegister/RiskRegister.cshtml]
+[D:/Project-Nexus/Ideation/Views/RiskRegister/RiskRegister.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmlza1JlZ2lzdGVyXFJpc2tSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RiskRegister/RRIndex.cshtml]
+[D:/Project-Nexus/Ideation/Views/RiskRegister/RRIndex.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmlza1JlZ2lzdGVyXFJSSW5kZXguY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/RiskRegister/ViewRisk.cshtml]
+[D:/Project-Nexus/Ideation/Views/RiskRegister/ViewRisk.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUmlza1JlZ2lzdGVyXFZpZXdSaXNrLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Role/Add.cshtml]
+[D:/Project-Nexus/Ideation/Views/Role/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Role/MenuAdd.cshtml]
+[D:/Project-Nexus/Ideation/Views/Role/MenuAdd.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxNZW51QWRkLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Role/RoleList.cshtml]
+[D:/Project-Nexus/Ideation/Views/Role/RoleList.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcUm9sZVxSb2xlTGlzdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/CG_Layout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/CG_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENHX0xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/Components/MainMenu/Default.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/Components/MainMenu/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcTWFpbk1lbnVcRGVmYXVsdC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/Components/SubMenu/Default.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/Components/SubMenu/Default.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXENvbXBvbmVudHNcU3ViTWVudVxEZWZhdWx0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/EffortBookingLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/EffortBookingLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVmZm9ydEJvb2tpbmdMYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/Error.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/HGHLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/HGHLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEhHSExheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/Ideation_layout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/Ideation_layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXElkZWF0aW9uX2xheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/MvcGrid/_Grid.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/MvcGrid/_Grid.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE12Y0dyaWRcX0dyaWQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/MvcGrid/_Pager.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/MvcGrid/_Pager.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE12Y0dyaWRcX1BhZ2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/NewProjectInitiationLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/NewProjectInitiationLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5ld1Byb2plY3RJbml0aWF0aW9uTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/N_ClaimsGridLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/N_ClaimsGridLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5fQ2xhaW1zR3JpZExheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/N_NPDLMLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/N_NPDLMLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5fTlBETE1MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/N_RIDLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/N_RIDLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5fUklETGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/ProjectMaster_Layout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/ProjectMaster_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFByb2plY3RNYXN0ZXJfTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/ProjectTrackerLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/ProjectTrackerLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFByb2plY3RUcmFja2VyTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/RDMSLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/RDMSLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFJETVNMYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/RIDLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/RIDLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXFJJRExheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_EPPMLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_EPPMLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9FUFBNTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_ETLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_ETLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9FVExheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_InnovationGrid.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_InnovationGrid.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Jbm5vdmF0aW9uR3JpZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_Layout2.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_Layout2.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_MMLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_MMLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NTUxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_NPDLMLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_NPDLMLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9OUERMTUxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_PROTLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_PROTLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QUk9UTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_PULayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_PULayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QVUxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_RRLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_RRLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9SUkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/TrackerSupport/ChangeLog.cshtml]
+[D:/Project-Nexus/Ideation/Views/TrackerSupport/ChangeLog.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhY2tlclN1cHBvcnRcQ2hhbmdlTG9nLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/TrackerSupport/IssueTracker.cshtml]
+[D:/Project-Nexus/Ideation/Views/TrackerSupport/IssueTracker.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhY2tlclN1cHBvcnRcSXNzdWVUcmFja2VyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/TrackerSupport/RiskRegister.cshtml]
+[D:/Project-Nexus/Ideation/Views/TrackerSupport/RiskRegister.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVHJhY2tlclN1cHBvcnRcUmlza1JlZ2lzdGVyLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/TTDDashboard/TTDDashboard.cshtml]
+[D:/Project-Nexus/Ideation/Views/TTDDashboard/TTDDashboard.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVFRERGFzaGJvYXJkXFRURERhc2hib2FyZC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/User/Add.cshtml]
+[D:/Project-Nexus/Ideation/Views/User/Add.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxBZGQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/User/List.cshtml]
+[D:/Project-Nexus/Ideation/Views/User/List.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcVXNlclxMaXN0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/_ViewImports.cshtml]
+[D:/Project-Nexus/Ideation/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/_ViewStart.cshtml]
+[D:/Project-Nexus/Ideation/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/N_PB_Layout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/N_PB_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXE5fUEJfTGF5b3V0LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = b-48hph36ztu
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_Layout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-ikyrktfwkp
 
-[D:/Project-Nexus/Project-Nexus/Ideation/Views/Shared/_PBLayout.cshtml]
+[D:/Project-Nexus/Ideation/Views/Shared/_PBLayout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9QQkxheW91dC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = b-z4b0zmb679
