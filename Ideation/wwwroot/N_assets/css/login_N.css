@@ -462,6 +462,7 @@ body::after {
 }
 
     .title_name p {
+        margin-bottom:9%;
         font-size: 32px;
         font-weight: 700;
         background: linear-gradient(135deg, #667eea, #764ba2);
@@ -472,7 +473,7 @@ body::after {
 
 .title_img {
     height: 30px;
-    margin-bottom:10px;
+    margin-bottom:25%;
 }
 .toggle-password {
     position: absolute;
