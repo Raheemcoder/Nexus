@@ -55,110 +55,122 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <h4 class="isf">Please Fill Innovation Submission Form</h4>
+                <h4 class="isf text-white py-2 px-3 rounded" style="background-color: #2a3055;">Please Fill Innovation Submission Form</h4>
                 <div class="row">
                     <div class="col-md-12">
                         <div id="message2">
                             @if (TempData["Successmessage"] != null)
                             {
-                                <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible" role="alert">
+                                <div class="alert @Convert.ToString(TempData["Messageclass"]) alert-dismissible fade show" role="alert">
                                     <span class="alert-text">@Html.Raw(Convert.ToString(TempData["Successmessage"]))</span>
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                                 </div>
                             }
                         </div>
                     </div>
                 </div>
-                <br>
-                @using (Html.BeginForm("YourInnovation", "NewInnovation", FormMethod.Post, new { enctype = "multipart/form-data",id="mainInnForm" }))
+
+                <br />
+                @using (Html.BeginForm("YourInnovation", "NewInnovation", FormMethod.Post, new { enctype = "multipart/form-data", id = "mainInnForm" }))
                 {
                     @Html.AntiForgeryToken()
                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                    <div class="">
-                        <div class="">
-                            <div class="row d-flex align-items-end">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">Innovation Title<span class="color-red">*</span></label>
-                                        @Html.EditorFor(model => model.InnovationTitle, new { htmlAttributes = new { @class = "form-control trim", @title = Model.InnovationTitle } })
-                                        @Html.ValidationMessageFor(model => model.InnovationTitle, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label class="control-label">
-                                            Keywords (min. 1 and max. 3)<span class="color-red">*</span><span class="sku_note">(e.g. Separate keywords using comma and without space)</span>
-                                        </label>
-                                        @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control trim", @title = Model.Keyword } })
-                                        @Html.ValidationMessageFor(model => model.Keyword, "", new { @class = "text-danger" })
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
+
+                    <div class="row g-3">
+                        <!-- Innovation Title -->
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Platform Domain <span class="color-red">*</span></label>
-                                @Html.DropDownListFor(model => model.BusinessDivisionId, Model.BusinessDivisionList, "---Select---", new { @class = "form-select data-singleselect", @title = Model.BusinessDivisionList })
-                                @Html.ValidationMessageFor(model => model.BusinessDivisionId, "", new { @class = "text-danger" })
-                            </div>
+                            <label class="control-label">Innovation Title <span class="color-red">*</span></label>
+                            @Html.EditorFor(model => model.InnovationTitle, new { htmlAttributes = new { @class = "form-control trim", @title = Model.InnovationTitle } })
+                            @Html.ValidationMessageFor(model => model.InnovationTitle, "", new { @class = "text-danger" })
                         </div>
+
+                        <!-- Keywords -->
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Geographic Scope <span class="color-red">*</span></label>
-                                @Html.DropDownListFor(model => model.GeographicId, Model.GeographicScopeList, "---Select---", new { @class = "form-select data-singleselect", @id = "geographicregion", @title = Model.GeographicScopeList })
-                                @Html.ValidationMessageFor(model => model.GeographicId, "", new { @class = "text-danger" })
-                            </div>
+                            <label class="control-label">Keywords (min. 1 and max. 3) <span class="color-red">*</span> <span class="sku_note">(e.g. Separate keywords using comma and without space)</span></label>
+                            @Html.EditorFor(model => model.Keyword, new { htmlAttributes = new { @class = "form-control trim", @title = Model.Keyword } })
+                            @Html.ValidationMessageFor(model => model.Keyword, "", new { @class = "text-danger" })
                         </div>
+
+                        <!-- Platform Domain -->
                         <div class="col-md-6">
-                            <div class="form-group">
-                                <label class="control-label">Platform Type <span class="color-red">*</span></label>
-                                @Html.DropDownListFor(model => model.PlatformTypeId, Model.PlatformTypeList, "---Select---", new { @class = "form-select  data-singleselect", @id = "otherplatform", @title = Model.PlatformTypeList })
-                                @Html.ValidationMessageFor(model => model.PlatformTypeId, "", new { @class = "text-danger" })
-                            </div>
+                            <label class="control-label">Platform Domain <span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.BusinessDivisionId, Model.BusinessDivisionList, "---Select---", new { @class = "form-select data-singleselect", @title = Model.BusinessDivisionList })
+                            @Html.ValidationMessageFor(model => model.BusinessDivisionId, "", new { @class = "text-danger" })
                         </div>
+
+                        <!-- Geographic Scope -->
+                        <div class="col-md-6">
+                            <label class="control-label">Geographic Scope <span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.GeographicId, Model.GeographicScopeList, "---Select---", new { @class = "form-select data-singleselect", @id = "geographicregion", @title = Model.GeographicScopeList })
+                            @Html.ValidationMessageFor(model => model.GeographicId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- Platform Type -->
+                        <div class="col-md-6">
+                            <label class="control-label">Platform Type <span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.PlatformTypeId, Model.PlatformTypeList, "---Select---", new { @class = "form-select data-singleselect", @id = "otherplatform", @title = Model.PlatformTypeList })
+                            @Html.ValidationMessageFor(model => model.PlatformTypeId, "", new { @class = "text-danger" })
+                        </div>
+
+                        <!-- Other -->
                         <div class="col-md-6 others">
-                            <div class="form-group">
-                                <label class="control-label" id="otherlabel">Other<span class="color-red">*</span></label>
-                                @Html.TextBoxFor(model => model.Other, new { @class = "form-control trim", @id = "other" })
-                                @Html.ValidationMessageFor(model => model.Other, "", new { @class = "text-danger" })
-
-                            </div>
+                            <label class="control-label" id="otherlabel">Other <span class="color-red">*</span></label>
+                            @Html.TextBoxFor(model => model.Other, new { @class = "form-control trim", @id = "other" })
+                            @Html.ValidationMessageFor(model => model.Other, "", new { @class = "text-danger" })
                         </div>
+
+                        <!-- Strategic Fit -->
                         <div class="col-md-6 in_Stratergic">
-                            <div class="form-group">
-                                <label class="control-label">Strategic Fit <span class="color-red">*</span></label>
-                                @Html.DropDownListFor(model => model.StrategicFitId, Model.StrategicFitList, new { @class = "form-control multi-select multiselectDropdown", @id = "strategicfitid", @multiple = "multiple", @title = Model.StrategicFitId })
-                                @Html.ValidationMessageFor(model => model.StrategicFitId, "", new { @class = "text-danger" })
-                            </div>
+                            <label class="control-label">Strategic Fit <span class="color-red">*</span></label>
+                            @Html.DropDownListFor(model => model.StrategicFitId, Model.StrategicFitList,
+                                     new
+                                     {
+                                         @class = "form-control multi-select multiselectDropdown",
+                                         @id = "strategicfitid",
+                                         @multiple = "multiple",
+                                         @title = Model.StrategicFitId
+                                     })
+                            @Html.ValidationMessageFor(model => model.StrategicFitId, "", new { @class = "text-danger" })
                         </div>
-                        <div class="col-md-6">
-                            <div class="form-group mb-2">
-                                <div class="download-text">
-                                    <h4>Download File (Image,PDF, PPT)</h4>
-                                    <p>Download this template, fill it with the required information and upload as .pdf or .pptx (max. 3 MB). Use either the product-related slide or the process simplification slide according to your ideation.</p>
-                                    @*<span class="color-blue"><a href="@Url.Content("~/assets/images/iSpacepitchtemplates.pptx")" target="_blank"><i class="fas fa-download"></i> Download/View File</a></span>*@
-                                    <a class="download-btn download_template" href="#"><i class="fas fa-download" aria-hidden="true"></i> Download/View File</a>
 
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Download Template -->
                         <div class="col-md-6">
-                            <div class="form-group mb-2 upload_file">
-                                <label class="control-label">Upload File (Image,PDF, PPT) <span class="color-red">*</span><span class="color-red pl-3 pr-3">(Upto 3MB Only) </span><i class="fas fa-upload"></i></label>
-                                @Html.TextBoxFor(m => m.PostedFile, new { type = "file", accept = "image/png, image/jpeg, application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation", @class = "form-control trim", @id = "fileupload" })
-                                @Html.ValidationMessageFor(model => model.PostedFile, "", new { @class = "text-danger" })
-                            </div>
+                            <label class="form-label fw-semibold">Download Template</label>
+                            <p class="text-muted">Download this template, fill it, and re-upload (max. 3MB).</p>
+                            <a href="#" class="btn btn-outline-primary"
+                               style="background-color: #2a3055; color: #fff; padding: 4px 10px; font-size: 0.85rem;"
+                               onmouseover="this.style.backgroundColor='#79aac3'"
+                               onmouseout="this.style.backgroundColor='#2a3055'">
+                                <i class="fas fa-download me-1"></i> Download/View Template
+                            </a>
+                            <button type="submit" class="btn btn-primary"
+                                    style="background-color: #2a3055; border-color: #2a3055; font-size: 0.85rem; padding: 4px 10px;"
+                                    onmouseover="this.style.backgroundColor='#79aac3'"
+                                    onmouseout="this.style.backgroundColor='#2a3055'">
+                                Submit
+                            </button>
                         </div>
-                    </div>
-                    <div class="button_top float-right mt-2">
 
-                        <button type="submit" class="btn btn-draft" data-bs-dismiss="modal" id="submitdata"> Submit</button>
-                        @*<button type="button" class="btn btn-next">Next</button>*@
+                        <!-- File Upload -->
+                        <div class="col-md-6">
+                            <label class="control-label">Upload File (Image, PDF, PPT) <span class="color-red">*</span> <span class="pl-3 pr-3">(Upto 3MB Only)</span></label>
+                            @Html.TextBoxFor(m => m.PostedFile, new
+                                {
+                                    type = "file",
+                                    accept = "image/png, image/jpeg, application/pdf,application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                                    @class = "form-control trim",
+                                    @id = "fileupload"
+                                })
+                            @Html.ValidationMessageFor(model => model.PostedFile, "", new { @class = "text-danger" })
+                           
+                        </div>
+
+                      
                     </div>
+
                 }
-
             </div>
+
         </div>
     </div>
 </div>
