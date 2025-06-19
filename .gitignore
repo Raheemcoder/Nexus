@@ -43,6 +43,7 @@
 *.AssemblyReference.cache
 *.GeneratedMSBuildEditorConfig.editorconfig
 *.FileListAbsolute.txt
+*appsettings.json
 
 #----------------#
 # Project Specific - Ideation
@@ -51,6 +52,7 @@
 /Ideation/bin/
 /Ideation/obj/
 /Ideation/Properties/PublishProfiles/
+
 /Ideation/wwwroot/PDFDownload/
 /Ideation/Views/EffortTracker/demo.cshtml
 /Ideation/wwwroot/PrototypeImages/
@@ -58,7 +60,8 @@
 /Ideation/wwwroot/assets_Prototype/
 /Ideation/wwwroot/PackageInitiativesImages/
 /Ideation/wwwroot/ImageUpload/
-/Ideation/wwwroot/css/PDFstyle.css
+/Ideation/wwwroot/css/PDFstyle
+
 /Ideation/wwwroot/js/Master/PMUMapping.min.js
 /Ideation/wwwroot/PMUImages/
 /Ideation/wwwroot/ProjectUpdatesImages/
