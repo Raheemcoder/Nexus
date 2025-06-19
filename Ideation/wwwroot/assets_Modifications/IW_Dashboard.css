@@ -1,0 +1,57 @@
+﻿.badge-approved {
+    background-color: #1abc9c; /* teal */
+    font-size: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(26, 188, 156, 0.3);
+}
+
+.badge-pending {
+    background-color: #f39c12; /* orange */
+    color: #fff;
+    font-size: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    box-shadow: 0 2px 6px rgba(243, 156, 18, 0.3);
+}
+
+.badge-declined {
+    background-color: #e74c3c; /* modern red */
+    font-size: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 50px;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(231, 76, 60, 0.3);
+}
+
+table th,
+table td {
+    padding: 1rem !important;
+    vertical-align: middle;
+}
+
+.dashboard-header h4 a {
+    color: #007bff;
+    font-weight: 500;
+}
+
+.dashboard-header h4 {
+    font-size: 1.5rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-content {
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.DbData {
+    border: none;
+    background-color: white;
+}

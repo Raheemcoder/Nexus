@@ -2,252 +2,12 @@
     ViewData["Title"] = "Dashboard";
     Layout = "/Views/Shared/Ideation_Layout.cshtml";
 }
-@* <head>
-    <style>
-        .DbData {
-            border: none;
-        }
-    </style>
-</head>
-<section>
-
-    <div class="">
-        <div class="-m_title_ ">
-            <h4><span><a href="@Url.Content("~/Landing/Index")">Home/</a> </span> Dashboard</h4>
-        </div>
-    </div>
-</section>
-<section>
-    @if (TempData["Message"] != null)
-    {
-        <div class="alert @TempData["MessageClass"].ToString() alert-dismissible d-flex justify-content-between" role="alert" id="message_alert">
-            @TempData["Message"].ToString()
-            <button type="button" class="close" data-bs-dismiss="alert"><span>&times;</span></button>
-        </div>
-    }
-</section>
-<section>
-    <div>
-        <ul class="dashboard_status status_legends mt-2 mb-2">
-            <li class="number_count first_number"></li>Approved
-            <li class="number_count second_number"></li>Pending
-            <li class="number_count third_number"></li>Declined
-        </ul>
-    </div>
-    <div class="dashboard_table_ideation table-responsive">
-        <table class="table table-bordered text-center">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>AHP</th>
-                    <th>CPD</th>
-                    <th>FOODS</th>
-                    <th>OTHER</th>
-                    <th>PACKAGING</th>
-                    <th>PHARMA</th>
-                    <th>
-                        PROCESS ENGINEERING
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var pt in Model.PlatformTypeList)
-                {
-                    <tr class="bck_th tt_text">
-                        <th class="cl_text"><span class="th_padd">@pt.PlatformTypeName</span></th>
-
-                        @foreach (var bd in Model.BusinessDivisionList)
-                        {
-                            <td>
-                                <ul class="dashboard_status">
-                                    @foreach (var tc in Model.StatusList)
-                                    {
-                                        if (@pt.PlatformTypeName == @tc.PlatformTypeName && @bd.BusinessDivisionName == @tc.BusinessDivisionName)
-                                        {
-                                            var cssClass = "";
-                                            if (@tc.StatusName == "Approved")
-                                            {
-                                                cssClass = "first_number";
-                                            }
-                                            else if (@tc.StatusName == "Pending")
-                                            {
-                                                cssClass = "second_number";
-                                            }
-                                            else if (@tc.StatusName == "Declined")
-                                            {
-                                                cssClass = "third_number";
-                                            }
-                                            if (cssClass != "")
-                                            {
-                                                <li class="number_count @(cssClass) statusdetails"
-                                                    data-bs-pt="@tc.PlatformTypeName"
-                                                    data-bs-bd="@tc.BusinessDivisionName"
-                                                    data-bs-st="@tc.StatusName"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#dashboard_data">
-                                                    <span>@tc.TicketCount</span>
-                                                </li>
-                                            }
-
-                                        }
-                                    }
-                                </ul>
-                            </td>
-                        }
-                    </tr>
-                }
-
-
-            </tbody>
-        </table>
-    </div>
-</section>
-
-
-<div id="dashboard_data" class="modal fade layout_popup ideation_css" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    Ideation Details
-
-                </h4>
-                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <table class="table">
-                    <thead>
-                        <tr class="bd1">
-                            <th scope="col"></th>
-                            <th scope="col">ID</th>
-                            <th scope="col">Platform Domain</th>
-                            <th scope="col">Title</th>
-                            <th scope="col">Platform Type</th>
-                            <th scope="col">Status</th>
-                            <th scope="col">Submitted By</th>
-                            <th scope="col">Submitted Date</th>
-                        </tr>
-                    </thead>
-                    <tbody class="tb" id="table_data">
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div id="dashboard_dataview" class="modal fade layout_popup ideation_css new_innovation" role="dialog" data-bs-backdrop="static" data-bs-keyboard="false">
-    <div class="modal-dialog modal-lg">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <h4 class="modal-title">
-                    Ideation Details
-
-                </h4>
-                <button type="button" class="close" data-bs-dismiss="modal"><span>&times;</span></button>
-            </div>
-            <div class="modal-body">
-                <div class="download-btn-flex">
-                    <div>
-                        <h4 id="dbmodal_innovationtile"></h4><br />
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group text-right">
-                            <label class="control-label" id="downloadlable">
-                                Download File (Image,PDF, PPT)
-                            </label>
-
-                            <a class="download-btn" href="#" target="_blank" id="dbmodel_filedownload"><i class="fas fa-download" aria-hidden="true"></i>Download/View File</a>
-                        </div>
-                    </div>
-                </div>
-
-                <form>
-                    <div class="row fr">
-                        <input type="hidden" id="dbmodal_innovationid" value="37">
-                        <div class="col-md-4">
-
-                            <div class="form-group">
-                                <label class="control-label">
-                                    Keywords
-                                </label>
-                                <input type="text" readonly="readonly" class="form-control" id="dbmodal_keywords" value="test" title="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">
-                                    Platform Domain
-                                </label>
-                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_bd" value="AHP" title="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">
-                                    Geographic Scope
-                                </label>
-                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_gs" value="APAC" title="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">
-                                    Platform Type<span class="color-red">*</span>
-                                </label>
-                                <input type="text" readonly="readonly" class="form-control" id="dbmodal_pt" value="Actives" title="">
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">
-                                    Other
-                                </label>
-                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_other" title="">
-                            </div>
-                        </div>
-
-                        <div class="col-md-4">
-                            <div class="form-group">
-                                <label class="control-label">
-                                    Strategic Fit<span class="color-red">*</span>
-                                </label>
-                                <input type="text" class="form-control" readonly="readonly" id="dbmodal_st" value="First to Himalaya,First to Market,Line Extension" title="">
-                            </div>
-                        </div>
-
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<script src="@Url.Content("~/js/NewIdeation/Dashboard.js")"></script>
-<script src="@Url.Content("~/js/NewIdeation/Dashboard.min.js")" asp-append-version="true"></script> *@
-
 <head>
-    <style>
-        .badge-approved {
-            background-color: #28a745;
-        }
-
-        .badge-pending {
-            background-color: #ffc107;
-            color: #212529;
-        }
-
-        .badge-declined {
-            background-color: #dc3545;
-        }
-    </style>
+<link href="assets_Modifications/IW_Dashboard.css" rel="stylesheet" />
 </head>
-<section class="container-fluid py-3">
-    <div>
-        <div class="mb-3">
-            <h4><a href="@Url.Content("~/Landing/Index")" class="text-primary text-decoration-none">Home</a> / Dashboard</h4>
-        </div>
+<section class="container-fluid py-3 dashboard-header">
+    <div class="mb-3">
+        <h4><a href="@Url.Content("~/Landing/Index")" class="text-decoration-none">Home</a> / Dashboard</h4>
     </div>
 </section>
 
@@ -264,19 +24,19 @@
 <section class="container">
     <ul class="list-inline my-3">
         <li class="list-inline-item">
-            <span class="badge rounded-pill badge-approved px-3 py-2">Approved</span>
+            <span class="badge badge-approved">Approved</span>
         </li>
         <li class="list-inline-item">
-            <span class="badge rounded-pill badge-pending px-3 py-2">Pending</span>
+            <span class="badge badge-pending">Pending</span>
         </li>
         <li class="list-inline-item">
-            <span class="badge rounded-pill badge-declined px-3 py-2">Declined</span>
+            <span class="badge badge-declined">Declined</span>
         </li>
     </ul>
 
     <div class="table-responsive">
-        <table class="table table-bordered table-hover align-middle text-center bg-white">
-            <thead class="table-primary">
+        <table class="table table-bordered table-hover text-center bg-white">
+            <thead class="table-primary text-uppercase">
                 <tr>
                     <th></th>
                     <th>AHP</th>
@@ -292,11 +52,11 @@
                 @foreach (var pt in Model.PlatformTypeList)
                 {
                     <tr>
-                        <th class="text-start">@pt.PlatformTypeName</th>
+                        <th class="text-start fw-semibold">@pt.PlatformTypeName</th>
                         @foreach (var bd in Model.BusinessDivisionList)
                         {
                             <td>
-                                <ul class="list-unstyled m-0 d-flex justify-content-evenly align-items-center">
+                                <ul class="list-unstyled mb-0 d-flex flex-wrap justify-content-center gap-2">
                                     @foreach (var tc in Model.StatusList)
                                     {
                                         if (@pt.PlatformTypeName == @tc.PlatformTypeName && @bd.BusinessDivisionName == @tc.BusinessDivisionName)
@@ -317,7 +77,7 @@
                                             if (cssClass != "")
                                             {
                                                 <li>
-                                                    <span class="badge rounded-pill @(cssClass) statusdetails"
+                                                    <span class="badge @(cssClass) statusdetails"
                                                           data-bs-pt="@tc.PlatformTypeName"
                                                           data-bs-bd="@tc.BusinessDivisionName"
                                                           data-bs-st="@tc.StatusName"
@@ -338,12 +98,11 @@
         </table>
     </div>
 </section>
-
 <!-- Modal for ticket list -->
 <div class="modal fade" id="dashboard_data" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header bg-primary text-white">
+            <div class="modal-header">
                 <h5 class="modal-title">Ideation Details</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -351,7 +110,7 @@
                 <table class="table">
                     <thead class="table-light">
                         <tr>
-                            <th></th>
+                            <th>Action</th>
                             <th>ID</th>
                             <th>Platform Domain</th>
                             <th>Title</th>
@@ -380,7 +139,7 @@
                 <div class="d-flex justify-content-between align-items-center mb-3">
                     <h4 id="dbmodal_innovationtile" class="mb-0"></h4>
                     <div>
-                        <label class="form-label mb-1">Download File (Image, PDF, PPT)</label><br />
+                        <label class="form-label control-label mb-1" id="downloadlable">Download File (Image, PDF, PPT)</label><br />
                         <a class="btn btn-info text-white" href="#" target="_blank" id="dbmodel_filedownload">
                             <i class="fas fa-download me-1"></i>Download/View File
                         </a>
@@ -420,5 +179,7 @@
         </div>
     </div>
 </div>
+
+<!-- Modals remain unchanged -->
 
 <script src="@Url.Content("~/js/NewIdeation/Dashboard.min.js")" asp-append-version="true"></script>
