@@ -2,7 +2,7 @@
     ViewData["Title"] = "Dashboard";
     Layout = "/Views/Shared/Ideation_Layout.cshtml";
 }
-<head>
+@* <head>
     <style>
         .DbData {
             border: none;
@@ -224,5 +224,201 @@
         </div>
     </div>
 </div>
-@*<script src="@Url.Content("~/js/NewIdeation/Dashboard.js")"></script>*@
+<script src="@Url.Content("~/js/NewIdeation/Dashboard.js")"></script>
+<script src="@Url.Content("~/js/NewIdeation/Dashboard.min.js")" asp-append-version="true"></script> *@
+
+<head>
+    <style>
+        .badge-approved {
+            background-color: #28a745;
+        }
+
+        .badge-pending {
+            background-color: #ffc107;
+            color: #212529;
+        }
+
+        .badge-declined {
+            background-color: #dc3545;
+        }
+    </style>
+</head>
+<section class="container-fluid py-3">
+    <div>
+        <div class="mb-3">
+            <h4><a href="@Url.Content("~/Landing/Index")" class="text-primary text-decoration-none">Home</a> / Dashboard</h4>
+        </div>
+    </div>
+</section>
+
+<section class="container">
+    @if (TempData["Message"] != null)
+    {
+        <div class="alert @TempData["MessageClass"] alert-dismissible fade show" role="alert" id="message_alert">
+            @TempData["Message"].ToString()
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+    }
+</section>
+
+<section class="container">
+    <ul class="list-inline my-3">
+        <li class="list-inline-item">
+            <span class="badge rounded-pill badge-approved px-3 py-2">Approved</span>
+        </li>
+        <li class="list-inline-item">
+            <span class="badge rounded-pill badge-pending px-3 py-2">Pending</span>
+        </li>
+        <li class="list-inline-item">
+            <span class="badge rounded-pill badge-declined px-3 py-2">Declined</span>
+        </li>
+    </ul>
+
+    <div class="table-responsive">
+        <table class="table table-bordered table-hover align-middle text-center bg-white">
+            <thead class="table-primary">
+                <tr>
+                    <th></th>
+                    <th>AHP</th>
+                    <th>CPD</th>
+                    <th>FOODS</th>
+                    <th>OTHER</th>
+                    <th>PACKAGING</th>
+                    <th>PHARMA</th>
+                    <th>PROCESS ENGINEERING</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var pt in Model.PlatformTypeList)
+                {
+                    <tr>
+                        <th class="text-start">@pt.PlatformTypeName</th>
+                        @foreach (var bd in Model.BusinessDivisionList)
+                        {
+                            <td>
+                                <ul class="list-unstyled m-0 d-flex justify-content-evenly align-items-center">
+                                    @foreach (var tc in Model.StatusList)
+                                    {
+                                        if (@pt.PlatformTypeName == @tc.PlatformTypeName && @bd.BusinessDivisionName == @tc.BusinessDivisionName)
+                                        {
+                                            var cssClass = "";
+                                            if (@tc.StatusName == "Approved")
+                                            {
+                                                cssClass = "badge-approved";
+                                            }
+                                            else if (@tc.StatusName == "Pending")
+                                            {
+                                                cssClass = "badge-pending";
+                                            }
+                                            else if (@tc.StatusName == "Declined")
+                                            {
+                                                cssClass = "badge-declined";
+                                            }
+                                            if (cssClass != "")
+                                            {
+                                                <li>
+                                                    <span class="badge rounded-pill @(cssClass) statusdetails"
+                                                          data-bs-pt="@tc.PlatformTypeName"
+                                                          data-bs-bd="@tc.BusinessDivisionName"
+                                                          data-bs-st="@tc.StatusName"
+                                                          data-bs-toggle="modal"
+                                                          data-bs-target="#dashboard_data">
+                                                        @tc.TicketCount
+                                                    </span>
+                                                </li>
+                                            }
+                                        }
+                                    }
+                                </ul>
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- Modal for ticket list -->
+<div class="modal fade" id="dashboard_data" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Ideation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <table class="table">
+                    <thead class="table-light">
+                        <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Platform Domain</th>
+                            <th>Title</th>
+                            <th>Platform Type</th>
+                            <th>Status</th>
+                            <th>Submitted By</th>
+                            <th>Submitted Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table_data"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for detailed view -->
+<div class="modal fade" id="dashboard_dataview" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Ideation Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 id="dbmodal_innovationtile" class="mb-0"></h4>
+                    <div>
+                        <label class="form-label mb-1">Download File (Image, PDF, PPT)</label><br />
+                        <a class="btn btn-info text-white" href="#" target="_blank" id="dbmodel_filedownload">
+                            <i class="fas fa-download me-1"></i>Download/View File
+                        </a>
+                    </div>
+                </div>
+
+                <form>
+                    <input type="hidden" id="dbmodal_innovationid" value="37">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Keywords</label>
+                            <input type="text" readonly class="form-control" id="dbmodal_keywords" value="test">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Platform Domain</label>
+                            <input type="text" readonly class="form-control" id="dbmodal_bd" value="AHP">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Geographic Scope</label>
+                            <input type="text" readonly class="form-control" id="dbmodal_gs" value="APAC">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Platform Type<span class="text-danger">*</span></label>
+                            <input type="text" readonly class="form-control" id="dbmodal_pt" value="Actives">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Other</label>
+                            <input type="text" readonly class="form-control" id="dbmodal_other">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Strategic Fit<span class="text-danger">*</span></label>
+                            <input type="text" readonly class="form-control" id="dbmodal_st" value="First to Himalaya, First to Market, Line Extension">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script src="@Url.Content("~/js/NewIdeation/Dashboard.min.js")" asp-append-version="true"></script>

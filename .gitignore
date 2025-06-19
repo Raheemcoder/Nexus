@@ -45,12 +45,6 @@
 *.FileListAbsolute.txt
 
 #----------------#
-# JS / CSS Artifacts
-#----------------#
-*.min.js
-*.min.css
-
-#----------------#
 # Project Specific - Ideation
 #----------------#
 /Ideation/.config/
