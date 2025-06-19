@@ -100,5 +100,3 @@
 /HGHCreation/obj/
 /HGHCreation/obj/Debug/net8.0/
 
-# Optional: Uncomment if you want to ignore user-created JSON config files
-*.json
