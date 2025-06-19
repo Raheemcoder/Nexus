@@ -1,71 +1,104 @@
 ################################################################################
-# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+# Git Ignore for Visual Studio / .NET 8 Projects
+# Includes IDE files, build artifacts, user-specific, temp, and generated files.
 ################################################################################
 
-/.vs
-/Ideation/.config
-/Ideation/bin
-/Ideation/obj
-/Ideation/Properties/PublishProfiles
-/Ideation/wwwroot/PDFDownload
+#----------------#
+# Visual Studio
+#----------------#
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+#----------------#
+# Build Outputs
+#----------------#
+**/bin/
+**/obj/
+**/Debug/
+**/Release/
+
+#----------------#
+# Dotnet Artifacts
+#----------------#
+*.dll
+*.exe
+*.pdb
+*.cache
+*.db
+*.log
+*.deps.json
+*.runtimeconfig.json
+*.targets
+*.props
+*.nuget.g.props
+*.nuget.g.targets
+*.nuget.dgspec.json
+*.nuget.cache
+*.assets.json
+*.AssemblyInfo.cs
+*.AssemblyInfoInputs.cache
+*.AssemblyReference.cache
+*.GeneratedMSBuildEditorConfig.editorconfig
+*.FileListAbsolute.txt
+
+#----------------#
+# JS / CSS Artifacts
+#----------------#
+*.min.js
+*.min.css
+
+#----------------#
+# Project Specific - Ideation
+#----------------#
+/Ideation/.config/
+/Ideation/bin/
+/Ideation/obj/
+/Ideation/Properties/PublishProfiles/
+/Ideation/wwwroot/PDFDownload/
 /Ideation/Views/EffortTracker/demo.cshtml
-/Ideation/wwwroot/PrototypeImages
-/Ideation/wwwroot/NPDImages
-/Ideation/wwwroot/assets_Prototype
-/Ideation/wwwroot/PackageInitiativesImages
-/Ideation/wwwroot/ImageUpload
+/Ideation/wwwroot/PrototypeImages/
+/Ideation/wwwroot/NPDImages/
+/Ideation/wwwroot/assets_Prototype/
+/Ideation/wwwroot/PackageInitiativesImages/
+/Ideation/wwwroot/ImageUpload/
 /Ideation/wwwroot/css/PDFstyle.css
 /Ideation/wwwroot/js/Master/PMUMapping.min.js
-/Ideation/wwwroot/PMUImages/10141013Order List638176837320138905638179311804375390 2638187020583412872638222001365358458_638222530273095677.csv
-/Ideation/wwwroot/PMUImages/101410131014Screenshot 188638176897336703018638178753998506541638179717804474631 2638180392393763620 1638181850535554134638189808471847190638197861900275566_638222001962768672.png
-/Ideation/wwwroot/PMUImages/1014101310131013MicrosoftTeamsimage 1638187193539582937638197877324878973638219009367957725638223413222657388 1_638223779407976700.png
-/Ideation/wwwroot/PMUImages/1013ProjectBrief638179713295778175 2_638222001365377195.pdf
-/Ideation/wwwroot/PMUImages/1013Order List638176837320138905638179311804375390 2638187020583412872_638222001365358458.csv
-/Ideation/wwwroot/PMUImages/1013MicrosoftTeamsimage 1638187193539582937 1_638222001365405699.png
-/Ideation/wwwroot/PMUImages/1013healthypetfoodadultlarge638186217635652062638188857245241242638190006114770718_638222001365400062.jpg
-/Ideation/wwwroot/PMUImages/1013export638180145342330285 2638187043360336034638187134829598278_638222001365384526.xlsx
-/Ideation/wwwroot/PMUImages/101310131013MicrosoftTeamsimage 1638187193539582937638197877324878973638219009367957725_638222530273066494.png
-/Ideation/wwwroot/PMUImages
-/Ideation/wwwroot/ProjectUpdatesImages
-/Ideation/PMUMappingsUploads
-/Ideation/wwwroot/wwwroot/ckeditor/ckfinder/src
-/BudgetAllocation.Service/bin
-/BudgetAllocation.Service/obj
-/ProjectCreation/obj/Debug/net8.0
-/ProjectBudgetExpensesSync/obj/Debug/net8.0/ProjectBudgetExpensesSync.AssemblyInfo.cs
-/ProjectBudgetExpensesSync/obj/Debug/net8.0/ProjectBudgetExpensesSync.assets.cache
-/ProjectBudgetExpensesSync/obj/Debug/net8.0/ProjectBudgetExpensesSync.AssemblyInfoInputs.cache
-/ProjectBudgetExpensesSync/obj/Debug/net8.0/ProjectBudgetExpensesSync.csproj.AssemblyReference.cache
-/ProjectBudgetExpensesSync/obj/Debug/net8.0/ProjectBudgetExpensesSync.GeneratedMSBuildEditorConfig.editorconfig
-/ProjectCreation/obj/Debug/net8.0/ProjectCreation.AssemblyInfo.cs
-/ProjectCreation/obj/Debug/net8.0/ProjectCreation.AssemblyInfoInputs.cache
-/ProjectCreation/obj/Debug/net8.0/ProjectCreation.assets.cache
-/ProjectBudgetExpensesSync/obj/project.assets.json
-/ProjectBudgetExpensesSync/obj/project.nuget.cache
-/ProjectBudgetExpensesSync/obj/ProjectBudgetExpensesSync.csproj.nuget.dgspec.json
-/ProjectBudgetExpensesSync/obj/ProjectBudgetExpensesSync.csproj.nuget.g.props
-/ProjectCreation/obj/Debug/net8.0/ProjectCreation.csproj.AssemblyReference.cache
-/ProjectCreation/obj/Debug/net8.0/ProjectCreation.GeneratedMSBuildEditorConfig.editorconfig
-/ProjectCreation/obj/project.assets.json
-/ProjectCreation/obj/project.nuget.cache
-/ProjectCreation/obj/ProjectCreation.csproj.nuget.dgspec.json
-/ProjectCreation/obj/ProjectCreation.csproj.nuget.g.props
-/ProjectBudgetExpensesSync/obj/Debug/net8.0/apphost.exe
-/ProjectCreation/obj/Debug/net8.0/apphost.exe
-/PRCreation/bin/Debug/net8.0
-/PRCreation/obj/Debug/net8.0
-/PRCreation/obj/PRCreation.csproj.nuget.dgspec.json
-/PRCreation/obj/PRCreation.csproj.nuget.g.props
-/PRCreation/obj/PRCreation.csproj.nuget.g.targets
-/PRCreation/obj/project.assets.json
-/PRCreation/obj/project.nuget.cache
-/ProjectCreation/bin/Debug/net8.0/ProjectCreation.dll
-/ProjectCreation/bin/Debug/net8.0/ProjectCreation.exe
-/ProjectCreation/bin/Debug/net8.0/ProjectCreation.pdb
-/ProjectAndProductInfo/ProjectIdAndDescriptionUpdation/bin/Debug/net8.0
-/ProjectAndProductInfo/ProjectIdAndDescriptionUpdation/obj/Release/net8.0
-/ProjectAndProductInfo/ProjectIdAndDescriptionUpdation/obj
-/ProjectCreation/obj/Release/net8.0
-/HGHCreation/bin/Debug/net8.0
-/HGHCreation/obj/Debug/net8.0
-/HGHCreation/obj
+/Ideation/wwwroot/PMUImages/
+/Ideation/wwwroot/ProjectUpdatesImages/
+/Ideation/PMUMappingsUploads/
+/Ideation/wwwroot/wwwroot/ckeditor/ckfinder/src/
+
+#----------------#
+# Project Specific - Others
+#----------------#
+/BudgetAllocation.Service/bin/
+/BudgetAllocation.Service/obj/
+
+/ProjectCreation/bin/
+/ProjectCreation/obj/
+/ProjectCreation/obj/Debug/net8.0/
+/ProjectCreation/obj/Release/net8.0/
+/ProjectCreation/bin/Debug/net8.0/*
+
+/ProjectBudgetExpensesSync/obj/
+/ProjectBudgetExpensesSync/obj/Debug/net8.0/
+/ProjectBudgetExpensesSync/obj/ProjectBudgetExpensesSync.csproj.*
+
+/ProjectAndProductInfo/ProjectIdAndDescriptionUpdation/bin/
+/ProjectAndProductInfo/ProjectIdAndDescriptionUpdation/obj/
+/ProjectAndProductInfo/ProjectIdAndDescriptionUpdation/obj/Release/net8.0/
+
+/PRCreation/bin/
+/PRCreation/obj/
+/PRCreation/obj/Debug/net8.0/
+/PRCreation/obj/PRCreation.csproj.*
+
+/HGHCreation/bin/
+/HGHCreation/obj/
+/HGHCreation/obj/Debug/net8.0/
+
+# Optional: Uncomment if you want to ignore user-created JSON config files
+*.json
