@@ -650,10 +650,15 @@ progress {
     max-width: 1140px;
   }
 }
+@media (min-width: 1320px) {
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 1320px;
+    }
+}
 @media (min-width: 1400px) {
-  .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
-    max-width: 1320px;
-  }
+    .container-xxl, .container-xl, .container-lg, .container-md, .container-sm, .container {
+        max-width: 1400px;
+    }
 }
 .row {
   --bs-gutter-x: 1.5rem;
@@ -4818,16 +4823,16 @@ textarea.form-control-lg {
 }
 
 .badge {
-  display: inline-block;
-  padding: 0.35em 0.65em;
-  font-size: 0.75em;
-  font-weight: 700;
-  line-height: 1;
-  color: #fff;
-  text-align: center;
-  white-space: nowrap;
-  vertical-align: baseline;
-  border-radius: 0.25rem;
+    display: inline-block;
+    padding: 0.35em 1.65em;
+    font-size: 0.85em;
+    font-weight: 700;
+    line-height: 3;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.75rem;
 }
 .badge:empty {
   display: none;

@@ -51,7 +51,6 @@
     <Folder Include="wwwroot\ckeditor\ckfinder\src\CKFinder.Connector.Plugin.Watermark\bin\Debug\" />
     <Folder Include="wwwroot\ckeditor\ckfinder\src\CKFinder.Connector.Plugin.Watermark\bin\Release\" />
     <Folder Include="wwwroot\ImageUpload\" />
-    <Folder Include="wwwroot\assets_Modifications\" />
     <Folder Include="wwwroot\PmuFileUploads\" />
     <Folder Include="wwwroot\NPDImages\" />
     <Folder Include="wwwroot\PMUImages\" />

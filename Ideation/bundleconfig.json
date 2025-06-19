@@ -15,6 +15,7 @@
       "wwwroot/NewAssets/assets/css/animate.min.css",
       "wwwroot/NewAssets/assets/css/dark-style.css",
       "wwwroot/NewAssets/assets/css/ispace-style.css"
+      
     ],
     "minify": {
       "enabled": true,
@@ -470,7 +471,9 @@
       "wwwroot/N_assets/plugins/bootstrap-multselect/bootstrap-multselect.min.css",
       "wwwroot/N_assets/flaticons-font/flaticon_ispace.css",
       "wwwroot/N_assets/css/animate.min.css",
-      "wwwroot/N_assets/css/IspaceNew.css"
+      "wwwroot/N_assets/css/IspaceNew.css",
+      "wwwroot/assets_Modifications/IW_Dashboard.css"
+
     ],
     "minify": {
       "enabled": true,
