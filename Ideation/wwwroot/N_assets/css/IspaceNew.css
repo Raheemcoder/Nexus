@@ -535,7 +535,8 @@ li.has-submenu:hover {
 }
 
 .ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels th {
-    background: #fff1e9;
+    background: #2a3055;
+    color:white;
 }
 
 .ui-jqgrid .ui-jqgrid-htable .ui-search-toolbar th {
@@ -2325,7 +2326,8 @@ header .select2-container--default .select2-selection--single .select2-selection
 }
 
 .second_header {
-    background: #fff1e9;
+    background: #2a3055;
+    color: white;
     padding: 10px;
 }
 
@@ -3993,7 +3995,8 @@ span.color-red {
 }
 
 .ideation_css .table th {
-    background: #fff1e9;
+    background: #2a3055;
+    color: white;
     border: 0px;
 }
 
@@ -4934,7 +4937,8 @@ header .select2-results__option--highlighted span {
 }
 
 .modal .table-bordered th, .table-bordered th {
-    background: #fff1e9 !important;
+    background: #2a3055 !important;
+    color:white;
     border: 0 !important;
     padding: 5px !important;
     font-size: 11px;
