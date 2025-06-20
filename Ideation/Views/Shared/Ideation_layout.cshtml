@@ -28,6 +28,22 @@
             .datepicker .datepicker-days tr:hover td:hover {
                 background: #e5e2e3;
             }
+           .tile_projects {
+                margin-right: 4px;
+                background: linear-gradient(135deg, #5e81ac, #88c0d0);
+                border-radius: 7px;
+                transition: all 0.3s ease;
+            }
+
+            .tile_projects:hover {
+                transform: translateY(-3px);
+                background: #2a3055; 
+                color: #fff !important;
+            }
+            .tile_projects:hover p
+            {
+               color: #fff !important;
+            }
     </style>
     <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
     <script src="@Url.Content("~/N_assets/js/popper.min.js")"></script>
@@ -56,6 +72,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.7.1/js/bootstrap-datepicker.min.js"></script>
     <link rel="stylesheet" href="https://cdn.materialdesignicons.com/5.0.45/css/materialdesignicons.min.css">
     <script src="@Url.Content("~/js/Layout.min.js")" asp-append-version="true"></script>
+
+
+   
 </head>
 <body class="new_layout" id="jquery-script-menu">
     <div class="c-loader" id="loader">
@@ -72,7 +91,7 @@
         @*header logo container starts*@
         <div class="ispace-logo">
             <a href="@Url.Content("~/Landing/Index")">
-                <img src="~/N_assets/images/ispace-logo.png" alt="ispace" height="30px" />
+                <img src="~/N_assets/images/TP/Large_TP_Logo_Transparent.png" alt="ispace" height="25px" />
             </a>
         </div>
         <!-- end container -->

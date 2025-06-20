@@ -837,7 +837,7 @@ table th {
 .-m_title_ {
     position: absolute;
     top: 12px;
-    left: 105px;
+    left: 165px;
 }
 
     .-m_title_ h4 {
@@ -845,12 +845,18 @@ table th {
         font-size: 14px;
         font-weight: bold;
     }
-
-    .-m_title_ span {
-        font-size: 10px;
-        color: #0000ff;
-        font-weight: normal;
-    }
+.span_gra {
+    background: linear-gradient(135deg, #3b536d, #4a6b7a);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    color: transparent;
+}
+.-m_title_ span {
+    font-size: 13px;
+    color: #0000ff;
+    font-weight: normal;
+}
 
 .button-add {
     position: relative;
@@ -2849,7 +2855,9 @@ ul.home_tiles {
     position: absolute;
     box-shadow: 0 0 6px #dedede;
     z-index: 1;
-    background: #fff;
+    background-image: url(/images/bg-ideation.jpg);
+    background-repeat:no-repeat;
+    background-size:cover;
     padding: 10px 5px 10px;
     width: 440px;
     margin-top: 0;
