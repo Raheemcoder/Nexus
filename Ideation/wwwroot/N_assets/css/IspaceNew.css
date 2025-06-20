@@ -196,7 +196,7 @@ span.circular_icon {
     line-height: 18px;
     width: 17px;
     height: 17px;
-    background: #00d546;
+    background: #2a3055;
     text-align: center;
     border-radius: 50px;
     color: #fff;
@@ -245,7 +245,7 @@ span.circular_icon {
 }
 
 li.has-submenu {
-    background: #fff;
+    background: #87d6e3;
     padding: 7px 15px;
     border-radius: 0px 0px 15px 15px;
     margin-right: 0px;
@@ -253,7 +253,7 @@ li.has-submenu {
 }
 
     li.has-submenu.active {
-        background: #f37d1f;
+        background: #2a3055;
         z-index: 1;
         color: #fff;
     }
@@ -325,7 +325,7 @@ li.has-submenu {
 }
 
 li.has-submenu:hover {
-    background: #f37d1f;
+    background: #2a3055;
     color: #fff;
     z-index: 10;
 }
@@ -1721,7 +1721,7 @@ li.has-submenu {
         left: -10px;
         display: block;
         width: 23px;
-        background: #fff;
+        background: #87d6e3;
         -webkit-transform: skew(20deg);
         -ms-transform: skew(20deg);
         transform: skew(20deg);
@@ -1738,7 +1738,7 @@ li.has-submenu {
         right: -10px;
         display: block;
         width: 23px;
-        background: #fff;
+        background: #87d6e3;
         -webkit-transform: skew(-20deg);
         -ms-transform: skew(-20deg);
         transform: skew(-20deg);
@@ -1755,7 +1755,7 @@ li.has-submenu {
         left: -10px;
         display: block;
         width: 23px;
-        background: #f37d1f;
+        background: #2a3055;
         -webkit-transform: skew(20deg);
         -ms-transform: skew(20deg);
         transform: skew(20deg);
@@ -1772,7 +1772,7 @@ li.has-submenu {
         right: -10px;
         display: block;
         width: 23px;
-        background: #f37d1f;
+        background: #2a3055;
         -webkit-transform: skew(-20deg);
         -ms-transform: skew(-20deg);
         transform: skew(-20deg);
