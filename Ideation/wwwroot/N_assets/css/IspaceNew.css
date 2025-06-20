@@ -181,12 +181,12 @@ input.form-control {
 
 /*----------------------------------------------------------------------header css starts---------------------------------------------------------------------*/
 body {
-    border-top: 2px solid #f37d1f;
+    border-top: 2px solid #87d6e3;
 }
 
 header {
     background: #ececec;
-    padding: 0px 7px 7px;
+    padding: 0px 7px 11px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -273,7 +273,7 @@ li.has-submenu {
 
 .top_position {
     position: relative;
-    top: 10px;
+    top: 4px;
 }
 
 .ispace-logo {
@@ -333,6 +333,22 @@ li.has-submenu:hover {
     li.has-submenu:hover a {
         color: #fff;
     }
+.tile_projects {
+    margin-right: 4px;
+    background: linear-gradient(135deg, #5e81ac, #88c0d0);
+    border-radius: 7px;
+    transition: all 0.3s ease;
+}
+
+    .tile_projects:hover {
+        transform: translateY(-3px);
+        background: #2a3055;
+        color: #fff !important;
+    }
+
+        .tile_projects:hover p {
+            color: #fff !important;
+        }
 
 
 /*---------------------------------------------------------------------Jqgrid Styles---------------------------------------------------------------------*/
@@ -2287,7 +2303,7 @@ td input.form-control {
 }
 
 .select_project .select2-container--default .select2-selection--single, .select_hub .select2-container--default .select2-selection--single {
-    background-color: #178b87 !important;
+    background-color: #2a3055 !important;
     border: 0px solid #aaa;
     border-radius: 4px;
     color: #fff;
@@ -2325,7 +2341,8 @@ header .select2-container--default .select2-selection--single .select2-selection
 }
 
 .second_header {
-    background: #fff1e9;
+    /*    background: linear-gradient(to right, #ededed, #dedede);*/
+    background: linear-gradient(to right, #f6f9fc, #eaf2f8);
     padding: 10px;
 }
 
@@ -2349,7 +2366,8 @@ header .select2-container--default .select2-selection--single .select2-selection
     .second-menu li.has-submenu.active, .second-menu li.has-submenu.active a {
         background: transparent;
         z-index: 1;
-        color: #f37d1f;
+        /*        color: #f37d1f;*/
+        color: #403b91;
     }
 
     .second-menu li.has-submenu:before, .second-menu li.has-submenu:after {
@@ -2368,7 +2386,7 @@ header .select2-container--default .select2-selection--single .select2-selection
     }
 
         .second-menu li.has-submenu:hover a {
-            color: #f37d1f;
+            color: #403b91;
         }
 
     .second-menu li a {

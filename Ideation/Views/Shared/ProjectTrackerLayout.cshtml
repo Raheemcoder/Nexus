@@ -24,9 +24,8 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - ISpace</title>
-
-    <link rel="icon" type="image/x-icon" href="@Url.Content("~/N_assets/images/leaf.ico")" />
+    <title>@ViewData["Title"] - Project Nexus</title>
+    <link rel="icon" type="image/x-icon" href="@Url.Content("~/N_assets/images/TP/Small_ICON_TP Logo_Transparent.png")" />
     <link href="@Url.Content("~/N_assets/css/layout.min.css")" rel="stylesheet" />
     <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
     <link rel="stylesheet" href="@Url.Content("~/N_assets/css/animate.min.css")" />
@@ -91,7 +90,9 @@
         <header id="topnav" class="header_section">
 
             <div class="ispace-logo">
-                <a href="@Url.Content("~/Landing/Index")"><img src="~/N_assets/images/ispace-logo.png" alt="ispace" height="30px" /></a>
+                 <a href="@Url.Content("~/Landing/Index")">
+                <img src="~/N_assets/images/TP/Large_TP_Logo_Transparent.png" alt="talentpace" height="25px" />
+            </a>
             </div>
 
             <div>
@@ -226,14 +227,14 @@
                     </div>
 
                     @*Logout*@
-                    <div>
+                    
                         <div class="d-flex align-items-center user_info top_position">
                             <div class="d-flex user_name_ cursor">
                                 <span class="circular_icon" style="cursor: pointer">@firstLetter</span>
                                 <label class="mb-0" style="cursor: pointer">@userName</label>
-                                <span style="cursor: pointer">
+                                @* <span style="cursor: pointer">
                                     <img src="@Url.Content("~/N_assets/images/himalaya_leaf logo.png")" width="22px" />
-                                </span>
+                                </span> *@
                                 <div class="logout">
                                     <ul>
                                         <li><a href="@Url.Content("~/Login/Logout")"><i class="fa fa-sign-out-alt"></i> Logout</a></li>
@@ -241,7 +242,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                   
 
                 </div>
             </div>
