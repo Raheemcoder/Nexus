@@ -548,6 +548,7 @@ li.has-submenu:hover {
 .m-table__main .ui-jqgrid .ui-jqgrid-btable {
     width: 100% !important;
     margin-bottom: 0px !important;
+    
 }
 
 .ui-jqgrid .ui-jqgrid-htable .ui-jqgrid-labels th {
@@ -1500,9 +1501,9 @@ button.btn.btn-approval {
     font-size: 12px;
 }
 
-    button.btn.btn-approval:hover {
-        background: #b2adad;
-    }
+button.btn.btn-approval:hover {
+    background: #b2adad;
+}
 
 button.btn.btn-cancel {
     line-height: 1 !important;
@@ -1685,6 +1686,7 @@ h4.modal-title {
         font-size: 22px;
         color: white;
         opacity: 1;
+       
     }
 
 .modal .table-responsive > .table-bordered, .table-responsive > .table-bordered {
