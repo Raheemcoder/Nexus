@@ -477,18 +477,18 @@ textarea.form-control{
 }
 .btn_search {
     color: #fff;
-    background-color: #0dcaf0;
-    border-color: #0dcaf0 !important;
+    background-color: #2a3055;
+    border-color: #2a3055 !important;
     padding: 9px 15px !important;
     line-height: 1;
     border-radius: 10px 0px !important;
 }
-.btn_search:hover {
-    color: #fff;
-    background-color: #00bde2;
-    border-color: #00bde2 !important;
-    box-shadow: none;
-}
+    .btn_search:hover {
+        color: #fff;
+        background-color: #7badc3;
+        border-color: #7badc3 !important;
+        box-shadow: none;
+    }
 /*.navbar .active a {
     color: #fff !important;
 }*/

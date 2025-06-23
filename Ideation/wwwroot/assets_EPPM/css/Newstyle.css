@@ -1,5 +1,5 @@
 ﻿body {
-    background: #e2f3f0;
+    background: #0c113e1a;
     font-family: 'Open Sans', sans-serif;
 }
 
@@ -41,15 +41,15 @@
 }
 
 #side-menu > li > a.active, #side-menu > li > a:focus, #side-menu > li > a:hover, .sidebar #side-menu > li:hover > a {
-    background: #fd6100;
+    background: #2a3055;
     color: #000;
-    border-radius: 0px;
+    border-radius: 13px;
 }
 
 #side-menu ul > li > a:hover, #side-menu ul > li > a.active {
-    background: #fd6100;
+    background: #2a3055;
     color: #000 !important;
-    border-radius: 0px;
+    border-radius: 13px;
 }
 
 #side-menu li .nav-second-level > li > a:hover > i, #side-menu .nav-second-level > li > a:hover > .menu-icon-svg > svg {
@@ -157,7 +157,7 @@ nav .form-horizontal .form-group {
 }
 
 .ui-widget-content a.grid-icon-only {
-    color: #fd6100 !important
+    color: #2a3055 !important
 }
 
 .m-table__main .m-table__text.Completed {
@@ -176,7 +176,7 @@ nav .form-horizontal .form-group {
 }
 
 li.active {
-    background: #fd6100 !important;
+    background: #2a3055 !important;
     border-radius: 0px;
 }
 
@@ -455,7 +455,7 @@ li#projectNameList {
 
 nav .dropdown-menu > li > a:focus, nav .dropdown-menu > li > a:hover {
     background: transparent;
-    color: #fd6100;
+    color: #2a3055;
 }
 
 #side-menu, .dropdown.admin_dropdown {
@@ -918,7 +918,7 @@ form .has-error .form-control {
     justify-content: center;
 }
 .btn-icon.-edit {
-    color: #1e78ff;
+    color: #2a3055;
     background-color: #1e78ff;
     border-radius: 50%;
     margin: 0 1px;
