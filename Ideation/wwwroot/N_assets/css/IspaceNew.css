@@ -1275,7 +1275,7 @@ span.select2.select2-container.select2-container--default.select2-container--bel
 .filter_status button.btn, .prototype_filter button.btn {
     padding: 4px;
     line-height: 1;
-    background-color: #4666db;
+    background-color: #269994;
     color: #ffffff;
     font-size: 12px;
     border-radius: 2px;
@@ -1283,7 +1283,7 @@ span.select2.select2-container.select2-container--default.select2-container--bel
 }
     .filter_status button.btn:hover,
     .prototype_filter button.btn:hover {
-        background-color: #7fa7c9; 
+        background-color: #2aa6a1;
     }
 
 button.btn.btn-refresh {
@@ -1482,14 +1482,14 @@ button.btn.btn-next {
 
 button.btn.btn-draft {
     line-height: 1 !important;
-    background: #2a3055 !important;
+    background: #269994 !important;
     padding: 5px 13px;
     color: #fff;
     font-size: 12px;
 }
 
     button.btn.btn-draft:hover {
-        background: #6185ae !important;
+        background: #2aa6a1 !important;
     }
 
 button.btn.btn-hgml {
