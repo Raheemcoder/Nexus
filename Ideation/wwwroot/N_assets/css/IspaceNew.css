@@ -286,7 +286,7 @@ li.has-submenu {
     left: -15px;
     top: 7px;
 }
-
+/*zzzzzzzzzzzzzzzzzzz*/
 .has-submenu:hover .submenu {
     display: block;
     position: absolute;
@@ -298,7 +298,7 @@ li.has-submenu {
     margin-top: 7px;
     list-style-type: none;
     z-index: 10;
-    border: 1px solid #f37e20;
+    border: 1px solid #2a3055;
     border-radius: 12px;
     min-width: 150px;
     overflow-x: hidden;
@@ -317,7 +317,7 @@ li.has-submenu {
     }
 
     .has-submenu:hover .submenu li:hover a {
-        color: #f37d1f;
+        color: #192eaf;
     }
 
 .body-content {

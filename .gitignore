@@ -43,7 +43,7 @@
 *.AssemblyReference.cache
 *.GeneratedMSBuildEditorConfig.editorconfig
 *.FileListAbsolute.txt
-*appsettings.json
+
 
 #----------------#
 # Project Specific - Ideation
