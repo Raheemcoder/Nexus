@@ -488,8 +488,8 @@ table.dataTable tbody td.add-approval-color {
 
 .newPmu .dataTables_wrapper th.sorting_disabled {
     font-size: 11px !important;
-    background: #fff1e9 !important;
-    color: #000;
+    background: #2a3055 !important;
+    color: white;
 }
 
 .dataTables_wrapper tbody td {
@@ -967,8 +967,8 @@ div#task-modalforlist, div#task-modal {
 /*--------tracker support datatable css-------------*/
 
 .data_tablegrid th.sorting {
-    background: #fff1e9 !important;
-    color: #000 !important;
+    background: #2a3055 !important;
+    color: white !important;
     line-height: 1.2;
     border: 0px;
     pointer-events: none;
