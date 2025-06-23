@@ -100,7 +100,7 @@ body {
 h1, h2, h3, h4, h5, h6, p, span, label, div {
     font-family: 'robotoregular';
     font-weight: normal;
-    color: white;
+    color:#000;
     font-size: 11px;
 }
 
@@ -352,6 +352,9 @@ li.has-submenu:hover {
 
 
 /*---------------------------------------------------------------------Jqgrid Styles---------------------------------------------------------------------*/
+.ui-th-ltr > .ui-jqgrid-resize-ltr {
+    color: white;
+}
 .m-table__main .ui-jqgrid {
     width: 100% !important;
     background: none;
@@ -1694,7 +1697,6 @@ h4.modal-title {
 }
 
 .modal .table-responsive .table-bordered th, .table-responsive .table-bordered th {
-    /*    background: #fff1e9 !important;*/
     background:#73a1bf !important;
     border: 0px !important;
     padding: 10px !important;
