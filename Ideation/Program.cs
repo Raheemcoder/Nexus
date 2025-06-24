@@ -1,22 +1,37 @@
 using Autofac;
-using Ideation.Data;
-using Ideation.Core;
 using Autofac.Extensions.DependencyInjection;
 using Ideation;
+using Ideation.Areas.Identity.Data;
+using Ideation.Core;
+using Ideation.Data;
 using Ideation.Models;
-using System.Configuration;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Configuration;
-using Microsoft.AspNetCore.ResponseCompression;
-using System.IO.Compression;
-using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.ResponseCompression;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.FileProviders;
+using Microsoft.Identity.Web;
+using System.Configuration;
+using System.IO.Compression;
 
 var builder = WebApplication.CreateBuilder(args);
+//var connectionString = builder.Configuration.GetConnectionString("IdeationContextConnection") ?? throw new InvalidOperationException("Connection string 'IdeationContextConnection' not found.");
 
+//builder.Services.AddDbContext<IdeationContext>(options => options.UseSqlServer(connectionString));
+
+//builder.Services.AddDefaultIdentity<IdeationUser>(options => options.SignIn.RequireConfirmedAccount = true)
+//    .AddEntityFrameworkStores<IdeationContext>();
+
+//builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
+//    .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAD"));
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddJsonOptions(opts => opts.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+
 
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
