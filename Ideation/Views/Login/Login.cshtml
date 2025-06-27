@@ -16,14 +16,13 @@
         .main {
             display: flex;
             min-height: 100vh;
-            background-image: url("N_assets/images/TP/Final_Biz_BCK.png");
-            background-size:100% 109%;
-            background-repeat:no-repeat;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
         }
 
         .left_side {
             flex: 0 0 60%;
-            background: #ff86000f;
+            background: url('@Url.Content("~/N_assets/images/TP/Final_Biz_BCK.png")') no-repeat center center;
+            background-size: cover;
             position: relative;
             display: flex;
             align-items: center;
@@ -31,71 +30,58 @@
             overflow: hidden;
         }
 
-        .image-container {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            /* background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); */
-        }
-
-        .left-side-image {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: cover;
-            width: 100%;
-            height: 100%;
-        }
 
         .right_side {
             flex: 0 0 40%;
             height: 100vh;
-            background: #ff86000f;
             position: relative;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
 
-        /* Logo positioned at top right */
         .logo-top-right {
             position: absolute;
             top: 1rem;
-            right: 0.3rem;
-            width: 25%;
-            height: 6%;
+            right: 1rem;
+            width: 15%;
+            height: 5%;
             display: flex;
-            justify-content:center;
-            align-items:center;
-            background-color: #383838;
-            border-radius:13px;
+            justify-content: center;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
             z-index: 10;
+            transition: transform 0.3s ease;
         }
 
+            .logo-top-right:hover {
+                transform: scale(1.1);
+            }
+
             .logo-top-right img {
-                width: 95%;
+                width: 60%;
                 height: auto;
                 object-fit: contain;
+                filter: brightness(1.5);
             }
+
         .login_page {
-            width: 80%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            background-color: #ffffff;
-            border-radius: 10px;
-            box-shadow: 0 20px 30px rgba(0, 0, 0, 0.15), 0 10px 10px rgba(0, 0, 0, 0.05);
-            transform: translateY(-10px);
-            transition: all 0.3s ease-in-out;
-            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
             .login_page:hover {
-                transform: translateY(-15px);
-                box-shadow: 0 30px 40px rgba(0, 0, 0, 0.2), 0 15px 15px rgba(0, 0, 0, 0.1);
+                transform: translateY(-5px);
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
             }
 
         .middle_box {
@@ -104,89 +90,83 @@
 
         .title_name {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .title_img {
+            width: 100%;
             height: auto;
-            width:100%;
-            border-top-left-radius:10px;
-            border-top-right-radius:10px;
+            border-radius: 10px 10px 0 0;
         }
 
-        #loginForm{
-            padding:20px;
+        #loginForm {
+            padding: 0;
         }
 
         .form-control {
             width: 100%;
-            padding: 12px 16px;
-            font-size: 16px;
-            border: 1px solid #ccc;
+            padding: 0.75rem 1rem;
+            font-size: 1rem;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             transition: all 0.3s ease;
-            background-color: #f9f9f9;
-            box-shadow: inset 0 1px 3px rgba(0,0,0,0.05);
-            outline: none;
+            background-color: #fafafa;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
         }
 
             .form-control:focus {
-                border-color: #66bfff;
+                border-color: #4a90e2;
                 background-color: #fff;
-                box-shadow: 0 0 0 4px rgba(102, 191, 255, 0.2);
+                box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.2);
             }
 
             .form-control::placeholder {
-                color: #6c757d;
+                color: #888;
             }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 1.25rem;
         }
+
         .position-relative {
             position: relative;
         }
 
         .toggle-password {
             position: absolute;
-            right: 0.75rem;
-            top: 35%;
+            right: 1rem;
+            top: 40%;
             transform: translateY(-50%);
             cursor: pointer;
-            color: #6c757d;
-            font-size: 1rem;
-            transition: color 0.15s ease-in-out;
-            padding: 0.25rem;
+            color: #888;
+            font-size: 1.1rem;
+            transition: color 0.3s ease;
         }
 
             .toggle-password:hover {
-                color: #667eea;
+                color: #4a90e2;
             }
 
-        .btn {
+        .btn.signin {
             width: 100%;
-            padding: 0.7rem 1rem;
+            padding: 0.85rem 1rem;
             border: none;
-            border-radius: 4px;
-            font-size: 1rem;
-            font-weight: 500;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.15s ease-in-out;
-            position: relative;
-            margin-top: 0.5rem;
+            transition: all 0.3s ease;
+            background: linear-gradient(90deg, #4a90e2, #357abd);
+            color: #fff;
+            text-transform: uppercase;
         }
 
-        .signin {
-            background: #667eea;
-            color: white;
-        }
-
-            .signin:hover:not(:disabled) {
-                background: #5a67d8;
-                transform: translateY(-1px);
+            .btn.signin:hover:not(:disabled) {
+                background: linear-gradient(90deg, #357abd, #2a5298);
+                transform: translateY(-2px);
             }
 
-            .signin:disabled {
+            .btn.signin:disabled {
                 opacity: 0.6;
                 cursor: not-allowed;
             }
@@ -207,12 +187,8 @@
         }
 
         .validation_login {
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             margin-top: 0.25rem;
-            display: block;
-        }
-
-        .text-danger {
             color: #dc3545;
         }
 
@@ -247,85 +223,35 @@
             color: #0c5460;
         }
 
-    </style>
+        .welcome-message {
+            color: #2a5298;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+        }
 
+        /* .toggle-password .fas fa-eye{
+            position: absolute;
+            bottom: 46%;
+            right: 3%;
+        } */
+      /*   keyframes spin {
+            0%
+
+        {
+            transform: rotate(0deg);
+        }
+
+        100% {
+            transform: rotate(360deg);
+        }
+
+        } */
+    </style>
 </head>
 <body>
-    @*  <section class="main">
-        <section class="left_side">
-        </section>
-        <!-- Top right logo -->
-        <section class="right_side">
-            <div class="logo-top-right logoBox">
-                <img src="~/N_assets/images/TP/Large_TP_Logo_Transparent.png" alt="TalentPace Logo" />
-            </div>
-            <div class="login_page">
-                <div class="middle_box">
-                    <div class="form_bg">
-                        <div class="title_name">
-                            <div>
-                                <img class="title_img" src="~/N_assets/images/TP/Biz_Innova_Login_White.png" alt="Alternate Text" />
-                            </div>
-                            <div>
-                            </div>
-                        </div>
-
-                        @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { @id = "loginForm" }))
-                        {
-                            @Html.AntiForgeryToken()
-                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-
-                            <div class="form-group">
-                                @Html.TextBoxFor(model => model.Username, new
-                                {
-                                    @class = "form-control",
-                                                        placeholder = "Username",
-                                                        autofocus = "autofocus",
-                                                        autocomplete = "username"
-                                                        })
-                            <div style="min-height: 20px">
-                                @Html.ValidationMessageFor(model => model.Username, "", new { @class = "text-danger validation_login" })
-                            </div>
-                        </div>
-
-                        <div class="form-group position-relative">
-                            @Html.PasswordFor(model => model.Password, new
-                                                        {
-                                    @class = "form-control",
-                                                        placeholder = "Password",
-                                                        autocomplete = "current-password",
-                                                        id = "Password"
-                                                        })
-
-                            <span class="toggle-password d-none" id="togglePassword">
-                                <i class="fas fa-eye" id="eyeIcon"></i>
-                            </span>
-
-                            <div style="min-height: 20px">
-                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger validation_login" })
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn signin">
-                            <span class="spinner"></span>
-                            <span class="btn-text">Sign In</span>
-                        </button>
-                      }
-
-                        <div id="message">
-                            @if (TempData["Message"] != null)
-                            {
-                                <div class="alert @TempData["Messageclass"].ToString() mt-3">
-                                    @Html.Raw(@TempData["Message"].ToString())
-                                </div>
-                            }
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </section> *@
-
     <section class="main">
         <!-- Left Side - 60% width -->
         <section class="left_side">
@@ -333,15 +259,15 @@
 
         <section class="right_side">
             <div class="logo-top-right logoBox">
-                <img src="~/N_assets/images/TP/Large_TP_Logo_Transparent.png" alt="TalentPace Logo" />
+                <img src="@Url.Content("~/N_assets/images/TP/Large_TP_Logo_Transparent.png")" alt="TalentPace Logo" />
             </div>
-
             <div class="login_page">
                 <div class="middle_box">
                     <div class="form_bg">
+                        <div class="welcome-message">Welcome to Biz Innova!</div>
                         <div class="title_name">
-                                <img class="title_img" src="~/N_assets/images/TP/Biz_Expanded.jpg"
-                                     alt="Business Innovation Login" />
+                            <img class="title_img" src="@Url.Content("~/N_assets/images/TP/Gemenie_img.png")" alt="Biz Innova Logo" />
+
                         </div>
                         @using (Html.BeginForm("Login", "Login", FormMethod.Post, new { @id = "loginForm" }))
                         {
@@ -405,13 +331,34 @@
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
     <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
-
     <script src="@Url.Content("~/N_assets/js/popper.min.js")"></script>
     <script src="@Url.Content("~/N_assets/js/bootstrap.min.js")"></script>
     <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
     <script src="@Url.Content("~/N_assets/js/Login.js")"></script>
+    <script>
+              const passwordInput = document.getElementById('Password');
+        const toggleIcon = document.getElementById('togglePassword');
 
+        // Show/hide the toggle icon based on input
+        passwordInput.addEventListener('input', function () {
+            if (this.value.length > 0) {
+                toggleIcon.classList.remove('d-none');
+            } else {
+                toggleIcon.classList.add('d-none');
+            }
+        });
+
+        // Toggle password visibility
+        toggleIcon.addEventListener('click', function () {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+
+            // Toggle eye / eye-slash icon
+            const icon = this.querySelector('i');
+            icon.classList.toggle('fa-eye');
+            icon.classList.toggle('fa-eye-slash');
+        });
+    </script>
 </body>
 </html>
