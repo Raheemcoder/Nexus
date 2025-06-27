@@ -33,10 +33,12 @@ body {
     font-weight: 600;
     font-size: 16px;
 }
-
+#wrapper {
+    background: #0c113e1a;
+}
 .body-content {
     padding-top: 2px;
-    background: #e2f3f0;
+    background: #0c113e1a;
 }
 
 .card-box {
@@ -3980,7 +3982,7 @@ input.ui-pg-input.ui-corner-all {
 
 .nav li:hover, .nav li.active {
     padding: 7px 15px;
-    background: #fd6100;
+    background: #2a3055;
     border-radius: 0px 0px;
 }
 

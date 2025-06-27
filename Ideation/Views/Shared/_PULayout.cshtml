@@ -4,55 +4,55 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>@ViewData["Title"] - Ideation</title>
-        <link rel="icon" type="image/x-icon" sizes="16x16" href="@Url.Content("~/images/leaf.ico")">
-        <script src="https://kit.fontawesome.com/ce2a6a1038.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" integrity="sha512-xX2rYBFJSj86W54Fyv1de80DWBq7zYLn2z0I9bIhQG+rxIF6XVJUpdGnsNHWRa6AvP89vtFupEPDP8eZAtu9qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-        @*<link href="~/Assets/css/bootstrap.min.css" rel="stylesheet" />*@
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Ideation</title>
+    <link rel="icon" type="image/x-icon" sizes="16x16" href="@Url.Content("~/images/leaf.ico")">
+    <script src="https://kit.fontawesome.com/ce2a6a1038.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/fontawesome.min.css" integrity="sha512-xX2rYBFJSj86W54Fyv1de80DWBq7zYLn2z0I9bIhQG+rxIF6XVJUpdGnsNHWRa6AvP89vtFupEPDP8eZAtu9qA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    @*<link href="~/Assets/css/bootstrap.min.css" rel="stylesheet" />*@
 
-        @*<link href="~/fontawesome/css/fontawesome.min.css" rel="stylesheet" />*@
-        <link href="@Url.Content("~/fonts/Fonts/fontawesome/css/fontawesome.min.css")" rel="stylesheet" />
+    @*<link href="~/fontawesome/css/fontawesome.min.css" rel="stylesheet" />*@
+    <link href="@Url.Content("~/fonts/Fonts/fontawesome/css/fontawesome.min.css")" rel="stylesheet" />
 
 
-        <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
+    <link rel="stylesheet" href="@Url.Content("~/lib/bootstrap/dist/css/bootstrap.min.css")" />
 
     <link href="@Url.Content("~/css/main.css")" rel="stylesheet" asp-append-version="true" />
     <link href="@Url.Content("~/css/PBStyle.css")" rel="stylesheet" asp-append-version="true" />
     <link href="@Url.Content("~/css/PUStyle.css")" rel="stylesheet" asp-append-version="true" />
 
-        <link href="@Url.Content("~/plugins/jqgrid/css/jquery-ui.min.css")" rel="stylesheet" />
-        <link href="@Url.Content("~/plugins/jqgrid/css/ui.jqgrid.min.css")" rel="stylesheet" />
-        <link href="@Url.Content("~/plugins/bootstrap-multiselect/bootstrap-multiselect.min.css")" rel="stylesheet" />
-        <link href="@Url.Content("~/plugins/select2/select2.min.css")" rel="stylesheet" />
-        <link href="@Url.Content("~/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css")" rel="stylesheet" />
-        <link href="@Url.Content("~/css/common.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/jqgrid/css/jquery-ui.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/jqgrid/css/ui.jqgrid.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/bootstrap-multiselect/bootstrap-multiselect.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/select2/select2.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/plugins/bootstrap-datepicker/bootstrap-datepicker.min.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/css/common.css")" rel="stylesheet" />
 
 
-        <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
-        <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
-        <script src="@Url.Content("~/plugins/popper.min.js")"></script>
-        <script src="@Url.Content("~/plugins/moment/moment.js")"></script>
-        <script src="@Url.Content("~/plugins/jqgrid/js/grid.locale-en.min.js")"></script>
-        <script src="@Url.Content("~/plugins/jqgrid/js/jquery-ui.min.js")"></script>
-        <script src="@Url.Content("~/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
-        <script src="@Url.Content("~/js/jqgrid.js")"></script>
-        <script src="@Url.Content("~/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")"></script>
-        <script src="@Url.Content("~/plugins/select2/select2.min.js")"></script>
-        <script src="~/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
+    <script src="@Url.Content("~/lib/jquery/dist/jquery.min.js")"></script>
+    <script src="@Url.Content("~/lib/bootstrap/dist/js/bootstrap.bundle.min.js")"></script>
+    <script src="@Url.Content("~/plugins/popper.min.js")"></script>
+    <script src="@Url.Content("~/plugins/moment/moment.js")"></script>
+    <script src="@Url.Content("~/plugins/jqgrid/js/grid.locale-en.min.js")"></script>
+    <script src="@Url.Content("~/plugins/jqgrid/js/jquery-ui.min.js")"></script>
+    <script src="@Url.Content("~/plugins/jqgrid/js/jquery.jqgrid.min.js")"></script>
+    <script src="@Url.Content("~/js/jqgrid.js")"></script>
+    <script src="@Url.Content("~/plugins/bootstrap-multiselect/bootstrap-multiselect.min.js")"></script>
+    <script src="@Url.Content("~/plugins/select2/select2.min.js")"></script>
+    <script src="~/plugins/bootstrap-datepicker/bootstrap-datepicker.min.js"></script>
 
-        <script src="@Url.Content("~/js/bootstrap.min.js")"></script>
+    <script src="@Url.Content("~/js/bootstrap.min.js")"></script>
 
-        @* URL and Parameter encryption*@
-        <script src="@Url.Content("~/js/aes.js")"></script>
-        <script src="@Url.Content("~/js/layout.js")" asp-append-version="true"></script>
+    @* URL and Parameter encryption*@
+    <script src="@Url.Content("~/js/aes.js")"></script>
+    <script src="@Url.Content("~/js/layout.js")" asp-append-version="true"></script>
 
-        @await RenderSectionAsync("Scripts", required: false)
-        <script>
-            var ROOT = "@Url.Content("~/")";
-        </script>
+    @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        var ROOT = "@Url.Content("~/")";
+    </script>
 
 </head>
 <body>
@@ -69,9 +69,9 @@
             <nav class="navbar navbar-fixed-top pl-0 pr-0">
                 <div class="container-fluid margin_header p-0">
                     <div class="navbar-brand ps-2 p-0">
-                        <a href="@Url.Content("~/Landing/Index")">
-                            <img src="@Url.Content("~/images/logohmnew.png")" class="lg_im" />
-                            <span class="home_main" title="Home"><i class="fas fa-home"></i></span>
+                        <a class="logo" href="@Url.Content("~/Landing/Index")">
+                            <b><img src="@Url.Content("~/N_assets/images/TP/Large_TP_Logo_Transparent.png")" alt="Talentpace" width="160"/></b>
+                            <span class="home_main"><i class="fa fa-home"></i></span>
                         </a>
                     </div>
 
@@ -79,9 +79,9 @@
                         <div class="" role="navigation">
                             <div class="sidebar-nav navbar-collapse">
                                 <ul class="nav" id="main_menu">
-                                     <li class="has-menu prototype_2">
+                                    <li class="has-menu prototype_2">
                                         <a href="@Url.Content("~/ProjectUpdates/ProjectUpdates")" data-subURL="@Url.Content("~/ProjectUpdates/EditProjectUpdates")" class="waves-effect"><i class="fas fa-cog"></i> <span class="hide-menu"> Project Updates@*<i class="fas fa-angle-down"></i> *@</span></a>
-                                      </li>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
@@ -102,7 +102,7 @@
                                     </li>
                                 </ul>
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
